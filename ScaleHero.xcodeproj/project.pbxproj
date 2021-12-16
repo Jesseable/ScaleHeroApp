@@ -18,6 +18,7 @@
 		C574FEA32769C00C00ADD3B3 /* SwiftySound in Frameworks */ = {isa = PBXBuildFile; productRef = C574FEA22769C00C00ADD3B3 /* SwiftySound */; };
 		C574FEA62769C07300ADD3B3 /* small-loop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C574FEA52769C07300ADD3B3 /* small-loop.mp3 */; };
 		C574FEA92769CFDF00ADD3B3 /* ArpeggioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FEA82769CFDF00ADD3B3 /* ArpeggioView.swift */; };
+		C574FEE1276B0AE000ADD3B3 /* SoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FEE0276B0AE000ADD3B3 /* SoundView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		C574FE9F2769BFE700ADD3B3 /* ScalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalesView.swift; sourceTree = "<group>"; };
 		C574FEA52769C07300ADD3B3 /* small-loop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "small-loop.mp3"; path = "../../Deco2800/TasksCompleted/MusicIdeas/small-loop.mp3"; sourceTree = "<group>"; };
 		C574FEA82769CFDF00ADD3B3 /* ArpeggioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArpeggioView.swift; sourceTree = "<group>"; };
+		C574FEE0276B0AE000ADD3B3 /* SoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +152,7 @@
 				C574FE77276886B700ADD3B3 /* ContentView.swift */,
 				C574FE9F2769BFE700ADD3B3 /* ScalesView.swift */,
 				C574FEA82769CFDF00ADD3B3 /* ArpeggioView.swift */,
+				C574FEE0276B0AE000ADD3B3 /* SoundView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C574FEE1276B0AE000ADD3B3 /* SoundView.swift in Sources */,
 				C574FE78276886B700ADD3B3 /* ContentView.swift in Sources */,
 				C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */,
 				C574FEA92769CFDF00ADD3B3 /* ArpeggioView.swift in Sources */,
