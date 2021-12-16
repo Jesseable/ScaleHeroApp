@@ -15,39 +15,49 @@ struct ArpeggioView : View {
     
     var body: some View {
         
-        ZStack {
-            Image("music-Copyrighted-exBackground").resizable().ignoresSafeArea()
+        NavigationView {
+        
+            ZStack {
+                Image("music-Copyrighted-exBackground").resizable().ignoresSafeArea()
             
-            VStack {
-                
-                Text("ARPEGGIOS").bold().font(.title).foregroundColor(.white).padding()
-                
-                Spacer()
-                
-                // Turn to image button
-                Button("Select Note") {
-                    self.screenType = "scales"
-                }.padding()
-                
-                // Turn to image button
-                Button("settings") {
-                    // do nothing
-                }.padding()
-                
-                // Turn to image button
-                Button("Play") {
-                    // do nothing
-                }.padding()
-                
-                Spacer()
-                Spacer()
-                
-                Button {
-                    self.screenType = "homePage"
-                } label: {
-                    Text("Back")
-                }.padding()
-
+                VStack {
+                    //Text("ARPEGGIOS").bold().font(.title).foregroundColor(.white).padding()
+                    
+                    Spacer()
+                    
+                    // Turn to image button
+                    Button("Major (Triad)") {
+                        // do nothing
+                    }.padding()
+                    
+                    // Turn to image button
+                    Button("Minor (Triad)") {
+                        // do nothing
+                    }.padding()
+                    
+                    // Turn to image button
+                    Button("Special (Tetrads)") {
+                        // do nothing
+                    }.padding()
+                    
+                    Spacer()
+                    Spacer()
+                    
+                    Button {
+                        self.screenType = "homePage"
+                    } label: {
+                        Text("HomePage")
+                    }.padding()
+                }
+                .navigationBarTitle("ARPEGGIOS", displayMode: .inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text("ARPEGGIOS")
+                            .font(.largeTitle.bold())
+                            .accessibilityAddTraits(.isHeader)
+                            .foregroundColor(Color.white)
+                    }
+                }
             }
         }
     }
