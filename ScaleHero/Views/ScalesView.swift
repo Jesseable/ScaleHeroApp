@@ -21,7 +21,7 @@ struct ScalesView: View {
         Text("You are signed in.")
             Button {
                 Sound.enabled = true
-                Sound.play(file: "small-loop.mp3", numberOfLoops: 1) // Test with a proper sound file 
+                Sound.play(file: "small-loop.mp3", numberOfLoops: 1) // Test with a proper sound file
             } label: {
                 Text("Sound")
             }
@@ -37,7 +37,7 @@ struct ScalesView: View {
             Button {
                 self.screenType = "homePage"
             } label: {
-                Text("Back")
+                Text("HomePage")
             }.padding()
         }
     }
