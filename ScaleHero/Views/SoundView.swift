@@ -17,6 +17,8 @@ struct SoundView : View {
     @State var numOctave = 1
     @State var tempo = 100
     @State var drone = true
+    @State var chords = false
+    @State var scaleNotes = true
     
     var body: some View {
         
@@ -49,7 +51,7 @@ struct SoundView : View {
                     Button("1 octave", action: {numOctave = 1})
                     Button("2 octaves", action: {numOctave = 2})
                     Button("3 octaves", action: {numOctave = 3})
-                }
+                }.padding()
             
                 Menu("Tempo = " + String(tempo)) {
                     ForEach(40..<221) { i in
@@ -57,20 +59,60 @@ struct SoundView : View {
                             Button("Tempo: " + String(i), action: {tempo = i})
                         }
                     }
-                }
+                }.padding()
                 
                 HStack {
                     Spacer()
-                    }
                     if (drone) {
-                        Image(systemName: "square").foregroundColor(Color.white)
-                    } else {
                         Image(systemName: "checkmark.square").foregroundColor(Color.white)
+                    } else {
+                        if (chords) {
+                            Image(systemName: "square").foregroundColor(Color.white).blur(radius: 1.5)
+                        } else {
+                            Image(systemName: "square").foregroundColor(Color.white)
+                        }
                     }
                     Button("Drone") {
-                    drone.toggle()
+                        if (!chords) {
+                            drone.toggle()
+                        }
+                    }
                     Spacer()
-                }
+                }.padding()
+                
+                HStack {
+                    Spacer()
+                    
+                    if (chords) {
+                        Image(systemName: "checkmark.square").foregroundColor(Color.white)
+                    } else {
+                        if (drone) {
+                            Image(systemName: "square").foregroundColor(Color.white).blur(radius: 1.5)
+                        } else {
+                            Image(systemName: "square").foregroundColor(Color.white)
+                        }
+                    }
+                    Button("Chords") {
+                        if (!drone) {
+                            chords.toggle()
+                        }
+                    }
+                    Spacer()
+                }.padding()
+                
+                HStack {
+                    Spacer()
+                    
+                    if (scaleNotes) {
+                        Image(systemName: "checkmark.square").foregroundColor(Color.white)
+                    } else {
+                        Image(systemName: "square").foregroundColor(Color.white)
+                    }
+                    Button("Scale Notes") {
+                        scaleNotes.toggle()
+                    }
+                    Spacer()
+                }.padding()
                 
                 
                 Spacer()

@@ -10,9 +10,11 @@ import SwiftUI
 struct ArpeggioView : View {
     
     let universalSize = UIScreen.main.bounds
-    @State var noteName = "c"
+    @State var noteName = "C"
     
     @Binding var screenType: String
+    
+    let musicAlphabet = ["A", "A#/Bb", "B", "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab"]
     
     var body: some View {
         
@@ -27,8 +29,10 @@ struct ArpeggioView : View {
                     Spacer()
                     
                     // Turn to image button
-                    Button("Select Note") {
-                        noteName = "d"
+                    Menu("Note: " + String(noteName)) {
+                        ForEach(musicAlphabet, id: \.self) { note in
+                            Button("Note: \(note)", action: {noteName = note})
+                        }
                     }.padding()
                     
                     // Turn to image button
@@ -36,14 +40,13 @@ struct ArpeggioView : View {
                         Text("Major (Triad)")
                     }.padding()
                     
-                    // Turn to image button
-                    Button("Minor (Triad)") {
-                        // do nothing
+                    NavigationLink(destination: SoundView(scaleType: noteName +  " Minor arpeggio")) {
+                        Text("Minor (Triad)")
                     }.padding()
                     
-                    // Turn to image button
-                    Button("Special (Tetrads)") {
-                        // do nothing
+                    // Go to another link to select options
+                    NavigationLink(destination: SoundView(scaleType: noteName +  " Special arpeggio")) {
+                        Text("Special (Tetrads)")
                     }.padding()
                     
                     // Turn to image button
