@@ -9,9 +9,10 @@ import SwiftUI
 
 struct AppContentView: View {
     
-    @State var screenType = "HomePage"
+    @State private var screenType = "HomePage"
     
     var body: some View {
+        
         return Group {
             switch screenType {
             case "scales":
@@ -29,7 +30,7 @@ struct AppContentView: View {
 
 struct HomePage : View {
     
-    let universalSize = UIScreen.main.bounds
+    private let universalSize = UIScreen.main.bounds
     
     @Binding var screenType: String
     @State private var offset: CGFloat = .zero
@@ -73,7 +74,7 @@ struct HomePage : View {
                 }.padding()
                 
                 // Turn to image button
-                Button("Speial") {
+                Button("Special") {
                     // do nothing
                 }.padding()
                 
@@ -93,7 +94,7 @@ struct HomePage : View {
  */
 struct ImageAnimation: View {
     
-    let universalSize = UIScreen.main.bounds
+    private let universalSize = UIScreen.main.bounds
     var imageName: String
     var xPos: CGFloat
     var duration: CGFloat

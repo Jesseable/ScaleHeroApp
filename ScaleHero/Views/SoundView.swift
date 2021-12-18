@@ -10,15 +10,15 @@ import SwiftySound
 
 struct SoundView : View {
     
-    let universalSize = UIScreen.main.bounds
+    private let universalSize = UIScreen.main.bounds
     
     @State var scaleType: String
-    @State var isPlaying = false
-    @State var numOctave = 1
-    @State var tempo = 100
-    @State var drone = true
-    @State var chords = false
-    @State var scaleNotes = true
+    @State private var isPlaying = false
+    @State private var numOctave = 1
+    @State private var tempo = 100
+    @State private var drone = true
+    @State private var chords = false
+    @State private var scaleNotes = true
     
     var body: some View {
         
@@ -54,7 +54,7 @@ struct SoundView : View {
                 }.padding()
             
                 Menu("Tempo = " + String(tempo)) {
-                    ForEach(40..<221) { i in
+                    ForEach(20..<181) { i in
                         if (i % 10 == 0) {
                             Button("Tempo: " + String(i), action: {tempo = i})
                         }
