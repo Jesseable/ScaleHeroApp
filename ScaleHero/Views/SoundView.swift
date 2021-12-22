@@ -45,10 +45,14 @@ struct SoundView : View {
                         isPlaying = true
                     }
                 } label: {
-                    if isPlaying {
-                        Text("Stop")
-                    } else {
-                        Text("Play")
+                    HStack {
+                        if isPlaying {
+                            Text("Stop")
+                            Image(systemName: "speaker.slash").foregroundColor(Color.white)
+                        } else {
+                            Text("Play")
+                            Image(systemName: "speaker.wave.3").foregroundColor(Color.white)
+                        }
                     }
                 }.padding()
 
