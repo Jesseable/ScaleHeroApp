@@ -5,19 +5,7 @@
 //  Created by Jesse Graf on 15/12/21.
 //
 
-import Combine
 import SwiftUI
-
-class MusicNotes: ObservableObject {
-
-    private let musicAlphabet = ["A", "A#/Bb", "B", "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab"]
-    
-    @Published var noteName = "C"
-    
-    func getMusicAlphabet() -> [String] {
-        return musicAlphabet
-    }
-}
 
 struct ArpeggioView : View {
     

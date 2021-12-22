@@ -6,7 +6,17 @@
 //
 
 import SwiftUI
-import SwiftySound
+
+class MusicNotes: ObservableObject {
+
+    private let musicAlphabet = ["A", "A#/Bb", "B", "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab"]
+    
+    @Published var noteName = "C"
+    
+    func getMusicAlphabet() -> [String] {
+        return musicAlphabet
+    }
+}
 
 struct ScalesView: View {
     

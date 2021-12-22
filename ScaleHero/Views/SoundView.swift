@@ -19,6 +19,7 @@ struct SoundView : View {
     @State private var drone = true
     @State private var chords = false
     @State private var scaleNotes = true
+    @EnvironmentObject var musicNotes: MusicNotes
     
     var body: some View {
         
@@ -31,11 +32,16 @@ struct SoundView : View {
                 Spacer()
                 
                 Button {
+                    let scaleTypeArr = scaleType.components(separatedBy: " ")
+                    let startingNote = getStartingNote(scaleTypeArr: scaleTypeArr)
+                    let tonality = getScaleTonality(scaleTypeArr: scaleTypeArr)
+                    let scaleType = getScaleType(scaleTypeArr: scaleTypeArr)
+                    
                     if (isPlaying) {
                         Sound.stopAll()
                         isPlaying = false
                     } else {
-                        Sound.play(file: "small-loop.mp3", numberOfLoops: 1) // Test with a proper sound file
+                        Sound.play(file: "\(startingNote).mp3", numberOfLoops: 1) // Test with a proper sound file
                         isPlaying = true
                     }
                 } label: {
@@ -119,5 +125,50 @@ struct SoundView : View {
                 Spacer()
             }
         }
+    }
+    
+    func getStartingNote(scaleTypeArr: [String]) -> String {
+        
+        var startingNote = scaleTypeArr[0]
+        print(startingNote)
+        
+        switch startingNote {
+        case "A":
+            startingNote = "A"
+        case "A#/Bb":
+            startingNote = "Bb:A#"
+        case "B":
+            startingNote = "B"
+        case "C":
+            startingNote = "C"
+        case "C#/Db":
+            startingNote = "Bb:C#"
+        case "D":
+            startingNote = "D"
+        case "D#/Eb":
+            startingNote = "Eb/D#"
+        case "E":
+            startingNote = "E"
+        case "F":
+            startingNote = "F"
+        case "F#/Gb":
+            startingNote = "Gb:F#"
+        case "G":
+            startingNote = "G"
+        default:
+            print("Failed")
+        }
+        
+        return startingNote
+    }
+    
+    func getScaleTonality(scaleTypeArr: [String]) -> String {
+        let tonality = scaleTypeArr[1]
+        return tonality
+    }
+    
+    func getScaleType(scaleTypeArr: [String]) -> String {
+        let type = scaleTypeArr[2]
+        return type
     }
 }
