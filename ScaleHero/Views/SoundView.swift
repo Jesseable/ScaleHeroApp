@@ -34,14 +34,18 @@ struct SoundView : View {
                 Button {
                     let scaleTypeArr = scaleType.components(separatedBy: " ")
                     let startingNote = getStartingNote(scaleTypeArr: scaleTypeArr)
-                    let tonality = getScaleTonality(scaleTypeArr: scaleTypeArr)
-                    let scaleType = getScaleType(scaleTypeArr: scaleTypeArr)
-                    
+                    let tonality = getScaleTonality(scaleTypeArr: scaleTypeArr).lowercased()
+                    let scaleType = getScaleType(scaleTypeArr: scaleTypeArr).lowercased()
+
                     if (isPlaying) {
                         Sound.stopAll()
                         isPlaying = false
                     } else {
                         Sound.play(file: "\(startingNote).mp3", numberOfLoops: 1) // Test with a proper sound file
+                        
+                        var scale = PlayScales()
+                        print(scale.ScaleNotes(startingNote: startingNote, octave: 1, tonality: tonality)) // Chnage later
+                        
                         isPlaying = true
                     }
                 } label: {
