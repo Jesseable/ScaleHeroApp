@@ -13,21 +13,38 @@ enum Style {
     case arpeggio
 }
 
-enum Tonality {
-    case major
-    case minor
-    case phrygian // ect
-    case chromatic
-}
-
 /**
  Class Play scales
  Returns the string representations of the sound files in an ordered array ready to be accessed for playing the scale
  */
 struct PlayScales {
     
-    let majorPattern = [2, 2, 1, 2, 2, 2, 1]
-    let minorPattern = [2, 1, 2, 2, 1, 2, 2]
+    let style : String
+    
+    // Sets the major pattern for differnet types of scales. Measured in semitones
+    lazy var majorPattern : [Int] = {
+        [self] in
+        switch self.style {
+        case "arpeggio":
+            return [4, 3, 5]
+        case "scale":
+            return [2, 2, 1, 2, 2, 2, 1]
+        default:
+            return[-1]
+        }
+    }()
+    
+    lazy var minorPattern : [Int] = {
+        [self] in
+        switch self.style {
+        case "arpeggio":
+            return [3, 4, 5]
+        case "scale":
+            return[2, 1, 2, 2, 1, 2, 2]
+        default:
+            return [-1]
+        }
+    }()
     
     var accendingNotes = [1: "1:A",
                           2: "1:A#/Bb",
@@ -84,11 +101,12 @@ struct PlayScales {
     /**
      Returns an array of the notes to play in the specific scale
      */
-    func ScaleNotes(startingNote: String, octave: Int, tonality: String) -> [String] { // Chnage to returning a array of string
+    mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String) -> [String] { // Chnage to returning a array of string
         
         let startingKey = startingNoteKeyFinder(startingNote: startingNote, octave: octave)
         
-        var ValueArray : [String] = []
+        var valueArray: [String] = []
+        var reversedValuesArr: [String] = []
         var keysArray = [startingKey]
         // if -1 needs an error image
         
@@ -97,16 +115,22 @@ struct PlayScales {
         for key in keysArray {
             guard let noteName = accendingNotes[key] else { return ["Failed"] }
 //            let note = noteName.components(separatedBy: ":")
-            ValueArray.append(noteName)
+            valueArray.append(noteName)
         }
         
-        return ValueArray
+        reversedValuesArr = valueArray.reversed()
+        // removed a value so as to not repeat the tonic
+        reversedValuesArr.removeFirst()
+        
+        valueArray.append(contentsOf: reversedValuesArr)
+        
+        return valueArray
     }
     
     /**
      returns an array of the keys for the relative scale in the accending notes dictionary
      */
-    func dictKeysArray(startingKey: Int, tonality: String, keysArray: [Int]) -> [Int] {
+    mutating func dictKeysArray(startingKey: Int, tonality: String, keysArray: [Int]) -> [Int] {
         
         var startingNum = startingKey
         var dictKeysArray = keysArray
