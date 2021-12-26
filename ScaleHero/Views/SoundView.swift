@@ -43,8 +43,12 @@ struct SoundView : View {
                     } else {
                         Sound.play(file: "\(startingNote).mp3", numberOfLoops: 1) // Test with a proper sound file
                         
-                        var scale = PlayScales(style: scaleType.lowercased())
-                        print(scale.ScaleNotes(startingNote: startingNote, octave: 1, tonality: tonality)) // Chnage later
+                        var scale = WriteScales(style: scaleType.lowercased())
+                        let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: 1, tonality: tonality) // Chnage later
+                        
+                        var playScale = PlaySounds()
+                        print(playScale.convertToSoundFile(scaleInfoArr: scaleInfo))
+                        playScale.playSounds(temp: self.tempo, scaleInfoArra: scaleInfo)
                         
                         isPlaying = true
                     }
@@ -137,35 +141,36 @@ struct SoundView : View {
     
     func getStartingNote(scaleTypeArr: [String]) -> String {
         
-        var startingNote = scaleTypeArr[0]
-        print(startingNote)
-        
-        switch startingNote {
-        case "A":
-            startingNote = "A"
-        case "A#/Bb":
-            startingNote = "Bb:A#"
-        case "B":
-            startingNote = "B"
-        case "C":
-            startingNote = "C"
-        case "C#/Db":
-            startingNote = "Bb:C#"
-        case "D":
-            startingNote = "D"
-        case "D#/Eb":
-            startingNote = "Eb/D#"
-        case "E":
-            startingNote = "E"
-        case "F":
-            startingNote = "F"
-        case "F#/Gb":
-            startingNote = "Gb:F#"
-        case "G":
-            startingNote = "G"
-        default:
-            print("Failed")
-        }
+        let startingNote = scaleTypeArr[0]
+//
+//        switch startingNote {
+//        case "A":
+//            startingNote = "A"
+//        case "A#/Bb":
+//            startingNote = "A#/Bb"
+//        case "B":
+//            startingNote = "B"
+//        case "C":
+//            startingNote = "C"
+//        case "C#/Db":
+//            startingNote = "C#/Db"
+//        case "D":
+//            startingNote = "D"
+//        case "D#/Eb":
+//            startingNote = "D#/Eb"
+//        case "E":
+//            startingNote = "E"
+//        case "F":
+//            startingNote = "F"
+//        case "F#/Gb":
+//            startingNote = "F#/Gb"
+//        case "G":
+//            startingNote = "G"
+//        case "G#/Ab":
+//            startingNote = "G#/Ab"
+//        default:
+//            print("Starting note did not match the computer sound file")
+//        }
         
         return startingNote
     }

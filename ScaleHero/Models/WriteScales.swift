@@ -1,23 +1,17 @@
 //
-//  SoundEnums.swift
+//  Write.swift
 //  ScaleHero
 //
 //  Created by Jesse Graf on 23/12/21.
 //
 
 import SwiftUI
-import SwiftySound
-
-enum Style {
-    case scale
-    case arpeggio
-}
 
 /**
- Class Play scales
+ Class  Writescales
  Returns the string representations of the sound files in an ordered array ready to be accessed for playing the scale
  */
-struct PlayScales {
+struct WriteScales {
     
     let style : String
     
@@ -113,7 +107,7 @@ struct PlayScales {
         keysArray = dictKeysArray(startingKey: startingKey, tonality: tonality, keysArray: keysArray)
         
         for key in keysArray {
-            guard let noteName = accendingNotes[key] else { return ["Failed"] }
+            guard let noteName = accendingNotes[key] else { return ["Getting string access from key for music dictionary has failed"] }
 //            let note = noteName.components(separatedBy: ":")
             valueArray.append(noteName)
         }
