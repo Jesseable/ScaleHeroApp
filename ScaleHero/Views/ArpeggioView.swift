@@ -10,7 +10,7 @@ import SwiftUI
 struct ArpeggioView : View {
     
     let universalSize = UIScreen.main.bounds
-    @State var noteName = "c"
+    @EnvironmentObject var musicNotes: MusicNotes
     
     @Binding var screenType: String
     
@@ -22,28 +22,27 @@ struct ArpeggioView : View {
                 Image("music-Copyrighted-exBackground").resizable().ignoresSafeArea()
             
                 VStack {
-                    //Text("ARPEGGIOS").bold().font(.title).foregroundColor(.white).padding()
-                    
                     Spacer()
                     
                     // Turn to image button
-                    Button("Select Note") {
-                        noteName = "d"
+                    Menu("Note: " + String(musicNotes.noteName)) {
+                        ForEach(musicNotes.getMusicAlphabet(), id: \.self) { note in
+                            Button("Note: \(note)", action: {musicNotes.noteName = note})
+                        }
                     }.padding()
                     
                     // Turn to image button
-                    NavigationLink(destination: SoundView(scaleType: noteName +  " Major arpeggio")) {
+                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Major arpeggio")) {
                         Text("Major (Triad)")
                     }.padding()
                     
-                    // Turn to image button
-                    Button("Minor (Triad)") {
-                        // do nothing
+                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Minor arpeggio")) {
+                        Text("Minor (Triad)")
                     }.padding()
                     
-                    // Turn to image button
-                    Button("Special (Tetrads)") {
-                        // do nothing
+                    // Go to another link to select options
+                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Special arpeggio")) {
+                        Text("Special (Tetrads)")
                     }.padding()
                     
                     // Turn to image button
