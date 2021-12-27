@@ -39,10 +39,10 @@ struct SoundView : View {
                     
                     if (isPlaying) {
                         Sound.stopAll()
+                        Sound.enabled = false
                         isPlaying = false
                     } else {
-                        Sound.play(file: "\(startingNote).mp3", numberOfLoops: 1) // Test with a proper sound file
-                        
+                        Sound.enabled = true
                         var scale = WriteScales(style: scaleType.lowercased())
                         let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: 1, tonality: tonality) // Chnage later
                         

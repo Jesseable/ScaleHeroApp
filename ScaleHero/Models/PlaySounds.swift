@@ -15,7 +15,8 @@ struct PlaySounds {
     
     lazy var instrument: String = {
         // change to allowing other instrument types once settings menu is up and running
-        return "JTest"
+        //return "JTest
+        return "Cello"
     }()
     
     /**
@@ -34,24 +35,21 @@ struct PlaySounds {
     }
     
     mutating func playSounds(temp: Int, scaleInfoArra: [String]) {
-        var delay = tempoToSeconds(tempo: CGFloat(temp))
-        let delayMultiplier = delay
+        let delay = tempoToSeconds(tempo: CGFloat(temp))
         let soundFileArr = convertToSoundFile(scaleInfoArr: scaleInfoArra)
+        var index = 0
         
-        for fileName in soundFileArr {
-            addDelay(fileName: fileName, delay: delay, delayMultiplier: delayMultiplier)
-            delay += delayMultiplier
-        }
-    }
-    
-    func addDelay(fileName: String, delay: CGFloat, delayMultiplier: CGFloat) {
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delay) {
-            Sound.play(file: fileName, fileExtension: "mp3")
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + (1.0 * (delayMultiplier * 1.1 + delay))) {
-            Sound.stop(file: fileName, fileExtension: "mp3")
+        Timer.scheduledTimer(withTimeInterval: delay, repeats: true) { timer in
+            // stop the previous sound
+            if (index != 0) {
+                Sound.stop(file: soundFileArr[index-1], fileExtension: "mp3")
+            }
+            // play the next note
+            Sound.play(file: soundFileArr[index], fileExtension: "mp3")
+            index += 1
+            if (index == soundFileArr.count) {
+                timer.invalidate()
+            }
         }
     }
     
