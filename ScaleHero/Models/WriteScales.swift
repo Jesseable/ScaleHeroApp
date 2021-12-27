@@ -75,12 +75,24 @@ struct WriteScales {
                           33: "3:F",
                           34: "3:F#/Gb",
                           35: "3:G",
-                          36: "3:G#/Ab"]
+                          36: "3:G#/Ab",
+                          37: "3:A", // Change to fourth octave once added into the game
+                          38: "3:A#/Bb",
+                          39: "3:B",
+                          40: "3:C",
+                          41: "3:C#/Db",
+                          42: "3:D",
+                          43: "3:D#/Eb",
+                          44: "3:E",
+                          45: "3:F",
+                          46: "3:F#/Gb",
+                          47: "3:G",
+                          48: "3:G#/Ab"]
     
     /**
      Returns the starting notes key in the musicNotes dictionary
      */
-    func startingNoteKeyFinder(startingNote: String, octave: Int) -> Int {
+    func startingNoteKeyFinder(startingNote: String, startingOctave: Int) -> Int {
         var key = -1 // stays -1 if unchanged
         
         for note in accendingNotes {
@@ -96,15 +108,15 @@ struct WriteScales {
      Returns an array of the notes to play in the specific scale
      */
     mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String) -> [String] { // Chnage to returning a array of string
-        
-        let startingKey = startingNoteKeyFinder(startingNote: startingNote, octave: octave)
+        let startingOctave = 1
+        let startingKey = startingNoteKeyFinder(startingNote: startingNote, startingOctave: startingOctave)
         
         var valueArray: [String] = []
         var reversedValuesArr: [String] = []
         var keysArray = [startingKey]
         // if -1 needs an error image
         
-        keysArray = dictKeysArray(startingKey: startingKey, tonality: tonality, keysArray: keysArray)
+        keysArray = dictKeysArray(startingKey: startingKey, tonality: tonality, octave: octave, keysArray: keysArray)
         
         for key in keysArray {
             guard let noteName = accendingNotes[key] else { return ["Getting string access from key for music dictionary has failed"] }
@@ -124,24 +136,28 @@ struct WriteScales {
     /**
      returns an array of the keys for the relative scale in the accending notes dictionary
      */
-    mutating func dictKeysArray(startingKey: Int, tonality: String, keysArray: [Int]) -> [Int] {
+    mutating func dictKeysArray(startingKey: Int, tonality: String, octave: Int, keysArray: [Int]) -> [Int] {
         
         var startingNum = startingKey
         var dictKeysArray = keysArray
+        var curruntOctave = 1
         
-        switch tonality {
-        case "major":
-            for num in majorPattern {
-                startingNum += num
-                dictKeysArray.append(startingNum)
+        while !(curruntOctave > octave) {
+            switch tonality {
+            case "major":
+                for num in majorPattern {
+                    startingNum += num
+                    dictKeysArray.append(startingNum)
+                }
+            case "minor":
+                for num in minorPattern {
+                    startingNum += num
+                    dictKeysArray.append(startingNum)
+                }
+            default:
+                return [-1]
             }
-        case "minor":
-            for num in minorPattern {
-                startingNum += num
-                dictKeysArray.append(startingNum)
-            }
-        default:
-            return [-1]
+            curruntOctave += 1
         }
 
         return dictKeysArray

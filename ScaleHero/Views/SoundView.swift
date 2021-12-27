@@ -44,7 +44,7 @@ struct SoundView : View {
                     } else {
                         Sound.enabled = true
                         var scale = WriteScales(style: scaleType.lowercased())
-                        let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: 1, tonality: tonality) // Chnage later
+                        let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: numOctave, tonality: tonality) // Chnage later
                         
                         var playScale = PlaySounds()
                         print(playScale.convertToSoundFile(scaleInfoArr: scaleInfo))
