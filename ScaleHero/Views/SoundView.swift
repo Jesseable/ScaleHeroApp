@@ -12,6 +12,7 @@ struct SoundView : View {
     
     private let universalSize = UIScreen.main.bounds
     
+    @Binding var screenType: String
     @State var scaleType: String
     @State private var isPlaying = false
     @State private var numOctave = 1
@@ -21,10 +22,12 @@ struct SoundView : View {
     @State private var scaleNotes = true
     @EnvironmentObject var musicNotes: MusicNotes
     
+    var backgroundImage: String
+    
     var body: some View {
         
         ZStack {
-            Image("music-Copyrighted-exBackground").resizable().ignoresSafeArea()
+            Image(backgroundImage).resizable().ignoresSafeArea()
         
             VStack {
                 Text(scaleType).bold().textCase(.uppercase).font(.title).foregroundColor(.white).padding()
@@ -79,62 +82,69 @@ struct SoundView : View {
                     }
                 }.padding()
                 
-                HStack {
-                    Spacer()
-                    if (drone) {
-                        Image(systemName: "checkmark.square").foregroundColor(Color.white)
-                    } else {
-                        if (chords) {
-                            Image(systemName: "square").foregroundColor(Color.white).blur(radius: 1.5)
-                        } else {
-                            Image(systemName: "square").foregroundColor(Color.white)
-                        }
-                    }
-                    Button("Drone") {
-                        if (!chords) {
-                            drone.toggle()
-                        }
-                    }
-                    Spacer()
-                }.padding()
-                
-                HStack {
-                    Spacer()
-                    
-                    if (chords) {
-                        Image(systemName: "checkmark.square").foregroundColor(Color.white)
-                    } else {
+                    Group {
+                    HStack {
+                        Spacer()
                         if (drone) {
-                            Image(systemName: "square").foregroundColor(Color.white).blur(radius: 1.5)
+                            Image(systemName: "checkmark.square").foregroundColor(Color.white)
+                        } else {
+                            if (chords) {
+                                Image(systemName: "square").foregroundColor(Color.white).blur(radius: 1.5)
+                            } else {
+                                Image(systemName: "square").foregroundColor(Color.white)
+                            }
+                        }
+                        Button("Drone") {
+                            if (!chords) {
+                                drone.toggle()
+                            }
+                        }
+                        Spacer()
+                    }.padding()
+                    
+                    HStack {
+                        Spacer()
+                        
+                        if (chords) {
+                            Image(systemName: "checkmark.square").foregroundColor(Color.white)
+                        } else {
+                            if (drone) {
+                                Image(systemName: "square").foregroundColor(Color.white).blur(radius: 1.5)
+                            } else {
+                                Image(systemName: "square").foregroundColor(Color.white)
+                            }
+                        }
+                        Button("Chords") {
+                            if (!drone) {
+                                chords.toggle()
+                            }
+                        }
+                        Spacer()
+                    }.padding()
+                    
+                    HStack {
+                        Spacer()
+                        
+                        if (scaleNotes) {
+                            Image(systemName: "checkmark.square").foregroundColor(Color.white)
                         } else {
                             Image(systemName: "square").foregroundColor(Color.white)
                         }
-                    }
-                    Button("Chords") {
-                        if (!drone) {
-                            chords.toggle()
+                        Button("Scale Notes") {
+                            scaleNotes.toggle()
                         }
-                    }
-                    Spacer()
-                }.padding()
-                
-                HStack {
-                    Spacer()
-                    
-                    if (scaleNotes) {
-                        Image(systemName: "checkmark.square").foregroundColor(Color.white)
-                    } else {
-                        Image(systemName: "square").foregroundColor(Color.white)
-                    }
-                    Button("Scale Notes") {
-                        scaleNotes.toggle()
-                    }
-                    Spacer()
-                }.padding()
-                
+                        Spacer()
+                    }.padding()
+                }
                 
                 Spacer()
                 Spacer()
+                
+                Button {
+                    self.screenType = musicNotes.type
+                } label: {
+                    Text(musicNotes.type)
+                }.padding()
             }
         }
     }

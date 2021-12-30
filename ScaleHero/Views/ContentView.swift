@@ -9,20 +9,26 @@ import SwiftUI
 
 struct AppContentView: View {
     
+    @EnvironmentObject var musicNotes: MusicNotes
     @State private var screenType = "HomePage"
+    private var backgroundImage = "music-Copyrighted-exBackground"
     
     var body: some View {
         
         return Group {
             switch screenType {
             case "scales":
-                ScalesView(screenType: self.$screenType)
+                ScalesView(screenType: self.$screenType, backgroundImage: backgroundImage)
             case "arpeggio":
-                ArpeggioView(screenType: self.$screenType)
+                ArpeggioView(screenType: self.$screenType, backgroundImage: backgroundImage)
 //            case "special":
 //                print("Go to special page")
+            case "settings":
+                SettingsView(screenType: self.$screenType, backgroundImage: backgroundImage)
+            case "soundview":
+                SoundView(screenType: self.$screenType, scaleType: musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type, backgroundImage: backgroundImage)
             default:
-                HomePage(screenType: $screenType)
+                HomePage(screenType: $screenType, backgroundImage: backgroundImage)
             }
         }
     }
@@ -34,11 +40,12 @@ struct HomePage : View {
     
     @Binding var screenType: String
     @State private var offset: CGFloat = .zero
+    var backgroundImage: String
     
     var body: some View {
         
         ZStack {
-            Image("music-Copyrighted-exBackground").resizable().ignoresSafeArea()
+            Image(backgroundImage).resizable().ignoresSafeArea()
             
             // Create all music note animations
             ImageAnimation(imageName: "Treble-Cleff", xPos: universalSize.width * 0.3, duration: 7.00, offset: self.$offset)
@@ -80,6 +87,10 @@ struct HomePage : View {
                 
                 Spacer()
                 Spacer()
+                
+                Button("Settings") {
+                    self.screenType = "settings"
+                }.padding()
 
             }
         }.onAppear() {

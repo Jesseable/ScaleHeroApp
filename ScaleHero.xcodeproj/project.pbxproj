@@ -44,6 +44,7 @@
 		C545324427796F830041702C /* Cello-3-B.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C545322027796F830041702C /* Cello-3-B.mp3 */; };
 		C545324527796F830041702C /* Cello-3-F#|Gb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C545322127796F830041702C /* Cello-3-F#|Gb.mp3 */; };
 		C545324627796F830041702C /* Cello-2-G.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C545322227796F830041702C /* Cello-2-G.mp3 */; };
+		C54532F12779B73D0041702C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54532F02779B73D0041702C /* SettingsView.swift */; };
 		C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */; };
 		C574FE78276886B700ADD3B3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE77276886B700ADD3B3 /* ContentView.swift */; };
 		C574FE7A276886BC00ADD3B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C574FE79276886BC00ADD3B3 /* Assets.xcassets */; };
@@ -130,6 +131,7 @@
 		C545322027796F830041702C /* Cello-3-B.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Cello-3-B.mp3"; path = "../../../Cello Testing notes mp3/Cello-3-B.mp3"; sourceTree = "<group>"; };
 		C545322127796F830041702C /* Cello-3-F#|Gb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Cello-3-F#|Gb.mp3"; path = "../../../Cello Testing notes mp3/Cello-3-F#|Gb.mp3"; sourceTree = "<group>"; };
 		C545322227796F830041702C /* Cello-2-G.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Cello-2-G.mp3"; path = "../../../Cello Testing notes mp3/Cello-2-G.mp3"; sourceTree = "<group>"; };
+		C54532F02779B73D0041702C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C574FE72276886B700ADD3B3 /* ScaleHero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScaleHero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleHeroApp.swift; sourceTree = "<group>"; };
 		C574FE77276886B700ADD3B3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -307,6 +309,7 @@
 				C574FE9F2769BFE700ADD3B3 /* ScalesView.swift */,
 				C574FEA82769CFDF00ADD3B3 /* ArpeggioView.swift */,
 				C574FEE0276B0AE000ADD3B3 /* SoundView.swift */,
+				C54532F02779B73D0041702C /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -533,6 +536,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C574FF3B2773F48F00ADD3B3 /* WriteScales.swift in Sources */,
+				C54532F12779B73D0041702C /* SettingsView.swift in Sources */,
 				C574FEE1276B0AE000ADD3B3 /* SoundView.swift in Sources */,
 				C574FE78276886B700ADD3B3 /* ContentView.swift in Sources */,
 				C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */,

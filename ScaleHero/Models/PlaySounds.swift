@@ -15,6 +15,7 @@ struct PlaySounds {
     
     lazy var instrument: String = {
         // change to allowing other instrument types once settings menu is up and running
+        
         //return "JTest
         return "Cello"
     }()
