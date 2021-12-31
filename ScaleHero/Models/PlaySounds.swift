@@ -13,11 +13,29 @@ import SwiftySound
  */
 struct PlaySounds {
     
+//    lazy var majorPattern : [Int] = {
+//        [self] in
+//        switch self.style {
+//        case "arpeggio":
+//            return [4, 3, 5]
+//        case "scale":
+//            return [2, 2, 1, 2, 2, 2, 1]
+//        default:
+//            return[-1]
+//        }
+//    }()
+    var fileReaderAndWriter = FileReaderAndWriter()
+    
     lazy var instrument: String = {
-        // change to allowing other instrument types once settings menu is up and running
-        
-        //return "JTest
-        return "Cello"
+        [self] in
+        switch self.fileReaderAndWriter.readScaleInstrument() {
+        case "Cello":
+            return "Cello"
+        case "Jesse's Vocals":
+            return "JTest"
+        default:
+            return "Cello"
+        }
     }()
     
     /**

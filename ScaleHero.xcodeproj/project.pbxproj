@@ -45,6 +45,7 @@
 		C545324527796F830041702C /* Cello-3-F#|Gb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C545322127796F830041702C /* Cello-3-F#|Gb.mp3 */; };
 		C545324627796F830041702C /* Cello-2-G.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C545322227796F830041702C /* Cello-2-G.mp3 */; };
 		C54532F12779B73D0041702C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54532F02779B73D0041702C /* SettingsView.swift */; };
+		C545330F277E866C0041702C /* FileReaderAndWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C545330E277E866C0041702C /* FileReaderAndWriter.swift */; };
 		C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */; };
 		C574FE78276886B700ADD3B3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE77276886B700ADD3B3 /* ContentView.swift */; };
 		C574FE7A276886BC00ADD3B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C574FE79276886BC00ADD3B3 /* Assets.xcassets */; };
@@ -132,6 +133,7 @@
 		C545322127796F830041702C /* Cello-3-F#|Gb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Cello-3-F#|Gb.mp3"; path = "../../../Cello Testing notes mp3/Cello-3-F#|Gb.mp3"; sourceTree = "<group>"; };
 		C545322227796F830041702C /* Cello-2-G.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Cello-2-G.mp3"; path = "../../../Cello Testing notes mp3/Cello-2-G.mp3"; sourceTree = "<group>"; };
 		C54532F02779B73D0041702C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C545330E277E866C0041702C /* FileReaderAndWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileReaderAndWriter.swift; sourceTree = "<group>"; };
 		C574FE72276886B700ADD3B3 /* ScaleHero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScaleHero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleHeroApp.swift; sourceTree = "<group>"; };
 		C574FE77276886B700ADD3B3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -342,6 +344,7 @@
 			children = (
 				C574FF3A2773F48F00ADD3B3 /* WriteScales.swift */,
 				C54531D127756F180041702C /* PlaySounds.swift */,
+				C545330E277E866C0041702C /* FileReaderAndWriter.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -541,6 +544,7 @@
 				C574FE78276886B700ADD3B3 /* ContentView.swift in Sources */,
 				C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */,
 				C574FEA92769CFDF00ADD3B3 /* ArpeggioView.swift in Sources */,
+				C545330F277E866C0041702C /* FileReaderAndWriter.swift in Sources */,
 				C574FEA02769BFE700ADD3B3 /* ScalesView.swift in Sources */,
 				C54531D227756F180041702C /* PlaySounds.swift in Sources */,
 			);
