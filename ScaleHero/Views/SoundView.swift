@@ -15,8 +15,8 @@ struct SoundView : View {
     @Binding var screenType: String
     @State var scaleType: String
     @State private var isPlaying = false
-    @State private var numOctave = 1
-    @State private var tempo = 100
+    @State private var numOctave = 1 // Put a few of these in a new class that can use environmentalObject to access all of the displays.
+    @State private var tempo = 60
     @State private var drone = true
     @State private var chords = false
     @State private var scaleNotes = true
@@ -51,8 +51,12 @@ struct SoundView : View {
                         playScale.cancelPreviousTimer()
                     } else {
                         Sound.enabled = true
+                        if (drone) {
+                            let duration = CGFloat(60/self.tempo * scaleInfo.count)
+                            playScale.playDroneSound(duration: duration, startingNote: startingNote)
+                        }
                         if (scaleNotes) {
-                            playScale.playSounds(temp: self.tempo, scaleInfoArra: scaleInfo)
+                            playScale.playScaleSounds(temp: self.tempo, scaleInfoArra: scaleInfo)
                         }
                         
                         isPlaying = true

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftySound
+import AVFoundation
 
 /**
  Play the sound files in various patterns to produce scales
@@ -14,6 +15,7 @@ import SwiftySound
 struct PlaySounds {
     
     var fileReaderAndWriter = FileReaderAndWriter()
+    var scaleTimer: Timer? = nil
     
     lazy var instrument: String = {
         [self] in
@@ -27,7 +29,18 @@ struct PlaySounds {
         }
     }()
     
-    var scaleTimer: Timer? = nil
+    lazy var drone: String = {
+        return "Cello"
+//        [self] in
+//        switch self.fileReaderAndWriter.readScaleInstrument() {
+//        case "Cello":
+//            return "Cello"
+//        case "Jesse's Vocals":
+//            return "JTest"
+//        default:
+//            return "Cello"
+//        }
+    }()
     
     /**
      Converts the array into a readable file name (mp3 format)
@@ -45,7 +58,7 @@ struct PlaySounds {
     }
     
     // Return a possible time function for the scale to know when to switch stop back to play
-    mutating func playSounds(temp: Int, scaleInfoArra: [String]) {
+    mutating func playScaleSounds(temp: Int, scaleInfoArra: [String]) {
         let delay = tempoToSeconds(tempo: CGFloat(temp))
         let soundFileArr = convertToSoundFile(scaleInfoArr: scaleInfoArra)
         var index = 0
@@ -61,6 +74,27 @@ struct PlaySounds {
             if (index == soundFileArr.count) {
                 timer.invalidate()
             }
+        }
+    }
+    
+    mutating func playDroneSound(duration: CGFloat, startingNote: String) {
+        let startingFileNote = startingNote.replacingOccurrences(of: "/", with: "|")
+        let droneSoundFile = "\(drone)-Drone-\(startingFileNote)"
+        var player: AVAudioPlayer!
+        
+        if let droneURL = Bundle.main.url(forResource: droneSoundFile, withExtension: "mp3") {
+            player = try! AVAudioPlayer(contentsOf: droneURL)
+            player.play()
+            
+            let totalDuration = duration + 2.5
+                
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: {
+                player.setVolume(0.05, fadeDuration: 2.5)
+                print(player.isPlaying)
+            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + totalDuration, execute: {
+                player.stop()
+            })
         }
     }
     
