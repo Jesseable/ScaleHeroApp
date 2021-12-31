@@ -9,9 +9,10 @@ import SwiftUI
 
 class MusicNotes: ObservableObject {
 
-    private let musicAlphabet = ["A", "A#/Bb", "B", "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab"]
-    
+    private let musicAlphabet = ["C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F"]
     @Published var noteName = "C"
+    @Published var type = "Scale"
+    @Published var tonality = "Major"
     
     func getMusicAlphabet() -> [String] {
         return musicAlphabet
@@ -24,13 +25,14 @@ struct ScalesView: View {
     @EnvironmentObject var musicNotes: MusicNotes
     
     @Binding var screenType: String
+    var backgroundImage: String
     
     var body: some View {
         
-        NavigationView {
+        NavigationView { // Consider removing navigation review here
         
             ZStack {
-                Image("music-Copyrighted-exBackground").resizable().ignoresSafeArea()
+                Image(backgroundImage).resizable().ignoresSafeArea()
             
                 VStack {
                     Spacer()
@@ -42,19 +44,44 @@ struct ScalesView: View {
                         }
                     }.padding()
                     
-                    // Turn to image button
-                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Major scale")) {
+                    Button {
+                        musicNotes.tonality = "Major"
+                        musicNotes.type = "scale"
+                        self.screenType = "soundview"
+                    } label: {
                         Text("Major")
                     }.padding()
                     
-                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Minor scale")) {
+//                    // Turn to image button
+//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Major scale", backgroundImage: backgroundImage)) {
+//                        Text("Major")
+//                    }.padding()
+                    
+                    Button {
+                        musicNotes.tonality = "Minor"
+                        musicNotes.type = "scale"
+                        self.screenType = "soundview"
+                    } label: {
                         Text("Minor")
                     }.padding()
+//
+//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Minor scale", backgroundImage: backgroundImage)) {
+//                        Text("Minor")
+//                    }.padding()
                     
-                    // Go to another link to select options
-                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Special scale")) {
-                        Text("Special (modes)")
+                    Button {
+                        // Create another page
+//                        musicNotes.tonality = "Major"
+//                        musicNotes.type = "scale"
+//                        self.screenType = "soundview"
+                    } label: {
+                        Text("Minor (Triad)")
                     }.padding()
+                    
+//                    // Go to another link to select options
+//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Special scale", backgroundImage: backgroundImage)) {
+//                        Text("Special (modes)")
+//                    }.padding()
                     
                     // Turn to image button
                     Button("Settings") {

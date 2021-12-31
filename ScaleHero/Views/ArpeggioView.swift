@@ -13,13 +13,14 @@ struct ArpeggioView : View {
     @EnvironmentObject var musicNotes: MusicNotes
     
     @Binding var screenType: String
+    var backgroundImage: String
     
     var body: some View {
         
         NavigationView {
         
             ZStack {
-                Image("music-Copyrighted-exBackground").resizable().ignoresSafeArea()
+                Image(backgroundImage).resizable().ignoresSafeArea()
             
                 VStack {
                     Spacer()
@@ -31,19 +32,45 @@ struct ArpeggioView : View {
                         }
                     }.padding()
                     
-                    // Turn to image button
-                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Major arpeggio")) {
+                    Button {
+                        musicNotes.tonality = "Major"
+                        musicNotes.type = "arpeggio"
+                        self.screenType = "soundview"
+                    } label: {
                         Text("Major (Triad)")
                     }.padding()
+
                     
-                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Minor arpeggio")) {
+//                    // Turn to image button
+//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Major arpeggio", backgroundImage: backgroundImage)) {
+//                        Text("Major (Triad)")
+//                    }.padding()
+                    
+                    Button {
+                        musicNotes.tonality = "Minor"
+                        musicNotes.type = "arpeggio"
+                        self.screenType = "soundview"
+                    } label: {
                         Text("Minor (Triad)")
                     }.padding()
                     
-                    // Go to another link to select options
-                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Special arpeggio")) {
+//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Minor arpeggio", backgroundImage: backgroundImage)) {
+//                        Text("Minor (Triad)")
+//                    }.padding()
+                    
+                    Button {
+                        // Goes to another options page
+//                        musicNotes.tonality = "Major"
+//                        musicNotes.type = "arpeggio"
+//                        self.screenType = "soundview"
+                    } label: {
                         Text("Special (Tetrads)")
                     }.padding()
+                    
+                    // Go to another link to select options
+//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Special arpeggio", backgroundImage: backgroundImage)) {
+//                        Text("Special (Tetrads)")
+//                    }.padding()
                     
                     // Turn to image button
                     Button("Settings") {
