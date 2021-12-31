@@ -46,7 +46,7 @@ struct FileReaderAndWriter {
             }
             catch {
                 Swift.print(error)
-                return "Error caught when reading instrument file"
+                return "Error caught when reading instrument file" // Return default option. 
             }
         } else {
             return "Error in reading the instrument String"

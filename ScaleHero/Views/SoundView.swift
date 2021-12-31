@@ -20,6 +20,7 @@ struct SoundView : View {
     @State private var drone = true
     @State private var chords = false
     @State private var scaleNotes = true
+    @State var playScale = PlaySounds()
     @EnvironmentObject var musicNotes: MusicNotes
     
     var backgroundImage: String
@@ -36,22 +37,23 @@ struct SoundView : View {
                 
                 Button {
                     let scaleTypeArr = scaleType.components(separatedBy: " ")
-                    let startingNote = getStartingNote(scaleTypeArr: scaleTypeArr)
-                    let tonality = getScaleTonality(scaleTypeArr: scaleTypeArr).lowercased()
-                    let scaleType = getScaleType(scaleTypeArr: scaleTypeArr).lowercased()
+                    let startingNote = scaleTypeArr[0]
+                    let tonality = scaleTypeArr[1].lowercased()
+                    let scaleType = scaleTypeArr[2].lowercased()
+                    var scale = WriteScales(style: scaleType.lowercased())
+                    let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: numOctave, tonality: tonality) // Change later
                     
                     if (isPlaying) {
+                        // Stop the sound. Need to stop the timer in playSound class as well
                         Sound.stopAll()
                         Sound.enabled = false
                         isPlaying = false
+                        playScale.cancelPreviousTimer()
                     } else {
                         Sound.enabled = true
-                        var scale = WriteScales(style: scaleType.lowercased())
-                        let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: numOctave, tonality: tonality) // Chnage later
-                        
-                        var playScale = PlaySounds()
-                        print(playScale.convertToSoundFile(scaleInfoArr: scaleInfo))
-                        playScale.playSounds(temp: self.tempo, scaleInfoArra: scaleInfo)
+                        if (scaleNotes) {
+                            playScale.playSounds(temp: self.tempo, scaleInfoArra: scaleInfo)
+                        }
                         
                         isPlaying = true
                     }
@@ -82,58 +84,61 @@ struct SoundView : View {
                     }
                 }.padding()
                 
-                    Group {
-                    HStack {
-                        Spacer()
-                        if (drone) {
-                            Image(systemName: "checkmark.square").foregroundColor(Color.white)
-                        } else {
-                            if (chords) {
-                                Image(systemName: "square").foregroundColor(Color.white).blur(radius: 1.5)
-                            } else {
-                                Image(systemName: "square").foregroundColor(Color.white)
-                            }
+                Group {
+                    Button {
+                        if (!chords) {
+                            drone.toggle()
                         }
-                        Button("Drone") {
-                            if (!chords) {
-                                drone.toggle()
-                            }
-                        }
-                        Spacer()
-                    }.padding()
-                    
-                    HStack {
-                        Spacer()
-                        
-                        if (chords) {
-                            Image(systemName: "checkmark.square").foregroundColor(Color.white)
-                        } else {
+                    } label: {
+                        HStack {
                             if (drone) {
-                                Image(systemName: "square").foregroundColor(Color.white).blur(radius: 1.5)
+                                Text("Drone")
+                                Image(systemName: "checkmark.square").foregroundColor(Color.white)
                             } else {
+                                if (chords) {
+                                    Text("Drone")
+                                    Image(systemName: "square").foregroundColor(Color.white).blur(radius: 1.5)
+                                } else {
+                                    Text("Drone")
+                                    Image(systemName: "square").foregroundColor(Color.white)
+                                }
+                            }
+                        }
+                    }.padding()
+                    
+                    Button {
+                        if (!drone) {
+                            chords.toggle()
+                        }
+                    } label: {
+                        HStack {
+                            if (chords) {
+                                Text("Chords")
+                                Image(systemName: "checkmark.square").foregroundColor(Color.white)
+                            } else {
+                                if (drone) {
+                                    Text("Chords")
+                                    Image(systemName: "square").foregroundColor(Color.white).blur(radius: 1.5)
+                                } else {
+                                    Text("Chords")
+                                    Image(systemName: "square").foregroundColor(Color.white)
+                                }
+                            }
+                        }
+                    }.padding()
+                    
+                    Button {
+                        scaleNotes.toggle()
+                    } label: {
+                        HStack {
+                            if (scaleNotes) {
+                                Text("Scale Notes ")
+                                Image(systemName: "checkmark.square").foregroundColor(Color.white)
+                            } else {
+                                Text("Scale Notes ")
                                 Image(systemName: "square").foregroundColor(Color.white)
                             }
                         }
-                        Button("Chords") {
-                            if (!drone) {
-                                chords.toggle()
-                            }
-                        }
-                        Spacer()
-                    }.padding()
-                    
-                    HStack {
-                        Spacer()
-                        
-                        if (scaleNotes) {
-                            Image(systemName: "checkmark.square").foregroundColor(Color.white)
-                        } else {
-                            Image(systemName: "square").foregroundColor(Color.white)
-                        }
-                        Button("Scale Notes") {
-                            scaleNotes.toggle()
-                        }
-                        Spacer()
                     }.padding()
                 }
                 
@@ -147,51 +152,5 @@ struct SoundView : View {
                 }.padding()
             }
         }
-    }
-    
-    func getStartingNote(scaleTypeArr: [String]) -> String {
-        
-        let startingNote = scaleTypeArr[0]
-//
-//        switch startingNote {
-//        case "A":
-//            startingNote = "A"
-//        case "A#/Bb":
-//            startingNote = "A#/Bb"
-//        case "B":
-//            startingNote = "B"
-//        case "C":
-//            startingNote = "C"
-//        case "C#/Db":
-//            startingNote = "C#/Db"
-//        case "D":
-//            startingNote = "D"
-//        case "D#/Eb":
-//            startingNote = "D#/Eb"
-//        case "E":
-//            startingNote = "E"
-//        case "F":
-//            startingNote = "F"
-//        case "F#/Gb":
-//            startingNote = "F#/Gb"
-//        case "G":
-//            startingNote = "G"
-//        case "G#/Ab":
-//            startingNote = "G#/Ab"
-//        default:
-//            print("Starting note did not match the computer sound file")
-//        }
-        
-        return startingNote
-    }
-    
-    func getScaleTonality(scaleTypeArr: [String]) -> String {
-        let tonality = scaleTypeArr[1]
-        return tonality
-    }
-    
-    func getScaleType(scaleTypeArr: [String]) -> String {
-        let type = scaleTypeArr[2]
-        return type
     }
 }

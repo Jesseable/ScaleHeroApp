@@ -13,17 +13,6 @@ import SwiftySound
  */
 struct PlaySounds {
     
-//    lazy var majorPattern : [Int] = {
-//        [self] in
-//        switch self.style {
-//        case "arpeggio":
-//            return [4, 3, 5]
-//        case "scale":
-//            return [2, 2, 1, 2, 2, 2, 1]
-//        default:
-//            return[-1]
-//        }
-//    }()
     var fileReaderAndWriter = FileReaderAndWriter()
     
     lazy var instrument: String = {
@@ -37,6 +26,8 @@ struct PlaySounds {
             return "Cello"
         }
     }()
+    
+    var scaleTimer: Timer? = nil
     
     /**
      Converts the array into a readable file name (mp3 format)
@@ -53,12 +44,13 @@ struct PlaySounds {
         return soundFileArr
     }
     
+    // Return a possible time function for the scale to know when to switch stop back to play
     mutating func playSounds(temp: Int, scaleInfoArra: [String]) {
         let delay = tempoToSeconds(tempo: CGFloat(temp))
         let soundFileArr = convertToSoundFile(scaleInfoArr: scaleInfoArra)
         var index = 0
         
-        Timer.scheduledTimer(withTimeInterval: delay, repeats: true) { timer in
+        scaleTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true) { timer in
             // stop the previous sound
             if (index != 0) {
                 Sound.stop(file: soundFileArr[index-1], fileExtension: "mp3")
@@ -70,6 +62,11 @@ struct PlaySounds {
                 timer.invalidate()
             }
         }
+    }
+    
+    mutating func cancelPreviousTimer() {
+        scaleTimer?.invalidate()
+        self.scaleTimer = nil
     }
     
     func tempoToSeconds(tempo: CGFloat) -> CGFloat {
