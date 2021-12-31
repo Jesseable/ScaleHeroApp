@@ -9,8 +9,7 @@ import SwiftUI
 
 class MusicNotes: ObservableObject {
 
-    private let musicAlphabet = ["A", "A#/Bb", "B", "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab"]
-    
+    private let musicAlphabet = ["C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F"]
     @Published var noteName = "C"
     @Published var type = "Scale"
     @Published var tonality = "Major"
@@ -30,7 +29,7 @@ struct ScalesView: View {
     
     var body: some View {
         
-        NavigationView {
+        NavigationView { // Consider removing navigation review here
         
             ZStack {
                 Image(backgroundImage).resizable().ignoresSafeArea()
