@@ -31,11 +31,13 @@ struct SettingsView: View {
 //                            fileReaderAndWriter.createFile()
                             fileReaderAndWriter.writeScaleInstrument(newInstrument: "Cello")
                             instrument = fileReaderAndWriter.readScaleInstrument()
+                            print(instrument)
                         }
                         
                         Button("Jesse's Vocals") {
                             fileReaderAndWriter.writeScaleInstrument(newInstrument: "Jesse's Vocals")
                             instrument = fileReaderAndWriter.readScaleInstrument()
+                            print(instrument)
                         }
                     }
                     

@@ -1,0 +1,92 @@
+//
+//  MainUIButtonView.swift
+//  ScaleHero
+//
+//  Created by Jesse Graf on 1/1/22.
+//
+
+import SwiftUI
+
+struct MainUIButton: View {
+    var buttonText: String
+    var type : Int
+    var height : CGFloat
+    private let buttonColor = Color.gray
+    private let universalSize = UIScreen.main.bounds
+    
+    var body: some View {
+        
+        ZStack {
+            
+            switch type {
+            case 2:
+                CroppedBelowButton()
+                    .fill(style: FillStyle(eoFill: true))
+                    .foregroundColor(Color.gray)
+                    .padding(.horizontal, 10)
+                    .frame(width: universalSize.width, height: height)
+                    .opacity(0.7)
+            case 3:
+                CroppedAboveButton()
+                        .fill(style: FillStyle(eoFill: true))
+                    .foregroundColor(Color.gray)
+                    .padding(.horizontal, 10)
+                    .frame(width: universalSize.width, height: height)
+                    .opacity(0.7)
+            default:
+                RectangularButton()
+                    .fill(buttonColor)
+                    .padding(.horizontal, 10)
+                    .frame(width: universalSize.width, height: height)
+                    .opacity(0.7)
+            }
+
+            let scaleEffect = (height - 30)/height + 1
+            Text(buttonText)
+                .foregroundColor(Color.white).bold()
+                .scaleEffect(scaleEffect)
+        }
+    }
+}
+
+struct RectangularButton: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.addRoundedRect(in: rect, cornerSize: CGSize(width: 5, height: 5))
+        return path
+    }
+}
+
+struct CroppedAboveButton: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.addRect(rect)
+
+        path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+        path.addCurve(to: CGPoint(x: rect.maxX, y: rect.minY),
+                      control1: CGPoint(x: rect.maxX * (0.15), y: rect.minY - 25),
+                      control2: CGPoint(x: rect.maxX * (0.9), y: rect.minY + 15))
+        return path
+    }
+}
+
+struct CroppedBelowButton: Shape {
+
+    var radius: CGSize = CGSize(width: 5, height: 5)
+    var corners: UIRectCorner = [.topLeft, .topRight]
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: radius)
+        path.move(to: CGPoint(x: rect.minX, y: rect.maxY))
+        path.addCurve(to: CGPoint(x: rect.maxX, y: rect.maxY),
+                      controlPoint1: CGPoint(x: rect.maxX * (0.15), y: rect.maxY - 25),
+                      controlPoint2: CGPoint(x: rect.maxX * (0.9), y: rect.maxY + 20))
+        return Path(path.cgPath)
+    }
+}
+
+struct MainUIButtons_Previews: PreviewProvider {
+    static var previews: some View {
+        MainUIButton(buttonText: "My Button", type: 3, height: UIScreen.main.bounds.height/6)
+    }
+}

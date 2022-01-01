@@ -11,7 +11,7 @@ struct AppContentView: View {
     
     @EnvironmentObject var musicNotes: MusicNotes
     @State private var screenType = "HomePage"
-    private var backgroundImage = "music-Copyrighted-exBackground"
+    private var backgroundImage = "BackgroundImage"
     
     var body: some View {
         
@@ -42,6 +42,12 @@ struct HomePage : View {
     @State private var offset: CGFloat = .zero
     var backgroundImage: String
     
+    private let titleImage = Image("ScaleHero-Title")
+    
+    private let columns = [
+        GridItem(.adaptive(minimum: 200))
+    ]
+    
     var body: some View {
         
         ZStack {
@@ -65,33 +71,49 @@ struct HomePage : View {
             ImageAnimation(imageName: "Semiquaver", xPos: universalSize.width * 0.48, duration: 8.00, offset: self.$offset)
             
             VStack {
-                
-                Text("SCALE HERO").bold().font(.title).foregroundColor(.white).padding()
-                Spacer()
-                
-                
-                // Turn to image button
-                Button("Scales") {
-                    self.screenType = "scale"
-                }.padding()
-                
-                // Turn to image button
-                Button("Arpeggio") {
-                    self.screenType = "arpeggio"
-                }.padding()
-                
-                // Turn to image button
-                Button("Special") {
-                    // do nothing
-                }.padding()
-                
-                Spacer()
-                Spacer()
-                
-                Button("Settings") {
-                    self.screenType = "settings"
-                }.padding()
 
+                self.titleImage.resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: UIScreen.main.bounds.height/6)
+                    .padding()
+                
+                let buttonHeight = universalSize.height/10
+                
+                LazyVGrid(columns: columns) {
+                    Button {
+                        self.screenType = "scale"
+                    } label: {
+                        MainUIButton(buttonText: "Scales", type: 1, height: buttonHeight)
+                    }
+
+                    Button {
+                        self.screenType = "arpeggio"
+                    } label: {
+                        MainUIButton(buttonText: "Arpeggio", type: 1, height: buttonHeight)
+                    }
+                    
+                    Button {
+                        // do nothing
+                    } label: {
+                        MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
+                    }
+                    
+                    Button {
+                        // do nothing
+                    } label: {
+                        MainUIButton(buttonText: "Favourites", type: 2, height: buttonHeight)
+                    }
+                    
+                    Spacer()
+                
+                }
+                Spacer()
+                
+                Button {
+                    self.screenType = "settings"
+                } label: {
+                    MainUIButton(buttonText: "Settings", type: 3, height: buttonHeight)
+                }
             }
         }.onAppear() {
             offset += universalSize.height*1.2

@@ -17,7 +17,7 @@ struct SoundView : View {
     @State var scaleType: String
     @State private var isPlaying = false
     @State private var numOctave = 1 // Put a few of these in a new class that can use environmentalObject to access all of the displays.
-    @State private var tempo = 60
+    @State private var tempo = CGFloat(60)
     @State private var drone = true
     @State private var chords = false
     @State private var scaleNotes = true
@@ -45,20 +45,17 @@ struct SoundView : View {
                     let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: numOctave, tonality: tonality) // Change later
                     
                     if (isPlaying) {
-                        // Stop the sound. Need to stop the timer in playSound class as well
-                        Sound.stopAll()
                         Sound.enabled = false
                         isPlaying = false
-                        playScale.cancelPreviousTimer()
-                        playScale.cancelDroneSound()
+                        playScale.cancelAllSounds()
                     } else {
                         Sound.enabled = true
                         if (drone) {
-                            let duration = CGFloat(60/self.tempo * scaleInfo.count)
+                            let duration = CGFloat(60/Int(self.tempo) * scaleInfo.count)
                             playScale.playDroneSound(duration: duration, startingNote: startingNote)
                         }
                         if (scaleNotes) {
-                            playScale.playScaleSounds(temp: self.tempo, scaleInfoArra: scaleInfo)
+                            playScale.playScaleSounds(temp: Int(self.tempo), scaleInfoArra: scaleInfo)
                         }
                         
                         isPlaying = true
@@ -82,13 +79,16 @@ struct SoundView : View {
                     Button("3 octaves", action: {numOctave = 3})
                 }.padding()
             
-                Menu("Tempo = " + String(tempo)) {
-                    ForEach(20..<181) { i in
-                        if (i % 10 == 0) {
-                            Button("Tempo: " + String(i), action: {tempo = i})
-                        }
-                    }
-                }.padding()
+                Text("Tempo = " + String(Int(tempo))).foregroundColor(Color.white)
+                Slider(value: $tempo, in: 40...200)
+                    .padding(.horizontal)
+//                Menu("Tempo = " + String(tempo)) {
+//                    ForEach(20..<181) { i in
+//                        if (i % 10 == 0) {
+//                            Button("Tempo: " + String(i), action: {tempo = i})
+//                        }
+//                    }
+//                }.padding()
                 
                 Group {
                     Button {

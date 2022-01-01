@@ -107,6 +107,11 @@ struct PlaySounds {
         self.player?.stop()
     }
     
+    mutating func cancelAllSounds() {
+        cancelPreviousTimer()
+        cancelDroneSound()
+    }
+    
     func tempoToSeconds(tempo: CGFloat) -> CGFloat {
         let noteLength = CGFloat(60/tempo)
         return noteLength
