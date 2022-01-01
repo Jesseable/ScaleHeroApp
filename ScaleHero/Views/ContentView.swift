@@ -17,7 +17,7 @@ struct AppContentView: View {
         
         return Group {
             switch screenType {
-            case "scales":
+            case "scale":
                 ScalesView(screenType: self.$screenType, backgroundImage: backgroundImage)
             case "arpeggio":
                 ArpeggioView(screenType: self.$screenType, backgroundImage: backgroundImage)
@@ -72,7 +72,7 @@ struct HomePage : View {
                 
                 // Turn to image button
                 Button("Scales") {
-                    self.screenType = "scales"
+                    self.screenType = "scale"
                 }.padding()
                 
                 // Turn to image button

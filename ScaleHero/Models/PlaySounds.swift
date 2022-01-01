@@ -16,6 +16,7 @@ struct PlaySounds {
     
     var fileReaderAndWriter = FileReaderAndWriter()
     var scaleTimer: Timer? = nil
+    var player: AVAudioPlayer?
     
     lazy var instrument: String = {
         [self] in
@@ -80,20 +81,19 @@ struct PlaySounds {
     mutating func playDroneSound(duration: CGFloat, startingNote: String) {
         let startingFileNote = startingNote.replacingOccurrences(of: "/", with: "|")
         let droneSoundFile = "\(drone)-Drone-\(startingFileNote)"
-        var player: AVAudioPlayer!
+        //ar player: AVAudioPlayer!
         
         if let droneURL = Bundle.main.url(forResource: droneSoundFile, withExtension: "mp3") {
-            player = try! AVAudioPlayer(contentsOf: droneURL)
-            player.play()
+            self.player = try! AVAudioPlayer(contentsOf: droneURL)
+            self.player?.play()
             
             let totalDuration = duration + 2.5
                 
-            DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: {
-                player.setVolume(0.05, fadeDuration: 2.5)
-                print(player.isPlaying)
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: { [self] in
+                self.player?.setVolume(0.05, fadeDuration: 2.5)
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + totalDuration, execute: {
-                player.stop()
+            DispatchQueue.main.asyncAfter(deadline: .now() + totalDuration, execute: { [self] in
+                self.player?.stop()
             })
         }
     }
@@ -101,6 +101,10 @@ struct PlaySounds {
     mutating func cancelPreviousTimer() {
         scaleTimer?.invalidate()
         self.scaleTimer = nil
+    }
+    
+    func cancelDroneSound() {
+        self.player?.stop()
     }
     
     func tempoToSeconds(tempo: CGFloat) -> CGFloat {

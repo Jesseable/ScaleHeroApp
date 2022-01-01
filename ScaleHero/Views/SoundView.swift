@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftySound
+import AVFAudio
 
 struct SoundView : View {
     
@@ -49,6 +50,7 @@ struct SoundView : View {
                         Sound.enabled = false
                         isPlaying = false
                         playScale.cancelPreviousTimer()
+                        playScale.cancelDroneSound()
                     } else {
                         Sound.enabled = true
                         if (drone) {
