@@ -23,7 +23,7 @@ class FileReaderAndWriter: ObservableObject {
             scales = []
         }
     }
-    
+
     func save() {
         do {
             let encoder = JSONEncoder()
@@ -35,7 +35,7 @@ class FileReaderAndWriter: ObservableObject {
             print("Unable to save data")
         }
     }
-    
+
     func add(scaleNote: String, type: String, tonality: String, octave: Int, tempo: Int) {
 
         let scale = Scale(id: UUID(), name: scaleNote, type: type, tonality: tonality, tempo: tempo, octaves: octave)
@@ -63,7 +63,7 @@ class FileReaderAndWriter: ObservableObject {
         }
         catch {
             Swift.print(error)
-            return "Error caught when reading instrument file" // Return default option.
+            return "Error caught when reading instrument file" // Return default option IN FUTURE WHEN DECIDED UPON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     }
 }

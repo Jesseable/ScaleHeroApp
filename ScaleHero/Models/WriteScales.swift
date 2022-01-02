@@ -5,7 +5,7 @@
 //  Created by Jesse Graf on 23/12/21.
 //
 
-import SwiftUI
+import Swift
 
 /**
  Class  Writescales

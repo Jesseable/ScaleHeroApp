@@ -17,7 +17,6 @@ struct SoundView : View {
     @State var scaleType: String
     @State private var isPlaying = false
     @State private var numOctave = 1 // Put a few of these in a new class that can use environmentalObject to access all of the displays.
-    @State private var tempo = CGFloat(60)
     @State private var drone = true
     @State private var chords = false
     @State private var scaleNotes = true
@@ -51,11 +50,11 @@ struct SoundView : View {
                     } else {
                         Sound.enabled = true
                         if (drone) {
-                            let duration = CGFloat(60/Int(self.tempo) * scaleInfo.count)
+                            let duration = CGFloat(60/Int(self.musicNotes.tempo) * scaleInfo.count)
                             playScale.playDroneSound(duration: duration, startingNote: startingNote)
                         }
                         if (scaleNotes) {
-                            playScale.playScaleSounds(temp: Int(self.tempo), scaleInfoArra: scaleInfo)
+                            playScale.playScaleSounds(temp: Int(self.musicNotes.tempo), scaleInfoArra: scaleInfo)
                         }
                         
                         isPlaying = true
@@ -79,8 +78,9 @@ struct SoundView : View {
                     Button("3 octaves", action: {numOctave = 3})
                 }.padding()
             
-                Text("Tempo = " + String(Int(tempo))).foregroundColor(Color.white)
-                Slider(value: $tempo, in: 40...200)
+                Stepper("Tempo = " + String(Int(musicNotes.tempo)), value: $musicNotes.tempo).colorScheme(.dark)
+//                Text("Tempo = " + String(Int(tempo))).foregroundColor(Color.white)
+                Slider(value: $musicNotes.tempo, in: 40...180, step: 1.0)
                     .padding(.horizontal)
 //                Menu("Tempo = " + String(tempo)) {
 //                    ForEach(20..<181) { i in

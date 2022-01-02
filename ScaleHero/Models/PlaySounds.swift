@@ -5,7 +5,7 @@
 //  Created by Jesse Graf on 24/12/21.
 //
 
-import SwiftUI
+import Swift
 import SwiftySound
 import AVFoundation
 

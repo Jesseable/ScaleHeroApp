@@ -11,6 +11,8 @@ class MusicNotes: ObservableObject {
 
     private let musicAlphabet = ["C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F"]
     @Published var noteName = "C"
+    @Published var tempo = CGFloat(60)
+    @Published var octaves = 1
     @Published var type = "Scale"
     @Published var tonality = "Major"
     

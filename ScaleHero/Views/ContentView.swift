@@ -12,6 +12,7 @@ struct AppContentView: View {
     @EnvironmentObject var musicNotes: MusicNotes
     @State private var screenType = "HomePage"
     private var backgroundImage = "BackgroundImage"
+    private var fileReaderAndWriter = FileReaderAndWriter()
     
     var body: some View {
         
@@ -24,7 +25,8 @@ struct AppContentView: View {
 //            case "special":
 //                print("Go to special page")
             case "settings":
-                SettingsView(screenType: self.$screenType, backgroundImage: backgroundImage)
+                
+                SettingsView(screenType: self.$screenType, backgroundImage: backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument())
             case "soundview":
                 SoundView(screenType: self.$screenType, scaleType: musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type, backgroundImage: backgroundImage)
             default:
