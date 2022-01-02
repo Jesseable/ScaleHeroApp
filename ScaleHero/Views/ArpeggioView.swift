@@ -23,40 +23,35 @@ struct ArpeggioView : View {
                 Image(backgroundImage).resizable().ignoresSafeArea()
             
                 VStack {
-                    Spacer()
+                    //Spacer()
                     
-                    // Turn to image button
-                    Menu("Note: " + String(musicNotes.noteName)) {
+                    
+                    let buttonHeight = universalSize.height/10
+                    
+                    Menu {
                         ForEach(musicNotes.getMusicAlphabet(), id: \.self) { note in
                             Button("Note: \(note)", action: {musicNotes.noteName = note})
                         }
-                    }.padding()
+                    } label: {
+                        MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 1, height: buttonHeight)
+                    }.padding(.top)
                     
                     Button {
                         musicNotes.tonality = "Major"
                         musicNotes.type = "arpeggio"
                         self.screenType = "soundview"
                     } label: {
-                        Text("Major (Triad)")
-                    }.padding()
-
-                    
-//                    // Turn to image button
-//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Major arpeggio", backgroundImage: backgroundImage)) {
-//                        Text("Major (Triad)")
-//                    }.padding()
+                        MainUIButton(buttonText: "Major (Triad)", type: 1, height: buttonHeight)
+                    }
                     
                     Button {
                         musicNotes.tonality = "Minor"
                         musicNotes.type = "arpeggio"
                         self.screenType = "soundview"
                     } label: {
-                        Text("Minor (Triad)")
-                    }.padding()
+                        MainUIButton(buttonText: "Minor (Triad)", type: 1, height: buttonHeight)
+                    }
                     
-//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Minor arpeggio", backgroundImage: backgroundImage)) {
-//                        Text("Minor (Triad)")
-//                    }.padding()
                     
                     Button {
                         // Goes to another options page
@@ -64,27 +59,16 @@ struct ArpeggioView : View {
 //                        musicNotes.type = "arpeggio"
 //                        self.screenType = "soundview"
                     } label: {
-                        Text("Special (Tetrads)")
-                    }.padding()
+                        MainUIButton(buttonText: "Special (Tetrads)", type: 1, height: buttonHeight)
+                    }
                     
-                    // Go to another link to select options
-//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Special arpeggio", backgroundImage: backgroundImage)) {
-//                        Text("Special (Tetrads)")
-//                    }.padding()
-                    
-                    // Turn to image button
-                    Button("Settings") {
-                        // do nothing
-                    }.padding()
-                    
-                    Spacer()
                     Spacer()
                     
                     Button {
-                        self.screenType = "homePage"
+                        self.screenType = "HomeScreen"
                     } label: {
-                        Text("HomePage")
-                    }.padding()
+                        MainUIButton(buttonText: "HomeScreen", type: 3, height: buttonHeight)
+                    }
                 }
                 .navigationBarTitle("ARPEGGIOS", displayMode: .inline)
                 .toolbar {

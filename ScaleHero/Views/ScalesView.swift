@@ -37,39 +37,33 @@ struct ScalesView: View {
                 Image(backgroundImage).resizable().ignoresSafeArea()
             
                 VStack {
-                    Spacer()
+                    //Spacer()
                     
-                    // Turn to image button
-                    Menu("Note: " + String(musicNotes.noteName)) {
+                    let buttonHeight = universalSize.height/10
+                    
+                    Menu {
                         ForEach(musicNotes.getMusicAlphabet(), id: \.self) { note in
                             Button("Note: \(note)", action: {musicNotes.noteName = note})
                         }
-                    }.padding()
+                    } label: {
+                        MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 1, height: buttonHeight)
+                    }.padding(.top)
                     
                     Button {
                         musicNotes.tonality = "Major"
                         musicNotes.type = "scale"
                         self.screenType = "soundview"
                     } label: {
-                        Text("Major")
-                    }.padding()
-                    
-//                    // Turn to image button
-//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Major scale", backgroundImage: backgroundImage)) {
-//                        Text("Major")
-//                    }.padding()
+                        MainUIButton(buttonText: "Major", type: 1, height: buttonHeight)
+                    }
                     
                     Button {
                         musicNotes.tonality = "Minor"
                         musicNotes.type = "scale"
                         self.screenType = "soundview"
                     } label: {
-                        Text("Minor")
-                    }.padding()
-//
-//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Minor scale", backgroundImage: backgroundImage)) {
-//                        Text("Minor")
-//                    }.padding()
+                        MainUIButton(buttonText: "Minor", type: 1, height: buttonHeight)
+                    }
                     
                     Button {
                         // Create another page
@@ -77,27 +71,25 @@ struct ScalesView: View {
 //                        musicNotes.type = "scale"
 //                        self.screenType = "soundview"
                     } label: {
-                        Text("Minor (Triad)")
-                    }.padding()
+                        MainUIButton(buttonText: "Modes", type: 1, height: buttonHeight)
+                    }
                     
-//                    // Go to another link to select options
-//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Special scale", backgroundImage: backgroundImage)) {
-//                        Text("Special (modes)")
-//                    }.padding()
+                    Button {
+                        // Create another page
+//                        musicNotes.tonality = "Major"
+//                        musicNotes.type = "scale"
+//                        self.screenType = "soundview"
+                    } label: {
+                        MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
+                    }
                     
-                    // Turn to image button
-                    Button("Settings") {
-                        // do nothing
-                    }.padding()
-                    
-                    Spacer()
                     Spacer()
                     
                     Button {
-                        self.screenType = "homePage"
+                        self.screenType = "HomeScreen"
                     } label: {
-                        Text("HomePage")
-                    }.padding()
+                        MainUIButton(buttonText: "HomeScreen", type: 3, height: buttonHeight)
+                    }
                 }
                 .navigationBarTitle("SCALES", displayMode: .inline)
                 .toolbar {

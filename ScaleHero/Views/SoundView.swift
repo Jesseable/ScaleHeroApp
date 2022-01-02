@@ -16,7 +16,6 @@ struct SoundView : View {
     @Binding var screenType: String
     @State var scaleType: String
     @State private var isPlaying = false
-    @State private var numOctave = 1 // Put a few of these in a new class that can use environmentalObject to access all of the displays.
     @State private var drone = true
     @State private var chords = false
     @State private var scaleNotes = true
@@ -31,7 +30,9 @@ struct SoundView : View {
             Image(backgroundImage).resizable().ignoresSafeArea()
         
             VStack {
-                Text(scaleType).bold().textCase(.uppercase).font(.title).foregroundColor(.white).padding()
+                let buttonHeight = universalSize.height/15
+                
+                Text(scaleType).bold().textCase(.uppercase).font(.title).foregroundColor(.white).scaledToFit()
                 
                 Spacer()
                 
@@ -41,7 +42,7 @@ struct SoundView : View {
                     let tonality = scaleTypeArr[1].lowercased()
                     let scaleType = scaleTypeArr[2].lowercased()
                     var scale = WriteScales(style: scaleType.lowercased())
-                    let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: numOctave, tonality: tonality) // Change later
+                    let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: musicNotes.octaves, tonality: tonality) // Change later
                     
                     if (isPlaying) {
                         Sound.enabled = false
@@ -60,35 +61,45 @@ struct SoundView : View {
                         isPlaying = true
                     }
                 } label: {
-                    HStack {
-                        if isPlaying {
-                            Text("Stop")
-                            Image(systemName: "speaker.slash").foregroundColor(Color.white)
-                        } else {
-                            Text("Play")
-                            Image(systemName: "speaker.wave.3").foregroundColor(Color.white)
-                        }
+                    if isPlaying {
+                        MainUIButton(buttonText: "Stop SystemImage speaker.slash", type: 1, height: buttonHeight)
+                    } else {
+                        MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
                     }
-                }.padding()
+                }.padding( .top )
 
-                // Ovtaves view
-                Menu("Number of Octaves = " + String(numOctave)) {
-                    Button("1 octave", action: {numOctave = 1})
-                    Button("2 octaves", action: {numOctave = 2})
-                    Button("3 octaves", action: {numOctave = 3})
-                }.padding()
+                Divider().background(Color.white)
+                
+                Group {
+                    MainUIButton(buttonText: "Number of Octaves = " + String(musicNotes.octaves), type: 1, height: buttonHeight)
+                
+                    Section {
+                        Picker("Octave selection", selection: $musicNotes.octaves) {
+                            Text("One").tag(1)
+                            Text("Two").tag(2)
+                            Text("Three").tag(3)
+                        }
+                        .padding(.horizontal)
+                        .pickerStyle( .segmented)
+                        .colorScheme(.dark)
+                    }
+                    Divider().background(Color.white)
+                }
             
-                Stepper("Tempo = " + String(Int(musicNotes.tempo)), value: $musicNotes.tempo).colorScheme(.dark)
-//                Text("Tempo = " + String(Int(tempo))).foregroundColor(Color.white)
-                Slider(value: $musicNotes.tempo, in: 40...180, step: 1.0)
-                    .padding(.horizontal)
-//                Menu("Tempo = " + String(tempo)) {
-//                    ForEach(20..<181) { i in
-//                        if (i % 10 == 0) {
-//                            Button("Tempo: " + String(i), action: {tempo = i})
+                // The tempo buttons
+                Group {
+                    ZStack {
+                        MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 1, height: buttonHeight)
+//                        HStack {
+//                            Stepper("", value: $musicNotes.tempo)
+//                                .colorScheme(.light)
+//                                .padding(.horizontal)
 //                        }
-//                    }
-//                }.padding()
+                    }
+                    Slider(value: $musicNotes.tempo, in: 40...180, step: 1.0)
+                        .padding(.horizontal)
+                    Divider().background(Color.white)
+                }
                 
                 Group {
                     Button {
@@ -98,19 +109,16 @@ struct SoundView : View {
                     } label: {
                         HStack {
                             if (drone) {
-                                Text("Drone")
-                                Image(systemName: "checkmark.square").foregroundColor(Color.white)
+                                MainUIButton(buttonText: "Drone SystemImage checkmark.square", type: 1, height: buttonHeight)
                             } else {
                                 if (chords) {
-                                    Text("Drone")
-                                    Image(systemName: "square").foregroundColor(Color.white).blur(radius: 1.5)
+                                    MainUIButton(buttonText: "Drone SystemImage square", type: 1, height: buttonHeight).blur(radius: 1)
                                 } else {
-                                    Text("Drone")
-                                    Image(systemName: "square").foregroundColor(Color.white)
+                                    MainUIButton(buttonText: "Drone SystemImage square", type: 1, height: buttonHeight)
                                 }
                             }
                         }
-                    }.padding()
+                    }
                     
                     Button {
                         if (!drone) {
@@ -119,43 +127,38 @@ struct SoundView : View {
                     } label: {
                         HStack {
                             if (chords) {
-                                Text("Chords")
-                                Image(systemName: "checkmark.square").foregroundColor(Color.white)
+                                MainUIButton(buttonText: "Chords SystemImage checkmark.square", type: 1, height: buttonHeight)
                             } else {
                                 if (drone) {
-                                    Text("Chords")
-                                    Image(systemName: "square").foregroundColor(Color.white).blur(radius: 1.5)
+                                    MainUIButton(buttonText: "Chords SystemImage square", type: 1, height: buttonHeight).blur(radius: 1)
                                 } else {
-                                    Text("Chords")
-                                    Image(systemName: "square").foregroundColor(Color.white)
+                                    MainUIButton(buttonText: "Chords SystemImage square", type: 1, height: buttonHeight)
                                 }
                             }
                         }
-                    }.padding()
+                    }
                     
                     Button {
                         scaleNotes.toggle()
                     } label: {
                         HStack {
                             if (scaleNotes) {
-                                Text("Scale Notes ")
-                                Image(systemName: "checkmark.square").foregroundColor(Color.white)
+                                MainUIButton(buttonText: "Notes SystemImage checkmark.square", type: 1, height: buttonHeight)
                             } else {
-                                Text("Scale Notes ")
-                                Image(systemName: "square").foregroundColor(Color.white)
+                                MainUIButton(buttonText: "Notes SystemImage square", type: 1, height: buttonHeight)
                             }
                         }
-                    }.padding()
+                    }
                 }
                 
                 Spacer()
                 Spacer()
-                
+                let bottumButtonHeight = universalSize.height/10
                 Button {
                     self.screenType = musicNotes.type
                 } label: {
-                    Text(musicNotes.type)
-                }.padding()
+                    MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
+                }
             }
         }
     }

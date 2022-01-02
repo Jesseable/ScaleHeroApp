@@ -81,34 +81,30 @@ struct HomePage : View {
                 
                 let buttonHeight = universalSize.height/10
                 
-                LazyVGrid(columns: columns) {
-                    Button {
-                        self.screenType = "scale"
-                    } label: {
-                        MainUIButton(buttonText: "Scales", type: 1, height: buttonHeight)
-                    }
-
-                    Button {
-                        self.screenType = "arpeggio"
-                    } label: {
-                        MainUIButton(buttonText: "Arpeggio", type: 1, height: buttonHeight)
-                    }
-                    
-                    Button {
-                        // do nothing
-                    } label: {
-                        MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
-                    }
-                    
-                    Button {
-                        // do nothing
-                    } label: {
-                        MainUIButton(buttonText: "Favourites", type: 2, height: buttonHeight)
-                    }
-                    
-                    Spacer()
-                
+                Button {
+                    self.screenType = "scale"
+                } label: {
+                    MainUIButton(buttonText: "Scales", type: 1, height: buttonHeight)
                 }
+
+                Button {
+                    self.screenType = "arpeggio"
+                } label: {
+                    MainUIButton(buttonText: "Arpeggio", type: 1, height: buttonHeight)
+                }
+                
+                Button {
+                    // do nothing
+                } label: {
+                    MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
+                }
+                
+                Button {
+                    // do nothing
+                } label: {
+                    MainUIButton(buttonText: "Favourites", type: 2, height: buttonHeight)
+                }
+                
                 Spacer()
                 
                 Button {

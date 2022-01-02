@@ -25,26 +25,41 @@ struct MainUIButton: View {
                     .foregroundColor(Color.gray)
                     .padding(.horizontal, 10)
                     .frame(width: universalSize.width, height: height)
-                    .opacity(0.7)
+                    .opacity(0.8)
             case 3:
                 CroppedAboveButton()
                         .fill(style: FillStyle(eoFill: true))
                     .foregroundColor(Color.gray)
                     .padding(.horizontal, 10)
                     .frame(width: universalSize.width, height: height)
-                    .opacity(0.7)
+                    .opacity(0.8)
             default:
                 RectangularButton()
                     .fill(buttonColor)
                     .padding(.horizontal, 10)
                     .frame(width: universalSize.width, height: height)
-                    .opacity(0.7)
+                    .opacity(0.8)
             }
 
             let scaleEffect = (height - 30)/height + 1
-            Text(buttonText)
-                .foregroundColor(Color.white).bold()
-                .scaleEffect(scaleEffect)
+            if (buttonText.contains("SystemImage")) {
+                let stringArr = buttonText.replacingOccurrences(of: " ", with: "").components(separatedBy: "SystemImage")
+
+                    Text(stringArr[0])
+                        .foregroundColor(Color.white).bold()
+                        .scaleEffect(scaleEffect)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    Image(systemName: stringArr[1])
+                        .foregroundColor(Color.white)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(.horizontal, universalSize.width/3)
+                        .scaleEffect(scaleEffect)
+
+            } else {
+                Text(buttonText)
+                    .foregroundColor(Color.white).bold()
+                    .scaleEffect(scaleEffect)
+            }
         }
     }
 }
