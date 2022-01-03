@@ -87,6 +87,7 @@
 		C574FF3727731F1200ADD3B3 /* JTest-1-E.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C574FF2727731F1100ADD3B3 /* JTest-1-E.mp3 */; };
 		C574FF3827731F1200ADD3B3 /* JTest-2-B.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C574FF2827731F1100ADD3B3 /* JTest-2-B.mp3 */; };
 		C574FF3B2773F48F00ADD3B3 /* WriteScales.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FF3A2773F48F00ADD3B3 /* WriteScales.swift */; };
+		C58FE9F3278292B900075A4C /* SpecialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58FE9F2278292B900075A4C /* SpecialView.swift */; };
 		C5DBD5C1278078FF00DF5183 /* MainUIButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */; };
 		C5DBD5F227812A9E00DF5183 /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */; };
 		C5DBD5F427812B6100DF5183 /* Scale.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F327812B6100DF5183 /* Scale.swift */; };
@@ -192,6 +193,7 @@
 		C574FF2727731F1100ADD3B3 /* JTest-1-E.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "JTest-1-E.mp3"; path = "../../../Jesse's Testing ntoes/JTest-1-E.mp3"; sourceTree = "<group>"; };
 		C574FF2827731F1100ADD3B3 /* JTest-2-B.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "JTest-2-B.mp3"; path = "../../../Jesse's Testing ntoes/JTest-2-B.mp3"; sourceTree = "<group>"; };
 		C574FF3A2773F48F00ADD3B3 /* WriteScales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteScales.swift; sourceTree = "<group>"; };
+		C58FE9F2278292B900075A4C /* SpecialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialView.swift; sourceTree = "<group>"; };
 		C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUIButtonView.swift; sourceTree = "<group>"; };
 		C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
 		C5DBD5F327812B6100DF5183 /* Scale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scale.swift; sourceTree = "<group>"; };
@@ -363,6 +365,7 @@
 				C574FEE0276B0AE000ADD3B3 /* SoundView.swift */,
 				C54532F02779B73D0041702C /* SettingsView.swift */,
 				C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */,
+				C58FE9F2278292B900075A4C /* SpecialView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -615,6 +618,7 @@
 				C574FEA02769BFE700ADD3B3 /* ScalesView.swift in Sources */,
 				C5DBD5F427812B6100DF5183 /* Scale.swift in Sources */,
 				C54531D227756F180041702C /* PlaySounds.swift in Sources */,
+				C58FE9F3278292B900075A4C /* SpecialView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

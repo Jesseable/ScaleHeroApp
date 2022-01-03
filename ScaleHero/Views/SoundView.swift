@@ -41,7 +41,7 @@ struct SoundView : View {
                     let startingNote = scaleTypeArr[0]
                     let tonality = scaleTypeArr[1].lowercased()
                     let scaleType = scaleTypeArr[2].lowercased()
-                    var scale = WriteScales(style: scaleType.lowercased())
+                    var scale = WriteScales(type: scaleType.lowercased())
                     let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: musicNotes.octaves, tonality: tonality) // Change later
                     
                     if (isPlaying) {
@@ -155,7 +155,14 @@ struct SoundView : View {
                 Spacer()
                 let bottumButtonHeight = universalSize.height/10
                 Button {
-                    self.screenType = musicNotes.type
+                    let scaleType = musicNotes.type.lowercased()
+                    print(scaleType)
+                    if (scaleType == "mode") {
+                        musicNotes.type = "Modes"
+                        self.screenType = "specialview"
+                    } else {
+                        self.screenType = musicNotes.type
+                    }
                 } label: {
                     MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
                 }

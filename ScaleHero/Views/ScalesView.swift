@@ -66,10 +66,8 @@ struct ScalesView: View {
                     }
                     
                     Button {
-                        // Create another page
-//                        musicNotes.tonality = "Major"
-//                        musicNotes.type = "scale"
-//                        self.screenType = "soundview"
+                        musicNotes.type = "Modes"
+                        self.screenType = "specialview"
                     } label: {
                         MainUIButton(buttonText: "Modes", type: 1, height: buttonHeight)
                     }

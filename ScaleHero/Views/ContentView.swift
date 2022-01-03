@@ -22,13 +22,13 @@ struct AppContentView: View {
                 ScalesView(screenType: self.$screenType, backgroundImage: backgroundImage)
             case "arpeggio":
                 ArpeggioView(screenType: self.$screenType, backgroundImage: backgroundImage)
-//            case "special":
-//                print("Go to special page")
+            case "specialview":
+                SpecialView(screenType: self.$screenType, specialTitle: musicNotes.type, backgroundImage: backgroundImage)
             case "settings":
-                
                 SettingsView(screenType: self.$screenType, backgroundImage: backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument())
             case "soundview":
-                SoundView(screenType: self.$screenType, scaleType: musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type, backgroundImage: backgroundImage)
+                let scaleType = musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type
+                SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: backgroundImage)
             default:
                 HomePage(screenType: $screenType, backgroundImage: backgroundImage)
             }

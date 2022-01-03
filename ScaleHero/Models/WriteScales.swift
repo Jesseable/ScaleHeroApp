@@ -13,15 +13,17 @@ import Swift
  */
 struct WriteScales {
     
-    let style : String
+    let type : String
     
     // Sets the major pattern for differnet types of scales. Measured in semitones
     lazy var majorPattern : [Int] = {
         [self] in
-        switch self.style {
+        switch self.type {
         case "arpeggio":
             return [4, 3, 5]
         case "scale":
+            return [2, 2, 1, 2, 2, 2, 1]
+        case "mode":
             return [2, 2, 1, 2, 2, 2, 1]
         default:
             return[-1]
@@ -30,7 +32,7 @@ struct WriteScales {
     
     lazy var minorPattern : [Int] = {
         [self] in
-        switch self.style {
+        switch self.type {
         case "arpeggio":
             return [3, 4, 5]
         case "scale":
@@ -143,7 +145,7 @@ struct WriteScales {
         var curruntOctave = 1
         
         while !(curruntOctave > octave) {
-            switch tonality {
+            switch tonality.lowercased() {
             case "major":
                 for num in majorPattern {
                     startingNum += num
@@ -154,12 +156,102 @@ struct WriteScales {
                     startingNum += num
                     dictKeysArray.append(startingNum)
                 }
+            case "ionian":
+                for num in majorPattern {
+                    startingNum += num
+                    dictKeysArray.append(startingNum)
+                }
+            case "dorian":
+                var dorianPattern = majorPattern
+                let firstNum = dorianPattern.removeFirst()
+                dorianPattern.append(firstNum)
+                for num in dorianPattern {
+                    startingNum += num
+                    dictKeysArray.append(startingNum)
+                }
+            case "phrygian":
+                var phrygianPattern = majorPattern
+                2.times {
+                    let content = phrygianPattern.removeFirst()
+                    phrygianPattern.append(content)
+                }
+
+                for num in phrygianPattern {
+                    startingNum += num
+                    dictKeysArray.append(startingNum)
+                }
+            case "lydian":
+                var lydianPattern = majorPattern
+                3.times {
+                    let content = lydianPattern.removeFirst()
+                    lydianPattern.append(content)
+                }
+
+                for num in lydianPattern {
+                    startingNum += num
+                    dictKeysArray.append(startingNum)
+                }
+            case "mixolydian":
+                var mixolydianPattern = majorPattern
+                4.times {
+                    let content = mixolydianPattern.removeFirst()
+                    mixolydianPattern.append(content)
+                }
+
+                for num in mixolydianPattern {
+                    startingNum += num
+                    dictKeysArray.append(startingNum)
+                }
+            case "aeolian":
+                var aeolianPattern = majorPattern
+                5.times {
+                    let content = aeolianPattern.removeFirst()
+                    aeolianPattern.append(content)
+                }
+
+                for num in aeolianPattern {
+                    startingNum += num
+                    dictKeysArray.append(startingNum)
+                }
+            case "locrian":
+                var locrianPattern = majorPattern
+                6.times {
+                    let content = locrianPattern.removeFirst()
+                    locrianPattern.append(content)
+                }
+
+                for num in locrianPattern {
+                    startingNum += num
+                    dictKeysArray.append(startingNum)
+                }
             default:
+                print("dictionary of notes failed")
                 return [-1]
             }
             curruntOctave += 1
         }
 
         return dictKeysArray
+    }
+}
+
+/**
+ Used to minimise code in the for loop when changing between modes
+ */
+extension Int {
+    func times(_ f: () -> ()) {
+        if self > 0 {
+            for _ in 0..<self {
+                f()
+            }
+        }
+    }
+    
+    func times(_ f: @autoclosure () -> ()) {
+        if self > 0 {
+            for _ in 0..<self {
+                f()
+            }
+        }
     }
 }
