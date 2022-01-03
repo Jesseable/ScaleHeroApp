@@ -37,52 +37,66 @@ struct ScalesView: View {
                 Image(backgroundImage).resizable().ignoresSafeArea()
             
                 VStack {
-                    //Spacer()
-                    
                     let buttonHeight = universalSize.height/10
-                    
-                    Menu {
-                        ForEach(musicNotes.getMusicAlphabet(), id: \.self) { note in
-                            Button("Note: \(note)", action: {musicNotes.noteName = note})
+                    ScrollView {
+                        
+                        Menu {
+                            ForEach(musicNotes.getMusicAlphabet(), id: \.self) { note in
+                                Button("Note: \(note)", action: {musicNotes.noteName = note})
+                            }
+                        } label: {
+                            MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 1, height: buttonHeight)
+                        }.padding(.top)
+                        
+                        Button {
+                            musicNotes.tonality = "Major"
+                            musicNotes.type = "scale"
+                            self.screenType = "soundview"
+                        } label: {
+                            MainUIButton(buttonText: "Major", type: 1, height: buttonHeight)
                         }
-                    } label: {
-                        MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 1, height: buttonHeight)
-                    }.padding(.top)
-                    
-                    Button {
-                        musicNotes.tonality = "Major"
-                        musicNotes.type = "scale"
-                        self.screenType = "soundview"
-                    } label: {
-                        MainUIButton(buttonText: "Major", type: 1, height: buttonHeight)
+                        
+                        Button {
+                            musicNotes.tonality = "Minor"
+                            musicNotes.type = "scale"
+                            self.screenType = "soundview"
+                        } label: {
+                            MainUIButton(buttonText: "Minor", type: 1, height: buttonHeight)
+                        }
+                        
+                        Button {
+                            musicNotes.tonality = "Minor"
+                            musicNotes.type = "harmonic"
+                            self.screenType = "soundview"
+                        } label: {
+                            MainUIButton(buttonText: "Harmonic Minor", type: 1, height: buttonHeight)
+                        }
+                        
+                        Button {
+                            musicNotes.tonality = "Minor"
+                            musicNotes.type = "melodic"
+                            self.screenType = "soundview"
+                        } label: {
+                            MainUIButton(buttonText: "Melodic Minor", type: 1, height: buttonHeight)
+                        }
+                        
+                        
+                        Button {
+                            musicNotes.type = "Modes"
+                            self.screenType = "specialview"
+                        } label: {
+                            MainUIButton(buttonText: "Modes", type: 1, height: buttonHeight)
+                        }
+                        
+                        Button {
+                            musicNotes.type = "Special"
+                            self.screenType = "specialview"
+                        } label: {
+                            MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
+                        }
+                        
+                        Spacer()
                     }
-                    
-                    Button {
-                        musicNotes.tonality = "Minor"
-                        musicNotes.type = "scale"
-                        self.screenType = "soundview"
-                    } label: {
-                        MainUIButton(buttonText: "Minor", type: 1, height: buttonHeight)
-                    }
-                    
-                    Button {
-                        musicNotes.type = "Modes"
-                        self.screenType = "specialview"
-                    } label: {
-                        MainUIButton(buttonText: "Modes", type: 1, height: buttonHeight)
-                    }
-                    
-                    Button {
-                        // Create another page
-//                        musicNotes.tonality = "Major"
-//                        musicNotes.type = "scale"
-//                        self.screenType = "soundview"
-                    } label: {
-                        MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
-                    }
-                    
-                    Spacer()
-                    
                     Button {
                         self.screenType = "HomeScreen"
                     } label: {

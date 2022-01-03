@@ -31,8 +31,8 @@ struct SoundView : View {
         
             VStack {
                 let buttonHeight = universalSize.height/15
-                
-                Text(scaleType).bold().textCase(.uppercase).font(.title).foregroundColor(.white).scaledToFit()
+                let title = scaleType
+                Text(title.replacingOccurrences(of: "-", with: " ")).bold().textCase(.uppercase).font(.title).foregroundColor(.white).scaledToFit()
                 
                 Spacer()
                 
@@ -71,7 +71,7 @@ struct SoundView : View {
                 Divider().background(Color.white)
                 
                 Group {
-                    MainUIButton(buttonText: "Number of Octaves = " + String(musicNotes.octaves), type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight)
                 
                     Section {
                         Picker("Octave selection", selection: $musicNotes.octaves) {
@@ -89,7 +89,7 @@ struct SoundView : View {
                 // The tempo buttons
                 Group {
                     ZStack {
-                        MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight)
 //                        HStack {
 //                            Stepper("", value: $musicNotes.tempo)
 //                                .colorScheme(.light)
@@ -154,17 +154,32 @@ struct SoundView : View {
                 Spacer()
                 Spacer()
                 let bottumButtonHeight = universalSize.height/10
+                
+                // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
                 Button {
                     let scaleType = musicNotes.type.lowercased()
-                    print(scaleType)
                     if (scaleType == "mode") {
                         musicNotes.type = "Modes"
                         self.screenType = "specialview"
+                    } else if (scaleType == "chromatic-scale" || scaleType == "whole-tone-scale") {
+                        musicNotes.type = "Special"
+                        self.screenType = "specialview"
+                    } else if (scaleType == "harmonic" || scaleType == "melodic") {
+                        self.screenType = "scale"
                     } else {
                         self.screenType = musicNotes.type
                     }
                 } label: {
-                    MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
+                    let scaleType = musicNotes.type.lowercased()
+                    if (scaleType == "mode") {
+                        MainUIButton(buttonText: "Modes", type: 3, height: bottumButtonHeight)
+                    } else if (scaleType == "chromatic-scale" || scaleType == "whole-tone-scale") {
+                        MainUIButton(buttonText: "Special", type: 3, height: bottumButtonHeight)
+                    } else if (scaleType == "harmonic" || scaleType == "melodic") {
+                        MainUIButton(buttonText: "Scales", type: 3, height: bottumButtonHeight)
+                    } else {
+                        MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
+                    }
                 }
             }
         }

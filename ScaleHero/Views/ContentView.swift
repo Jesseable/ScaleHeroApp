@@ -11,7 +11,7 @@ struct AppContentView: View {
     
     @EnvironmentObject var musicNotes: MusicNotes
     @State private var screenType = "HomePage"
-    private var backgroundImage = "BackgroundImage"
+    private var backgroundImage = "BackgroundRed" // Can change to a variety of choices
     private var fileReaderAndWriter = FileReaderAndWriter()
     
     var body: some View {

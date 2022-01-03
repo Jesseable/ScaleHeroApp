@@ -6,6 +6,7 @@
 //
 
 import Swift
+import UIKit
 
 /**
  Class  Writescales
@@ -18,7 +19,7 @@ struct WriteScales {
     // Sets the major pattern for differnet types of scales. Measured in semitones
     lazy var majorPattern : [Int] = {
         [self] in
-        switch self.type {
+        switch self.type.lowercased() {
         case "arpeggio":
             return [4, 3, 5]
         case "scale":
@@ -30,13 +31,44 @@ struct WriteScales {
         }
     }()
     
+    lazy var tetradsPattern : [Int] = {
+        [self] in
+        switch self.type.lowercased() {
+        case "dominant-seventh":
+            return [4, 3, 3, 2]
+        case "major-seventh":
+            return [4, 3, 4, 1]
+        case "minor-seventh":
+            return [3, 4, 3, 2]
+        case "diminished-seventh":
+            return [3, 3, 3, 3]
+        default:
+            return[-1]
+        }
+    }()
+    
+    lazy var specialPattern : [Int] = {
+        switch self.type.lowercased() {
+        case "chromatic-scale":
+            return [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        case "whole-tone-scale":
+            return [2, 2, 2, 2, 2, 2]
+        default:
+            return[-1]
+        }
+    }()
+    
     lazy var minorPattern : [Int] = {
         [self] in
-        switch self.type {
+        switch self.type.lowercased() {
         case "arpeggio":
             return [3, 4, 5]
         case "scale":
             return[2, 1, 2, 2, 1, 2, 2]
+        case "harmonic":
+            return[2, 1, 2, 2, 1, 3, 1]
+        case "melodic":
+            return[2, 1, 2, 2, 2, 2, 1]
         default:
             return [-1]
         }
@@ -109,7 +141,7 @@ struct WriteScales {
     /**
      Returns an array of the notes to play in the specific scale
      */
-    mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String) -> [String] { // Chnage to returning a array of string
+    mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String) -> [String] {
         let startingOctave = 1
         let startingKey = startingNoteKeyFinder(startingNote: startingNote, startingOctave: startingOctave)
         
@@ -126,11 +158,26 @@ struct WriteScales {
             valueArray.append(noteName)
         }
         
-        reversedValuesArr = valueArray.reversed()
-        // removed a value so as to not repeat the tonic
-        reversedValuesArr.removeFirst()
-        
-        valueArray.append(contentsOf: reversedValuesArr)
+        if (self.type != "melodic") {
+            reversedValuesArr = valueArray.reversed()
+            // removed a value so as to not repeat the tonic
+            reversedValuesArr.removeFirst()
+            
+            valueArray.append(contentsOf: reversedValuesArr)
+        } else {
+            // Needs to be altered to do multiple octaves as well. Should create another function for this purpose!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            reversedValuesArr = valueArray.reversed()
+            let seventhNote = reversedValuesArr.remove(at: 1)
+            let sixthNote = reversedValuesArr.remove(at: 1)
+            guard let seventhInt = accendingNotes.key(from: seventhNote) else {return ["failed"]}
+            guard let sixthInt = accendingNotes.key(from: sixthNote) else {return ["failed"]}
+            reversedValuesArr.insert(accendingNotes[seventhInt-1]!, at: 1)
+            reversedValuesArr.insert(accendingNotes[sixthInt-1]!, at: 2)
+            // removed a value so as to not repeat the tonic
+            reversedValuesArr.removeFirst()
+            
+            valueArray.append(contentsOf: reversedValuesArr)
+        }
         
         return valueArray
     }
@@ -224,6 +271,16 @@ struct WriteScales {
                     startingNum += num
                     dictKeysArray.append(startingNum)
                 }
+            case "": // Case for a special scale
+                for num in specialPattern {
+                    startingNum += num
+                    dictKeysArray.append(startingNum)
+                }
+            case "tetrad":
+                for num in tetradsPattern {
+                    startingNum += num
+                    dictKeysArray.append(startingNum)
+                }
             default:
                 print("dictionary of notes failed")
                 return [-1]
@@ -253,5 +310,11 @@ extension Int {
                 f()
             }
         }
+    }
+}
+
+extension Dictionary where Value: Equatable {
+    func key(from value: Value) -> Key? {
+        return self.first(where: { $0.value == value })?.key
     }
 }
