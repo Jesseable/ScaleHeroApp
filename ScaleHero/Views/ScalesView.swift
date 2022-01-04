@@ -15,6 +15,9 @@ class MusicNotes: ObservableObject {
     @Published var octaves = 1
     @Published var type = "Scale"
     @Published var tonality = "Major"
+    @Published var scaleNotes = [""]
+    @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @Published var currentNote = "C"
     
     func getMusicAlphabet() -> [String] {
         return musicAlphabet

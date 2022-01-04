@@ -27,14 +27,14 @@ struct MainUIButton: View {
                     .frame(width: universalSize.width, height: height)
                     .opacity(0.8)
             case 3:
-                CroppedAboveButton()
+                CroppedAboveButton() // Bottum Buttons
                         .fill(style: FillStyle(eoFill: true))
-                    .foregroundColor(buttonColor)
+                    .foregroundColor(Color("NavyBlue"))
                     .padding(.horizontal, 10)
                     .frame(width: universalSize.width, height: height)
                     .opacity(0.8)
             case 4:
-                RectangularButton()
+                RectangularButton() // Not able to select buttons
                     .fill(Color("GrayBasic"))
                     .padding(.horizontal, 10)
                     .frame(width: universalSize.width, height: height)

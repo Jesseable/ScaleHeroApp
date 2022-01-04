@@ -46,10 +46,10 @@ struct PlaySounds {
     /**
      Converts the array into a readable file name (mp3 format)
      */
-    mutating func convertToSoundFile(scaleInfoArr: [String]) -> [String] {
+    mutating func convertToSoundFile(scaleInfoArray: [String]) -> [String] {
         var soundFileArr: [String] = []
         
-        for scaleNote in scaleInfoArr {
+        for scaleNote in scaleInfoArray {
             let scaleComponentsArr = scaleNote.components(separatedBy: ":")
             let newStringNote = scaleComponentsArr[1].replacingOccurrences(of: "/", with: "|")
             let soundFileString = "\(instrument)-\(scaleComponentsArr[0])-\(newStringNote)"
@@ -61,14 +61,16 @@ struct PlaySounds {
     // Return a possible time function for the scale to know when to switch stop back to play
     mutating func playScaleSounds(temp: Int, scaleInfoArra: [String]) {
         let delay = tempoToSeconds(tempo: CGFloat(temp))
-        let soundFileArr = convertToSoundFile(scaleInfoArr: scaleInfoArra)
+        let soundFileArr = convertToSoundFile(scaleInfoArray: scaleInfoArra)
         var index = 0
+        
         
         scaleTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true) { timer in
             // stop the previous sound
             if (index != 0) {
                 Sound.stop(file: soundFileArr[index-1], fileExtension: "mp3")
             }
+
             // play the next note
             Sound.play(file: soundFileArr[index], fileExtension: "mp3")
             index += 1
@@ -76,6 +78,10 @@ struct PlaySounds {
                 timer.invalidate()
             }
         }
+    }
+    
+    func getTimer() -> Timer {
+        return scaleTimer ?? Timer.init()
     }
     
     mutating func playDroneSound(duration: CGFloat, startingNote: String) {

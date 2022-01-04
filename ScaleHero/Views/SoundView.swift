@@ -26,179 +26,177 @@ struct SoundView : View {
     
     var body: some View {
         
-        ZStack {
-            Image(backgroundImage).resizable().ignoresSafeArea()
-        
-            VStack {
-                let buttonHeight = universalSize.height/15
-                let title = scaleType
-                Text(title.replacingOccurrences(of: "-", with: " ")).bold().textCase(.uppercase).font(.title).foregroundColor(.white).scaledToFit()
+        NavigationView {
+            ZStack {
+                Image(backgroundImage).resizable().ignoresSafeArea()
                 
-                Spacer()
-                
-                Button {
-                    let scaleTypeArr = scaleType.components(separatedBy: " ")
-                    let startingNote = scaleTypeArr[0]
-                    let tonality = scaleTypeArr[1].lowercased()
-                    let scaleType = scaleTypeArr[2].lowercased()
-                    var scale = WriteScales(type: scaleType.lowercased())
-                    let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: musicNotes.octaves, tonality: tonality) // Change later
+                // Hidden and only activates when isPlaying is set
+                NavigationLink(
+                    "navLink",
+                    destination: PlayingView(backgroundImage: backgroundImage, playSounds: playScale, scaleType: scaleType),
+                    isActive: $isPlaying
+                ).hidden()
+            
+                VStack {
+                    let buttonHeight = universalSize.height/15
+                    let title = scaleType
+                    Text(title.replacingOccurrences(of: "-", with: " ")).bold().textCase(.uppercase).font(.title).foregroundColor(.white).scaledToFit()
                     
-                    if (isPlaying) {
-                        Sound.enabled = false
-                        isPlaying = false
-                        playScale.cancelAllSounds()
-                    } else {
-                        Sound.enabled = true
-                        if (drone) {
-                            let duration = CGFloat(60/Int(self.musicNotes.tempo) * scaleInfo.count)
-                            playScale.playDroneSound(duration: duration, startingNote: startingNote)
+                    Spacer()
+                    
+                    Button {
+                        let scaleTypeArr = scaleType.components(separatedBy: " ")
+                        let startingNote = scaleTypeArr[0]
+                        let tonality = scaleTypeArr[1].lowercased()
+                        let scaleType = scaleTypeArr[2].lowercased()
+                        var scale = WriteScales(type: scaleType.lowercased())
+                        let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: musicNotes.octaves, tonality: tonality) // Change later
+                        let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo)
+                        musicNotes.scaleNotes = scaleSoundFiles
+                        let delay = CGFloat(60/musicNotes.tempo)
+                        musicNotes.timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
+                        musicNotes.currentNote = startingNote
+                        
+                        if (isPlaying) {
+                            Sound.enabled = false
+                            isPlaying = false
+                            playScale.cancelAllSounds()
+                        } else {
+                            Sound.enabled = true
+                            if (drone) {
+                                let duration = CGFloat(60/Int(self.musicNotes.tempo) * scaleInfo.count)
+                                playScale.playDroneSound(duration: duration, startingNote: startingNote)
+                            }
+                            if (scaleNotes) {
+                                //playScale.playScaleSounds(temp: Int(self.musicNotes.tempo), scaleInfoArra: scaleInfo)
+                            }
+                            
+                            isPlaying = true
+                            
                         }
-                        if (scaleNotes) {
-                            playScale.playScaleSounds(temp: Int(self.musicNotes.tempo), scaleInfoArra: scaleInfo)
+                    } label: {
+                        if isPlaying {
+                            MainUIButton(buttonText: "Stop SystemImage speaker.slash", type: 1, height: buttonHeight)
+                        } else {
+                            MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
+                        }
+                    }.padding( .top )
+
+                    Divider().background(Color.white)
+                    
+                    Group {
+                        MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight)
+                    
+                        Section {
+                            Picker("Octave selection", selection: $musicNotes.octaves) {
+                                Text("One").tag(1)
+                                Text("Two").tag(2)
+                                Text("Three").tag(3)
+                            }
+                            .padding(.horizontal)
+                            .pickerStyle( .segmented)
+                            .colorScheme(.dark)
+                        }
+                        Divider().background(Color.white)
+                
+                    // The tempo buttons
+                        ZStack {
+                            MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight)
+    //                        HStack {
+    //                            Stepper("", value: $musicNotes.tempo)
+    //                                .colorScheme(.light)
+    //                                .padding(.horizontal)
+    //                        }
+                        }
+                        Slider(value: $musicNotes.tempo, in: 40...180, step: 1.0)
+                            .padding(.horizontal)
+                        Divider().background(Color.white)
+                    }
+                    
+                    Group {
+                        Button {
+                            if (!chords) {
+                                drone.toggle()
+                            }
+                        } label: {
+                            HStack {
+                                if (drone) {
+                                    MainUIButton(buttonText: "Drone SystemImage checkmark.square", type: 1, height: buttonHeight)
+                                } else {
+                                    if (chords) {
+                                        MainUIButton(buttonText: "Drone SystemImage square", type: 1, height: buttonHeight).blur(radius: 1)
+                                    } else {
+                                        MainUIButton(buttonText: "Drone SystemImage square", type: 1, height: buttonHeight)
+                                    }
+                                }
+                            }
                         }
                         
-                        isPlaying = true
-                    }
-                } label: {
-                    if isPlaying {
-                        MainUIButton(buttonText: "Stop SystemImage speaker.slash", type: 1, height: buttonHeight)
-                    } else {
-                        MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
-                    }
-                }.padding( .top )
-
-                Divider().background(Color.white)
-                
-                Group {
-                    MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight)
-                
-                    Section {
-                        Picker("Octave selection", selection: $musicNotes.octaves) {
-                            Text("One").tag(1)
-                            Text("Two").tag(2)
-                            Text("Three").tag(3)
-                        }
-                        .padding(.horizontal)
-                        .pickerStyle( .segmented)
-                        .colorScheme(.dark)
-                    }
-                    Divider().background(Color.white)
-                }
-            
-                // The tempo buttons
-                Group {
-                    ZStack {
-                        MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight)
-//                        HStack {
-//                            Stepper("", value: $musicNotes.tempo)
-//                                .colorScheme(.light)
-//                                .padding(.horizontal)
-//                        }
-                    }
-                    Slider(value: $musicNotes.tempo, in: 40...180, step: 1.0)
-                        .padding(.horizontal)
-                    Divider().background(Color.white)
-                }
-                
-                Group {
-                    Button {
-                        if (!chords) {
-                            drone.toggle()
-                        }
-                    } label: {
-                        HStack {
-                            if (drone) {
-                                MainUIButton(buttonText: "Drone SystemImage checkmark.square", type: 1, height: buttonHeight)
-                            } else {
+                        Button {
+                            if (!drone) {
+                                chords.toggle()
+                            }
+                        } label: {
+                            HStack {
                                 if (chords) {
-                                    MainUIButton(buttonText: "Drone SystemImage square", type: 1, height: buttonHeight).blur(radius: 1)
+                                    MainUIButton(buttonText: "Chords SystemImage checkmark.square", type: 1, height: buttonHeight)
                                 } else {
-                                    MainUIButton(buttonText: "Drone SystemImage square", type: 1, height: buttonHeight)
+                                    if (drone) {
+                                        MainUIButton(buttonText: "Chords SystemImage square", type: 1, height: buttonHeight).blur(radius: 1)
+                                    } else {
+                                        MainUIButton(buttonText: "Chords SystemImage square", type: 1, height: buttonHeight)
+                                    }
+                                }
+                            }
+                        }
+                        
+                        Button {
+                            scaleNotes.toggle()
+                        } label: {
+                            HStack {
+                                if (scaleNotes) {
+                                    MainUIButton(buttonText: "Notes SystemImage checkmark.square", type: 1, height: buttonHeight)
+                                } else {
+                                    MainUIButton(buttonText: "Notes SystemImage square", type: 1, height: buttonHeight)
                                 }
                             }
                         }
                     }
                     
+                    Spacer()
+                    Spacer()
+                    let bottumButtonHeight = universalSize.height/10
+                    
+                    // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
                     Button {
-                        if (!drone) {
-                            chords.toggle()
+                        switch musicNotes.type.lowercased() {
+                        case "mode":
+                            musicNotes.type = "Modes"
+                            self.screenType = "specialview"
+                        case "chromatic-scale", "whole-tone-scale":
+                            musicNotes.type = "Special"
+                            self.screenType = "specialview"
+                        case "harmonic","melodic":
+                            self.screenType = "scale"
+                        case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
+                            musicNotes.type = "tetrads"
+                            self.screenType = "specialview"
+                        default:
+                            self.screenType = musicNotes.type
                         }
                     } label: {
-                        HStack {
-                            if (chords) {
-                                MainUIButton(buttonText: "Chords SystemImage checkmark.square", type: 1, height: buttonHeight)
-                            } else {
-                                if (drone) {
-                                    MainUIButton(buttonText: "Chords SystemImage square", type: 1, height: buttonHeight).blur(radius: 1)
-                                } else {
-                                    MainUIButton(buttonText: "Chords SystemImage square", type: 1, height: buttonHeight)
-                                }
-                            }
+                        switch musicNotes.type.lowercased() {
+                        case "mode":
+                            MainUIButton(buttonText: "Modes", type: 3, height: bottumButtonHeight)
+                        case "chromatic-scale", "whole-tone-scale":
+                            MainUIButton(buttonText: "Special", type: 3, height: bottumButtonHeight)
+                        case "harmonic","melodic":
+                            MainUIButton(buttonText: "Scales", type: 3, height: bottumButtonHeight)
+                        case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
+                            MainUIButton(buttonText: "Tetrads", type: 3, height: bottumButtonHeight)
+                        default:
+                            MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
                         }
-                    }
-                    
-                    Button {
-                        scaleNotes.toggle()
-                    } label: {
-                        HStack {
-                            if (scaleNotes) {
-                                MainUIButton(buttonText: "Notes SystemImage checkmark.square", type: 1, height: buttonHeight)
-                            } else {
-                                MainUIButton(buttonText: "Notes SystemImage square", type: 1, height: buttonHeight)
-                            }
-                        }
-                    }
-                }
-                
-                Spacer()
-                Spacer()
-                let bottumButtonHeight = universalSize.height/10
-                
-                // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
-                Button {
-                    switch musicNotes.type.lowercased() {
-                    case "mode":
-                        musicNotes.type = "Modes"
-                        self.screenType = "specialview"
-                    case "chromatic-scale", "whole-tone-scale":
-                        musicNotes.type = "Special"
-                        self.screenType = "specialview"
-                    case "harmonic","melodic":
-                        self.screenType = "scale"
-                    case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
-                        musicNotes.type = "tetrads"
-                        self.screenType = "specialview"
-                    default:
-                        self.screenType = musicNotes.type
-                    }
-                    
-//                    let scaleType = musicNotes.type.lowercased()
-//                    if (scaleType == "mode") {
-//                        musicNotes.type = "Modes"
-//                        self.screenType = "specialview"
-//                    } else if (scaleType == "chromatic-scale" || scaleType == "whole-tone-scale") {
-//                        musicNotes.type = "Special"
-//                        self.screenType = "specialview"
-//                    } else if (scaleType == "harmonic" || scaleType == "melodic") {
-//                        self.screenType = "scale"
-//                    } else if (musicNotes.tonality == "tetrad") {
-//                        musicNotes.type = "tetrads"
-//                        self.screenType = "Specialview"
-//                    } else {
-//                        self.screenType = musicNotes.type
-                } label: {
-                    switch musicNotes.type.lowercased() {
-                    case "mode":
-                        MainUIButton(buttonText: "Modes", type: 3, height: bottumButtonHeight)
-                    case "chromatic-scale", "whole-tone-scale":
-                        MainUIButton(buttonText: "Special", type: 3, height: bottumButtonHeight)
-                    case "harmonic","melodic":
-                        MainUIButton(buttonText: "Scales", type: 3, height: bottumButtonHeight)
-                    case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
-                        MainUIButton(buttonText: "Tetrads", type: 3, height: bottumButtonHeight)
-                    default:
-                        MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
                     }
                 }
             }
