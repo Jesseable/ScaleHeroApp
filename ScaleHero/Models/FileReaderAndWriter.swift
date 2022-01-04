@@ -45,6 +45,7 @@ class FileReaderAndWriter: ObservableObject {
     
     func writeScaleInstrument(newInstrument: String) {
         //writing
+        print(scaleInstrumentPath.path)
         do {
             try newInstrument.write(to: scaleInstrumentPath, atomically: true, encoding: String.Encoding.utf8)
         }

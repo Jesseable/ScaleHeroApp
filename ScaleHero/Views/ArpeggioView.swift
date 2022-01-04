@@ -54,10 +54,8 @@ struct ArpeggioView : View {
                     
                     
                     Button {
-                        // Goes to another options page
-//                        musicNotes.tonality = "Major"
-//                        musicNotes.type = "arpeggio"
-//                        self.screenType = "soundview"
+                        musicNotes.type = "Tetrads"
+                        self.screenType = "specialview"
                     } label: {
                         MainUIButton(buttonText: "Special (Tetrads)", type: 1, height: buttonHeight)
                     }

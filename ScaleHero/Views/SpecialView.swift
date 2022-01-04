@@ -19,7 +19,7 @@ struct SpecialView: View {
 
     var backgroundImage: String
     
-    var body: some View {
+    var body: some View { // TOO LARGE A VIEW, NEED TO MAKE THE VIEW SMALLER
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
         
@@ -30,7 +30,8 @@ struct SpecialView: View {
                 
                 ScrollView {
                 
-                    if (specialTitle.lowercased() == "modes") {
+                    switch specialTitle.lowercased() {
+                    case "modes":
                         ForEach(modes, id: \.self) { mode in
                             Button {
                                 musicNotes.tonality = mode
@@ -40,7 +41,7 @@ struct SpecialView: View {
                                 MainUIButton(buttonText: mode, type: 1, height: buttonHeight)
                             }
                         }
-                    } else if (specialTitle.lowercased() == "special") {
+                    case "special":
                         ForEach(specialTypes, id: \.self) { type in
                             Button {
                                 musicNotes.tonality = "" //There is no tonality for these scales
@@ -50,16 +51,18 @@ struct SpecialView: View {
                                 MainUIButton(buttonText: type, type: 1, height: buttonHeight)
                             }
                         }
-                    } else if (specialTitle.lowercased() == "tetrads") {
-                            ForEach(tetrads, id: \.self) { type in
-                                Button {
-                                    musicNotes.tonality = "tetrad" //There is no tonality for these scales
-                                    musicNotes.type = type
-                                    screenType = "soundview"
-                                } label: {
-                                    MainUIButton(buttonText: type, type: 1, height: buttonHeight)
-                                }
+                    case "tetrads":
+                        ForEach(tetrads, id: \.self) { type in
+                            Button {
+                                musicNotes.tonality = "tetrad"
+                                musicNotes.type = type
+                                screenType = "soundview"
+                            } label: {
+                                MainUIButton(buttonText: type, type: 1, height: buttonHeight)
                             }
+                        }
+                    default:
+                        Text("Failed to load")
                     }
                 }
                 Spacer()

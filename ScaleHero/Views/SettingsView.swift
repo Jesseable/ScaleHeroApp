@@ -26,10 +26,7 @@ struct SettingsView: View {
                 VStack {
                     let buttonHeight = universalSize.height/10
                 
-                    Text("Choose Scale Instrument:")
-                        .font(.title)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundColor(Color.white)
+                    MainUIButton(buttonText: "Choose Scale Instrument:", type: 4, height: buttonHeight)
                     
                     Section {
                         

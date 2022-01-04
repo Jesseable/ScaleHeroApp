@@ -157,27 +157,47 @@ struct SoundView : View {
                 
                 // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
                 Button {
-                    let scaleType = musicNotes.type.lowercased()
-                    if (scaleType == "mode") {
+                    switch musicNotes.type.lowercased() {
+                    case "mode":
                         musicNotes.type = "Modes"
                         self.screenType = "specialview"
-                    } else if (scaleType == "chromatic-scale" || scaleType == "whole-tone-scale") {
+                    case "chromatic-scale", "whole-tone-scale":
                         musicNotes.type = "Special"
                         self.screenType = "specialview"
-                    } else if (scaleType == "harmonic" || scaleType == "melodic") {
+                    case "harmonic","melodic":
                         self.screenType = "scale"
-                    } else {
+                    case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
+                        musicNotes.type = "tetrads"
+                        self.screenType = "specialview"
+                    default:
                         self.screenType = musicNotes.type
                     }
+                    
+//                    let scaleType = musicNotes.type.lowercased()
+//                    if (scaleType == "mode") {
+//                        musicNotes.type = "Modes"
+//                        self.screenType = "specialview"
+//                    } else if (scaleType == "chromatic-scale" || scaleType == "whole-tone-scale") {
+//                        musicNotes.type = "Special"
+//                        self.screenType = "specialview"
+//                    } else if (scaleType == "harmonic" || scaleType == "melodic") {
+//                        self.screenType = "scale"
+//                    } else if (musicNotes.tonality == "tetrad") {
+//                        musicNotes.type = "tetrads"
+//                        self.screenType = "Specialview"
+//                    } else {
+//                        self.screenType = musicNotes.type
                 } label: {
-                    let scaleType = musicNotes.type.lowercased()
-                    if (scaleType == "mode") {
+                    switch musicNotes.type.lowercased() {
+                    case "mode":
                         MainUIButton(buttonText: "Modes", type: 3, height: bottumButtonHeight)
-                    } else if (scaleType == "chromatic-scale" || scaleType == "whole-tone-scale") {
+                    case "chromatic-scale", "whole-tone-scale":
                         MainUIButton(buttonText: "Special", type: 3, height: bottumButtonHeight)
-                    } else if (scaleType == "harmonic" || scaleType == "melodic") {
+                    case "harmonic","melodic":
                         MainUIButton(buttonText: "Scales", type: 3, height: bottumButtonHeight)
-                    } else {
+                    case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
+                        MainUIButton(buttonText: "Tetrads", type: 3, height: bottumButtonHeight)
+                    default:
                         MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
                     }
                 }

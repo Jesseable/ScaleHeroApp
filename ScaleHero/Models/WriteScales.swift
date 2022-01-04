@@ -131,7 +131,8 @@ struct WriteScales {
         
         for note in accendingNotes {
             let noteOctaveArr = note.value.components(separatedBy: ":")
-            if (noteOctaveArr[1] == startingNote && noteOctaveArr[0] == "1") { // Optional to change octave here later on
+            let startingOctave = "1" // Optional to change octave here later on
+            if (noteOctaveArr[1] == startingNote && noteOctaveArr[0] == startingOctave) {
                 key = note.key
             }
         }
@@ -167,12 +168,7 @@ struct WriteScales {
         } else {
             // Needs to be altered to do multiple octaves as well. Should create another function for this purpose!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             reversedValuesArr = valueArray.reversed()
-            let seventhNote = reversedValuesArr.remove(at: 1)
-            let sixthNote = reversedValuesArr.remove(at: 1)
-            guard let seventhInt = accendingNotes.key(from: seventhNote) else {return ["failed"]}
-            guard let sixthInt = accendingNotes.key(from: sixthNote) else {return ["failed"]}
-            reversedValuesArr.insert(accendingNotes[seventhInt-1]!, at: 1)
-            reversedValuesArr.insert(accendingNotes[sixthInt-1]!, at: 2)
+            reversedValuesArr = melodicMinordecendingalterations(on: reversedValuesArr, for: octave)
             // removed a value so as to not repeat the tonic
             reversedValuesArr.removeFirst()
             
@@ -180,6 +176,40 @@ struct WriteScales {
         }
         
         return valueArray
+    }
+    
+    func melodicMinordecendingalterations(on reversedValuesArr: [String], for octave: Int) -> [String] {
+        var reversedValues = reversedValuesArr
+        let seventhNote = reversedValues.remove(at: 1)
+        let sixthNote = reversedValues.remove(at: 1)
+        let firstSeventhNoteKey = accendingNotes.key(from: seventhNote)
+        let firstSixthNoteKey = accendingNotes.key(from: sixthNote)
+        
+        if (octave > 1) {
+            reversedValues.remove(at: 6)
+            reversedValues.remove(at: 6)
+        }
+        if (octave > 2) {
+            reversedValues.remove(at: 11)
+            reversedValues.remove(at: 11)
+        }
+        var seventhIndexPos = 1
+        var sixthIndexPos = 2
+        var newSeventhNotesKey = (firstSeventhNoteKey! - 1)
+        var newSixthhNotesKey = (firstSixthNoteKey! - 1)
+        
+        octave.times {
+            reversedValues.insert(accendingNotes[newSeventhNotesKey]!, at: seventhIndexPos)
+            seventhIndexPos += 6
+            newSeventhNotesKey -= 12
+        }
+        octave.times {
+            reversedValues.insert(accendingNotes[newSixthhNotesKey]!, at: sixthIndexPos)
+            sixthIndexPos += 7
+            newSixthhNotesKey -= 12
+        }
+        
+        return reversedValues
     }
     
     /**
@@ -316,5 +346,11 @@ extension Int {
 extension Dictionary where Value: Equatable {
     func key(from value: Value) -> Key? {
         return self.first(where: { $0.value == value })?.key
+    }
+}
+
+extension Dictionary where Value: Equatable {
+    func allKeys(forValue val: Value) -> [Key] {
+        return self.filter { $1 == val }.map { $0.0 }
     }
 }

@@ -13,6 +13,14 @@ struct AppContentView: View {
     @State private var screenType = "HomePage"
     private var backgroundImage = "BackgroundRed" // Can change to a variety of choices
     private var fileReaderAndWriter = FileReaderAndWriter()
+    private var selectedInstrument : String
+
+    init() { // Test by changing Iphone type at one point!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        selectedInstrument = fileReaderAndWriter.readScaleInstrument()
+        if (selectedInstrument != "Cello" || selectedInstrument != "Jesse's Vocals") {
+            selectedInstrument = "Cello" // or default option when sound files are completed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+    }
     
     var body: some View {
         
