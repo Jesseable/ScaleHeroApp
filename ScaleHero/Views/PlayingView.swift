@@ -17,6 +17,7 @@ struct PlayingView: View {
     var scaleTimer: Timer? = nil
     @EnvironmentObject var musicNotes: MusicNotes
     @State var index = 0
+    let title: String
     
     @State var isPlaying = false
     
@@ -27,11 +28,13 @@ struct PlayingView: View {
             let buttonHeight = universalSize.height/10
             
             VStack {
+                Text(title.replacingOccurrences(of: "-", with: " ")).bold().textCase(.uppercase).font(.title).foregroundColor(.white).scaledToFit()
+                
                 Spacer()
                 
-                Text(String(index-1) + musicNotes.currentNote)
+                Text(musicNotes.currentNote)//.components(separatedBy: "-"))
                     .onReceive(musicNotes.timer) { time in
-                        print(musicNotes.scaleNotes)
+
                         // stop the previous sound
                         if (index != 0) {
                             Sound.stop(file: musicNotes.scaleNotes[index-1], fileExtension: "mp3")
@@ -42,18 +45,20 @@ struct PlayingView: View {
                             musicNotes.timer.upstream.connect().cancel()
                             
                             // Add in a short delay before this is called  You will have to debug this thouroughly
-                            presentationMode.wrappedValue.dismiss()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                                presentationMode.wrappedValue.dismiss()
+                            }
                         }
+                        musicNotes.currentNote = musicNotes.scaleNotes[index].components(separatedBy: "-")[2]
                         
                         // play the next note
                         Sound.play(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
-                        
-                        musicNotes.currentNote = musicNotes.scaleNotes[index]
+            
                         self.index += 1
                 }
 
                 
-                Text("Note Playing is: \(musicNotes.scaleNotes[0])")
+                Text("Tempo: \(musicNotes.tempo)")
                 
                 Spacer()
                 

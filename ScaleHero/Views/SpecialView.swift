@@ -58,7 +58,7 @@ struct SpecialView: View {
                                 musicNotes.type = type
                                 screenType = "soundview"
                             } label: {
-                                MainUIButton(buttonText: type, type: 1, height: buttonHeight)
+                                MainUIButton(buttonText: type.components(separatedBy: "-")[0] + " 7th", type: 1, height: buttonHeight)
                             }
                         }
                     default:
@@ -68,9 +68,17 @@ struct SpecialView: View {
                 Spacer()
                 
                 Button {
-                    self.screenType = "scale"
+                    if (musicNotes.type == "Tetrads") {
+                        self.screenType = "arpeggio"
+                    } else {
+                        self.screenType = "scale"
+                    }
                 } label: {
-                    MainUIButton(buttonText: "Scale", type: 3, height: buttonHeight)
+                    if (musicNotes.type == "Tetrads") {
+                        MainUIButton(buttonText: "Arpeggios", type: 3, height: buttonHeight)
+                    } else {
+                        MainUIButton(buttonText: "Scale", type: 3, height: buttonHeight)
+                    }
                 }
             }
         }

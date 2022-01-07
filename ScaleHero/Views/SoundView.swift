@@ -29,22 +29,21 @@ struct SoundView : View {
         NavigationView {
             ZStack {
                 Image(backgroundImage).resizable().ignoresSafeArea()
-                
+                let buttonHeight = universalSize.height/15
+                let title = scaleType
                 // Hidden and only activates when isPlaying is set
                 NavigationLink(
                     "navLink",
-                    destination: PlayingView(backgroundImage: backgroundImage, playSounds: playScale, scaleType: scaleType),
+                    destination: PlayingView(backgroundImage: backgroundImage, playSounds: playScale, scaleType: scaleType, title: title.replacingOccurrences(of: "-", with: " ")),
                     isActive: $isPlaying
                 ).hidden()
             
                 VStack {
-                    let buttonHeight = universalSize.height/15
-                    let title = scaleType
                     Text(title.replacingOccurrences(of: "-", with: " ")).bold().textCase(.uppercase).font(.title).foregroundColor(.white).scaledToFit()
                     
                     Spacer()
                     
-                    Button {
+                    Button { /// YOU CAN DELETE A LOT OF THIS. GO THROUGH AND TIDY UP THE CODE
                         let scaleTypeArr = scaleType.components(separatedBy: " ")
                         let startingNote = scaleTypeArr[0]
                         let tonality = scaleTypeArr[1].lowercased()
@@ -63,7 +62,7 @@ struct SoundView : View {
                             playScale.cancelAllSounds()
                         } else {
                             Sound.enabled = true
-                            if (drone) {
+                            if (drone) { // CHANGE INTO THE PLAYSOUNDS VIEW
                                 let duration = CGFloat(60/Int(self.musicNotes.tempo) * scaleInfo.count)
                                 playScale.playDroneSound(duration: duration, startingNote: startingNote)
                             }

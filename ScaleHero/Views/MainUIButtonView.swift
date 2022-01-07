@@ -11,7 +11,7 @@ struct MainUIButton: View {
     var buttonText: String
     var type : Int
     var height : CGFloat
-    private let buttonColor = Color("SkyBlue") // Colours to use once rewards system is set up "SkyBlue" "Crimson" "NavyBlue"
+    private let buttonColor = Color("Orange") // Colours to use once rewards system is set up "SkyBlue" "Crimson" "NavyBlue"
     private let universalSize = UIScreen.main.bounds
     
     var body: some View {
@@ -29,7 +29,7 @@ struct MainUIButton: View {
             case 3:
                 CroppedAboveButton() // Bottum Buttons
                         .fill(style: FillStyle(eoFill: true))
-                    .foregroundColor(Color("NavyBlue"))
+                    .foregroundColor(Color("Crimson"))
                     .padding(.horizontal, 10)
                     .frame(width: universalSize.width, height: height)
                     .opacity(0.8)
