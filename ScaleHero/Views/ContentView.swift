@@ -11,15 +11,26 @@ struct AppContentView: View {
     
     @EnvironmentObject var musicNotes: MusicNotes
     @State private var screenType = "HomePage"
-    private var backgroundImage = "BackgroundRed" // Can change to a variety of choices
+    @State private var backgroundImage : String // Can change to a variety of choices
     private var fileReaderAndWriter = FileReaderAndWriter()
+    private let scaleInstruments = ["Cello", "Jesse's Vocals"]
+    private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
     private var selectedInstrument : String
+    private var selectedBackground : String
 
     init() { // Test by changing Iphone type at one point!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         selectedInstrument = fileReaderAndWriter.readScaleInstrument()
-        if (selectedInstrument != "Cello" || selectedInstrument != "Jesse's Vocals") {
+        if (!scaleInstruments.contains(selectedInstrument)) {
             selectedInstrument = "Cello" // or default option when sound files are completed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            fileReaderAndWriter.writeScaleInstrument(newInstrument: selectedInstrument)
         }
+        
+        selectedBackground = fileReaderAndWriter.readBackgroundImage()
+        if (!backgrounds.contains(selectedBackground)) {
+            selectedBackground = "Blue"
+            fileReaderAndWriter.writeBackgroundImage(newImage: selectedBackground)
+        }
+        backgroundImage = "Background" + selectedBackground
     }
     
     var body: some View {
@@ -27,18 +38,18 @@ struct AppContentView: View {
         return Group {
             switch screenType {
             case "scale":
-                ScalesView(screenType: self.$screenType, backgroundImage: backgroundImage)
+                ScalesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "arpeggio":
-                ArpeggioView(screenType: self.$screenType, backgroundImage: backgroundImage)
+                ArpeggioView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "specialview":
-                SpecialView(screenType: self.$screenType, specialTitle: musicNotes.type, backgroundImage: backgroundImage)
+                SpecialView(screenType: self.$screenType, specialTitle: musicNotes.type, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "settings":
-                SettingsView(screenType: self.$screenType, backgroundImage: backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument())
+                SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage())
             case "soundview":
                 let scaleType = musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type
-                SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: backgroundImage)
+                SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             default:
-                HomePage(screenType: $screenType, backgroundImage: backgroundImage)
+                HomePage(screenType: $screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             }
         }
     }

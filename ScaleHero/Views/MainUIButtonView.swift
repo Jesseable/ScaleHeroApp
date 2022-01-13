@@ -8,28 +8,29 @@
 import SwiftUI
 
 struct MainUIButton: View {
+//    @EnvironmentObject var musicNotes: MusicNotes
     var buttonText: String
     var type : Int
     var height : CGFloat
-    private let buttonColor = Color("Orange") // Colours to use once rewards system is set up "SkyBlue" "Crimson" "NavyBlue"
+    let fileReaderAndWriter = FileReaderAndWriter()
     private let universalSize = UIScreen.main.bounds
     
     var body: some View {
         
         ZStack {
-            
+            let buttonColor = fileReaderAndWriter.readBackgroundImage()
             switch type {
             case 2:
                 CroppedBelowButton()
                     .fill(style: FillStyle(eoFill: true))
-                    .foregroundColor(buttonColor)
+                    .foregroundColor(Color(buttonColor))
                     .padding(.horizontal, 10)
                     .frame(width: universalSize.width, height: height)
                     .opacity(0.8)
             case 3:
                 CroppedAboveButton() // Bottum Buttons
                         .fill(style: FillStyle(eoFill: true))
-                    .foregroundColor(Color("Crimson"))
+                    .foregroundColor(Color(buttonColor + "Dark"))
                     .padding(.horizontal, 10)
                     .frame(width: universalSize.width, height: height)
                     .opacity(0.8)
@@ -41,7 +42,7 @@ struct MainUIButton: View {
                     .opacity(0.8)
             default:
                 RectangularButton()
-                    .fill(buttonColor)
+                    .fill(Color(buttonColor))
                     .padding(.horizontal, 10)
                     .frame(width: universalSize.width, height: height)
                     .opacity(0.8)
@@ -105,9 +106,9 @@ struct CroppedBelowButton: Shape {
         return Path(path.cgPath)
     }
 }
-
-struct MainUIButtons_Previews: PreviewProvider {
-    static var previews: some View {
-        MainUIButton(buttonText: "My Button", type: 3, height: UIScreen.main.bounds.height/6)
-    }
-}
+//
+//struct MainUIButtons_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MainUIButton(buttonText: "My Button", type: 3, height: UIScreen.main.bounds.height/6, buttonColor: "Blue")
+//    }
+//}

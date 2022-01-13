@@ -18,6 +18,7 @@ class MusicNotes: ObservableObject {
     @Published var scaleNotes = [""]
     @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @Published var currentNote = "C"
+    @Published var backgroundImage : String?
     
     func getMusicAlphabet() -> [String] {
         return musicAlphabet

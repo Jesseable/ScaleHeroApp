@@ -7,15 +7,18 @@
 
 import SwiftUI
 
-struct SettingsView: View {
+struct SettingsView: View { // MIGHT NEED AN APPLY BUTTON
     
+    @EnvironmentObject var musicNotes: MusicNotes
     private let universalSize = UIScreen.main.bounds
     @Binding var screenType: String
     var backgroundImage: String
     var fileReaderAndWriter = FileReaderAndWriter()
     private let scaleInstruments = ["Cello", "Jesse's Vocals"]
-    @State var instrument : String?
-    @State var instrumentSelected: String
+    private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
+    //@State var instrument : String?
+    @State var instrumentSelected : String
+    @State var backgroundColour : String
 
     
     var body: some View {
@@ -25,8 +28,21 @@ struct SettingsView: View {
                 Image(backgroundImage).resizable().ignoresSafeArea()
                 VStack {
                     let buttonHeight = universalSize.height/10
+                    
+                    MainUIButton(buttonText: "Background:", type: 4, height: buttonHeight)
+                    
+                    Section {
+                        
+                        Picker("ScaleNote Selection", selection: $backgroundColour) {
+                            ForEach(backgrounds, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        .pickerStyle( .segmented)
+                        .colorScheme(.dark)
+                    }
                 
-                    MainUIButton(buttonText: "Choose Scale Instrument:", type: 4, height: buttonHeight)
+                    MainUIButton(buttonText: "Scale Instrument:", type: 4, height: buttonHeight)
                     
                     Section {
                         
@@ -71,13 +87,22 @@ struct SettingsView: View {
                     Spacer()
 
                     Button {
-                        self.screenType = "HomeScreen"
+                        // To move to apply button
                         for scaleInstrument in scaleInstruments {
                             if (instrumentSelected == scaleInstrument) {
                                 fileReaderAndWriter.writeScaleInstrument(newInstrument: scaleInstrument)
-                                instrument = fileReaderAndWriter.readScaleInstrument()
+                                //instrument = fileReaderAndWriter.readScaleInstrument()
                             }
                         }
+                        
+                        for background in backgrounds {
+                            if (backgroundColour == background) {
+                                fileReaderAndWriter.writeBackgroundImage(newImage: background)
+                                musicNotes.backgroundImage = "Background" + background
+                            }
+                        }
+                        
+                        self.screenType = "HomeScreen"
                     } label: {
                         MainUIButton(buttonText: "HomeScreen", type: 3, height: buttonHeight)
                     }

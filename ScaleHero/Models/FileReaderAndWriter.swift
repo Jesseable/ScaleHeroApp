@@ -13,6 +13,7 @@ class FileReaderAndWriter: ObservableObject {
     @Published var scales: [Scale]
     let filePath = FileManager.documentsDirectory.appendingPathComponent("FavouriteScales")
     let scaleInstrumentPath = FileManager.documentsDirectory.appendingPathComponent("ScaleInstrument")
+    let backgroundColourPath = FileManager.documentsDirectory.appendingPathComponent("backGroundColour")
     
     // Need to make the JSON FIle
     init() {
@@ -43,9 +44,33 @@ class FileReaderAndWriter: ObservableObject {
         save()
     }
     
+    func writeBackgroundImage(newImage: String) {
+        print(backgroundColourPath.path)
+        do {
+            try newImage.write(to: backgroundColourPath, atomically: true, encoding: String.Encoding.utf8)
+        }
+        catch {
+            // Look into this or make the pop up errors occur for users when this occurs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            Swift.print(error)
+            print("error has occured when writing to the file")
+        }
+    }
+    
+    func readBackgroundImage() -> String {
+        //reading
+        do {
+            let imageName = try String(contentsOf: backgroundColourPath, encoding: .utf8)
+            return imageName
+        }
+        catch {
+            Swift.print(error)
+            return "Error caught when reading instrument file" // Return default option IN FUTURE WHEN DECIDED UPON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+    }
+    
     func writeScaleInstrument(newInstrument: String) {
         //writing
-        print(scaleInstrumentPath.path)
+        
         do {
             try newInstrument.write(to: scaleInstrumentPath, atomically: true, encoding: String.Encoding.utf8)
         }
