@@ -45,7 +45,6 @@ class FileReaderAndWriter: ObservableObject {
     }
     
     func writeBackgroundImage(newImage: String) {
-        print(backgroundColourPath.path)
         do {
             try newImage.write(to: backgroundColourPath, atomically: true, encoding: String.Encoding.utf8)
         }

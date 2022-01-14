@@ -58,42 +58,50 @@ struct AppContentView: View {
 struct HomePage : View {
     
     private let universalSize = UIScreen.main.bounds
-    
+    var fileReaderAndWriter = FileReaderAndWriter()
     @Binding var screenType: String
     @State private var offset: CGFloat = .zero
     var backgroundImage: String
-    
-    private let titleImage = Image("ScaleHero-Title")
-    
+
     private let columns = [
         GridItem(.adaptive(minimum: 200))
     ]
     
     var body: some View {
         
+        let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
+        
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
             
             // Create all music note animations
-            ImageAnimation(imageName: "Treble-Cleff", xPos: universalSize.width * 0.3, duration: 7.00, offset: self.$offset)
+            ImageAnimation(imageName: "Treble-Cleff" + fileReaderAndWriter.readBackgroundImage(),
+                           xPos: universalSize.width * 0.3, duration: 7.00, offset: self.$offset)
             
-            ImageAnimation(imageName: "Quaver", xPos: -universalSize.width * 0.3, duration: 5.00, offset: self.$offset)
+            ImageAnimation(imageName: "Quaver" + fileReaderAndWriter.readBackgroundImage(),
+                           xPos: -universalSize.width * 0.3, duration: 5.00, offset: self.$offset)
             
-            ImageAnimation(imageName: "Semiquaver", xPos: 0, duration: 10.00, offset: self.$offset)
+            ImageAnimation(imageName: "Semiquaver" + fileReaderAndWriter.readBackgroundImage(),
+                           xPos: 0, duration: 10.00, offset: self.$offset)
             
-            ImageAnimation(imageName: "Crotchet", xPos: -universalSize.width * 0.4, duration: 6.25, offset: self.$offset)
+            ImageAnimation(imageName: "Crotchet" + fileReaderAndWriter.readBackgroundImage(),
+                           xPos: -universalSize.width * 0.4, duration: 6.25, offset: self.$offset)
             
-            ImageAnimation(imageName: "Treble-Cleff", xPos: -universalSize.width * 0.1, duration: 4.60, offset: self.$offset)
+            ImageAnimation(imageName: "Treble-Cleff" + fileReaderAndWriter.readBackgroundImage(),
+                           xPos: -universalSize.width * 0.1, duration: 4.60, offset: self.$offset)
             
-            ImageAnimation(imageName: "Crotchet", xPos: universalSize.width * 0.35, duration: 12.00, offset: self.$offset)
+            ImageAnimation(imageName: "Crotchet" + fileReaderAndWriter.readBackgroundImage(),
+                           xPos: universalSize.width * 0.35, duration: 12.00, offset: self.$offset)
             
-            ImageAnimation(imageName: "Quaver", xPos: universalSize.width * 0.07, duration: 5.48, offset: self.$offset)
+            ImageAnimation(imageName: "Quaver" + fileReaderAndWriter.readBackgroundImage(),
+                           xPos: universalSize.width * 0.07, duration: 5.48, offset: self.$offset)
             
-            ImageAnimation(imageName: "Semiquaver", xPos: universalSize.width * 0.48, duration: 8.00, offset: self.$offset)
+            ImageAnimation(imageName: "Semiquaver" + fileReaderAndWriter.readBackgroundImage(),
+                           xPos: universalSize.width * 0.48, duration: 8.00, offset: self.$offset)
             
             VStack {
 
-                self.titleImage.resizable()
+                titleImage.resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(height: UIScreen.main.bounds.height/6)
                     .padding()
