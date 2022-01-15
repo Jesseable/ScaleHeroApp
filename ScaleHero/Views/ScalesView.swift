@@ -13,6 +13,7 @@ class MusicNotes: ObservableObject {
     @Published var noteName = "C"
     @Published var tempo = CGFloat(60)
     @Published var octaves = 1
+    @Published var tonicis = 1
     @Published var type = "Scale"
     @Published var tonality = "Major"
     @Published var scaleNotes = [""]

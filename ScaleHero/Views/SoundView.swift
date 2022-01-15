@@ -34,7 +34,7 @@ struct SoundView : View {
                 // Hidden and only activates when isPlaying is set
                 NavigationLink(
                     "navLink",
-                    destination: PlayingView(backgroundImage: backgroundImage, playSounds: playScale, scaleType: scaleType, title: title.replacingOccurrences(of: "-", with: " ")),
+                    destination: PlayingView(backgroundImage: backgroundImage, playSounds: playScale, scaleType: scaleType, playScaleNotes: scaleNotes, title: title.replacingOccurrences(of: "-", with: " ")),
                     isActive: $isPlaying
                 ).hidden().opacity(1.00) // Unseable CHNAGE TO SOMETHING ELSE
                 VStack {
@@ -65,9 +65,9 @@ struct SoundView : View {
                                     let duration = CGFloat(60/Int(self.musicNotes.tempo) * scaleInfo.count)
                                     playScale.playDroneSound(duration: duration, startingNote: startingNote)
                                 }
-                                if (scaleNotes) {
-                                    //playScale.playScaleSounds(temp: Int(self.musicNotes.tempo), scaleInfoArra: scaleInfo)
-                                }
+//                                if (scaleNotes) {
+//                                    //playScale.playScaleSounds(temp: Int(self.musicNotes.tempo), scaleInfoArra: scaleInfo)
+//                                }
                                 
                                 isPlaying = true
                                 
@@ -106,47 +106,23 @@ struct SoundView : View {
         //                                .padding(.horizontal)
         //                        }
 //                            }
-                            Slider(value: $musicNotes.tempo, in: 40...180, step: 1.0)
+                            Slider(value: $musicNotes.tempo, in: 20...180, step: 1.0)
                                 .padding(.horizontal)
                             Divider().background(Color.white)
                         }
                         
                         Group {
                             Button {
-//                                if (!chords) {
-                                    drone.toggle()
-//                                }
+                                drone.toggle()
                             } label: {
                                 HStack {
                                     if (drone) {
                                         MainUIButton(buttonText: "Drone SystemImage checkmark.square", type: 1, height: buttonHeight)
                                     } else {
-//                                        if (chords) {
-//                                            MainUIButton(buttonText: "Drone SystemImage square", type: 1, height: buttonHeight).blur(radius: 1)
-//                                        } else {
-                                            MainUIButton(buttonText: "Drone SystemImage square", type: 1, height: buttonHeight)
-//                                        }
+                                        MainUIButton(buttonText: "Drone SystemImage square", type: 1, height: buttonHeight)
                                     }
                                 }
                             }
-//
-//                            Button {
-//                                if (!drone) {
-//                                    chords.toggle()
-//                                }
-//                            } label: {
-//                                HStack {
-//                                    if (chords) {
-//                                        MainUIButton(buttonText: "Chords SystemImage checkmark.square", type: 1, height: buttonHeight)
-//                                    } else {
-//                                        if (drone) {
-//                                            MainUIButton(buttonText: "Chords SystemImage square", type: 1, height: buttonHeight).blur(radius: 1)
-//                                        } else {
-//                                            MainUIButton(buttonText: "Chords SystemImage square", type: 1, height: buttonHeight)
-//                                        }
-//                                    }
-//                                }
-//                            }
                             
                             Button {
                                 scaleNotes.toggle()
@@ -157,6 +133,25 @@ struct SoundView : View {
                                     } else {
                                         MainUIButton(buttonText: "Notes SystemImage square", type: 1, height: buttonHeight)
                                     }
+                                }
+                            }
+                        }
+                        
+                        Divider().background(Color.white)
+                        
+                        Group {
+                            MainUIButton(buttonText: "Repeat Tonics", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
+                            ZStack {
+                                MainUIButton(buttonText: "", type: 4, height: buttonHeight)
+                                Section {
+                                    Picker("Tonic selection", selection: $musicNotes.tonicis) {
+                                        Text("Never").tag(1)
+                                        Text("All").tag(2)
+                                        Text("All/first").tag(3)
+                                    }
+                                    .padding(.horizontal)
+                                    .pickerStyle( .segmented)
+                                    .colorScheme(.dark)
                                 }
                             }
                         }
