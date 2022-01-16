@@ -48,7 +48,7 @@ struct SoundView : View {
                             let tonality = scaleTypeArr[1].lowercased()
                             let scaleType = scaleTypeArr[2].lowercased()
                             var scale = WriteScales(type: scaleType.lowercased())
-                            let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: musicNotes.octaves, tonality: tonality) // Change later
+                            let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: musicNotes.octaves, tonality: tonality, tonicOption: musicNotes.tonicis) // Change later
                             let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo)
                             musicNotes.scaleNotes = scaleSoundFiles
                             let delay = CGFloat(60/musicNotes.tempo)

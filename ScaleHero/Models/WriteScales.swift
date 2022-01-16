@@ -142,7 +142,7 @@ struct WriteScales {
     /**
      Returns an array of the notes to play in the specific scale
      */
-    mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String) -> [String] {
+    mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String, tonicOption: Int) -> [String] {
         let startingOctave = 1
         let startingKey = startingNoteKeyFinder(startingNote: startingNote, startingOctave: startingOctave)
         
@@ -169,14 +169,54 @@ struct WriteScales {
             // Needs to be altered to do multiple octaves as well. Should create another function for this purpose!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             reversedValuesArr = valueArray.reversed()
             reversedValuesArr = melodicMinordecendingalterations(on: reversedValuesArr, for: octave)
+            
             // removed a value so as to not repeat the tonic
             reversedValuesArr.removeFirst()
+            
+            
             
             valueArray.append(contentsOf: reversedValuesArr)
         }
         
-        return valueArray
+        let scaleArray = addRepeatingTonics(for: valueArray, tonicOption: tonicOption)
+        
+        return scaleArray
     }
+    
+    func addRepeatingTonics(for scaleArr: [String], tonicOption: Int) -> [String] {
+        var valueArr = scaleArr
+        if (tonicOption >= 2) {
+            // repeat all
+            let startingNote = scaleArr[0].components(separatedBy: ":")[1]
+            
+            var firstHalf = true
+            
+            for note in valueArr {
+
+                let currentNote = note.components(separatedBy: ":")[1]
+                if (currentNote == startingNote) {
+                    let index : Int
+                    if (firstHalf) {
+                        index = valueArr.firstIndex(of: note)!
+                    } else {
+                       index = valueArr.lastIndex(of: note)!
+                    }
+
+                    valueArr.insert(note, at: index)
+                    if (index >= scaleArr.count/2) {
+                        firstHalf = false
+                    }
+                }
+            }
+            
+            if (tonicOption == 3) {
+                valueArr.removeFirst()
+                valueArr.removeLast()
+            }
+        }
+        return valueArr
+    }
+        
     
     func melodicMinordecendingalterations(on reversedValuesArr: [String], for octave: Int) -> [String] {
         var reversedValues = reversedValuesArr
