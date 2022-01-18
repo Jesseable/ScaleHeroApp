@@ -1,33 +1,13 @@
 //
-//  ScalesHView.swift
+//  abstractView.swift
 //  ScaleHero
 //
-//  Created by Jesse Graf on 15/12/21.
+//  Created by Jesse Graf on 18/1/22.
 //
 
 import SwiftUI
 
-class MusicNotes: ObservableObject {
-
-    private let musicAlphabet = ["C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F"]
-    @Published var noteName = "C"
-    @Published var tempo = CGFloat(60)
-    @Published var octaves = 1
-    @Published var tonicis = 1
-    @Published var type = "Scale"
-    @Published var tonality = "Major"
-    @Published var scaleNotes = [""]
-    @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @Published var currentNote = "C"
-    @Published var backgroundImage : String?
-    
-    func getMusicAlphabet() -> [String] {
-        return musicAlphabet
-    }
-}
-
-struct ScalesView: View {
-    
+struct AbstractView: View {
     let universalSize = UIScreen.main.bounds
     @EnvironmentObject var musicNotes: MusicNotes
     
@@ -55,49 +35,34 @@ struct ScalesView: View {
                         
                         Button {
                             musicNotes.tonality = "Major"
-                            musicNotes.type = "scale"
+                            musicNotes.type = "Pentatonic"
                             self.screenType = "soundview"
                         } label: {
-                            MainUIButton(buttonText: "Major", type: 1, height: buttonHeight)
+                            MainUIButton(buttonText: "Major Pentatonic", type: 1, height: buttonHeight)
                         }
                         
                         Button {
                             musicNotes.tonality = "Minor"
-                            musicNotes.type = "scale"
+                            musicNotes.type = "Pentatonic"
                             self.screenType = "soundview"
                         } label: {
-                            MainUIButton(buttonText: "Natural Minor", type: 1, height: buttonHeight)
+                            MainUIButton(buttonText: "Minor Pentatonic", type: 1, height: buttonHeight)
                         }
                         
                         Button {
-                            musicNotes.tonality = "Minor"
-                            musicNotes.type = "harmonic"
+                            musicNotes.tonality = "Blues"
+                            musicNotes.type = "" // SEE IF THIS IS ALLOWED
                             self.screenType = "soundview"
                         } label: {
-                            MainUIButton(buttonText: "Harmonic Minor", type: 1, height: buttonHeight)
+                            MainUIButton(buttonText: "Blues", type: 1, height: buttonHeight)
                         }
                         
                         Button {
-                            musicNotes.tonality = "Minor"
-                            musicNotes.type = "melodic"
-                            self.screenType = "soundview"
+//                            musicNotes.tonality = "Minor"
+//                            musicNotes.type = "melodic"
+//                            self.screenType = "soundview" // takes you to a new page that adds three notes to the original major/minor scale
                         } label: {
-                            MainUIButton(buttonText: "Melodic Minor", type: 1, height: buttonHeight)
-                        }
-                        
-                        
-                        Button {
-                            musicNotes.type = "Modes"
-                            self.screenType = "specialview"
-                        } label: {
-                            MainUIButton(buttonText: "Modes", type: 1, height: buttonHeight)
-                        }
-                        
-                        Button {
-                            musicNotes.type = "Special"
-                            self.screenType = "specialview"
-                        } label: {
-                            MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
+                            MainUIButton(buttonText: "Galamian System", type: 1, height: buttonHeight)
                         }
                         
                         Spacer()
@@ -108,10 +73,10 @@ struct ScalesView: View {
                         MainUIButton(buttonText: "HomeScreen", type: 3, height: buttonHeight)
                     }
                 }
-                .navigationBarTitle("SCALES", displayMode: .inline)
+                .navigationBarTitle("ABSTRACT SCALES", displayMode: .inline)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
-                        Text("SCALES")
+                        Text("ABSTRACT SCALES")
                             .font(.largeTitle.bold())
                             .accessibilityAddTraits(.isHeader)
                             .foregroundColor(Color.white)
@@ -121,3 +86,9 @@ struct ScalesView: View {
         }
     }
 }
+
+//struct abstractView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        abstractView()
+//    }
+//}

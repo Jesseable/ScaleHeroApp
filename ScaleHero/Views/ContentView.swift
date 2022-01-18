@@ -48,6 +48,8 @@ struct AppContentView: View {
             case "soundview":
                 let scaleType = musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type
                 SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+            case "abstractview":
+                AbstractView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage) // CHNAGE
             default:
                 HomePage(screenType: $screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             }
@@ -121,7 +123,7 @@ struct HomePage : View {
                 }
                 
                 Button {
-                    // do nothing
+                    self.screenType = "abstractview"
                 } label: {
                     MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
                 }

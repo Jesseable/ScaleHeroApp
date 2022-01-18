@@ -29,7 +29,7 @@ struct PlayingView: View {
             let buttonHeight = universalSize.height/10
             
             VStack {
-                Text(title.replacingOccurrences(of: "-", with: " ")).bold().font(.title).foregroundColor(.white).scaledToFit()
+                Text(title.replacingOccurrences(of: "-", with: " ").uppercased().replacingOccurrences(of: "TETRAD ", with: "").replacingOccurrences(of: "SEVENTH", with: "7th")).bold().font(.title).foregroundColor(.white).scaledToFit()
                 
                 Spacer()
                 Image(getNote(from: musicNotes.currentNote, for: musicNotes.tonality)).resizable()

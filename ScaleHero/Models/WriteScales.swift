@@ -26,8 +26,28 @@ struct WriteScales {
             return [2, 2, 1, 2, 2, 2, 1]
         case "mode":
             return [2, 2, 1, 2, 2, 2, 1]
+        case "pentatonic":
+            return [2, 2, 3, 2, 3]
         default:
             return[-1]
+        }
+    }()
+    
+    lazy var minorPattern : [Int] = {
+        [self] in
+        switch self.type.lowercased() {
+        case "arpeggio":
+            return [3, 4, 5]
+        case "scale":
+            return [2, 1, 2, 2, 1, 2, 2]
+        case "harmonic":
+            return [2, 1, 2, 2, 1, 3, 1]
+        case "melodic":
+            return [2, 1, 2, 2, 2, 2, 1]
+        case "pentatonic":
+            return [3, 2, 2, 3, 2]
+        default:
+            return [-1]
         }
     }()
     
@@ -55,22 +75,6 @@ struct WriteScales {
             return [2, 2, 2, 2, 2, 2]
         default:
             return[-1]
-        }
-    }()
-    
-    lazy var minorPattern : [Int] = {
-        [self] in
-        switch self.type.lowercased() {
-        case "arpeggio":
-            return [3, 4, 5]
-        case "scale":
-            return[2, 1, 2, 2, 1, 2, 2]
-        case "harmonic":
-            return[2, 1, 2, 2, 1, 3, 1]
-        case "melodic":
-            return[2, 1, 2, 2, 2, 2, 1]
-        default:
-            return [-1]
         }
     }()
     

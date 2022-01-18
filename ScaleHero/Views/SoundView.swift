@@ -34,7 +34,7 @@ struct SoundView : View {
                 // Hidden and only activates when isPlaying is set
                 NavigationLink(
                     "navLink",
-                    destination: PlayingView(backgroundImage: backgroundImage, playSounds: playScale, scaleType: scaleType, playScaleNotes: scaleNotes, title: title.replacingOccurrences(of: "-", with: " ")),
+                    destination: PlayingView(backgroundImage: backgroundImage, playSounds: playScale, scaleType: scaleType, playScaleNotes: scaleNotes, title: title),
                     isActive: $isPlaying
                 ).hidden().opacity(1.00) // Unseable CHNAGE TO SOMETHING ELSE
                 VStack {
@@ -176,6 +176,8 @@ struct SoundView : View {
                         case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
                             musicNotes.type = "tetrads"
                             self.screenType = "specialview"
+                        case "pentatonic", "":
+                            self.screenType = "abstractview"
                         default:
                             self.screenType = musicNotes.type
                         }
@@ -189,6 +191,8 @@ struct SoundView : View {
                             MainUIButton(buttonText: "Scales", type: 3, height: bottumButtonHeight)
                         case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
                             MainUIButton(buttonText: "Tetrads", type: 3, height: bottumButtonHeight)
+                        case "pentatonic", "":
+                            MainUIButton(buttonText: "Abstract Scales", type: 3, height: bottumButtonHeight)
                         default:
                             MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
                         }
@@ -198,7 +202,7 @@ struct SoundView : View {
             .navigationBarTitle(title.replacingOccurrences(of: "-", with: " "), displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("SCALES")
+                    Text(title.replacingOccurrences(of: "-", with: " ").uppercased().replacingOccurrences(of: "TETRAD ", with: "").replacingOccurrences(of: "SEVENTH", with: "7th"))
                         .font(.largeTitle.bold())
                         .accessibilityAddTraits(.isHeader)
                         .foregroundColor(Color.white)
