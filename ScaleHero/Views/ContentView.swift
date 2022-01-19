@@ -7,32 +7,48 @@
 
 import SwiftUI
 
+/**
+ The main class behind the app. Controls all of the views and sets the background image and default asthetic choices.
+ */
 struct AppContentView: View {
     
     @EnvironmentObject var musicNotes: MusicNotes
     @State private var screenType = "HomePage"
-    @State private var backgroundImage : String // Can change to a variety of choices
+    @State private var backgroundImage : String
     private var fileReaderAndWriter = FileReaderAndWriter()
+    
+    // Also saved under settings view
     private let scaleInstruments = ["Cello", "Jesse's Vocals"]
+    
+    // Also saved under settingsView
     private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
+    
     private var selectedInstrument : String
     private var selectedBackground : String
 
+    /**
+    Initialises the background image style and sets the instrumentation for each components of the app.
+     */
     init() { // Test by changing Iphone type at one point!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         selectedInstrument = fileReaderAndWriter.readScaleInstrument()
         if (!scaleInstruments.contains(selectedInstrument)) {
-            selectedInstrument = "Cello" // or default option when sound files are completed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            // the default selected instrument is chosen here:
+            selectedInstrument = "Cello"
             fileReaderAndWriter.writeScaleInstrument(newInstrument: selectedInstrument)
         }
         
         selectedBackground = fileReaderAndWriter.readBackgroundImage()
         if (!backgrounds.contains(selectedBackground)) {
+            // the default selected background image is chosen here:
             selectedBackground = "Blue"
             fileReaderAndWriter.writeBackgroundImage(newImage: selectedBackground)
         }
         backgroundImage = "Background" + selectedBackground
     }
     
+    /**
+     Sets the current view for the app, and transferes the needed parameters with them.
+     */
     var body: some View {
         
         return Group {
@@ -49,7 +65,7 @@ struct AppContentView: View {
                 let scaleType = musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type
                 SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "abstractview":
-                AbstractView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage) // CHNAGE
+                AbstractView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             default:
                 HomePage(screenType: $screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             }
@@ -57,6 +73,11 @@ struct AppContentView: View {
     }
 }
 
+/**
+ The default view for the app. Set up when the app first opens.
+ Contains buttons for settings, favourites and different scale types.
+ Also contains the falling note animations.
+ */
 struct HomePage : View {
     
     private let universalSize = UIScreen.main.bounds
@@ -72,6 +93,7 @@ struct HomePage : View {
     var body: some View {
         
         let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
+        let buttonHeight = universalSize.height/10
         
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
@@ -108,34 +130,35 @@ struct HomePage : View {
                     .frame(height: UIScreen.main.bounds.height/6)
                     .padding()
                 
-                let buttonHeight = universalSize.height/10
-                
-                Button {
-                    self.screenType = "scale"
-                } label: {
-                    MainUIButton(buttonText: "Scales", type: 1, height: buttonHeight)
-                }
+                ScrollView {
+                    
+                    Button {
+                        self.screenType = "scale"
+                    } label: {
+                        MainUIButton(buttonText: "Scales", type: 1, height: buttonHeight)
+                    }
 
-                Button {
-                    self.screenType = "arpeggio"
-                } label: {
-                    MainUIButton(buttonText: "Arpeggio", type: 1, height: buttonHeight)
+                    Button {
+                        self.screenType = "arpeggio"
+                    } label: {
+                        MainUIButton(buttonText: "Arpeggio", type: 1, height: buttonHeight)
+                    }
+                    
+                    Button {
+                        self.screenType = "abstractview"
+                    } label: {
+                        MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
+                    }
+                    
+                    Button {
+                        // do nothing
+                    } label: {
+                        MainUIButton(buttonText: "Favourites", type: 2, height: buttonHeight)
+                    }
+                    
+                    Spacer()
                 }
-                
-                Button {
-                    self.screenType = "abstractview"
-                } label: {
-                    MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
-                }
-                
-                Button {
-                    // do nothing
-                } label: {
-                    MainUIButton(buttonText: "Favourites", type: 2, height: buttonHeight)
-                }
-                
-                Spacer()
-                
+                    
                 Button {
                     self.screenType = "settings"
                 } label: {
@@ -143,7 +166,7 @@ struct HomePage : View {
                 }
             }
         }.onAppear() {
-            offset += universalSize.height*1.2
+            offset += universalSize.height * 1.2
         }
     }
 }

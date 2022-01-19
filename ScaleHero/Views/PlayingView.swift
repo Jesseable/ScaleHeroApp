@@ -78,6 +78,7 @@ struct PlayingView: View {
             }
         }
     }
+    
     func getNote(from currentNote: String, for tonality: String) -> String {
         let noteArr = currentNote.replacingOccurrences(of: "/", with: "|").components(separatedBy: "|")
         let startingNote = musicNotes.scaleNotes[0].components(separatedBy: "-")[2].uppercased()
