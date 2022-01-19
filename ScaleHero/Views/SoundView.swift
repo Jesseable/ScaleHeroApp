@@ -51,7 +51,7 @@ struct SoundView : View {
                         musicNotes.scaleNotes = scaleSoundFiles
                         let delay = CGFloat(60/musicNotes.tempo)
                         musicNotes.timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
-                        musicNotes.currentNote = startingNote
+                        musicNotes.noteName = startingNote
                         
                         if (isPlaying) {
                             Sound.enabled = false
@@ -164,7 +164,7 @@ struct SoundView : View {
                 Button {
                     switch musicNotes.type.lowercased() {
                     case "mode":
-                        musicNotes.type = "Modes"
+                        musicNotes.type = "Major Scale Modes"
                         self.screenType = "specialview"
                     case "chromatic-scale", "whole-tone-scale":
                         musicNotes.type = "Special"

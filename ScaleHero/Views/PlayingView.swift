@@ -32,7 +32,7 @@ struct PlayingView: View {
                 Text(title.replacingOccurrences(of: "-", with: " ").uppercased().replacingOccurrences(of: "TETRAD ", with: "").replacingOccurrences(of: "SEVENTH", with: "7th")).bold().font(.title).foregroundColor(.white).scaledToFit()
                 
                 Spacer()
-                Image(getNote(from: musicNotes.currentNote, for: musicNotes.tonality)).resizable()
+                Image(getNote(from: musicNotes.noteName, for: musicNotes.tonality)).resizable()
                 Text("HiddenReciever")
                     .onReceive(musicNotes.timer) { time in
                         if (playScaleNotes) {
@@ -52,7 +52,7 @@ struct PlayingView: View {
                             }
                         }
                         
-                        musicNotes.currentNote = musicNotes.scaleNotes[index].components(separatedBy: "-")[2]
+                        musicNotes.noteName = musicNotes.scaleNotes[index].components(separatedBy: "-")[2]
                         
                         if (playScaleNotes) {
                         // play the next note

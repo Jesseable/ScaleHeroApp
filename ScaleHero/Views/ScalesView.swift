@@ -13,15 +13,16 @@ import SwiftUI
 class MusicNotes: ObservableObject {
 
     private let musicAlphabet = ["C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F"]
+    
     @Published var noteName = "C"
     @Published var tempo = CGFloat(60)
     @Published var octaves = 1
+    // in cases: 1 being never, 2: always, 3: always except for the first note
     @Published var tonicis = 1
     @Published var type = "Scale"
     @Published var tonality = "Major"
     @Published var scaleNotes = [""]
     @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @Published var currentNote = "C"
     @Published var backgroundImage : String?
     
     func getMusicAlphabet() -> [String] {
@@ -41,12 +42,12 @@ struct ScalesView: View {
     var backgroundImage: String
     
     var body: some View {
-    
+        let buttonHeight = universalSize.height/10
+        
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
         
             VStack {
-                let buttonHeight = universalSize.height/10
                 
                 Text("SCALES")
                     .font(.largeTitle.bold())
@@ -96,7 +97,7 @@ struct ScalesView: View {
                     }
                     
                     Button {
-                        musicNotes.type = "Modes"
+                        musicNotes.type = "Major Scale Modes"
                         self.screenType = "specialview"
                     } label: {
                         MainUIButton(buttonText: "Modes", type: 1, height: buttonHeight)

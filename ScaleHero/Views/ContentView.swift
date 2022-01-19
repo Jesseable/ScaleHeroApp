@@ -40,7 +40,7 @@ struct AppContentView: View {
         selectedBackground = fileReaderAndWriter.readBackgroundImage()
         if (!backgrounds.contains(selectedBackground)) {
             // the default selected background image is chosen here:
-            selectedBackground = "Blue"
+            selectedBackground = "Purple"
             fileReaderAndWriter.writeBackgroundImage(newImage: selectedBackground)
         }
         backgroundImage = "Background" + selectedBackground

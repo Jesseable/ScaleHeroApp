@@ -7,31 +7,40 @@
 
 import SwiftUI
 
+/**
+ Creates the view for all of the special cases inside of scales and arpeggios. Such as chromatic scales, tetrads, modes ect
+ */
 struct SpecialView: View {
-    private let universalSize = UIScreen.main.bounds
     
     @Binding var screenType: String
     @State var specialTitle: String
     @EnvironmentObject var musicNotes: MusicNotes
+    
+    private let universalSize = UIScreen.main.bounds
+    // All button names for the modes specialView in scales
     private let modes = ["Lydian", "Ionian", "Mixolydian", "Dorian", "Aeolian", "Phrygian", "Locrian"]
+    // All button names for the special specialView in scales
     private let specialTypes = ["Chromatic", "Whole-Tone"]
+    // All button names for the tetrads specialView in arpeggios
     private let tetrads = ["Dominant-Seventh", "Major-Seventh", "Minor-Seventh", "Diminished-Seventh"]
-
     var backgroundImage: String
     
-    var body: some View { // TOO LARGE A VIEW, NEED TO MAKE THE VIEW SMALLER
+    var body: some View {
+        let buttonHeight = universalSize.height/10
+        
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
         
             VStack {
-                let buttonHeight = universalSize.height/10
-                
-                Text(specialTitle).bold().textCase(.uppercase).font(.title).foregroundColor(.white).scaledToFit()
+                Text(specialTitle).textCase(.uppercase)
+                    .font(.largeTitle.bold())
+                    .accessibilityAddTraits(.isHeader)
+                    .foregroundColor(Color.white)
                 
                 ScrollView {
                 
                     switch specialTitle.lowercased() {
-                    case "modes":
+                    case "major scale modes":
                         ForEach(modes, id: \.self) { mode in
                             Button {
                                 musicNotes.tonality = mode
@@ -62,7 +71,8 @@ struct SpecialView: View {
                             }
                         }
                     default:
-                        Text("Failed to load")
+                        // make a clearer error message in the form of an UI button
+                        MainUIButton(buttonText: "FAID TO LOAD", type: 1, height: buttonHeight)
                     }
                 }
                 Spacer()

@@ -7,26 +7,31 @@
 
 import SwiftUI
 
+/**
+ View for selecting arpeggios and tetrads. Set up the same as the scalesView
+ */
 struct ArpeggioView : View {
-    
-    let universalSize = UIScreen.main.bounds
+
     @EnvironmentObject var musicNotes: MusicNotes
     
     @Binding var screenType: String
+    let universalSize = UIScreen.main.bounds
     var backgroundImage: String
     
     var body: some View {
+        let buttonHeight = universalSize.height/10
         
-        NavigationView {
+        ZStack {
+            Image(backgroundImage).resizable().ignoresSafeArea()
         
-            ZStack {
-                Image(backgroundImage).resizable().ignoresSafeArea()
-            
-                VStack {
-                    //Spacer()
-                    
-                    
-                    let buttonHeight = universalSize.height/10
+            VStack {
+                
+                Text("ARPEGGIOS")
+                    .font(.largeTitle.bold())
+                    .accessibilityAddTraits(.isHeader)
+                    .foregroundColor(Color.white)
+                
+                ScrollView {
                     
                     Menu {
                         ForEach(musicNotes.getMusicAlphabet(), id: \.self) { note in
@@ -52,30 +57,20 @@ struct ArpeggioView : View {
                         MainUIButton(buttonText: "Minor (Triad)", type: 1, height: buttonHeight)
                     }
                     
-                    
                     Button {
                         musicNotes.type = "Tetrads"
                         self.screenType = "specialview"
                     } label: {
                         MainUIButton(buttonText: "Special (Tetrads)", type: 1, height: buttonHeight)
                     }
-                    
-                    Spacer()
-                    
-                    Button {
-                        self.screenType = "HomeScreen"
-                    } label: {
-                        MainUIButton(buttonText: "HomeScreen", type: 3, height: buttonHeight)
-                    }
                 }
-                .navigationBarTitle("ARPEGGIOS", displayMode: .inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("ARPEGGIOS")
-                            .font(.largeTitle.bold())
-                            .accessibilityAddTraits(.isHeader)
-                            .foregroundColor(Color.white)
-                    }
+                
+                Spacer()
+                
+                Button {
+                    self.screenType = "HomeScreen"
+                } label: {
+                    MainUIButton(buttonText: "HomeScreen", type: 3, height: buttonHeight)
                 }
             }
         }
