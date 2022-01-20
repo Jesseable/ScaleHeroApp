@@ -9,77 +9,85 @@ import SwiftUI
 import SwiftySound
 
 struct PlayingView: View {
-    private let universalSize = UIScreen.main.bounds
-    var backgroundImage: String
-    @State var playSounds: PlaySounds
-    let scaleType: String
-    let playScaleNotes : Bool
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    var scaleTimer: Timer? = nil
     @EnvironmentObject var musicNotes: MusicNotes
-    @State var index = 0
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    var backgroundImage : String
+    let scaleType : String
+    let playScaleNotes : Bool
+    let playDrone : Bool
+    @State var playSounds : PlaySounds
     let title: String
     
+    @State var index = 0
     @State var isPlaying = false
+    private let universalSize = UIScreen.main.bounds
     
     var body: some View {
+        let buttonHeight = universalSize.height/10
 
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
-            let buttonHeight = universalSize.height/10
             
             VStack {
-                Text(title.replacingOccurrences(of: "-", with: " ").uppercased().replacingOccurrences(of: "TETRAD ", with: "").replacingOccurrences(of: "SEVENTH", with: "7th")).bold().font(.title).foregroundColor(.white).scaledToFit()
+                Text(musicNotes.getMusicTitile(from: title))
+                    .font(.largeTitle.bold())
+                    .accessibilityAddTraits(.isHeader)
+                    .foregroundColor(Color.white)
                 
                 Spacer()
+                
                 Image(getNote(from: musicNotes.noteName, for: musicNotes.tonality)).resizable()
-                Text("HiddenReciever")
-                    .onReceive(musicNotes.timer) { time in
-                        if (playScaleNotes) {
-                            // stop the previous sound
-                            if (index != 0) {
-                                Sound.stop(file: musicNotes.scaleNotes[index-1], fileExtension: "mp3")
-                            } else {
-                                Sound.stop(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
-                            }
-                            if (index == musicNotes.scaleNotes.count - 1) {
-                                musicNotes.timer.upstream.connect().cancel()
-                                
-                                // Add in a short delay before this is called  You will have to debug this thouroughly
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                                    presentationMode.wrappedValue.dismiss()
-                                }
-                            }
-                        }
-                        
-                        musicNotes.noteName = musicNotes.scaleNotes[index].components(separatedBy: "-")[2]
-                        
-                        if (playScaleNotes) {
-                        // play the next note
-                            Sound.play(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
-                        }
-            
-                        self.index += 1
-                    }.hidden()
-//
-//
-//                Text("Tempo: \(musicNotes.tempo)")
                 
                 Spacer()
                 
                 Button {
-                    Sound.enabled = false
                     playSounds.cancelAllSounds()
                     presentationMode.wrappedValue.dismiss()
                 } label: {
                     MainUIButton(buttonText: "Stop SystemImage speaker.slash", type: 3, height: buttonHeight)
-                }.padding( .top )
-                    .navigationBarBackButtonHidden(true)
+                }
+            }
+            .onAppear(perform: {
+                if (playDrone) {
+                    let duration = CGFloat(60/Int(self.musicNotes.tempo) * (musicNotes.scaleNotes.count + 1)) // Chnage the plus to however many click in beats there are
+                    playSounds.playDroneSound(duration: duration, startingNote: musicNotes.scaleNotes[0].components(separatedBy: "-")[2])
+                }
+            })
+            .onReceive(musicNotes.timer) { time in /// ADD A CLICK IN OPTION HERE LATER
+                if (playScaleNotes) {
+                    // stop the previous sound
+                    if (index != 0) {
+                        Sound.stop(file: musicNotes.scaleNotes[index-1], fileExtension: "mp3")
+                    } else {
+                        Sound.stop(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
+                    }
+                    if (index == musicNotes.scaleNotes.count - 1) {
+                        musicNotes.timer.upstream.connect().cancel()
+                        
+                        // Add in a short delay before this is called  You will have to debug this thouroughly
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                }
+                
+                musicNotes.noteName = musicNotes.scaleNotes[index].components(separatedBy: "-")[2]
+                
+                // plays the next note
+                if (playScaleNotes) {
+                    Sound.play(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
+                }
+    
+                self.index += 1
             }
         }
     }
     
-    func getNote(from currentNote: String, for tonality: String) -> String {
+    /**
+     Returns the singular note from the arrays component. Determines whether to use flats or sharps for the scale.
+     */
+    private func getNote(from currentNote: String, for tonality: String) -> String {
         let noteArr = currentNote.replacingOccurrences(of: "/", with: "|").components(separatedBy: "|")
         let startingNote = musicNotes.scaleNotes[0].components(separatedBy: "-")[2].uppercased()
         

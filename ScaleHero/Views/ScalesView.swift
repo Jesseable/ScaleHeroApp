@@ -28,6 +28,10 @@ class MusicNotes: ObservableObject {
     func getMusicAlphabet() -> [String] {
         return musicAlphabet
     }
+    
+    func getMusicTitile(from title: String) -> String {
+        return title.replacingOccurrences(of: "-", with: " ").uppercased().replacingOccurrences(of: "TETRAD ", with: "").replacingOccurrences(of: "SEVENTH", with: "7th")
+    }
 }
 
 /**
@@ -38,7 +42,7 @@ struct ScalesView: View {
     @EnvironmentObject var musicNotes: MusicNotes
     
     @Binding var screenType: String
-    let universalSize = UIScreen.main.bounds
+    private let universalSize = UIScreen.main.bounds
     var backgroundImage: String
     
     var body: some View {

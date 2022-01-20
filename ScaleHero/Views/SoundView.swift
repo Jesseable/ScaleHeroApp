@@ -27,56 +27,39 @@ struct SoundView : View {
     var body: some View {
         let title = scaleType
         let buttonHeight = universalSize.height/15
-    
+        let bottumButtonHeight = universalSize.height/10
 
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
 
             VStack {
                 
-                Text(title.replacingOccurrences(of: "-", with: " ").uppercased().replacingOccurrences(of: "TETRAD ", with: "").replacingOccurrences(of: "SEVENTH", with: "7th"))
+                Text(musicNotes.getMusicTitile(from: title))
                             .font(.largeTitle.bold())
                             .accessibilityAddTraits(.isHeader)
                             .foregroundColor(Color.white)
                 ScrollView {
                     
-                    Button { /// YOU CAN DELETE A LOT OF THIS. GO THROUGH AND TIDY UP THE CODE
+                    Button {
                         let scaleTypeArr = scaleType.components(separatedBy: " ")
                         let startingNote = scaleTypeArr[0]
                         let tonality = scaleTypeArr[1].lowercased()
                         let scaleType = scaleTypeArr[2].lowercased()
                         var scale = WriteScales(type: scaleType.lowercased())
-                        let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: musicNotes.octaves, tonality: tonality, tonicOption: musicNotes.tonicis) // Change later
+                        let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: musicNotes.octaves, tonality: tonality, tonicOption: musicNotes.tonicis)
                         let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo)
                         musicNotes.scaleNotes = scaleSoundFiles
-                        let delay = CGFloat(60/musicNotes.tempo)
-                        musicNotes.timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
-                        musicNotes.noteName = startingNote
                         
-                        if (isPlaying) {
-                            Sound.enabled = false
-                            isPlaying = false
-                            playScale.cancelAllSounds()
-                        } else {
-                            Sound.enabled = true
-                            if (drone) { // CHANGE INTO THE PLAYSOUNDS VIEW
-                                let duration = CGFloat(60/Int(self.musicNotes.tempo) * scaleInfo.count)
-                                playScale.playDroneSound(duration: duration, startingNote: startingNote)
-                            }
-//                                if (scaleNotes) {
-//                                    //playScale.playScaleSounds(temp: Int(self.musicNotes.tempo), scaleInfoArra: scaleInfo)
-//                                }
-                            
-                            isPlaying = true
-                            
-                        }
+                        let delay = CGFloat(60/musicNotes.tempo)
+                        musicNotes.noteName = startingNote
+                        musicNotes.timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
+
+                        Sound.enabled = true
+                        isPlaying = true
+                        
                     } label: {
-                        if isPlaying {
-                            MainUIButton(buttonText: "Stop SystemImage speaker.slash", type: 1, height: buttonHeight)
-                        } else {
-                            MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
-                        }
-                    }.padding( .top )
+                        MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
+                    }
 
                     Divider().background(Color.white)
                     
@@ -93,23 +76,15 @@ struct SoundView : View {
                             .pickerStyle( .segmented)
                             .colorScheme(.dark)
                         }
+                        
                         Divider().background(Color.white)
                 
-                    // The tempo buttons
-//                            ZStack {
-                            MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight)
-    //                        HStack {
-    //                            Stepper("", value: $musicNotes.tempo)
-    //                                .colorScheme(.light)
-    //                                .padding(.horizontal)
-    //                        }
-//                            }
+                        MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight)
                         Slider(value: $musicNotes.tempo, in: 20...180, step: 1.0)
                             .padding(.horizontal)
                         Divider().background(Color.white)
-                    }
-                    
-                    Group {
+
+                        // create a new mainUIbutton display to be half the width so you can fit both of these in a HStack !!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         Button {
                             drone.toggle()
                         } label: {
@@ -153,12 +128,8 @@ struct SoundView : View {
                             }
                         }
                     }
-                    
-                    Spacer()
                     Spacer()
                 }
-                
-                let bottumButtonHeight = universalSize.height/10
                 
                 // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
                 Button {
@@ -197,8 +168,8 @@ struct SoundView : View {
                 }
             }
         }
-        .sheet(isPresented: $isPlaying) {
-            PlayingView(backgroundImage: backgroundImage, playSounds: playScale, scaleType: scaleType, playScaleNotes: scaleNotes, title: title)
+        .fullScreenCover(isPresented: $isPlaying) {
+            PlayingView(backgroundImage: backgroundImage, scaleType: scaleType, playScaleNotes: scaleNotes, playDrone: drone, playSounds: playScale, title: title)
         }
     }
 }

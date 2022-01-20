@@ -114,6 +114,7 @@ struct PlaySounds {
     }
     
     mutating func cancelAllSounds() {
+        Sound.enabled = false
         cancelPreviousTimer()
         cancelDroneSound()
     }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SettingsView: View { // MIGHT NEED AN APPLY BUTTON
+struct SettingsView: View {
     
     @EnvironmentObject var musicNotes: MusicNotes
     @Binding var screenType: String
