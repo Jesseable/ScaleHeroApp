@@ -7,93 +7,70 @@
 
 import SwiftUI
 
+/**
+ View for selecting arpeggios and tetrads. Set up the same as the scalesView
+ */
 struct ArpeggioView : View {
-    
-    let universalSize = UIScreen.main.bounds
+
     @EnvironmentObject var musicNotes: MusicNotes
     
     @Binding var screenType: String
+    let universalSize = UIScreen.main.bounds
     var backgroundImage: String
     
     var body: some View {
+        let buttonHeight = universalSize.height/10
         
-        NavigationView {
+        ZStack {
+            Image(backgroundImage).resizable().ignoresSafeArea()
         
-            ZStack {
-                Image(backgroundImage).resizable().ignoresSafeArea()
-            
-                VStack {
-                    Spacer()
+            VStack {
+                
+                Text("ARPEGGIOS")
+                    .font(.largeTitle.bold())
+                    .accessibilityAddTraits(.isHeader)
+                    .foregroundColor(Color.white)
+                
+                ScrollView {
                     
-                    // Turn to image button
-                    Menu("Note: " + String(musicNotes.noteName)) {
+                    Menu {
                         ForEach(musicNotes.getMusicAlphabet(), id: \.self) { note in
                             Button("Note: \(note)", action: {musicNotes.noteName = note})
                         }
-                    }.padding()
+                    } label: {
+                        MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 1, height: buttonHeight)
+                    }.padding(.top)
                     
                     Button {
                         musicNotes.tonality = "Major"
                         musicNotes.type = "arpeggio"
                         self.screenType = "soundview"
                     } label: {
-                        Text("Major (Triad)")
-                    }.padding()
-
-                    
-//                    // Turn to image button
-//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Major arpeggio", backgroundImage: backgroundImage)) {
-//                        Text("Major (Triad)")
-//                    }.padding()
+                        MainUIButton(buttonText: "Major (Triad)", type: 1, height: buttonHeight)
+                    }
                     
                     Button {
                         musicNotes.tonality = "Minor"
                         musicNotes.type = "arpeggio"
                         self.screenType = "soundview"
                     } label: {
-                        Text("Minor (Triad)")
-                    }.padding()
-                    
-//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Minor arpeggio", backgroundImage: backgroundImage)) {
-//                        Text("Minor (Triad)")
-//                    }.padding()
-                    
-                    Button {
-                        // Goes to another options page
-//                        musicNotes.tonality = "Major"
-//                        musicNotes.type = "arpeggio"
-//                        self.screenType = "soundview"
-                    } label: {
-                        Text("Special (Tetrads)")
-                    }.padding()
-                    
-                    // Go to another link to select options
-//                    NavigationLink(destination: SoundView(scaleType: musicNotes.noteName +  " Special arpeggio", backgroundImage: backgroundImage)) {
-//                        Text("Special (Tetrads)")
-//                    }.padding()
-                    
-                    // Turn to image button
-                    Button("Settings") {
-                        // do nothing
-                    }.padding()
-                    
-                    Spacer()
-                    Spacer()
-                    
-                    Button {
-                        self.screenType = "homePage"
-                    } label: {
-                        Text("HomePage")
-                    }.padding()
-                }
-                .navigationBarTitle("ARPEGGIOS", displayMode: .inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("ARPEGGIOS")
-                            .font(.largeTitle.bold())
-                            .accessibilityAddTraits(.isHeader)
-                            .foregroundColor(Color.white)
+                        MainUIButton(buttonText: "Minor (Triad)", type: 1, height: buttonHeight)
                     }
+                    
+                    Button {
+                        musicNotes.type = "Tetrads"
+                        self.screenType = "specialview"
+                    } label: {
+                        MainUIButton(buttonText: "Special (Tetrads)", type: 1, height: buttonHeight)
+                    }
+                }
+                
+                Spacer()
+                
+                Button {
+                    self.screenType = "HomeScreen"
+                } label: {
+                    MainUIButton(buttonText: "HomeScreen", type: 3, height: buttonHeight)
                 }
             }
         }

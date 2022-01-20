@@ -9,51 +9,91 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    let universalSize = UIScreen.main.bounds
+    @EnvironmentObject var musicNotes: MusicNotes
     @Binding var screenType: String
+    
+    private let universalSize = UIScreen.main.bounds
     var backgroundImage: String
-    let manager = FileManager.default
     var fileReaderAndWriter = FileReaderAndWriter()
-    @State var instrument : String?
+    // These are also on contentView
+    private let scaleInstruments = ["Cello", "Jesse's Vocals"]
+    // These are also on contentView
+    private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
+    @State var instrumentSelected : String
+    @State var backgroundColour : String
+
     
     var body: some View {
+        let buttonHeight = universalSize.height/10
         
-        NavigationView {
-            ZStack {
-                Image(backgroundImage).resizable().ignoresSafeArea()
-                VStack {
+        ZStack {
+            Image(backgroundImage).resizable().ignoresSafeArea()
+            
+            VStack {
+                
+                Text("SETTINGS")
+                    .font(.largeTitle.bold())
+                    .accessibilityAddTraits(.isHeader)
+                    .foregroundColor(Color.white)
+                
+                ScrollView {
                     
-                    Spacer()
+                    MainUIButton(buttonText: "Background:", type: 4, height: buttonHeight)
+                    Section {
+                        Picker("ScaleNote Selection", selection: $backgroundColour) {
+                            ForEach(backgrounds, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        .pickerStyle( .segmented)
+                        .colorScheme(.dark)
+                    }
+                
+                    MainUIButton(buttonText: "Scale Instrument:", type: 4, height: buttonHeight)
+                    Section {
+                        Picker("ScaleNote Selection", selection: $instrumentSelected) {
+                            ForEach(scaleInstruments, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        .pickerStyle( .segmented)
+                        .colorScheme(.dark)
+                    }
                     
-                    // Works perfectly
-                    Menu ("Scale Note Instrument: " + (instrument ?? fileReaderAndWriter.readScaleInstrument())) {
-                        Button("Cello") {
-//                            fileReaderAndWriter.createFile()
-                            fileReaderAndWriter.writeScaleInstrument(newInstrument: "Cello")
-                            instrument = fileReaderAndWriter.readScaleInstrument()
+                    Menu {
+                        Button("NewInstru") {
                         }
                         
-                        Button("Jesse's Vocals") {
-                            fileReaderAndWriter.writeScaleInstrument(newInstrument: "Jesse's Vocals")
-                            instrument = fileReaderAndWriter.readScaleInstrument()
+                        Button("LookAt This one") {
                         }
-                    }
-                    
-                    Spacer()
-                    Button {
-                        self.screenType = "homePage"
                     } label: {
-                        Text("HomePage")
-                    }.padding()
-                }
-                .navigationBarTitle("SETTINGS", displayMode: .inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text("SETTINGS")
-                            .font(.largeTitle.bold())
-                            .accessibilityAddTraits(.isHeader)
-                            .foregroundColor(Color.white)
+                        MainUIButton(buttonText: "DroneNote: ", type: 1, height: buttonHeight)
+                    }.menuStyle( .borderlessButton)
+                    
+                    Button {
+                        for scaleInstrument in scaleInstruments {
+                            if (instrumentSelected == scaleInstrument) {
+                                fileReaderAndWriter.writeScaleInstrument(newInstrument: scaleInstrument)
+                            }
+                        }
+                        
+                        for background in backgrounds {
+                            if (backgroundColour == background) {
+                                fileReaderAndWriter.writeBackgroundImage(newImage: background)
+                                musicNotes.backgroundImage = "Background" + background
+                            }
+                        }
+                    } label: {
+                        MainUIButton(buttonText: "Apply", type: 1, height: buttonHeight)
                     }
+                }
+                    
+                Spacer()
+
+                Button {
+                    self.screenType = "HomeScreen"
+                } label: {
+                    MainUIButton(buttonText: "HomeScreen", type: 3, height: buttonHeight)
                 }
             }
         }

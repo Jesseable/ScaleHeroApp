@@ -5,51 +5,90 @@
 //  Created by Jesse Graf on 31/12/21.
 //
 
-import SwiftUI
+import Foundation
 
-struct FileReaderAndWriter {
+class FileReaderAndWriter: ObservableObject {
     
-    let manager = FileManager.default
-    let file = "ScaleInstrument.txt"
+    // USE THIS WHEN CREATING THE FAVOURITES PAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    @Published var scales: [Scale]
+    let filePath = FileManager.documentsDirectory.appendingPathComponent("FavouriteScales")
+    let scaleInstrumentPath = FileManager.documentsDirectory.appendingPathComponent("ScaleInstrument")
+    let backgroundColourPath = FileManager.documentsDirectory.appendingPathComponent("backGroundColour")
     
-    func createFile() {
-        if let dir = manager.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let fileURL = dir.appendingPathComponent(file)
-            //writing
-            manager.createFile(atPath: fileURL.path, contents: nil, attributes: [:])
-            print(fileURL.path)
+    // Need to make the JSON FIle
+    init() {
+        do {
+            let data = try Data(contentsOf: filePath)
+            scales = try JSONDecoder().decode([Scale].self, from: data)
+        } catch {
+            scales = []
+        }
+    }
+
+    func save() {
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            let data = try encoder.encode(scales)
+            try data.write(to: filePath, options: [.atomic, .completeFileProtection])
+            print (filePath.path)
+        } catch {
+            print("Unable to save data")
+        }
+    }
+
+    func add(scaleNote: String, type: String, tonality: String, octave: Int, tempo: Int) {
+
+        let scale = Scale(id: UUID(), name: scaleNote, type: type, tonality: tonality, tempo: tempo, octaves: octave)
+        scales.insert(scale, at: 0)
+        save()
+    }
+    
+    func writeBackgroundImage(newImage: String) {
+        do {
+            try newImage.write(to: backgroundColourPath, atomically: true, encoding: String.Encoding.utf8)
+        }
+        catch {
+            // Look into this or make the pop up errors occur for users when this occurs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            Swift.print(error)
+            print("error has occured when writing to the file")
+        }
+    }
+    
+    func readBackgroundImage() -> String {
+        //reading
+        do {
+            let imageName = try String(contentsOf: backgroundColourPath, encoding: .utf8)
+            return imageName
+        }
+        catch {
+            Swift.print(error)
+            return "Error caught when reading instrument file" // Return default option IN FUTURE WHEN DECIDED UPON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     }
     
     func writeScaleInstrument(newInstrument: String) {
-        if let dir = manager.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let fileURL = dir.appendingPathComponent(file)
-            //writing
-            do {
-                try newInstrument.write(to: fileURL, atomically: false, encoding: .utf8)
-            }
-            catch {
-                // Look into this or make the pop up errors occur for users when this occurs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                Swift.print(error)
-            }
+        //writing
+        
+        do {
+            try newInstrument.write(to: scaleInstrumentPath, atomically: true, encoding: String.Encoding.utf8)
+        }
+        catch {
+            // Look into this or make the pop up errors occur for users when this occurs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            Swift.print(error)
+            print("error has occured when writing to the file")
         }
     }
     
     func readScaleInstrument() -> String {
-        if let dir = manager.urls(for: .documentDirectory, in: .userDomainMask).first {
-
-            let fileURL = dir.appendingPathComponent(file)
-            //reading
-            do {
-                let instrumentName = try String(contentsOf: fileURL, encoding: .utf8)
-                return instrumentName
-            }
-            catch {
-                Swift.print(error)
-                return "Error caught when reading instrument file" // Return default option. 
-            }
-        } else {
-            return "Error in reading the instrument String"
+        //reading
+        do {
+            let instrumentName = try String(contentsOf: scaleInstrumentPath, encoding: .utf8)
+            return instrumentName
+        }
+        catch {
+            Swift.print(error)
+            return "Error caught when reading instrument file" // Return default option IN FUTURE WHEN DECIDED UPON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     }
 }
