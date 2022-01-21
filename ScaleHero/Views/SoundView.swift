@@ -19,6 +19,8 @@ struct SoundView : View {
     @State private var drone = true
     @State private var chords = false
     @State private var scaleNotes = true
+    @State private var startingOctave = 1
+    @State private var disableOctaveSelection = false
     @State var playScale = PlaySounds()
     @EnvironmentObject var musicNotes: MusicNotes
     
@@ -49,10 +51,10 @@ struct SoundView : View {
                         let scaleInfo = scale.ScaleNotes(startingNote: startingNote,
                                                          octave: musicNotes.octaves,
                                                          tonality: tonality,
-                                                         tonicOption: musicNotes.tonicis)
+                                                         tonicOption: musicNotes.tonicis,
+                                                         startingOctave: startingOctave) /// ADDED HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo)
                         let delay = CGFloat(60/musicNotes.tempo)
-                        
                         musicNotes.scaleNotes = scaleSoundFiles
                         musicNotes.timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
                         musicNotes.noteName = startingNote
@@ -80,7 +82,36 @@ struct SoundView : View {
                                 .colorScheme(.light)
                                 .padding(.horizontal, 11)
                             }
+                        }.onChange(of: musicNotes.octaves) { octave in
+                            if (octave == 1) {
+                                disableOctaveSelection = false
+                            }
                         }
+                        
+                        Divider().background(Color.white)
+                        
+                        MainUIButton(buttonText: "Starting Octaves:", type: 4, height: buttonHeight)
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                            Section {
+                                Picker("Octave:", selection: $startingOctave) {
+                                    Text("One").tag(1)
+                                    Text("Two").tag(2)
+                                    Text("Three").tag(3)
+                                }
+                                .padding(.horizontal)
+                                .pickerStyle( .segmented)
+                                .colorScheme(.light)
+                                .padding(.horizontal, 11)
+                                .disabled(disableOctaveSelection)
+                            }
+                        }.onChange(of: musicNotes.octaves) { octave in
+                            if (octave > 1) {
+                                startingOctave = 1
+                                disableOctaveSelection = true
+                            }
+                        }
+                        
                         Divider().background(Color.white)
                 
                         MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight)

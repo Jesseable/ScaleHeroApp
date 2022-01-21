@@ -5,7 +5,6 @@
 //  Created by Jesse Graf on 23/12/21.
 //
 
-import Swift
 import UIKit
 
 /**
@@ -116,7 +115,7 @@ struct WriteScales {
                           34: "3:F#/Gb",
                           35: "3:G",
                           36: "3:G#/Ab",
-                          37: "3:A", // Change to fourth octave once added into the game
+                          37: "3:A", // Change to fourth octave once added into the game !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                           38: "3:A#/Bb",
                           39: "3:B",
                           40: "3:C",
@@ -132,13 +131,12 @@ struct WriteScales {
     /**
      Returns the starting notes key in the musicNotes dictionary
      */
-    func startingNoteKeyFinder(startingNote: String, startingOctave: Int) -> Int {
+    private func startingNoteKeyFinder(startingNote: String, startingOctave: Int) -> Int {
         var key = -1 // stays -1 if unchanged
         
         for note in accendingNotes {
             let noteOctaveArr = note.value.components(separatedBy: ":")
-            let startingOctave = "1" // Optional to change octave here later on
-            if (noteOctaveArr[1] == startingNote && noteOctaveArr[0] == startingOctave) {
+            if (noteOctaveArr[1] == startingNote && noteOctaveArr[0] == String(startingOctave)) {
                 key = note.key
             }
         }
@@ -148,8 +146,7 @@ struct WriteScales {
     /**
      Returns an array of the notes to play in the specific scale
      */
-    mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String, tonicOption: Int) -> [String] {
-        let startingOctave = 1
+    mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String, tonicOption: Int, startingOctave: Int) -> [String] {
         let startingKey = startingNoteKeyFinder(startingNote: startingNote, startingOctave: startingOctave)
         
         var valueArray: [String] = []
@@ -174,13 +171,10 @@ struct WriteScales {
         } else {
             // Needs to be altered to do multiple octaves as well. Should create another function for this purpose!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             reversedValuesArr = valueArray.reversed()
-            reversedValuesArr = melodicMinordecendingalterations(on: reversedValuesArr, for: octave)
+            reversedValuesArr = melodicMinorDecendingAlterations(on: reversedValuesArr, for: octave)
             
             // removed a value so as to not repeat the tonic
             reversedValuesArr.removeFirst()
-            
-            
-            
             valueArray.append(contentsOf: reversedValuesArr)
         }
         
@@ -189,12 +183,15 @@ struct WriteScales {
         return scaleArray
     }
     
-    func addRepeatingTonics(for scaleArr: [String], tonicOption: Int) -> [String] {
+    /**
+     If the repeating tonic buttons are selected than the array repeats the neccessary tonic notes
+     */
+    private func addRepeatingTonics(for scaleArr: [String], tonicOption: Int) -> [String] {
         var valueArr = scaleArr
+        
         if (tonicOption >= 2) {
             // repeat all
             let startingNote = scaleArr[0].components(separatedBy: ":")[1]
-            
             var firstHalf = true
             
             for note in valueArr {
@@ -216,15 +213,19 @@ struct WriteScales {
             }
             
             if (tonicOption == 3) {
+                // Reapeat all/First
                 valueArr.removeFirst()
                 valueArr.removeLast()
             }
         }
+        // Else: repeat none
         return valueArr
     }
         
-    
-    func melodicMinordecendingalterations(on reversedValuesArr: [String], for octave: Int) -> [String] {
+    /**
+     If a melodic minor scale has been chosen than this allows it to be altered to a natural minor scale when decending.
+     */
+    private func melodicMinorDecendingAlterations(on reversedValuesArr: [String], for octave: Int) -> [String] {
         var reversedValues = reversedValuesArr
         let seventhNote = reversedValues.remove(at: 1)
         let sixthNote = reversedValues.remove(at: 1)
@@ -259,9 +260,9 @@ struct WriteScales {
     }
     
     /**
-     returns an array of the keys for the relative scale in the accending notes dictionary
+     Returns an array of the keys for the relative scale in the accending notes dictionary
      */
-    mutating func dictKeysArray(startingKey: Int, tonality: String, octave: Int, keysArray: [Int]) -> [Int] {
+    private mutating func dictKeysArray(startingKey: Int, tonality: String, octave: Int, keysArray: [Int]) -> [Int] {
         
         var startingNum = startingKey
         var dictKeysArray = keysArray
@@ -368,7 +369,6 @@ struct WriteScales {
             }
             curruntOctave += 1
         }
-
         return dictKeysArray
     }
 }
@@ -398,9 +398,7 @@ extension Dictionary where Value: Equatable {
     func key(from value: Value) -> Key? {
         return self.first(where: { $0.value == value })?.key
     }
-}
-
-extension Dictionary where Value: Equatable {
+    
     func allKeys(forValue val: Value) -> [Key] {
         return self.filter { $1 == val }.map { $0.0 }
     }
