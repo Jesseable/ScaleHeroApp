@@ -64,12 +64,12 @@ struct AbstractView: View {
                         MainUIButton(buttonText: "Blues", type: 1, height: buttonHeight)
                     }
                     
-                    Button {
+                    Button { /// GOES TO A VIEW WITH ONLY PLAY AND NOTE SELECTION AND PLAYS THE DRONE REPEATEDLY
 //                            musicNotes.tonality = "Minor"
 //                            musicNotes.type = "melodic"
 //                            self.screenType = "soundview" // takes you to a new page that adds three notes to the original major/minor scale
                     } label: {
-                        MainUIButton(buttonText: "Galamian System", type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: "Solo Drone", type: 1, height: buttonHeight)
                     }
                     
                     Spacer()

@@ -24,7 +24,8 @@ struct SettingsView: View {
 
     
     var body: some View {
-        let buttonHeight = universalSize.height/10
+        let buttonHeight = universalSize.height/18
+        let bottumButtonHeight = universalSize.height/10
         
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
@@ -39,25 +40,33 @@ struct SettingsView: View {
                 ScrollView {
                     
                     MainUIButton(buttonText: "Background:", type: 4, height: buttonHeight)
-                    Section {
-                        Picker("ScaleNote Selection", selection: $backgroundColour) {
-                            ForEach(backgrounds, id: \.self) {
-                                Text($0)
+                    ZStack {
+                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                        Section {
+                            Picker("ScaleNote Selection", selection: $backgroundColour) {
+                                ForEach(backgrounds, id: \.self) {
+                                    Text($0)
+                                }
                             }
+                            .pickerStyle( .segmented)
+                            .colorScheme(.light)
+                            .padding(.horizontal, 11)
                         }
-                        .pickerStyle( .segmented)
-                        .colorScheme(.dark)
                     }
                 
                     MainUIButton(buttonText: "Scale Instrument:", type: 4, height: buttonHeight)
-                    Section {
-                        Picker("ScaleNote Selection", selection: $instrumentSelected) {
-                            ForEach(scaleInstruments, id: \.self) {
-                                Text($0)
+                    ZStack {
+                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                        Section {
+                            Picker("ScaleNote Selection", selection: $instrumentSelected) {
+                                ForEach(scaleInstruments, id: \.self) {
+                                    Text($0)
+                                }
                             }
+                            .pickerStyle( .segmented)
+                            .colorScheme(.light)
+                            .padding(.horizontal, 11)
                         }
-                        .pickerStyle( .segmented)
-                        .colorScheme(.dark)
                     }
                     
                     Menu {
@@ -93,7 +102,7 @@ struct SettingsView: View {
                 Button {
                     self.screenType = "HomeScreen"
                 } label: {
-                    MainUIButton(buttonText: "HomeScreen", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "HomeScreen", type: 3, height: bottumButtonHeight)
                 }
             }
         }

@@ -26,7 +26,7 @@ struct SoundView : View {
     
     var body: some View {
         let title = scaleType
-        let buttonHeight = universalSize.height/15
+        let buttonHeight = universalSize.height/18
         let bottumButtonHeight = universalSize.height/10
 
         ZStack {
@@ -46,17 +46,19 @@ struct SoundView : View {
                         let tonality = scaleTypeArr[1].lowercased()
                         let scaleType = scaleTypeArr[2].lowercased()
                         var scale = WriteScales(type: scaleType.lowercased())
-                        let scaleInfo = scale.ScaleNotes(startingNote: startingNote, octave: musicNotes.octaves, tonality: tonality, tonicOption: musicNotes.tonicis)
+                        let scaleInfo = scale.ScaleNotes(startingNote: startingNote,
+                                                         octave: musicNotes.octaves,
+                                                         tonality: tonality,
+                                                         tonicOption: musicNotes.tonicis)
                         let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo)
-                        musicNotes.scaleNotes = scaleSoundFiles
-                        
                         let delay = CGFloat(60/musicNotes.tempo)
-                        musicNotes.noteName = startingNote
+                        
+                        musicNotes.scaleNotes = scaleSoundFiles
                         musicNotes.timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
-
+                        musicNotes.noteName = startingNote
+                    
                         Sound.enabled = true
                         isPlaying = true
-                        
                     } label: {
                         MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
                     }
@@ -65,46 +67,50 @@ struct SoundView : View {
                     
                     Group {
                         MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight)
-                    
-                        Section {
-                            Picker("Octave selection", selection: $musicNotes.octaves) {
-                                Text("One").tag(1)
-                                Text("Two").tag(2)
-                                Text("Three").tag(3)
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                            Section {
+                                Picker("Octave selection", selection: $musicNotes.octaves) {
+                                    Text("One").tag(1)
+                                    Text("Two").tag(2)
+                                    Text("Three").tag(3)
+                                }
+                                .padding(.horizontal)
+                                .pickerStyle( .segmented)
+                                .colorScheme(.light)
+                                .padding(.horizontal, 11)
                             }
-                            .padding(.horizontal)
-                            .pickerStyle( .segmented)
-                            .colorScheme(.dark)
                         }
-                        
                         Divider().background(Color.white)
                 
                         MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight)
-                        Slider(value: $musicNotes.tempo, in: 20...180, step: 1.0)
-                            .padding(.horizontal)
-                        Divider().background(Color.white)
-
-                        // create a new mainUIbutton display to be half the width so you can fit both of these in a HStack !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        Button {
-                            drone.toggle()
-                        } label: {
-                            HStack {
-                                if (drone) {
-                                    MainUIButton(buttonText: "Drone SystemImage checkmark.square", type: 1, height: buttonHeight)
-                                } else {
-                                    MainUIButton(buttonText: "Drone SystemImage square", type: 1, height: buttonHeight)
-                                }
-                            }
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                            Slider(value: $musicNotes.tempo, in: 20...180, step: 1.0)
+                                .padding(.horizontal)
                         }
                         
-                        Button {
-                            scaleNotes.toggle()
-                        } label: {
-                            HStack {
-                                if (scaleNotes) {
-                                    MainUIButton(buttonText: "Notes SystemImage checkmark.square", type: 1, height: buttonHeight)
+                        Divider().background(Color.white)
+
+                        HStack {
+
+                            Button {
+                                drone.toggle()
+                            } label: {
+                                if (drone) {
+                                    MainUIButton(buttonText: "Drone SystemImage checkmark.square", type: 6, height: buttonHeight)
                                 } else {
-                                    MainUIButton(buttonText: "Notes SystemImage square", type: 1, height: buttonHeight)
+                                    MainUIButton(buttonText: "Drone SystemImage square", type: 6, height: buttonHeight)
+                                }
+                            }
+                            
+                            Button {
+                                scaleNotes.toggle()
+                            } label: {
+                                if (scaleNotes) {
+                                    MainUIButton(buttonText: "Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
+                                } else {
+                                    MainUIButton(buttonText: "Notes SystemImage square", type: 5, height: buttonHeight)
                                 }
                             }
                         }
@@ -115,7 +121,7 @@ struct SoundView : View {
                     Group {
                         MainUIButton(buttonText: "Repeat Tonics", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
                         ZStack {
-                            MainUIButton(buttonText: "", type: 4, height: buttonHeight)
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
                             Section {
                                 Picker("Tonic selection", selection: $musicNotes.tonicis) {
                                     Text("Never").tag(1)
@@ -124,7 +130,8 @@ struct SoundView : View {
                                 }
                                 .padding(.horizontal)
                                 .pickerStyle( .segmented)
-                                .colorScheme(.dark)
+                                .colorScheme(.light)
+                                .padding(.horizontal, 11)
                             }
                         }
                     }
@@ -168,6 +175,7 @@ struct SoundView : View {
                 }
             }
         }
+        .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
         .fullScreenCover(isPresented: $isPlaying) {
             PlayingView(backgroundImage: backgroundImage, scaleType: scaleType, playScaleNotes: scaleNotes, playDrone: drone, playSounds: playScale, title: title)
         }

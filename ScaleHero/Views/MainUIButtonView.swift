@@ -40,6 +40,24 @@ struct MainUIButton: View {
                     .padding(.horizontal, 10)
                     .frame(width: universalSize.width, height: height)
                     .opacity(0.8)
+            case 5:
+                RectangularButton()
+                    .fill(Color(buttonColor))
+                    .padding(.trailing, 10)
+                    .frame(width: universalSize.width * 0.5, height: height)
+                    .opacity(0.8)
+            case 6:
+                RectangularButton()
+                    .fill(Color(buttonColor))
+                    .padding(.leading, 10)
+                    .frame(width: universalSize.width * 0.5, height: height)
+                    .opacity(0.8)
+            case 7:
+                RectangularButton()
+                    .fill(Color("LightGrayBasic"))
+                    .padding(.horizontal, 10)
+                    .frame(width: universalSize.width, height: height)
+                    .opacity(0.8)
             default:
                 RectangularButton()
                     .fill(Color(buttonColor))
@@ -52,15 +70,16 @@ struct MainUIButton: View {
             if (buttonText.contains("SystemImage")) {
                 let stringArr = buttonText.replacingOccurrences(of: " ", with: "").components(separatedBy: "SystemImage")
 
-                    Text(stringArr[0])
-                        .foregroundColor(Color.white).bold()
-                        .scaleEffect(scaleEffect)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                    Image(systemName: stringArr[1])
-                        .foregroundColor(Color.white)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(.horizontal, universalSize.width/3)
-                        .scaleEffect(scaleEffect)
+                Text(stringArr[0])
+                    .foregroundColor(Color.white).bold()
+                    .scaleEffect(scaleEffect)
+                    .frame(maxWidth: universalSize.width * 0.5, alignment: .center)
+                
+                Image(systemName: stringArr[1])
+                    .foregroundColor(Color.white)
+                    .frame(maxWidth: universalSize.width * 0.5, alignment: .trailing)
+                    .padding(.horizontal, universalSize.width/9)
+                    .scaleEffect(scaleEffect)
 
             } else {
                 Text(buttonText)
@@ -106,9 +125,3 @@ struct CroppedBelowButton: Shape {
         return Path(path.cgPath)
     }
 }
-//
-//struct MainUIButtons_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainUIButton(buttonText: "My Button", type: 3, height: UIScreen.main.bounds.height/6, buttonColor: "Blue")
-//    }
-//}

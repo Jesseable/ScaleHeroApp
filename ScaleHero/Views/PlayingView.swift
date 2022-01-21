@@ -49,7 +49,7 @@ struct PlayingView: View {
                 }
             }
             .onAppear(perform: {
-                if (playDrone) {
+                if (playDrone) { /// SOMETIMES ENDING EARLY (HARMONIC MINOR 2 octaves C
                     let duration = CGFloat(60/Int(self.musicNotes.tempo) * (musicNotes.scaleNotes.count + 1)) // Chnage the plus to however many click in beats there are
                     playSounds.playDroneSound(duration: duration, startingNote: musicNotes.scaleNotes[0].components(separatedBy: "-")[2])
                 }
