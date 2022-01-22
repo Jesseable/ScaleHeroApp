@@ -93,14 +93,17 @@ struct PlaySounds {
             self.player = try! AVAudioPlayer(contentsOf: droneURL)
             self.player?.play()
             
-            let totalDuration = duration + 2.5
-                
-            DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: { [self] in
-                self.player?.setVolume(0.05, fadeDuration: 2.5)
-            })
-            DispatchQueue.main.asyncAfter(deadline: .now() + totalDuration, execute: { [self] in
-                self.player?.stop()
-            })
+            if (duration != -1 ) {
+            
+                let totalDuration = duration + 2.5
+                    
+                DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: { [self] in
+                    self.player?.setVolume(0.05, fadeDuration: 2.5)
+                })
+                DispatchQueue.main.asyncAfter(deadline: .now() + totalDuration, execute: { [self] in
+                    self.player?.stop()
+                })
+            }
         }
     }
     

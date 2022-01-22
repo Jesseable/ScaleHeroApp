@@ -66,6 +66,8 @@ struct AppContentView: View {
                 SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "abstractview":
                 AbstractView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+            case "droneview":
+                DroneView(screenType: self.$screenType, droneNote: musicNotes.noteName, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             default:
                 HomePage(screenType: $screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             }

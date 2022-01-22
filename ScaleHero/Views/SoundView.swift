@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftySound
-import AVFAudio
 
 struct SoundView : View {
     
@@ -52,7 +51,7 @@ struct SoundView : View {
                                                          octave: musicNotes.octaves,
                                                          tonality: tonality,
                                                          tonicOption: musicNotes.tonicis,
-                                                         startingOctave: startingOctave) /// ADDED HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                                         startingOctave: startingOctave)
                         let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo)
                         let delay = CGFloat(60/musicNotes.tempo)
                         musicNotes.scaleNotes = scaleSoundFiles
