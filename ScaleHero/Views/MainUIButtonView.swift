@@ -58,6 +58,12 @@ struct MainUIButton: View {
                     .padding(.horizontal, 10)
                     .frame(width: universalSize.width, height: height)
                     .opacity(0.8)
+            case 8:
+                RectangularButton()
+                    .fill(Color("Red"))
+                    .padding(.horizontal, 10)
+                    .frame(width: universalSize.width, height: height)
+                    .opacity(0.8)
             default:
                 RectangularButton()
                     .fill(Color(buttonColor))

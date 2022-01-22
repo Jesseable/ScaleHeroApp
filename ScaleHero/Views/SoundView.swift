@@ -15,14 +15,15 @@ struct SoundView : View {
     @Binding var screenType: String
     @State var scaleType: String
     @State private var isPlaying = false
-    @State private var drone = true
-    @State private var chords = false
-    @State private var scaleNotes = true
-    @State private var startingOctave = 1
+//    @State private var musicNotes.playDrone = true
+//    @State private var chords = false
+//    @State private var musicNotes.playScaleNotes = true
+//    @State private var musicNotes.startingOctave = 1
     @State private var presentAlert = false
     @State private var disableOctaveSelection = false
     @State var playScale = PlaySounds()
     @EnvironmentObject var musicNotes: MusicNotes
+    var fileReaderAndWriter = FileReaderAndWriter()
     
     var backgroundImage: String
     
@@ -40,6 +41,7 @@ struct SoundView : View {
                             .font(.largeTitle.bold())
                             .accessibilityAddTraits(.isHeader)
                             .foregroundColor(Color.white)
+                            .multilineTextAlignment(.center)
 
                 ScrollView {
                     
@@ -53,7 +55,7 @@ struct SoundView : View {
                                                          octave: musicNotes.octaves,
                                                          tonality: tonality,
                                                          tonicOption: musicNotes.tonicis,
-                                                         startingOctave: startingOctave)
+                                                         startingOctave: musicNotes.startingOctave)
                         let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo)
                         let delay = CGFloat(60/musicNotes.tempo)
                         musicNotes.scaleNotes = scaleSoundFiles
@@ -95,7 +97,7 @@ struct SoundView : View {
                         ZStack {
                             MainUIButton(buttonText: "", type: 7, height: buttonHeight)
                             Section {
-                                Picker("Octave:", selection: $startingOctave) {
+                                Picker("Octave:", selection: $musicNotes.startingOctave) {
                                     Text("One").tag(1)
                                     Text("Two").tag(2)
                                     Text("Three").tag(3)
@@ -108,7 +110,7 @@ struct SoundView : View {
                             }
                         }.onChange(of: musicNotes.octaves) { octave in
                             if (octave > 1) {
-                                startingOctave = 1
+                                musicNotes.startingOctave = 1
                                 disableOctaveSelection = true
                             }
                         }
@@ -127,9 +129,9 @@ struct SoundView : View {
                         HStack {
 
                             Button {
-                                drone.toggle()
+                                musicNotes.playDrone.toggle()
                             } label: {
-                                if (drone) {
+                                if (musicNotes.playDrone) {
                                     MainUIButton(buttonText: "Drone SystemImage checkmark.square", type: 6, height: buttonHeight)
                                 } else {
                                     MainUIButton(buttonText: "Drone SystemImage square", type: 6, height: buttonHeight)
@@ -137,9 +139,9 @@ struct SoundView : View {
                             }
                             
                             Button {
-                                scaleNotes.toggle()
+                                musicNotes.playScaleNotes.toggle()
                             } label: {
-                                if (scaleNotes) {
+                                if (musicNotes.playScaleNotes) {
                                     MainUIButton(buttonText: "Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
                                 } else {
                                     MainUIButton(buttonText: "Notes SystemImage square", type: 5, height: buttonHeight)
@@ -179,37 +181,46 @@ struct SoundView : View {
                 
                 // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
                 Button {
-                    switch musicNotes.type.lowercased() {
-                    case "mode":
-                        musicNotes.type = "Major Scale Modes"
-                        self.screenType = "specialview"
-                    case "chromatic-scale", "whole-tone-scale":
-                        musicNotes.type = "Special"
-                        self.screenType = "specialview"
-                    case "harmonic","melodic":
-                        self.screenType = "scale"
-                    case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
-                        musicNotes.type = "tetrads"
-                        self.screenType = "specialview"
-                    case "pentatonic", "":
-                        self.screenType = "abstractview"
-                    default:
-                        self.screenType = musicNotes.type
+                    if (musicNotes.isFavouriteScale) {
+                        self.screenType = "favouritesview"
+                        musicNotes.isFavouriteScale.toggle()
+                    } else {
+                        switch musicNotes.type.lowercased() {
+                        case "mode":
+                            musicNotes.type = "Major Scale Modes"
+                            self.screenType = "specialview"
+                        case "chromatic-scale", "whole-tone-scale":
+                            musicNotes.type = "Special"
+                            self.screenType = "specialview"
+                        case "harmonic","melodic":
+                            self.screenType = "scale"
+                        case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
+                            musicNotes.type = "tetrads"
+                            self.screenType = "specialview"
+                        case "pentatonic", "":
+                            self.screenType = "abstractview"
+                        default:
+                            self.screenType = musicNotes.type
+                        }
                     }
                 } label: {
-                    switch musicNotes.type.lowercased() {
-                    case "mode":
-                        MainUIButton(buttonText: "Modes", type: 3, height: bottumButtonHeight)
-                    case "chromatic-scale", "whole-tone-scale":
-                        MainUIButton(buttonText: "Special", type: 3, height: bottumButtonHeight)
-                    case "harmonic","melodic":
-                        MainUIButton(buttonText: "Scales", type: 3, height: bottumButtonHeight)
-                    case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
-                        MainUIButton(buttonText: "Tetrads", type: 3, height: bottumButtonHeight)
-                    case "pentatonic", "":
-                        MainUIButton(buttonText: "Abstract Scales", type: 3, height: bottumButtonHeight)
-                    default:
-                        MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
+                    if (musicNotes.isFavouriteScale) {
+                        MainUIButton(buttonText: "Favourites Page", type: 3, height: bottumButtonHeight)
+                    } else {
+                        switch musicNotes.type.lowercased() {
+                        case "mode":
+                            MainUIButton(buttonText: "Modes", type: 3, height: bottumButtonHeight)
+                        case "chromatic-scale", "whole-tone-scale":
+                            MainUIButton(buttonText: "Special", type: 3, height: bottumButtonHeight)
+                        case "harmonic","melodic":
+                            MainUIButton(buttonText: "Scales", type: 3, height: bottumButtonHeight)
+                        case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
+                            MainUIButton(buttonText: "Tetrads", type: 3, height: bottumButtonHeight)
+                        case "pentatonic", "":
+                            MainUIButton(buttonText: "Abstract Scales", type: 3, height: bottumButtonHeight)
+                        default:
+                            MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
+                        }
                     }
                 }
             }
@@ -218,7 +229,18 @@ struct SoundView : View {
                     title: Text("Save To Favourites"),
                     message: Text(title),
                     primaryButton: .default(Text("Save"), action: {
-                        /// NEED TO ADD SAVING FUNCTIONALITY HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        
+                        fileReaderAndWriter.add(scaleInfo: scaleType,
+                                                tonality: musicNotes.tonality,
+                                                type: musicNotes.type,
+                                                tempo: Int(musicNotes.tempo),
+                                                startingOctave: musicNotes.startingOctave,
+                                                numOctave: musicNotes.octaves,
+                                                tonicSelection: musicNotes.tonicis,
+                                                scaleNotes: musicNotes.playScaleNotes,
+                                                drone: musicNotes.playDrone,
+                                                startingNote: musicNotes.noteName)
+                        // Goes to the favourites screen
                         self.screenType = "favouritesview"
                     }),
                     secondaryButton: .cancel(Text("Cancel"), action: { /*Do Nothing*/ })
@@ -229,10 +251,11 @@ struct SoundView : View {
         .fullScreenCover(isPresented: $isPlaying) {
             PlayingView(backgroundImage: backgroundImage,
                         scaleType: scaleType,
-                        playScaleNotes: scaleNotes,
-                        playDrone: drone,
+                        playScaleNotes: musicNotes.playScaleNotes,
+                        playDrone: musicNotes.playDrone,
                         playSounds: playScale,
-                        title: title)
+                        title: title,
+                        currentNote: musicNotes.noteName)
         }
     }
 }

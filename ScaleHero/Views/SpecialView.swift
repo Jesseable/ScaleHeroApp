@@ -36,8 +36,17 @@ struct SpecialView: View {
                     .font(.largeTitle.bold())
                     .accessibilityAddTraits(.isHeader)
                     .foregroundColor(Color.white)
+                    .multilineTextAlignment(.center)
                 
                 ScrollView {
+                    
+                    Menu {
+                        ForEach(musicNotes.getMusicAlphabet(), id: \.self) { note in
+                            Button("Note: \(note)", action: {musicNotes.noteName = note})
+                        }
+                    } label: {
+                        MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 1, height: buttonHeight)
+                    }.padding(.top)
                 
                     switch specialTitle.lowercased() {
                     case "major scale modes":

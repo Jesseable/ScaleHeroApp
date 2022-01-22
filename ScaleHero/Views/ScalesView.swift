@@ -15,6 +15,7 @@ class MusicNotes: ObservableObject {
     private let musicAlphabet = ["C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F"]
     
     @Published var noteName = "C"
+//    @Published var currentNote = "C"
     @Published var tempo = CGFloat(60)
     @Published var octaves = 1
     // in cases: 1 being never, 2: always, 3: always except for the first note
@@ -24,6 +25,10 @@ class MusicNotes: ObservableObject {
     @Published var scaleNotes = [""]
     @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @Published var backgroundImage : String?
+    @Published var playScaleNotes = true
+    @Published var playDrone = true
+    @Published var startingOctave = 1
+    @Published var isFavouriteScale = false
     
     func getMusicAlphabet() -> [String] {
         return musicAlphabet
@@ -57,6 +62,7 @@ struct ScalesView: View {
                     .font(.largeTitle.bold())
                     .accessibilityAddTraits(.isHeader)
                     .foregroundColor(Color.white)
+                    .multilineTextAlignment(.center)
                 
                 ScrollView {
                     

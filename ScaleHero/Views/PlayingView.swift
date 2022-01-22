@@ -18,6 +18,7 @@ struct PlayingView: View {
     let playDrone : Bool
     @State var playSounds : PlaySounds
     let title: String
+    @State var currentNote: String
     
     @State var index = 0
     @State var isPlaying = false
@@ -25,6 +26,7 @@ struct PlayingView: View {
     
     var body: some View {
         let buttonHeight = universalSize.height/10
+//        var currentNote = musicNotes.noteName
 
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
@@ -37,7 +39,7 @@ struct PlayingView: View {
                 
                 Spacer()
                 
-                Image(getNote(from: musicNotes.noteName, for: musicNotes.tonality)).resizable()
+                Image(getNote(from: currentNote, for: musicNotes.tonality)).resizable()
                 
                 Spacer()
                 
@@ -72,7 +74,7 @@ struct PlayingView: View {
                     }
                 }
                 
-                musicNotes.noteName = musicNotes.scaleNotes[index].components(separatedBy: "-")[2]
+                currentNote = musicNotes.scaleNotes[index].components(separatedBy: "-")[2]
                 
                 // plays the next note
                 if (playScaleNotes) {

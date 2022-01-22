@@ -9,15 +9,18 @@ import SwiftUI
 
 struct FavouritesView: View {
     
+    @EnvironmentObject var musicNotes: MusicNotes
     private let universalSize = UIScreen.main.bounds
     
     @Binding var screenType: String
     var backgroundImage: String
     @State private var isPresented = false
+    @State private var deletionMode = false
+    var fileReaderAndWriter = FileReaderAndWriter()
     
     var body: some View {
-        let buttonHeight = universalSize.height/10
-        let contentAdded = false
+        let buttonHeight = universalSize.height/8
+        let menuButtonHeight = universalSize.height/10
 
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
@@ -28,27 +31,81 @@ struct FavouritesView: View {
                             .font(.largeTitle.bold())
                             .accessibilityAddTraits(.isHeader)
                             .foregroundColor(Color.white)
+                            .multilineTextAlignment(.center)
+                
                 ScrollView {
-                    if (!contentAdded) {
+                    if (fileReaderAndWriter.scales.isEmpty) {
                         Button {
                             isPresented = true
                         } label: {
-                            MainUIButton(buttonText: "Add your first scale", type: 1, height: buttonHeight)
+                            MainUIButton(buttonText: "How to add scales", type: 1, height: buttonHeight)
                         }
                     }
+                    
+                    ForEach(fileReaderAndWriter.scales) { scale in
+                        Button {
+                            if (deletionMode) {
+                                withAnimation {
+                                    fileReaderAndWriter.delete(scale)
+                                    deletionMode.toggle()
+                                }
+                            } else {
+                                musicNotes.isFavouriteScale = true
+                                musicNotes.tonality = scale.tonality
+                                musicNotes.type = scale.type
+                                musicNotes.tempo = CGFloat(scale.tempo)
+                                musicNotes.startingOctave = scale.startingOctave
+                                musicNotes.octaves = scale.numOctave
+                                musicNotes.tonicis = scale.tonicSelection
+                                musicNotes.playDrone = scale.drone
+                                musicNotes.playScaleNotes = scale.scaleNotes
+                                musicNotes.noteName = scale.startingNote
+                                // missing scale notes but i dont htink its needed
+                                self.screenType = "soundview"
+                            }
+                        } label: {
+                            ZStack {
+                                MainUIButton(buttonText: "", type: deletionMode ? 8: 1, height: buttonHeight)
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text(scale.scaleInfo)
+                                            .font(.headline)
+                                            .foregroundColor(Color.white)
+
+                                        Text(String(scale.scaleDescription))
+                                            .font(.caption)
+                                            .foregroundColor(Color.white)
+                                    }
+
+                                    Spacer()
+
+                                    Text("Tempo: \(scale.tempo)")
+                                        .foregroundColor(Color.white)
+                                }
+                                .padding(.horizontal, 20)
+                            }
+                        }
+                    }
+                    
+                    Button {
+                        deletionMode.toggle()
+                    } label: {
+                        MainUIButton(buttonText: "Delete SystemImage trash", type: deletionMode ? 8: 1, height: buttonHeight)
+                    }
+
                 }
                 Spacer()
                 
                 Button {
                     self.screenType = "homepage"
                 } label: {
-                    MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "Home Page", type: 3, height: menuButtonHeight)
                 }
             }
         }
         .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
         .sheet(isPresented: $isPresented) {
-            FavouritesInfoView(backgroundImage: backgroundImage)
+            FavouritesInfoView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }
     }
 }

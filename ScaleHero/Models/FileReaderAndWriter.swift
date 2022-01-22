@@ -25,23 +25,42 @@ class FileReaderAndWriter: ObservableObject {
         }
     }
 
-    func save() {
+    private func save() {
         do {
             let encoder = JSONEncoder()
             encoder.outputFormatting = .prettyPrinted
             let data = try encoder.encode(scales)
             try data.write(to: filePath, options: [.atomic, .completeFileProtection])
-            print (filePath.path)
+            // TO BE REMOVED LATER
+            //print (filePath.path)
         } catch {
             print("Unable to save data")
         }
     }
 
-    func add(scaleNote: String, type: String, tonality: String, octave: Int, tempo: Int) {
+    func add(scaleInfo: String, tonality: String, type: String, tempo: Int, startingOctave: Int, numOctave: Int, tonicSelection: Int, scaleNotes: Bool, drone: Bool, startingNote: String) {
 
-        let scale = Scale(id: UUID(), name: scaleNote, type: type, tonality: tonality, tempo: tempo, octaves: octave)
+        let scale = Scale(id: UUID(),
+                          scaleInfo: scaleInfo,
+                          tonality: tonality,
+                          type: type,
+                          tempo: tempo,
+                          startingOctave: startingOctave,
+                          numOctave: numOctave,
+                          tonicSelection: tonicSelection,
+                          scaleNotes: scaleNotes,
+                          drone: drone,
+                          scaleDescription: "Octaves: \(numOctave), Drone: \(drone ? "on": "off")",
+                          startingNote: startingNote)
         scales.insert(scale, at: 0)
         save()
+    }
+    
+    func delete(_ scale: Scale) {
+        if let index = scales.firstIndex(of: scale) {
+            scales.remove(at: index)
+            save()
+        }
     }
     
     func writeBackgroundImage(newImage: String) {
