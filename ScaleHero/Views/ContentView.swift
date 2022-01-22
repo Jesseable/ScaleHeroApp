@@ -68,6 +68,8 @@ struct AppContentView: View {
                 AbstractView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "droneview":
                 DroneView(screenType: self.$screenType, droneNote: musicNotes.noteName, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+            case "favouritesview":
+                FavouritesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             default:
                 HomePage(screenType: $screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             }
@@ -153,7 +155,7 @@ struct HomePage : View {
                     }
                     
                     Button {
-                        // do nothing
+                        self.screenType = "favouritesview"
                     } label: {
                         MainUIButton(buttonText: "Favourites", type: 2, height: buttonHeight)
                     }

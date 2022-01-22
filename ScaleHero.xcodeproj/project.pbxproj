@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C5443227279B9F2C0068A239 /* DroneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5443226279B9F2B0068A239 /* DroneView.swift */; };
+		C5443229279BAB710068A239 /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5443228279BAB710068A239 /* FavouritesView.swift */; };
+		C544322B279BAD700068A239 /* FavouritesInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544322A279BAD700068A239 /* FavouritesInfoView.swift */; };
 		C54531D227756F180041702C /* PlaySounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54531D127756F180041702C /* PlaySounds.swift */; };
 		C545322327796F830041702C /* Cello-3-G#|Ab.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C54531FF27796F810041702C /* Cello-3-G#|Ab.mp3 */; };
 		C545322427796F830041702C /* Cello-1-F#|Gb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C545320027796F810041702C /* Cello-1-F#|Gb.mp3 */; };
@@ -116,6 +118,8 @@
 /* Begin PBXFileReference section */
 		C51BFE87279A8BF3001BF9A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C5443226279B9F2B0068A239 /* DroneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroneView.swift; sourceTree = "<group>"; };
+		C5443228279BAB710068A239 /* FavouritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesView.swift; sourceTree = "<group>"; };
+		C544322A279BAD700068A239 /* FavouritesInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesInfoView.swift; sourceTree = "<group>"; };
 		C54531D127756F180041702C /* PlaySounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySounds.swift; sourceTree = "<group>"; };
 		C54531FF27796F810041702C /* Cello-3-G#|Ab.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Cello-3-G#|Ab.mp3"; path = "../../../Cello Testing notes mp3/Cello-3-G#|Ab.mp3"; sourceTree = "<group>"; };
 		C545320027796F810041702C /* Cello-1-F#|Gb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Cello-1-F#|Gb.mp3"; path = "../../../Cello Testing notes mp3/Cello-1-F#|Gb.mp3"; sourceTree = "<group>"; };
@@ -377,6 +381,8 @@
 				C5B03BDC278416EB00643E7C /* PlayingView.swift */,
 				C597D97527964EF40086848D /* AbstractView.swift */,
 				C5443226279B9F2B0068A239 /* DroneView.swift */,
+				C5443228279BAB710068A239 /* FavouritesView.swift */,
+				C544322A279BAD700068A239 /* FavouritesInfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -619,6 +625,7 @@
 			files = (
 				C574FF3B2773F48F00ADD3B3 /* WriteScales.swift in Sources */,
 				C5DBD5F227812A9E00DF5183 /* FileManager-DocumentsDirectory.swift in Sources */,
+				C5443229279BAB710068A239 /* FavouritesView.swift in Sources */,
 				C5443227279B9F2C0068A239 /* DroneView.swift in Sources */,
 				C54532F12779B73D0041702C /* SettingsView.swift in Sources */,
 				C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */,
@@ -626,6 +633,7 @@
 				C574FE78276886B700ADD3B3 /* ContentView.swift in Sources */,
 				C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */,
 				C5DBD5C1278078FF00DF5183 /* MainUIButtonView.swift in Sources */,
+				C544322B279BAD700068A239 /* FavouritesInfoView.swift in Sources */,
 				C597D97627964EF40086848D /* AbstractView.swift in Sources */,
 				C574FEA92769CFDF00ADD3B3 /* ArpeggioView.swift in Sources */,
 				C545330F277E866C0041702C /* FileReaderAndWriter.swift in Sources */,

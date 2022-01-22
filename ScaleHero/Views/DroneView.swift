@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-
-import SwiftUI
 import SwiftySound
 
 struct DroneView : View {
@@ -47,15 +45,12 @@ struct DroneView : View {
                             isPlaying = false
                         }
                     } label: {
-                        if (!isPlaying) {
-                            MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
-                        } else {
-                            MainUIButton(buttonText: "Stop SystemImage speaker.slash", type: 1, height: buttonHeight)
-                        }
+                        MainUIButton(buttonText: isPlaying ? "Stop SystemImage speaker.slash": "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
                     }
                 }
                 
-                // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
+                Spacer()
+                
                 Button {
                     self.screenType = "abstractview"
                 } label: {

@@ -19,6 +19,7 @@ struct SoundView : View {
     @State private var chords = false
     @State private var scaleNotes = true
     @State private var startingOctave = 1
+    @State private var presentAlert = false
     @State private var disableOctaveSelection = false
     @State var playScale = PlaySounds()
     @EnvironmentObject var musicNotes: MusicNotes
@@ -39,6 +40,7 @@ struct SoundView : View {
                             .font(.largeTitle.bold())
                             .accessibilityAddTraits(.isHeader)
                             .foregroundColor(Color.white)
+
                 ScrollView {
                     
                     Button {
@@ -165,6 +167,13 @@ struct SoundView : View {
                             }
                         }
                     }
+                    
+                    Button {
+                        presentAlert = true
+                    } label: {
+                        MainUIButton(buttonText: "Save", type: 1, height: buttonHeight)
+                    }
+                    
                     Spacer()
                 }
                 
@@ -204,10 +213,26 @@ struct SoundView : View {
                     }
                 }
             }
+            .alert(isPresented: $presentAlert) {
+                Alert(
+                    title: Text("Save To Favourites"),
+                    message: Text(title),
+                    primaryButton: .default(Text("Save"), action: {
+                        /// NEED TO ADD SAVING FUNCTIONALITY HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        self.screenType = "favouritesview"
+                    }),
+                    secondaryButton: .cancel(Text("Cancel"), action: { /*Do Nothing*/ })
+                )
+            }
         }
         .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
         .fullScreenCover(isPresented: $isPlaying) {
-            PlayingView(backgroundImage: backgroundImage, scaleType: scaleType, playScaleNotes: scaleNotes, playDrone: drone, playSounds: playScale, title: title)
+            PlayingView(backgroundImage: backgroundImage,
+                        scaleType: scaleType,
+                        playScaleNotes: scaleNotes,
+                        playDrone: drone,
+                        playSounds: playScale,
+                        title: title)
         }
     }
 }
