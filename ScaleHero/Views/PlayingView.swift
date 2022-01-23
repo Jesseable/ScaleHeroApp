@@ -19,14 +19,12 @@ struct PlayingView: View {
     @State var playSounds : PlaySounds
     let title: String
     @State var currentNote: String
-    
     @State var index = 0
     @State var isPlaying = false
     private let universalSize = UIScreen.main.bounds
     
     var body: some View {
         let buttonHeight = universalSize.height/10
-//        var currentNote = musicNotes.noteName
 
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
@@ -36,6 +34,7 @@ struct PlayingView: View {
                     .font(.largeTitle.bold())
                     .accessibilityAddTraits(.isHeader)
                     .foregroundColor(Color.white)
+                    .multilineTextAlignment(.center)
                 
                 Spacer()
                 
@@ -52,7 +51,8 @@ struct PlayingView: View {
             }
             .onAppear(perform: {
                 if (playDrone) { /// SOMETIMES ENDING EARLY (HARMONIC MINOR 2 octaves C
-                    let duration = CGFloat(60/Int(self.musicNotes.tempo) * (musicNotes.scaleNotes.count + 1)) // Chnage the plus to however many click in beats there are
+                    let duration = (60.0/(self.musicNotes.tempo) * CGFloat(self.musicNotes.scaleNotes.count + 1)) // Change the plus to however many click in beats there are
+
                     playSounds.playDroneSound(duration: duration, startingNote: musicNotes.scaleNotes[0].components(separatedBy: "-")[2])
                 }
             })
