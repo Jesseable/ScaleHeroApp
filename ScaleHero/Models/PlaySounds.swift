@@ -15,8 +15,9 @@ import AVFoundation
 struct PlaySounds {
     
     var fileReaderAndWriter = FileReaderAndWriter()
-    var scaleTimer: Timer? = nil
+    var metronomeTimer: Timer? = nil
     var player: AVAudioPlayer?
+    var player2: AVAudioPlayer?
     
     lazy var instrument: String = {
         [self] in
@@ -46,8 +47,9 @@ struct PlaySounds {
     /**
      Converts the array into a readable file name (mp3 format)
      */
-    mutating func convertToSoundFile(scaleInfoArray: [String]) -> [String] {
+    mutating func convertToSoundFile(scaleInfoArray: [String], tempo: Int) -> [String] {
         var soundFileArr: [String] = []
+        let metronomeFile = "Metronome"
         
         for scaleNote in scaleInfoArray {
             let scaleComponentsArr = scaleNote.components(separatedBy: ":")
@@ -55,39 +57,30 @@ struct PlaySounds {
             let soundFileString = "\(instrument)-\(scaleComponentsArr[0])-\(newStringNote)"
             soundFileArr.append(soundFileString)
         }
+        if (tempo < 70) {
+            2.times {
+                soundFileArr.insert(metronomeFile, at: 0)
+            }
+        } else {
+            4.times {
+                soundFileArr.insert(metronomeFile, at: 0)
+            }
+        }
+        
         return soundFileArr
     }
     
-    // Return a possible time function for the scale to know when to switch stop back to play
-    mutating func playScaleSounds(temp: Int, scaleInfoArra: [String]) {
-        let delay = tempoToSeconds(tempo: CGFloat(temp))
-        let soundFileArr = convertToSoundFile(scaleInfoArray: scaleInfoArra)
-        var index = 0
-        
-        
-        scaleTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: true) { timer in
-            // stop the previous sound
-            if (index != 0) {
-                Sound.stop(file: soundFileArr[index-1], fileExtension: "mp3")
-            }
-
-            // play the next note
-            Sound.play(file: soundFileArr[index], fileExtension: "mp3")
-            index += 1
-            if (index == soundFileArr.count) {
-                timer.invalidate()
-            }
-        }
-    }
-    
+                        /// SEE IF IT IS USED ANYWHERE
     func getTimer() -> Timer {
-        return scaleTimer ?? Timer.init()
+        return metronomeTimer ?? Timer.init()
     }
     
+    /**
+     Plays the drone sound effects
+     */
     mutating func playDroneSound(duration: CGFloat, startingNote: String) {
         let startingFileNote = startingNote.replacingOccurrences(of: "/", with: "|")
         let droneSoundFile = "\(drone)-Drone-\(startingFileNote)"
-        //ar player: AVAudioPlayer!
         
         if let droneURL = Bundle.main.url(forResource: droneSoundFile, withExtension: "mp3") {
             self.player = try! AVAudioPlayer(contentsOf: droneURL)
@@ -107,9 +100,20 @@ struct PlaySounds {
         }
     }
     
+    /**
+     Plays the metronomes sound files
+     */
+    mutating func playMetronome() {
+        let metronomeFile = "Metronome"
+        if let droneURL = Bundle.main.url(forResource: metronomeFile, withExtension: "mp3") {
+            player2 = try! AVAudioPlayer(contentsOf: droneURL)
+            player2?.play()
+        }
+    }
+    
     mutating func cancelPreviousTimer() {
-        scaleTimer?.invalidate()
-        self.scaleTimer = nil
+        metronomeTimer?.invalidate()
+        self.metronomeTimer = nil
     }
     
     func cancelDroneSound() {

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftySound
+import AVFoundation
 
 struct PlayingView: View {
     @EnvironmentObject var musicNotes: MusicNotes
@@ -21,6 +22,8 @@ struct PlayingView: View {
     @State var currentNote: String
     @State var index = 0
     @State var isPlaying = false
+    @State var firstTime = true
+    @State var delay : CGFloat?
     private let universalSize = UIScreen.main.bounds
     
     var body: some View {
@@ -51,13 +54,18 @@ struct PlayingView: View {
             }
             .onAppear(perform: {
                 if (playDrone) { /// SOMETIMES ENDING EARLY (HARMONIC MINOR 2 octaves C
-                    let duration = (60.0/(self.musicNotes.tempo) * CGFloat(self.musicNotes.scaleNotes.count + 1)) // Change the plus to however many click in beats there are
-
-                    playSounds.playDroneSound(duration: duration, startingNote: musicNotes.scaleNotes[0].components(separatedBy: "-")[2])
+                    var index = 4
+                    if (self.musicNotes.tempo < 70) {
+                        index = 2
+                    }
+                    let duration = (60.0/(self.musicNotes.tempo) * CGFloat(self.musicNotes.scaleNotes.count + index)) // Change the plus to however many click in beats there are
+                    playSounds.playDroneSound(duration: duration, startingNote: musicNotes.scaleNotes[index].components(separatedBy: "-")[2])
                 }
             })
             .onReceive(musicNotes.timer) { time in /// ADD A CLICK IN OPTION HERE LATER
+                
                 if (playScaleNotes) {
+                        
                     // stop the previous sound
                     if (index != 0) {
                         Sound.stop(file: musicNotes.scaleNotes[index-1], fileExtension: "mp3")
@@ -73,14 +81,26 @@ struct PlayingView: View {
                         }
                     }
                 }
-                
-                currentNote = musicNotes.scaleNotes[index].components(separatedBy: "-")[2]
+                    
+                if (musicNotes.scaleNotes[index].contains("Metronome")) {
+                    var index2 = 4
+                    if (self.musicNotes.tempo < 70) {
+                        index2 = 2
+                    }
+                    currentNote = musicNotes.scaleNotes[index2].components(separatedBy: "-")[2]
+                } else {
+                    currentNote = musicNotes.scaleNotes[index].components(separatedBy: "-")[2]
+                }
                 
                 // plays the next note
                 if (playScaleNotes) {
-                    Sound.play(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
+                    if !musicNotes.scaleNotes[index].contains("Metronome") {
+                        Sound.play(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
+                    } else {
+                        playSounds.playMetronome()
+                    }
                 }
-    
+
                 self.index += 1
             }
         }
@@ -90,8 +110,12 @@ struct PlayingView: View {
      Returns the singular note from the arrays component. Determines whether to use flats or sharps for the scale.
      */
     private func getNote(from currentNote: String, for tonality: String) -> String {
+        var index = 4
+        if (self.musicNotes.tempo < 70) {
+            index = 2
+        }
         let noteArr = currentNote.replacingOccurrences(of: "/", with: "|").components(separatedBy: "|")
-        let startingNote = musicNotes.scaleNotes[0].components(separatedBy: "-")[2].uppercased()
+        let startingNote = musicNotes.scaleNotes[index].components(separatedBy: "-")[2].uppercased()
         
         if (noteArr.count == 1) {
             return noteArr[0]

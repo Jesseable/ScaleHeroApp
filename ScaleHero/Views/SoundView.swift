@@ -56,7 +56,7 @@ struct SoundView : View {
                                                          tonality: tonality,
                                                          tonicOption: musicNotes.tonicis,
                                                          startingOctave: musicNotes.startingOctave)
-                        let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo)
+                        let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo, tempo: Int(musicNotes.tempo))
                         let delay = CGFloat(60/musicNotes.tempo)
                         musicNotes.scaleNotes = scaleSoundFiles
                         musicNotes.timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
