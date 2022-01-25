@@ -31,6 +31,7 @@ struct SoundView : View {
         let title = scaleType
         let buttonHeight = universalSize.height/18
         let bottumButtonHeight = universalSize.height/10
+        let maxFavourites = 7
 
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
@@ -226,20 +227,24 @@ struct SoundView : View {
             }
             .alert(isPresented: $presentAlert) {
                 Alert(
-                    title: Text("Save To Favourites"),
+                    title: Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save To Favourites": " You have too many favourites. Delete One First"),
                     message: Text(title),
-                    primaryButton: .default(Text("Save"), action: {
+                    primaryButton: .default(Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save": "Go to favourites Page"), action: {
                         
-                        fileReaderAndWriter.add(scaleInfo: scaleType,
-                                                tonality: musicNotes.tonality,
-                                                type: musicNotes.type,
-                                                tempo: Int(musicNotes.tempo),
-                                                startingOctave: musicNotes.startingOctave,
-                                                numOctave: musicNotes.octaves,
-                                                tonicSelection: musicNotes.tonicis,
-                                                scaleNotes: musicNotes.playScaleNotes,
-                                                drone: musicNotes.playDrone,
-                                                startingNote: musicNotes.noteName)
+                        if (fileReaderAndWriter.scales.count < maxFavourites) {
+                            
+                            fileReaderAndWriter.add(scaleInfo: scaleType,
+                                                    tonality: musicNotes.tonality,
+                                                    type: musicNotes.type,
+                                                    tempo: Int(musicNotes.tempo),
+                                                    startingOctave: musicNotes.startingOctave,
+                                                    numOctave: musicNotes.octaves,
+                                                    tonicSelection: musicNotes.tonicis,
+                                                    scaleNotes: musicNotes.playScaleNotes,
+                                                    drone: musicNotes.playDrone,
+                                                    startingNote: musicNotes.noteName)
+                        
+                        }
                         // Goes to the favourites screen
                         self.screenType = "favouritesview"
                     }),

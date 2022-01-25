@@ -19,7 +19,7 @@ struct FavouritesView: View {
     var fileReaderAndWriter = FileReaderAndWriter()
     
     var body: some View {
-        let buttonHeight = universalSize.height/8
+        let buttonHeight = universalSize.height/10
         let menuButtonHeight = universalSize.height/10
 
         ZStack {

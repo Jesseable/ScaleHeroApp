@@ -20,32 +20,38 @@ struct FavouritesInfoView: View {
 
             VStack {
                     ScrollView {
-                    Text("Favourites Info")
-                                .font(.largeTitle.bold())
-                                .accessibilityAddTraits(.isHeader)
-                                .foregroundColor(Color.white)
-                    
-                    Divider().background(Color.white)
-                    
-                    Text("**Adding to Favourites Page:**")
-                        .font(.title2)
-                        .foregroundColor(Color.white)
-                    
-                    Text(infoText())
-                        .font(.title3)
-                        .foregroundColor(Color.white)
-                        .padding(.horizontal)
-                    
+                        Text("Favourites Info")
+                                    .font(.largeTitle.bold())
+                                    .accessibilityAddTraits(.isHeader)
+                                    .foregroundColor(Color.white)
+                                    .padding()
+                        
                         Divider().background(Color.white)
+                        
+                        Text("**Adding to Favourites Page:**")
+                            .font(.title2)
+                            .foregroundColor(Color.white)
+                            .padding(5)
+                        
+                        Text(infoText())
+                            .font(.title3)
+                            .foregroundColor(Color.white)
+                            .padding(.horizontal)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Divider().background(Color.white)
+                        
                         
                         Text("**Deleting from Favourites Page:**")
                             .font(.title2)
                             .foregroundColor(Color.white)
+                            .padding(5)
                         
                         Text(deletionInfoText())
                             .font(.title3)
                             .foregroundColor(Color.white)
                             .padding(.horizontal)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 Spacer()
             }
@@ -55,9 +61,9 @@ struct FavouritesInfoView: View {
     func infoText() -> String {
         let text = """
         1. Select a scale and adjust characteristics to your satisfaction
-        2. Scroll down to 'Save' button
-        3. Confirm
-        4. The scale will now be saved
+        2. Scroll down to the 'Save' button
+        3. Press and confirm
+        4. Congradulations! You have saved the scale
         """
         return text
     }
@@ -66,8 +72,8 @@ struct FavouritesInfoView: View {
         let text = """
         1. Select the deletion button
         2. All buttons will turn red
-        3. Click on the scale button to delete
-        4. The scale button has been deleted
+        3. Click on the scale to delete
+        4. Congradulations! This scale is now deleted
         """
         return text
     }

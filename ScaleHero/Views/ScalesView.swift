@@ -34,6 +34,11 @@ class MusicNotes: ObservableObject {
         return musicAlphabet
     }
     
+    func getNumTempoBeats() -> Int {
+        let determiner = tempo < 70
+        return determiner ? 2: 4
+    }
+    
     func getMusicTitile(from title: String) -> String {
         return title.replacingOccurrences(of: "-", with: " ").uppercased().replacingOccurrences(of: "TETRAD ", with: "").replacingOccurrences(of: "SEVENTH", with: "7th")
     }

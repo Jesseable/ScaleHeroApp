@@ -69,15 +69,35 @@ struct SettingsView: View {
                         }
                     }
                     
-                    Menu {
-                        Button("NewInstru") {
-                        }
-                        
-                        Button("LookAt This one") {
-                        }
-                    } label: {
-                        MainUIButton(buttonText: "DroneNote: ", type: 1, height: buttonHeight)
-                    }.menuStyle( .borderlessButton)
+                    MainUIButton(buttonText: "Drone Sound: ", type: 4, height: buttonHeight)
+//                    ZStack {
+//                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+//                        Section {
+//                            Picker("ScaleNote Selection", selection: $instrumentSelected) {
+//                                ForEach(scaleInstruments, id: \.self) {
+//                                    Text($0)
+//                                }
+//                            }
+//                            .pickerStyle( .segmented)
+//                            .colorScheme(.light)
+//                            .padding(.horizontal, 11)
+//                        }
+//                    }
+                    
+                    MainUIButton(buttonText: "Metronome: ", type: 4, height: buttonHeight)
+//                    ZStack {
+//                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+//                        Section {
+//                            Picker("ScaleNote Selection", selection: $instrumentSelected) {
+//                                ForEach(scaleInstruments, id: \.self) {
+//                                    Text($0)
+//                                }
+//                            }
+//                            .pickerStyle( .segmented)
+//                            .colorScheme(.light)
+//                            .padding(.horizontal, 11)
+//                        }
+//                    }
                     
                     Button {
                         for scaleInstrument in scaleInstruments {
@@ -93,7 +113,7 @@ struct SettingsView: View {
                             }
                         }
                     } label: {
-                        MainUIButton(buttonText: "Apply", type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: "Apply SystemImage star.circle", type: 1, height: buttonHeight)
                     }
                 }
                     

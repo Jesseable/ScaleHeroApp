@@ -24,7 +24,7 @@ struct PlayingView: View {
     @State var isPlaying = false
     @State var firstTime = true
     @State var delay : CGFloat?
-    private let universalSize = UIScreen.main.bounds
+    let universalSize = UIScreen.main.bounds
     
     var body: some View {
         let buttonHeight = universalSize.height/10
@@ -53,16 +53,16 @@ struct PlayingView: View {
                 }
             }
             .onAppear(perform: {
-                if (playDrone) { /// SOMETIMES ENDING EARLY (HARMONIC MINOR 2 octaves C
-                    var index = 4
-                    if (self.musicNotes.tempo < 70) {
-                        index = 2
-                    }
-                    let duration = (60.0/(self.musicNotes.tempo) * CGFloat(self.musicNotes.scaleNotes.count + index)) // Change the plus to however many click in beats there are
-                    playSounds.playDroneSound(duration: duration, startingNote: musicNotes.scaleNotes[index].components(separatedBy: "-")[2])
+                if (playDrone) {
+                    let index = self.musicNotes.getNumTempoBeats()
+                    let duration = (tempoToSeconds(tempo: self.musicNotes.tempo)
+                                    * CGFloat(self.musicNotes.scaleNotes.count + index)) 
+                    playSounds.playDroneSound(duration: duration,
+                                              startingNote: musicNotes.scaleNotes[index]
+                                                .components(separatedBy: "-")[2])
                 }
             })
-            .onReceive(musicNotes.timer) { time in /// ADD A CLICK IN OPTION HERE LATER
+            .onReceive(musicNotes.timer) { time in
                 
                 if (playScaleNotes) {
                         
@@ -83,13 +83,15 @@ struct PlayingView: View {
                 }
                     
                 if (musicNotes.scaleNotes[index].contains("Metronome")) {
-                    var index2 = 4
-                    if (self.musicNotes.tempo < 70) {
-                        index2 = 2
+                    let numBeats = self.musicNotes.getNumTempoBeats()
+                    var countingImageArr = ["Two", "One"] /// NEED TO ADD THE IMAGE FILES HERE
+                    if (numBeats == 4) {
+                        countingImageArr.insert("Three", at: 0)
+                        countingImageArr.insert("Four", at: 0)
                     }
-                    currentNote = musicNotes.scaleNotes[index2].components(separatedBy: "-")[2]
+                    currentNote = countingImageArr[self.index]
                 } else {
-                    currentNote = musicNotes.scaleNotes[index].components(separatedBy: "-")[2]
+                    currentNote = musicNotes.scaleNotes[self.index].components(separatedBy: "-")[2]
                 }
                 
                 // plays the next note
@@ -110,10 +112,7 @@ struct PlayingView: View {
      Returns the singular note from the arrays component. Determines whether to use flats or sharps for the scale.
      */
     private func getNote(from currentNote: String, for tonality: String) -> String {
-        var index = 4
-        if (self.musicNotes.tempo < 70) {
-            index = 2
-        }
+        let index = self.musicNotes.getNumTempoBeats()
         let noteArr = currentNote.replacingOccurrences(of: "/", with: "|").components(separatedBy: "|")
         let startingNote = musicNotes.scaleNotes[index].components(separatedBy: "-")[2].uppercased()
         
@@ -136,5 +135,13 @@ struct PlayingView: View {
                 }
             }
         }
+    }
+    
+    /**
+     Returns the number of seconds a note lasts for
+     */
+    func tempoToSeconds(tempo: CGFloat) -> CGFloat {
+        let noteLength = CGFloat(60/tempo)
+        return noteLength
     }
 }

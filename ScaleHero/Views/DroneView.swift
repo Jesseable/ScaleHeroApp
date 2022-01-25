@@ -41,7 +41,7 @@ struct DroneView : View {
                         Sound.enabled = true
                         isPlaying = true
                         } else {
-                            playScale.cancelDroneSound()
+                            playScale.cancelAllSounds()
                             isPlaying = false
                         }
                     } label: {

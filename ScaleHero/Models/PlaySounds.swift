@@ -14,9 +14,11 @@ import AVFoundation
  */
 struct PlaySounds {
     
-    var fileReaderAndWriter = FileReaderAndWriter()
+    private var fileReaderAndWriter = FileReaderAndWriter()
     var metronomeTimer: Timer? = nil
+    // For the drone
     var player: AVAudioPlayer?
+    // For the metronome
     var player2: AVAudioPlayer?
     
     lazy var instrument: String = {
@@ -49,7 +51,6 @@ struct PlaySounds {
      */
     mutating func convertToSoundFile(scaleInfoArray: [String], tempo: Int) -> [String] {
         var soundFileArr: [String] = []
-        let metronomeFile = "Metronome"
         
         for scaleNote in scaleInfoArray {
             let scaleComponentsArr = scaleNote.components(separatedBy: ":")
@@ -57,22 +58,26 @@ struct PlaySounds {
             let soundFileString = "\(instrument)-\(scaleComponentsArr[0])-\(newStringNote)"
             soundFileArr.append(soundFileString)
         }
-        if (tempo < 70) {
-            2.times {
-                soundFileArr.insert(metronomeFile, at: 0)
-            }
-        } else {
-            4.times {
-                soundFileArr.insert(metronomeFile, at: 0)
-            }
-        }
+        
+        soundFileArr.insert(contentsOf: addMetronome(tempo: tempo), at: 0)
         
         return soundFileArr
     }
     
-                        /// SEE IF IT IS USED ANYWHERE
-    func getTimer() -> Timer {
-        return metronomeTimer ?? Timer.init()
+    /**
+     Creates an array of the metronome sound files to be added to the sound files array
+     */
+    private func addMetronome(tempo: Int) -> [String] {
+        let metronomeFile = "Metronome"
+        var metronomeFileArr: [String] = []
+        
+        if (tempo < 70) {
+            metronomeFileArr = [metronomeFile, metronomeFile]
+        } else {
+            metronomeFileArr = [metronomeFile, metronomeFile, metronomeFile, metronomeFile]
+        }
+        
+        return metronomeFileArr
     }
     
     /**
@@ -111,23 +116,28 @@ struct PlaySounds {
         }
     }
     
-    mutating func cancelPreviousTimer() {
+    private mutating func cancelPreviousTimer() {
         metronomeTimer?.invalidate()
         self.metronomeTimer = nil
     }
     
-    func cancelDroneSound() {
+    private func cancelDroneSound() {
         self.player?.stop()
+    }
+    
+    private func cancelMetronomeSound() {
+        self.player2?.stop()
     }
     
     mutating func cancelAllSounds() {
         Sound.enabled = false
         cancelPreviousTimer()
         cancelDroneSound()
+        cancelMetronomeSound()
     }
-    
-    func tempoToSeconds(tempo: CGFloat) -> CGFloat {
-        let noteLength = CGFloat(60/tempo)
-        return noteLength
-    }
+//    
+//    func tempoToSeconds(tempo: CGFloat) -> CGFloat {
+//        let noteLength = CGFloat(60/tempo)
+//        return noteLength
+//    }
 }
