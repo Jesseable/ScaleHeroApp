@@ -161,7 +161,7 @@ struct SoundView : View {
                                 Picker("Tonic selection", selection: $musicNotes.tonicis) {
                                     Text("Never").tag(1)
                                     Text("All").tag(2)
-                                    Text("All/first").tag(3)
+                                    Text("Not Initial").tag(3)
                                 }
                                 .padding(.horizontal)
                                 .pickerStyle( .segmented)
@@ -189,15 +189,15 @@ struct SoundView : View {
                         switch musicNotes.type.lowercased() {
                         case "mode":
                             musicNotes.type = "Major Scale Modes"
-                            self.screenType = "specialview"
-                        case "chromatic-scale", "whole-tone-scale":
-                            musicNotes.type = "Special"
-                            self.screenType = "specialview"
+                            self.screenType = "otherview"
+                        case "chromatic-scale", "whole-tone-scale", "major-pentatonic-scale", "minor-pentatonic-scale", "blues-scale":
+                            musicNotes.type = "special"
+                            self.screenType = "otherview"
                         case "harmonic","melodic":
                             self.screenType = "scale"
                         case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
                             musicNotes.type = "tetrads"
-                            self.screenType = "specialview"
+                            self.screenType = "otherview"
                         case "pentatonic", "":
                             self.screenType = "abstractview"
                         default:
@@ -211,7 +211,7 @@ struct SoundView : View {
                         switch musicNotes.type.lowercased() {
                         case "mode":
                             MainUIButton(buttonText: "Modes", type: 3, height: bottumButtonHeight)
-                        case "chromatic-scale", "whole-tone-scale":
+                        case "chromatic-scale", "whole-tone-scale", "major-pentatonic-scale", "minor-pentatonic-scale", "blues-scale":
                             MainUIButton(buttonText: "Special", type: 3, height: bottumButtonHeight)
                         case "harmonic","melodic":
                             MainUIButton(buttonText: "Scales", type: 3, height: bottumButtonHeight)

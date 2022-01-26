@@ -10,7 +10,7 @@ import SwiftUI
 /**
  Creates the view for all of the special cases inside of scales and arpeggios. Such as chromatic scales, tetrads, modes ect
  */
-struct SpecialView: View {
+struct OtherScalesView: View {
     
     @Binding var screenType: String
     @State var specialTitle: String
@@ -20,7 +20,7 @@ struct SpecialView: View {
     // All button names for the modes specialView in scales
     private let modes = ["Lydian", "Ionian", "Mixolydian", "Dorian", "Aeolian", "Phrygian", "Locrian"]
     // All button names for the special specialView in scales
-    private let specialTypes = ["Chromatic", "Whole-Tone"]
+    private let specialTypes = ["Chromatic", "Whole-Tone", "Major-Pentatonic", "Minor-Pentatonic", "Blues"]
     // All button names for the tetrads specialView in arpeggios
     private let tetrads = ["Dominant-Seventh", "Major-Seventh", "Minor-Seventh", "Diminished-Seventh"]
     var backgroundImage: String
@@ -62,11 +62,11 @@ struct SpecialView: View {
                     case "special":
                         ForEach(specialTypes, id: \.self) { type in
                             Button {
-                                musicNotes.tonality = "" //There is no tonality for these scales
+                                musicNotes.tonality = "others"
                                 musicNotes.type = type + "-Scale"
                                 screenType = "soundview"
                             } label: {
-                                MainUIButton(buttonText: type, type: 1, height: buttonHeight)
+                                MainUIButton(buttonText: type.replacingOccurrences(of: "-", with: " "), type: 1, height: buttonHeight)
                             }
                         }
                     case "tetrads":

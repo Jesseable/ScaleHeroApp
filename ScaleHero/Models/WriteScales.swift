@@ -25,8 +25,8 @@ struct WriteScales {
             return [2, 2, 1, 2, 2, 2, 1]
         case "mode":
             return [2, 2, 1, 2, 2, 2, 1]
-        case "pentatonic":
-            return [2, 2, 3, 2, 3]
+//        case "pentatonic":
+//            return [2, 2, 3, 2, 3]
         default:
             return[-1]
         }
@@ -43,10 +43,10 @@ struct WriteScales {
             return [2, 1, 2, 2, 1, 3, 1]
         case "melodic":
             return [2, 1, 2, 2, 2, 2, 1]
-        case "pentatonic":
-            return [3, 2, 2, 3, 2]
-        case "": // AKA Blues
-            return [3, 2, 1, 1, 3, 2] // NEED TO SORT OUT FLATS AND SHARPS HERE STILL
+//        case "pentatonic":
+//            return [3, 2, 2, 3, 2]
+//        case "": // AKA Blues
+//            return [3, 2, 1, 1, 3, 2] // NEED TO SORT OUT FLATS AND SHARPS HERE STILL
         default:
             return [-1]
         }
@@ -68,12 +68,18 @@ struct WriteScales {
         }
     }()
     
-    lazy var specialPattern : [Int] = {
+    lazy var otherPattern : [Int] = {
         switch self.type.lowercased() {
         case "chromatic-scale":
             return [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         case "whole-tone-scale":
             return [2, 2, 2, 2, 2, 2]
+        case "major-pentatonic-scale":
+            return [2, 2, 3, 2, 3]
+        case "minor-pentatonic-scale":
+            return [3, 2, 2, 3, 2]
+        case "blues-scale":
+            return [3, 2, 1, 1, 3, 2] // NEED TO SORT OUT FLATS AND SHARPS HERE STILL
         default:
             return[-1]
         }
@@ -348,8 +354,8 @@ struct WriteScales {
                     startingNum += num
                     dictKeysArray.append(startingNum)
                 }
-            case "": // Case for a special scale
-                for num in specialPattern {
+            case "others":
+                for num in otherPattern {
                     startingNum += num
                     dictKeysArray.append(startingNum)
                 }

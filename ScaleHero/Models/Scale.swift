@@ -7,6 +7,9 @@
 
 import Foundation
 
+/**
+ This is used to save the scales as a JSON dictionary value to be read and written to in the favourites page
+ */
 struct Scale: Identifiable, Codable, Equatable {
     var id: UUID
     let scaleInfo: String

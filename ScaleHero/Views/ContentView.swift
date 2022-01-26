@@ -57,17 +57,15 @@ struct AppContentView: View {
                 ScalesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "arpeggio":
                 ArpeggioView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "specialview":
-                SpecialView(screenType: self.$screenType, specialTitle: musicNotes.type, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+            case "otherview":
+                OtherScalesView(screenType: self.$screenType, specialTitle: musicNotes.type, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "settings":
                 SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage())
             case "soundview":
                 let scaleType = musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type
                 SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "abstractview":
-                AbstractView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "droneview":
-                DroneView(screenType: self.$screenType, droneNote: musicNotes.noteName, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+                DroneView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "favouritesview":
                 FavouritesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             default:
@@ -149,9 +147,9 @@ struct HomePage : View {
                     }
                     
                     Button {
-                        self.screenType = "abstractview"
+                        self.screenType = "droneview"
                     } label: {
-                        MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: "Drone", type: 1, height: buttonHeight)
                     }
                     
                     Button {

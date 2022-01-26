@@ -122,7 +122,7 @@ struct SettingsView: View {
                 Button {
                     self.screenType = "HomeScreen"
                 } label: {
-                    MainUIButton(buttonText: "HomeScreen", type: 3, height: bottumButtonHeight)
+                    MainUIButton(buttonText: "Home Page", type: 3, height: bottumButtonHeight)
                 }
             }
         }

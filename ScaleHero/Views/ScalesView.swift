@@ -40,7 +40,7 @@ class MusicNotes: ObservableObject {
     }
     
     func getMusicTitile(from title: String) -> String {
-        return title.replacingOccurrences(of: "-", with: " ").uppercased().replacingOccurrences(of: "TETRAD ", with: "").replacingOccurrences(of: "SEVENTH", with: "7th")
+        return title.replacingOccurrences(of: "-", with: " ").uppercased().replacingOccurrences(of: "TETRAD ", with: "").replacingOccurrences(of: "SEVENTH", with: "7th").replacingOccurrences(of: "OTHERS ", with: "")
     }
 }
 
@@ -113,14 +113,14 @@ struct ScalesView: View {
                     
                     Button {
                         musicNotes.type = "Major Scale Modes"
-                        self.screenType = "specialview"
+                        self.screenType = "otherview"
                     } label: {
                         MainUIButton(buttonText: "Modes", type: 1, height: buttonHeight)
                     }
                     
                     Button {
-                        musicNotes.type = "Special"
-                        self.screenType = "specialview"
+                        musicNotes.type = "special"
+                        self.screenType = "otherview"
                     } label: {
                         MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
                     }
