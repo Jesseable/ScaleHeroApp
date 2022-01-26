@@ -32,6 +32,7 @@ struct SoundView : View {
         let buttonHeight = universalSize.height/18
         let bottumButtonHeight = universalSize.height/10
         let maxFavourites = 7
+        var disableOctaveSelection = (musicNotes.octaves < 2) ? false : true
 
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
