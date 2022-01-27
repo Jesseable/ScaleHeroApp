@@ -61,6 +61,7 @@ struct SoundView : View {
                         let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo, tempo: Int(musicNotes.tempo))
                         let delay = CGFloat(60/musicNotes.tempo)
                         musicNotes.scaleNotes = scaleSoundFiles
+                        musicNotes.scaleNoteNames = playScale.convertToSoundFile(scaleInfoArray: scale.getScaleNoteNames(), tempo: Int(musicNotes.tempo))
                         musicNotes.timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
                         musicNotes.noteName = startingNote
                     

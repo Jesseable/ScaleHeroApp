@@ -24,6 +24,7 @@ class MusicNotes: ObservableObject {
     @Published var type = "Scale"
     @Published var tonality = "Major"
     @Published var scaleNotes = [""]
+    @Published var scaleNoteNames = [""]
     @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @Published var backgroundImage : String?
     @Published var playScaleNotes = true

@@ -14,6 +14,8 @@ import UIKit
 struct WriteScales {
     
     let type : String
+    var fileReaderAndWriter = FileReaderAndWriter()
+    var scaleNoteNames : [String] = []
     
     // Sets the major pattern for differnet types of scales. Measured in semitones
     lazy var majorPattern : [Int] = {
@@ -135,6 +137,13 @@ struct WriteScales {
                           48: "3:G#/Ab"]
     
     /**
+     Return the scale Note Names
+     */
+    func getScaleNoteNames() -> [String] {
+        return scaleNoteNames
+    }
+    
+    /**
      Returns the starting notes key in the musicNotes dictionary
      */
     private func startingNoteKeyFinder(startingNote: String, startingOctave: Int) -> Int {
@@ -153,39 +162,68 @@ struct WriteScales {
      Returns an array of the notes to play in the specific scale
      */
     mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String, tonicOption: Int, startingOctave: Int) -> [String] {
-        let startingKey = startingNoteKeyFinder(startingNote: startingNote, startingOctave: startingOctave)
+        var startingKey = startingNoteKeyFinder(startingNote: startingNote, startingOctave: startingOctave)
         
-        var valueArray: [String] = []
+        // Does the transposition
+        var transpositionNote = fileReaderAndWriter.readTransposition()
+        if (transpositionNote.components(separatedBy: " ").count > 1) {
+            transpositionNote = transpositionNote.components(separatedBy: " ")[1]
+        }
+        let transpositionKey = startingNoteKeyFinder(startingNote: transpositionNote, startingOctave: startingOctave)
+        let difference = startingKey - transpositionKey
+        startingKey -= difference
+        
+        var valueArray : [String] = []
+        var noteNameValueArray : [String] = []
+        
         var reversedValuesArr: [String] = []
+        var noteNameReversedValuesArr: [String] = []
+        
         var keysArray = [startingKey]
+        var noteNameKeysArray = [(startingKey + difference)]
         // if -1 needs an error image
         
         keysArray = dictKeysArray(startingKey: startingKey, tonality: tonality, octave: octave, keysArray: keysArray)
+        noteNameKeysArray = dictKeysArray(startingKey: (startingKey + difference), tonality: tonality, octave: octave, keysArray: noteNameKeysArray)
         
         for key in keysArray {
             guard let noteName = accendingNotes[key] else { return ["Getting string access from key for music dictionary has failed"] }
-//            let note = noteName.components(separatedBy: ":")
             valueArray.append(noteName)
+        }
+        
+        for key in noteNameKeysArray {
+            guard let noteName = accendingNotes[key] else { return ["Getting string access from key for music dictionary has failed"] }
+            noteNameValueArray.append(noteName)
         }
         
         if (self.type != "melodic") {
             reversedValuesArr = valueArray.reversed()
+            noteNameReversedValuesArr = noteNameValueArray.reversed()
+            
             // removed a value so as to not repeat the tonic
             reversedValuesArr.removeFirst()
+            noteNameReversedValuesArr.removeFirst()
             
             valueArray.append(contentsOf: reversedValuesArr)
+            noteNameValueArray.append(contentsOf: noteNameReversedValuesArr)
         } else {
             // Needs to be altered to do multiple octaves as well. Should create another function for this purpose!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             reversedValuesArr = valueArray.reversed()
+            noteNameReversedValuesArr = noteNameValueArray.reversed()
             reversedValuesArr = melodicMinorDecendingAlterations(on: reversedValuesArr, for: octave)
+            noteNameReversedValuesArr = melodicMinorDecendingAlterations(on: noteNameReversedValuesArr, for: octave)
             
             // removed a value so as to not repeat the tonic
             reversedValuesArr.removeFirst()
+            noteNameReversedValuesArr.removeFirst()
             valueArray.append(contentsOf: reversedValuesArr)
+            noteNameValueArray.append(contentsOf: noteNameReversedValuesArr)
         }
         
         let scaleArray = addRepeatingTonics(for: valueArray, tonicOption: tonicOption)
+        let noteNameScaleArray = addRepeatingTonics(for: noteNameValueArray, tonicOption: tonicOption)
         
+        self.scaleNoteNames = noteNameScaleArray
         return scaleArray
     }
     

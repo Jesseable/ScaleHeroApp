@@ -82,16 +82,17 @@ struct PlayingView: View {
                     }
                 }
                     
-                if (musicNotes.scaleNotes[index].contains("Metronome")) {
+                if (musicNotes.scaleNoteNames[index].contains("Metronome")) {
                     let numBeats = self.musicNotes.getNumTempoBeats()
-                    var countingImageArr = ["Two", "One"] /// NEED TO ADD THE IMAGE FILES HERE
+                    var countingImageArr = ["Two", "One"]
                     if (numBeats == 4) {
                         countingImageArr.insert("Three", at: 0)
                         countingImageArr.insert("Four", at: 0)
                     }
                     currentNote = countingImageArr[self.index]
                 } else {
-                    currentNote = musicNotes.scaleNotes[self.index].components(separatedBy: "-")[2]
+                    currentNote = musicNotes.scaleNoteNames[self.index].components(separatedBy: "-")[2]
+                    print(musicNotes.scaleNoteNames)
                 }
                 
                 // plays the next note
