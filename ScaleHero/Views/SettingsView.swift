@@ -17,10 +17,13 @@ struct SettingsView: View {
     var fileReaderAndWriter = FileReaderAndWriter()
     // These are also on contentView
     private let scaleInstruments = ["Cello", "Jesse's Vocals"]
+    private let transpositionModes = ["Notes", "Instrument"]
     // These are also on contentView
     private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
     @State var instrumentSelected : String
     @State var backgroundColour : String
+    @State var transpositionMode : String
+    @State var transposition : String
 
     
     var body: some View {
@@ -39,34 +42,76 @@ struct SettingsView: View {
                 
                 ScrollView {
                     
-                    MainUIButton(buttonText: "Background:", type: 4, height: buttonHeight)
-                    ZStack {
-                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                        Section {
-                            Picker("ScaleNote Selection", selection: $backgroundColour) {
-                                ForEach(backgrounds, id: \.self) {
-                                    Text($0)
+                    Group {
+                        MainUIButton(buttonText: "Background:", type: 4, height: buttonHeight)
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                            Section {
+                                Picker("ScaleNote Selection", selection: $backgroundColour) {
+                                    ForEach(backgrounds, id: \.self) {
+                                        Text($0)
+                                    }
                                 }
+                                .pickerStyle( .segmented)
+                                .colorScheme(.light)
+                                .padding(.horizontal, 11)
                             }
-                            .pickerStyle( .segmented)
-                            .colorScheme(.light)
-                            .padding(.horizontal, 11)
                         }
+                        
+                        Divider().background(Color.white)
+                    }
+                    
+                    // Transposition buttons
+                    Group {
+                        MainUIButton(buttonText: "Transposition: ", type: 4, height: buttonHeight)
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                            Section {
+                                Picker("ScaleNote Selection", selection: $transpositionMode) {
+                                    ForEach(transpositionModes, id: \.self) {
+                                        Text($0)
+                                    }
+                                }
+                                .pickerStyle( .segmented)
+                                .colorScheme(.light)
+                                .padding(.horizontal, 11)
+                            }
+                        }.onChange(of: transpositionMode) { mode in /// COULD TRY TO CUSTOMISE MORE LATER ON
+                            if (mode == "Notes") {
+                                transposition = "C"
+                            } else {
+                                transposition = "Strings C"
+                            }
+                        }
+                        
+                        Menu {
+                            ForEach((transpositionMode == "Notes") ? musicNotes.getMusicAlphabet() :musicNotes.getInstrumentSelection() , id: \.self) { note in
+                                Button("Note: \(note)", action: {transposition = note})
+                            }
+                        } label: {
+                            MainUIButton(buttonText: (transpositionMode == "Notes") ? "Note: \(transposition)" : "Instrument: \(transposition)", type: 1, height: buttonHeight)
+                        }
+                        
+                        Divider().background(Color.white)
                     }
                 
-                    MainUIButton(buttonText: "Scale Instrument:", type: 4, height: buttonHeight)
-                    ZStack {
-                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                        Section {
-                            Picker("ScaleNote Selection", selection: $instrumentSelected) {
-                                ForEach(scaleInstruments, id: \.self) {
-                                    Text($0)
+                    Group {
+                        MainUIButton(buttonText: "Scale Instrument:", type: 4, height: buttonHeight)
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                            Section {
+                                Picker("ScaleNote Selection", selection: $instrumentSelected) {
+                                    ForEach(scaleInstruments, id: \.self) {
+                                        Text($0)
+                                    }
                                 }
+                                .pickerStyle( .segmented)
+                                .colorScheme(.light)
+                                .padding(.horizontal, 11)
                             }
-                            .pickerStyle( .segmented)
-                            .colorScheme(.light)
-                            .padding(.horizontal, 11)
                         }
+                        
+                        Divider().background(Color.white)
                     }
                     
                     MainUIButton(buttonText: "Drone Sound: ", type: 4, height: buttonHeight)
@@ -84,20 +129,7 @@ struct SettingsView: View {
 //                        }
 //                    }
                     
-                    MainUIButton(buttonText: "Metronome: ", type: 4, height: buttonHeight)
-//                    ZStack {
-//                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-//                        Section {
-//                            Picker("ScaleNote Selection", selection: $instrumentSelected) {
-//                                ForEach(scaleInstruments, id: \.self) {
-//                                    Text($0)
-//                                }
-//                            }
-//                            .pickerStyle( .segmented)
-//                            .colorScheme(.light)
-//                            .padding(.horizontal, 11)
-//                        }
-//                    }
+                    Divider().background(Color.white)
                     
                     Button {
                         for scaleInstrument in scaleInstruments {
@@ -112,8 +144,12 @@ struct SettingsView: View {
                                 musicNotes.backgroundImage = "Background" + background
                             }
                         }
+                        
+                        fileReaderAndWriter.writeNewTransposition(newTransposition: transposition)
+                        musicNotes.transposition = transposition
+
                     } label: {
-                        MainUIButton(buttonText: "Apply SystemImage star.circle", type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: "Apply SystemImage star.circle", type: 1, height: bottumButtonHeight)
                     }
                 }
                     

@@ -13,6 +13,7 @@ import SwiftUI
 class MusicNotes: ObservableObject {
 
     private let musicAlphabet = ["C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F"]
+    private let instrumentSelection = ["Basoon C", "Clarinet Bb", "Clarinet Eb", "Euphonium C", "Horn F", "Oboe C", "Recorder C", "Recorder F", "Flute C", "Saxophone Bb", "Saxophone Eb", "Strings C", "Trombone C", "Trumpet Bb", "Tuba F"]
     
     @Published var noteName = "C"
 //    @Published var currentNote = "C"
@@ -29,9 +30,14 @@ class MusicNotes: ObservableObject {
     @Published var playDrone = true
     @Published var startingOctave = 1
     @Published var isFavouriteScale = false
+    @Published var transposition = "C"
     
     func getMusicAlphabet() -> [String] {
         return musicAlphabet
+    }
+    
+    func getInstrumentSelection() -> [String] {
+        return instrumentSelection
     }
     
     func getNumTempoBeats() -> Int {

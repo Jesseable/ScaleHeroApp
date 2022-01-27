@@ -10,6 +10,8 @@ import SwiftUI
 struct FavouritesInfoView: View {
     
     var backgroundImage: String
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     var fileReaderAndWriter : FileReaderAndWriter
     
     var body: some View {
@@ -54,6 +56,12 @@ struct FavouritesInfoView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 Spacer()
+                
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    MainUIButton(buttonText: "Back", type: 3, height: UIScreen.main.bounds.height/10)
+                }
             }
         }
     }

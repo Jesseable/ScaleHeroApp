@@ -7,13 +7,16 @@
 
 import Foundation
 
+/**
+ Handles all of the reading and writing of files throughout the app
+ */
 class FileReaderAndWriter: ObservableObject {
     
-    // USE THIS WHEN CREATING THE FAVOURITES PAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @Published var scales: [Scale]
     let filePath = FileManager.documentsDirectory.appendingPathComponent("FavouriteScales")
     let scaleInstrumentPath = FileManager.documentsDirectory.appendingPathComponent("ScaleInstrument")
     let backgroundColourPath = FileManager.documentsDirectory.appendingPathComponent("backGroundColour")
+    let transpositionPath = FileManager.documentsDirectory.appendingPathComponent("transposition")
     
     // Need to make the JSON FIle
     init() {
@@ -77,8 +80,7 @@ class FileReaderAndWriter: ObservableObject {
     func readBackgroundImage() -> String {
         //reading
         do {
-            let imageName = try String(contentsOf: backgroundColourPath, encoding: .utf8)
-            return imageName
+            return try String(contentsOf: backgroundColourPath, encoding: .utf8)
         }
         catch {
             Swift.print(error)
@@ -88,7 +90,6 @@ class FileReaderAndWriter: ObservableObject {
     
     func writeScaleInstrument(newInstrument: String) {
         //writing
-        
         do {
             try newInstrument.write(to: scaleInstrumentPath, atomically: true, encoding: String.Encoding.utf8)
         }
@@ -102,8 +103,30 @@ class FileReaderAndWriter: ObservableObject {
     func readScaleInstrument() -> String {
         //reading
         do {
-            let instrumentName = try String(contentsOf: scaleInstrumentPath, encoding: .utf8)
-            return instrumentName
+            return try String(contentsOf: scaleInstrumentPath, encoding: .utf8)
+        }
+        catch {
+            Swift.print(error)
+            return "Error caught when reading instrument file" // Return default option IN FUTURE WHEN DECIDED UPON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+    }
+    
+    func writeNewTransposition(newTransposition: String) {
+        //writing
+        do {
+            try newTransposition.write(to: transpositionPath, atomically: true, encoding: String.Encoding.utf8)
+        }
+        catch {
+            // Look into this or make the pop up errors occur for users when this occurs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            Swift.print(error)
+            print("error has occured when writing to the file")
+        }
+    }
+    
+    func readTransposition() -> String {
+        //reading
+        do {
+            return try String(contentsOf: transpositionPath, encoding: .utf8)
         }
         catch {
             Swift.print(error)
