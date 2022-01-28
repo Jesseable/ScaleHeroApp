@@ -79,9 +79,9 @@ struct SoundView : View {
                             MainUIButton(buttonText: "", type: 7, height: buttonHeight)
                             Section {
                                 Picker("Octave selection", selection: $musicNotes.octaves) {
-                                    Text("One").tag(1)
-                                    Text("Two").tag(2)
-                                    Text("Three").tag(3)
+                                    Text("1").tag(1)
+                                    Text("2").tag(2)
+                                    Text("3").font(.title).tag(3)
                                 }
                                 .padding(.horizontal)
                                 .pickerStyle( .segmented)
@@ -101,13 +101,13 @@ struct SoundView : View {
                             MainUIButton(buttonText: "", type: 7, height: buttonHeight)
                             Section {
                                 Picker("Octave:", selection: $musicNotes.startingOctave) {
-                                    Text("One").tag(1)
-                                    Text("Two").tag(2)
-                                    Text("Three").tag(3)
+                                    Text("1").tag(1)
+                                    Text("2").tag(2)
+                                    Text("3").tag(3)
                                 }
                                 .padding(.horizontal)
                                 .pickerStyle( .segmented)
-                                .colorScheme(.light)
+                                .colorScheme(.light) 
                                 .padding(.horizontal, 11)
                                 .disabled(disableOctaveSelection)
                             }
@@ -164,6 +164,26 @@ struct SoundView : View {
                                     Text("Never").tag(1)
                                     Text("All").tag(2)
                                     Text("Not Initial").tag(3)
+                                }
+                                .padding(.horizontal)
+                                .pickerStyle( .segmented)
+                                .colorScheme(.light)
+                                .padding(.horizontal, 11)
+                            }
+                        }
+                    }
+                    
+                    Divider().background(Color.white)
+                    
+                    Group {
+                        MainUIButton(buttonText: "Note Display", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                            Section {
+                                Picker("Sharps or Flats", selection: $musicNotes.noteDisplay) {
+                                    Image("Sharp").tag(1)
+                                    Text("Automatic").tag(2)
+                                    Image("Flat").tag(3)
                                 }
                                 .padding(.horizontal)
                                 .pickerStyle( .segmented)
@@ -244,7 +264,8 @@ struct SoundView : View {
                                                     tonicSelection: musicNotes.tonicis,
                                                     scaleNotes: musicNotes.playScaleNotes,
                                                     drone: musicNotes.playDrone,
-                                                    startingNote: musicNotes.noteName)
+                                                    startingNote: musicNotes.noteName,
+                                                    noteDisplay: musicNotes.noteDisplay)
                         
                         }
                         // Goes to the favourites screen

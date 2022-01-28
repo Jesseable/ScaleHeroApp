@@ -49,7 +49,7 @@ struct SettingsView: View {
                             Section {
                                 Picker("ScaleNote Selection", selection: $backgroundColour) {
                                     ForEach(backgrounds, id: \.self) {
-                                        Text($0)
+                                        Image($0)
                                     }
                                 }
                                 .pickerStyle( .segmented)
@@ -132,21 +132,7 @@ struct SettingsView: View {
                     Divider().background(Color.white)
                     
                     Button {
-                        for scaleInstrument in scaleInstruments {
-                            if (instrumentSelected == scaleInstrument) {
-                                fileReaderAndWriter.writeScaleInstrument(newInstrument: scaleInstrument)
-                            }
-                        }
-                        
-                        for background in backgrounds {
-                            if (backgroundColour == background) {
-                                fileReaderAndWriter.writeBackgroundImage(newImage: background)
-                                musicNotes.backgroundImage = "Background" + background
-                            }
-                        }
-                        
-                        fileReaderAndWriter.writeNewTransposition(newTransposition: transposition)
-                        musicNotes.transposition = transposition
+                        applyAll(scaleInstruments: scaleInstruments, backgrounds: backgrounds, transposition: transposition)
 
                     } label: {
                         MainUIButton(buttonText: "Apply SystemImage star.circle", type: 1, height: bottumButtonHeight)
@@ -156,11 +142,40 @@ struct SettingsView: View {
                 Spacer()
 
                 Button {
+                    // Applies changes when going back
+                    applyAll(scaleInstruments: scaleInstruments, backgrounds: backgrounds, transposition: transposition)
                     self.screenType = "HomeScreen"
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: bottumButtonHeight)
                 }
             }
         }
+    }
+    private func applyScaleInstrument(scaleInstruments: [String]) {
+        for scaleInstrument in scaleInstruments {
+            if (instrumentSelected == scaleInstrument) {
+                fileReaderAndWriter.writeScaleInstrument(newInstrument: scaleInstrument)
+            }
+        }
+    }
+    
+    private func applyBackground(backgrounds: [String]) {
+        for background in backgrounds {
+            if (backgroundColour == background) {
+                fileReaderAndWriter.writeBackgroundImage(newImage: background)
+                musicNotes.backgroundImage = "Background" + background
+            }
+        }
+    }
+    
+    private func applyTransposition(transposition: String) {
+        fileReaderAndWriter.writeNewTransposition(newTransposition: transposition)
+        musicNotes.transposition = transposition
+    }
+    
+    private func applyAll(scaleInstruments: [String], backgrounds: [String], transposition: String) {
+        applyTransposition(transposition: transposition)
+        applyBackground(backgrounds: backgrounds)
+        applyScaleInstrument(scaleInstruments: scaleInstruments)
     }
 }

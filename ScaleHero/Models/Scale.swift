@@ -23,4 +23,5 @@ struct Scale: Identifiable, Codable, Equatable {
     let drone: Bool
     let scaleDescription: String
     let startingNote: String
+    let noteDisplay: Int
 }

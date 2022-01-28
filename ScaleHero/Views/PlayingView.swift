@@ -92,7 +92,6 @@ struct PlayingView: View {
                     currentNote = countingImageArr[self.index]
                 } else {
                     currentNote = musicNotes.scaleNoteNames[self.index].components(separatedBy: "-")[2]
-                    print(musicNotes.scaleNoteNames)
                 }
                 
                 // plays the next note
@@ -120,20 +119,29 @@ struct PlayingView: View {
         if (noteArr.count == 1) {
             return noteArr[0]
         } else {
-            if (tonality.lowercased() == "minor") {
-                switch startingNote {
-                case "D", "G", "C", "F", "A#|BB":
-                    return noteArr[1]
-                default:
-                    return noteArr[0]
+            switch musicNotes.noteDisplay {
+            case 1:
+                return noteArr[0]
+            case 2:
+                if (tonality.lowercased() == "minor") {
+                    switch startingNote {
+                    case "D", "G", "C", "F", "A#|BB":
+                        return noteArr[1]
+                    default:
+                        return noteArr[0]
+                    }
+                } else {
+                    switch startingNote {
+                    case "F", "A#|BB", "D#|EB", "G#|AB", "C#|DB":
+                        return noteArr[1]
+                    default:
+                        return noteArr[0]
+                    }
                 }
-            } else {
-                switch startingNote {
-                case "F", "A#|BB", "D#|EB", "G#|AB", "C#|DB":
-                    return noteArr[1]
-                default:
-                    return noteArr[0]
-                }
+            case 3:
+                return noteArr[1]
+            default:
+                return noteArr[0]
             }
         }
     }

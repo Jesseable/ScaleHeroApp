@@ -158,19 +158,38 @@ struct WriteScales {
         return key
     }
     
+    private func getFullNote(singularNote: String) -> String{
+        switch singularNote {
+        case "F#", "Gb":
+            return "F#/Gb"
+        case "C#", "Db":
+            return "C#/Db"
+        case "G#", "Ab":
+            return "G#/Ab"
+        case "D#", "Eb":
+            return "D#/Eb"
+        case "A#", "Bb":
+            return "A#/Bb"
+        default:
+            return singularNote
+        }
+    }
+    
     /**
      Returns an array of the notes to play in the specific scale
      */
     mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String, tonicOption: Int, startingOctave: Int) -> [String] {
         var startingKey = startingNoteKeyFinder(startingNote: startingNote, startingOctave: startingOctave)
+        let noteCKey = startingNoteKeyFinder(startingNote: "C", startingOctave: startingOctave)
         
         // Does the transposition
         var transpositionNote = fileReaderAndWriter.readTransposition()
         if (transpositionNote.components(separatedBy: " ").count > 1) {
             transpositionNote = transpositionNote.components(separatedBy: " ")[1]
+            transpositionNote = getFullNote(singularNote: transpositionNote)
         }
         let transpositionKey = startingNoteKeyFinder(startingNote: transpositionNote, startingOctave: startingOctave)
-        let difference = startingKey - transpositionKey
+        let difference = noteCKey - transpositionKey
         startingKey -= difference
         
         var valueArray : [String] = []

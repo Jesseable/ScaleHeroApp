@@ -34,13 +34,6 @@ struct FavouritesView: View {
                             .multilineTextAlignment(.center)
                 
                 ScrollView {
-                    if (fileReaderAndWriter.scales.isEmpty) {
-                        Button {
-                            isPresented = true
-                        } label: {
-                            MainUIButton(buttonText: "How to add scales", type: 1, height: buttonHeight)
-                        }
-                    }
                     
                     ForEach(fileReaderAndWriter.scales) { scale in
                         Button {
@@ -93,6 +86,11 @@ struct FavouritesView: View {
                         MainUIButton(buttonText: "Delete SystemImage trash", type: deletionMode ? 8: 1, height: buttonHeight)
                     }
 
+                    Button {
+                        isPresented = true
+                    } label: {
+                        MainUIButton(buttonText: "Info", type: 1, height: buttonHeight)
+                    }
                 }
                 Spacer()
                 
