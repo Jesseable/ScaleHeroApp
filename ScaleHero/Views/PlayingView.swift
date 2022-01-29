@@ -145,7 +145,9 @@ struct PlayingView: View {
                 case "locrian":
                     let selection =  ["E", "A", "D", "A#|BB", "E"]
                     return noteArr[sharpOrFlat(for: startingNote, on: selection)]
-                default: /// STILL NEED TO SORT OUT TETRADS AND OTHERS
+                case "tetrad", "others":
+                    return noteArr[forTypesSharpOrFlat(for: startingNote)]
+                default:
                     return noteArr[0]
                 }
             case 3:
@@ -164,6 +166,23 @@ struct PlayingView: View {
             return 1
         }
         return 0
+    }
+    
+    /**
+     Chooses sharps or flats for ambiguous tonalities
+     */
+    private func forTypesSharpOrFlat(for note: String) -> Int {
+        var selection : [String]
+        switch musicNotes.type.lowercased() {
+        case "major-pentatonic-scale", "major-seventh", "dominant-seventh":
+            selection = ["F", "A#|BB", "D#|EB", "G#|AB", "C#|DB"]
+            return sharpOrFlat(for: note, on: selection)
+        case "minor-seventh", "diminished-seventh", "minor-pentatonic-scale", "blues-scale":
+            selection = ["D", "G", "C", "F", "A#|BB"]
+            return sharpOrFlat(for: note, on: selection)
+        default:
+            return 0
+        }
     }
     
     /**
