@@ -123,20 +123,30 @@ struct PlayingView: View {
             case 1:
                 return noteArr[0]
             case 2:
-                if (tonality.lowercased() == "minor") {
-                    switch startingNote {
-                    case "D", "G", "C", "F", "A#|BB":
-                        return noteArr[1]
-                    default:
-                        return noteArr[0]
-                    }
-                } else {
-                    switch startingNote {
-                    case "F", "A#|BB", "D#|EB", "G#|AB", "C#|DB":
-                        return noteArr[1]
-                    default:
-                        return noteArr[0]
-                    }
+                switch tonality.lowercased() {
+                case "minor", "aeolian":
+                    let selection = ["D", "G", "C", "F", "A#|BB"]
+                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
+                case "major", "ionian":
+                    let selection =  ["F", "A#|BB", "D#|EB", "G#|AB", "C#|DB"]
+                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
+                case "dorian":
+                    let selection =  ["G", "C", "F", "A#|BB", "D#|EB"]
+                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
+                case "phrygian":
+                    let selection =  ["A", "D", "G", "C", "F"]
+                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
+                case "lydian":
+                    let selection =  ["A#|BB", "D#|EB", "G#|AB", "D#|EB", "F#|GB"]
+                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
+                case "mixolydian":
+                    let selection =  ["C", "F", "A#|BB", "F#|GB", "B"]
+                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
+                case "locrian":
+                    let selection =  ["E", "A", "D", "A#|BB", "E"]
+                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
+                default: /// STILL NEED TO SORT OUT TETRADS AND OTHERS
+                    return noteArr[0]
                 }
             case 3:
                 return noteArr[1]
@@ -147,9 +157,19 @@ struct PlayingView: View {
     }
     
     /**
+     Chooses sharps or flats option. 0 sharps, 1 flats
+     */
+    private func sharpOrFlat(for note: String, on selection: [String]) -> Int {
+        if (selection.contains(note)) {
+            return 1
+        }
+        return 0
+    }
+    
+    /**
      Returns the number of seconds a note lasts for
      */
-    func tempoToSeconds(tempo: CGFloat) -> CGFloat {
+    private func tempoToSeconds(tempo: CGFloat) -> CGFloat {
         let noteLength = CGFloat(60/tempo)
         return noteLength
     }

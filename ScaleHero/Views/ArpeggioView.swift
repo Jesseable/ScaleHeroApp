@@ -59,9 +59,9 @@ struct ArpeggioView : View {
                     
                     Button {
                         musicNotes.type = "Tetrads"
-                        self.screenType = "specialview"
+                        self.screenType = "otherview"
                     } label: {
-                        MainUIButton(buttonText: "Special (Tetrads)", type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: "7th's (Tetrads)", type: 1, height: buttonHeight)
                     }
                 }
                 

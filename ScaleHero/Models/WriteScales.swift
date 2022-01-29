@@ -45,10 +45,6 @@ struct WriteScales {
             return [2, 1, 2, 2, 1, 3, 1]
         case "melodic":
             return [2, 1, 2, 2, 2, 2, 1]
-//        case "pentatonic":
-//            return [3, 2, 2, 3, 2]
-//        case "": // AKA Blues
-//            return [3, 2, 1, 1, 3, 2] // NEED TO SORT OUT FLATS AND SHARPS HERE STILL
         default:
             return [-1]
         }
@@ -81,7 +77,7 @@ struct WriteScales {
         case "minor-pentatonic-scale":
             return [3, 2, 2, 3, 2]
         case "blues-scale":
-            return [3, 2, 1, 1, 3, 2] // NEED TO SORT OUT FLATS AND SHARPS HERE STILL
+            return [3, 2, 1, 1, 3, 2]
         default:
             return[-1]
         }
@@ -418,11 +414,6 @@ struct WriteScales {
                 }
             case "tetrad":
                 for num in tetradsPattern {
-                    startingNum += num
-                    dictKeysArray.append(startingNum)
-                }
-            case "blues":
-                for num in minorPattern { // this is where "" pattern is kept
                     startingNum += num
                     dictKeysArray.append(startingNum)
                 }
