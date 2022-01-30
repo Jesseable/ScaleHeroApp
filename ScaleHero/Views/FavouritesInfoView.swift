@@ -68,7 +68,7 @@ struct FavouritesInfoView: View {
     
     func infoText() -> String {
         let text = """
-        1. Select a scale and adjust characteristics to your satisfaction
+        1. Select a scale and adjust characteristics as desired
         2. Scroll down to the 'Save' button
         3. Press and confirm
         4. Congradulations! You have saved the scale
@@ -78,7 +78,7 @@ struct FavouritesInfoView: View {
     
     func deletionInfoText() -> String {
         let text = """
-        1. Select the deletion button
+        1. Select the delete button
         2. All buttons will turn red
         3. Click on the scale to delete
         4. Congradulations! This scale is now deleted

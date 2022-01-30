@@ -17,6 +17,7 @@ class FileReaderAndWriter: ObservableObject {
     let scaleInstrumentPath = FileManager.documentsDirectory.appendingPathComponent("ScaleInstrument")
     let backgroundColourPath = FileManager.documentsDirectory.appendingPathComponent("backGroundColour")
     let transpositionPath = FileManager.documentsDirectory.appendingPathComponent("transposition")
+    let metronomePulsePath = FileManager.documentsDirectory.appendingPathComponent("metronomePulse")
     
     // Need to make the JSON FIle
     init() {
@@ -128,6 +129,29 @@ class FileReaderAndWriter: ObservableObject {
         //reading
         do {
             return try String(contentsOf: transpositionPath, encoding: .utf8)
+        }
+        catch {
+            Swift.print(error)
+            return "Error caught when reading instrument file" // Return default option IN FUTURE WHEN DECIDED UPON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+    }
+    
+    func writeNewMetronomePulse(newPulse: String) {
+        //writing
+        do {
+            try newPulse.write(to: metronomePulsePath, atomically: true, encoding: String.Encoding.utf8)
+        }
+        catch {
+            // Look into this or make the pop up errors occur for users when this occurs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            Swift.print(error)
+            print("error has occured when writing to the file")
+        }
+    }
+    
+    func readMetronomePulse() -> String {
+        //reading
+        do {
+            return try String(contentsOf: metronomePulsePath, encoding: .utf8)
         }
         catch {
             Swift.print(error)

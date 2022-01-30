@@ -176,6 +176,7 @@ struct WriteScales {
      */
     mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String, tonicOption: Int, startingOctave: Int) -> [String] {
         var startingKey = startingNoteKeyFinder(startingNote: startingNote, startingOctave: startingOctave)
+        let originalStartingKey = startingKey
         let noteCKey = startingNoteKeyFinder(startingNote: "C", startingOctave: startingOctave)
         
         // Does the transposition
@@ -188,6 +189,12 @@ struct WriteScales {
         let difference = noteCKey - transpositionKey
         startingKey -= difference
         
+        // Makes sure the octave is correct
+        let oneOctave = 12
+        if (Int(accendingNotes[startingKey]?.components(separatedBy: ":")[0] ?? "-1") != startingOctave) {
+            startingKey -= oneOctave
+        }
+        
         var valueArray : [String] = []
         var noteNameValueArray : [String] = []
         
@@ -195,11 +202,11 @@ struct WriteScales {
         var noteNameReversedValuesArr: [String] = []
         
         var keysArray = [startingKey]
-        var noteNameKeysArray = [(startingKey + difference)]
+        var noteNameKeysArray = [(originalStartingKey)]
         // if -1 needs an error image
         
         keysArray = dictKeysArray(startingKey: startingKey, tonality: tonality, octave: octave, keysArray: keysArray)
-        noteNameKeysArray = dictKeysArray(startingKey: (startingKey + difference), tonality: tonality, octave: octave, keysArray: noteNameKeysArray)
+        noteNameKeysArray = dictKeysArray(startingKey: (originalStartingKey), tonality: tonality, octave: octave, keysArray: noteNameKeysArray)
         
         for key in keysArray {
             guard let noteName = accendingNotes[key] else { return ["Getting string access from key for music dictionary has failed"] }

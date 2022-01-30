@@ -12,6 +12,7 @@ import AVFoundation
 struct PlayingView: View {
     @EnvironmentObject var musicNotes: MusicNotes
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    var fileReaderAndWriter = FileReaderAndWriter()
     
     var backgroundImage : String
     let scaleType : String
@@ -100,6 +101,9 @@ struct PlayingView: View {
                         Sound.play(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
                     } else {
                         playSounds.playMetronome()
+                        if (musicNotes.tempo < 70) {
+                            playSounds.offBeatMetronome(fileName: "Metronome1", rhythm: fileReaderAndWriter.readMetronomePulse(), timeInterval: tempoToSeconds(tempo: self.musicNotes.tempo))
+                        }
                     }
                 }
 
@@ -107,6 +111,18 @@ struct PlayingView: View {
             }
         }
     }
+    
+//    private func offBeatMetronome(fileName: String, rhythm: String, timeInterval: CGFloat) {
+//        let timeSigniture = (rhythm == "4/4") ? 3.0 : 5.0 // Only two options. 4/4 or 6/8 atm
+//        var runCount = 0
+//        Timer.scheduledTimer(withTimeInterval: (timeInterval/(timeSigniture + 1)), repeats: true) { timer in
+//            runCount += 1
+//            if (runCount == Int(timeSigniture)) {
+//                timer.invalidate()
+//            }
+//            Sound.play(file: fileName, fileExtension: "mp3")
+//        }
+//    }
     
     /**
      Returns the singular note from the arrays component. Determines whether to use flats or sharps for the scale.

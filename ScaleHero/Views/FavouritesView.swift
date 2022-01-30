@@ -53,7 +53,8 @@ struct FavouritesView: View {
                                 musicNotes.playDrone = scale.drone
                                 musicNotes.playScaleNotes = scale.scaleNotes
                                 musicNotes.noteName = scale.startingNote
-                                // missing scale notes but i dont htink its needed
+                                musicNotes.noteDisplay = scale.noteDisplay
+
                                 self.screenType = "soundview"
                             }
                         } label: {

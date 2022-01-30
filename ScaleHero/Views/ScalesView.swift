@@ -32,7 +32,7 @@ class MusicNotes: ObservableObject {
     @Published var startingOctave = 1
     @Published var isFavouriteScale = false
     @Published var transposition = "C"
-    @Published var noteDisplay = 2 
+    @Published var noteDisplay = 2
     
     func getMusicAlphabet() -> [String] {
         return musicAlphabet

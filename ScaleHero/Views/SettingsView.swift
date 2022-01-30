@@ -18,12 +18,14 @@ struct SettingsView: View {
     // These are also on contentView
     private let scaleInstruments = ["Cello", "Jesse's Vocals"]
     private let transpositionModes = ["Notes", "Instrument"]
+    private let metronomePulses = ["3/4", "4/4"]
     // These are also on contentView
     private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
     @State var instrumentSelected : String
     @State var backgroundColour : String
     @State var transpositionMode : String
     @State var transposition : String
+    @State var metronomePulseSelected : String
 
     
     var body: some View {
@@ -131,8 +133,27 @@ struct SettingsView: View {
                     
                     Divider().background(Color.white)
                     
+                    Group {
+                        MainUIButton(buttonText: "Metronome Pulse:", type: 4, height: buttonHeight)
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                            Section {
+                                Picker("Metronome Pulse Selection", selection: $metronomePulseSelected) {
+                                    ForEach(metronomePulses, id: \.self) {
+                                        Text($0)
+                                    }
+                                }
+                                .pickerStyle( .segmented)
+                                .colorScheme(.light)
+                                .padding(.horizontal, 11)
+                            }
+                        }
+                        
+                        Divider().background(Color.white)
+                    }
+                    
                     Button {
-                        applyAll(scaleInstruments: scaleInstruments, backgrounds: backgrounds, transposition: transposition)
+                        applyAll(scaleInstruments: scaleInstruments, backgrounds: backgrounds, transposition: transposition, metronomePulse: metronomePulseSelected)
 
                     } label: {
                         MainUIButton(buttonText: "Apply SystemImage star.circle", type: 1, height: bottumButtonHeight)
@@ -143,7 +164,7 @@ struct SettingsView: View {
 
                 Button {
                     // Applies changes when going back
-                    applyAll(scaleInstruments: scaleInstruments, backgrounds: backgrounds, transposition: transposition)
+                    applyAll(scaleInstruments: scaleInstruments, backgrounds: backgrounds, transposition: transposition, metronomePulse: metronomePulseSelected)
                     self.screenType = "HomeScreen"
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: bottumButtonHeight)
@@ -168,14 +189,19 @@ struct SettingsView: View {
         }
     }
     
+    private func applyMetronomePulse(for metronomePulse: String) {
+        fileReaderAndWriter.writeNewMetronomePulse(newPulse: metronomePulse)
+    }
+    
     private func applyTransposition(transposition: String) {
         fileReaderAndWriter.writeNewTransposition(newTransposition: transposition)
         musicNotes.transposition = transposition
     }
     
-    private func applyAll(scaleInstruments: [String], backgrounds: [String], transposition: String) {
+    private func applyAll(scaleInstruments: [String], backgrounds: [String], transposition: String, metronomePulse: String) {
         applyTransposition(transposition: transposition)
         applyBackground(backgrounds: backgrounds)
         applyScaleInstrument(scaleInstruments: scaleInstruments)
+        applyMetronomePulse(for: metronomePulse)
     }
 }

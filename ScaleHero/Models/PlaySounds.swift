@@ -81,6 +81,26 @@ struct PlaySounds {
     }
     
     /**
+     Sets the amount of offbeat pulses for the metronome
+     */
+    mutating func offBeatMetronome(fileName: String, rhythm: String, timeInterval: CGFloat) {
+        let timeSigniture = (rhythm == "4/4") ? 3.0 : 2.0 // Only two options. 4/4 or 3/4 atm
+        var runCount = 0
+        var player3: AVAudioPlayer?
+                
+        Timer.scheduledTimer(withTimeInterval: (timeInterval/(timeSigniture + 1)), repeats: true) { timer in
+            if (runCount == Int(timeSigniture)) {
+                timer.invalidate()
+            }
+            if let offBeatMetronomeURL = Bundle.main.url(forResource: fileName, withExtension: "mp3") {
+                player3 = try! AVAudioPlayer(contentsOf: offBeatMetronomeURL)
+                player3?.play()
+            }
+            runCount += 1
+        }
+    }
+    
+    /**
      Plays the drone sound effects
      */
     mutating func playDroneSound(duration: CGFloat, startingNote: String) {
@@ -110,8 +130,8 @@ struct PlaySounds {
      */
     mutating func playMetronome() {
         let metronomeFile = "Metronome"
-        if let droneURL = Bundle.main.url(forResource: metronomeFile, withExtension: "mp3") {
-            player2 = try! AVAudioPlayer(contentsOf: droneURL)
+        if let metronomeURL = Bundle.main.url(forResource: metronomeFile, withExtension: "mp3") {
+            player2 = try! AVAudioPlayer(contentsOf: metronomeURL)
             player2?.play()
         }
     }
@@ -127,6 +147,7 @@ struct PlaySounds {
     
     private func cancelMetronomeSound() {
         self.player2?.stop()
+        //self.player3?.stop()
     }
     
     mutating func cancelAllSounds() {
