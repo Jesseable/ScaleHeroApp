@@ -16,8 +16,8 @@ struct SettingsView: View {
     var backgroundImage: String
     var fileReaderAndWriter = FileReaderAndWriter()
     // These are also on contentView
-    private let scaleInstruments = ["Cello", "Jesse's Vocals"]
-    private let droneInstruments = ["Cello", "TuningFork1"]
+    private let scaleInstruments = ["Strings", "Piano", "Organ"]
+    private let droneInstruments = ["Cello", "Tuning Fork"]
     private let transpositionModes = ["Notes", "Instrument"]
     private let metronomePulses = ["3/4", "4/4"]
     // These are also on contentView

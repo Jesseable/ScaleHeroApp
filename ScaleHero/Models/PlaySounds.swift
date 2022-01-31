@@ -24,12 +24,14 @@ struct PlaySounds {
     lazy var instrument: String = {
         [self] in
         switch self.fileReaderAndWriter.readScaleInstrument() {
-        case "Cello":
-            return "Cello"
-        case "Jesse's Vocals":
-            return "JTest"
+        case "Organ":
+            return "Organ"
+        case "Piano":
+            return "Piano"
+        case "Strings":
+            return "Strings"
         default:
-            return "Cello"
+            return "Piano"
         }
     }()
     
@@ -38,7 +40,7 @@ struct PlaySounds {
         switch self.fileReaderAndWriter.readDroneInstrument() {
         case "Cello":
             return "Cello"
-        case "TuningFork1":
+        case "Tuning Fork":
             return "TuningFork1"
         default:
             return "Cello"
@@ -59,7 +61,7 @@ struct PlaySounds {
         }
         
         soundFileArr.insert(contentsOf: addMetronome(tempo: tempo), at: 0)
-        
+
         return soundFileArr
     }
     

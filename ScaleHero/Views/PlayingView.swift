@@ -51,7 +51,7 @@ struct PlayingView: View {
                     playSounds.cancelAllSounds()
                     presentationMode.wrappedValue.dismiss()
                 } label: {
-                    MainUIButton(buttonText: "Stop SystemImage speaker.slash", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "Stop", type: 3, height: buttonHeight)
                 }
             }
             .onAppear(perform: {
@@ -106,11 +106,13 @@ struct PlayingView: View {
                     if !musicNotes.scaleNotes[index].contains("Metronome") {
                         Sound.play(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
                     } else {
+                        if musicNotes.metronome {
                         playSounds.playMetronome()
-                        if (musicNotes.tempo < 70) {
-                            playSounds.offBeatMetronome(fileName: "Metronome1",
-                                                        rhythm: fileReaderAndWriter.readMetronomePulse(),
-                                                        timeInterval: tempoToSeconds(tempo: self.musicNotes.tempo))
+                            if (musicNotes.tempo < 70) {
+                                playSounds.offBeatMetronome(fileName: "Metronome1",
+                                                            rhythm: fileReaderAndWriter.readMetronomePulse(),
+                                                            timeInterval: tempoToSeconds(tempo: self.musicNotes.tempo))
+                            }
                         }
                     }
                 }

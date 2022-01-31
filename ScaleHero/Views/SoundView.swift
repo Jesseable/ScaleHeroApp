@@ -152,6 +152,17 @@ struct SoundView : View {
                             }
                         }
                     }
+                    Group {
+                        Button {
+                            musicNotes.metronome.toggle()
+                        } label: {
+                            if (musicNotes.metronome) {
+                                MainUIButton(buttonText: "Metronome SystemImage checkmark.square", type: 1, height: buttonHeight)
+                            } else {
+                                MainUIButton(buttonText: "Metronome SystemImage square", type: 1, height: buttonHeight)
+                            }
+                        }
+                    }
                     
                     Divider().background(Color.white)
                     

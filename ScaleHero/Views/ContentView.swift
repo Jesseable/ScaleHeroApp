@@ -18,9 +18,9 @@ struct AppContentView: View {
     private var fileReaderAndWriter = FileReaderAndWriter()
     
     // Also saved under settings view
-    private let scaleInstruments = ["Cello", "Jesse's Vocals"]
+    private let scaleInstruments = ["Strings", "Piano", "Organ"]
     
-    private let droneInstruments = ["Cello", "TuningFork1"]
+    private let droneInstruments = ["Cello", "Tuning Fork"]
     
     // Also saved under settingsView
     private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
@@ -43,7 +43,7 @@ struct AppContentView: View {
         selectedInstrument = fileReaderAndWriter.readScaleInstrument()
         if (!scaleInstruments.contains(selectedInstrument)) {
             // the default selected instrument is chosen here:
-            selectedInstrument = "Cello"
+            selectedInstrument = "Piano"
             fileReaderAndWriter.writeScaleInstrument(newInstrument: selectedInstrument)
         }
         
@@ -79,7 +79,7 @@ struct AppContentView: View {
         selectedDrone = fileReaderAndWriter.readDroneInstrument()
         if (!droneInstruments.contains(selectedDrone)) {
             // the default selected instrument is chosen here:
-            selectedDrone = "Cello"
+            selectedDrone = "Tuning Fork"
             fileReaderAndWriter.writeDroneInstrument(newDrone: selectedDrone)
         }
     }
