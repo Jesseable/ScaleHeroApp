@@ -17,6 +17,7 @@ struct SettingsView: View {
     var fileReaderAndWriter = FileReaderAndWriter()
     // These are also on contentView
     private let scaleInstruments = ["Cello", "Jesse's Vocals"]
+    private let droneInstruments = ["Cello", "TuningFork1"]
     private let transpositionModes = ["Notes", "Instrument"]
     private let metronomePulses = ["3/4", "4/4"]
     // These are also on contentView
@@ -26,6 +27,7 @@ struct SettingsView: View {
     @State var transpositionMode : String
     @State var transposition : String
     @State var metronomePulseSelected : String
+    @State var droneSelected : String
 
     
     var body: some View {
@@ -116,20 +118,20 @@ struct SettingsView: View {
                         Divider().background(Color.white)
                     }
                     
-                    MainUIButton(buttonText: "Drone Sound: ", type: 4, height: buttonHeight)
-//                    ZStack {
-//                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-//                        Section {
-//                            Picker("ScaleNote Selection", selection: $instrumentSelected) {
-//                                ForEach(scaleInstruments, id: \.self) {
-//                                    Text($0)
-//                                }
-//                            }
-//                            .pickerStyle( .segmented)
-//                            .colorScheme(.light)
-//                            .padding(.horizontal, 11)
-//                        }
-//                    }
+                    MainUIButton(buttonText: "Drone: ", type: 4, height: buttonHeight)
+                    ZStack {
+                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                        Section {
+                            Picker("DroneNote Selection", selection: $droneSelected) {
+                                ForEach(droneInstruments, id: \.self) {
+                                    Text($0)
+                                }
+                            }
+                            .pickerStyle( .segmented)
+                            .colorScheme(.light)
+                            .padding(.horizontal, 11)
+                        }
+                    }
                     
                     Divider().background(Color.white)
                     
@@ -153,7 +155,11 @@ struct SettingsView: View {
                     }
                     
                     Button {
-                        applyAll(scaleInstruments: scaleInstruments, backgrounds: backgrounds, transposition: transposition, metronomePulse: metronomePulseSelected)
+                        applyAll(scaleInstruments: scaleInstruments,
+                                 backgrounds: backgrounds,
+                                 transposition: transposition,
+                                 metronomePulse: metronomePulseSelected,
+                                 droneInstrument: droneSelected)
 
                     } label: {
                         MainUIButton(buttonText: "Apply SystemImage star.circle", type: 1, height: bottumButtonHeight)
@@ -164,7 +170,12 @@ struct SettingsView: View {
 
                 Button {
                     // Applies changes when going back
-                    applyAll(scaleInstruments: scaleInstruments, backgrounds: backgrounds, transposition: transposition, metronomePulse: metronomePulseSelected)
+                    applyAll(scaleInstruments: scaleInstruments,
+                             backgrounds: backgrounds,
+                             transposition: transposition,
+                             metronomePulse: metronomePulseSelected,
+                             droneInstrument: droneSelected)
+                    
                     self.screenType = "HomeScreen"
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: bottumButtonHeight)
@@ -178,6 +189,10 @@ struct SettingsView: View {
                 fileReaderAndWriter.writeScaleInstrument(newInstrument: scaleInstrument)
             }
         }
+    }
+    
+    private func applyDroneInstrument(droneInstrument: String) {
+        fileReaderAndWriter.writeDroneInstrument(newDrone: droneInstrument)
     }
     
     private func applyBackground(backgrounds: [String]) {
@@ -198,10 +213,11 @@ struct SettingsView: View {
         musicNotes.transposition = transposition
     }
     
-    private func applyAll(scaleInstruments: [String], backgrounds: [String], transposition: String, metronomePulse: String) {
+    private func applyAll(scaleInstruments: [String], backgrounds: [String], transposition: String, metronomePulse: String, droneInstrument: String) {
         applyTransposition(transposition: transposition)
         applyBackground(backgrounds: backgrounds)
         applyScaleInstrument(scaleInstruments: scaleInstruments)
         applyMetronomePulse(for: metronomePulse)
+        applyDroneInstrument(droneInstrument: droneInstrument)
     }
 }

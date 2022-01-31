@@ -26,6 +26,7 @@ struct PlayingView: View {
     @State var firstTime = true
     @State var delay : CGFloat?
     let universalSize = UIScreen.main.bounds
+    @State var firstNoteDisplay = true
     
     var body: some View {
         let buttonHeight = universalSize.height/10
@@ -55,12 +56,17 @@ struct PlayingView: View {
             }
             .onAppear(perform: {
                 if (playDrone) {
-                    let index = self.musicNotes.getNumTempoBeats()
+                    let extraDuration : Int
+                    if musicNotes.tempo >= 80 {
+                        extraDuration = 4
+                    } else {
+                        extraDuration = 1
+                    }
+                    
                     let duration = (tempoToSeconds(tempo: self.musicNotes.tempo)
-                                    * CGFloat(self.musicNotes.scaleNotes.count + index)) 
+                                    * CGFloat(self.musicNotes.scaleNotes.count + extraDuration))
                     playSounds.playDroneSound(duration: duration,
-                                              startingNote: musicNotes.scaleNotes[index]
-                                                .components(separatedBy: "-")[2])
+                                              startingNote: currentNote)
                 }
             })
             .onReceive(musicNotes.timer) { time in
@@ -102,27 +108,16 @@ struct PlayingView: View {
                     } else {
                         playSounds.playMetronome()
                         if (musicNotes.tempo < 70) {
-                            playSounds.offBeatMetronome(fileName: "Metronome1", rhythm: fileReaderAndWriter.readMetronomePulse(), timeInterval: tempoToSeconds(tempo: self.musicNotes.tempo))
+                            playSounds.offBeatMetronome(fileName: "Metronome1",
+                                                        rhythm: fileReaderAndWriter.readMetronomePulse(),
+                                                        timeInterval: tempoToSeconds(tempo: self.musicNotes.tempo))
                         }
                     }
                 }
-
                 self.index += 1
             }
         }
     }
-    
-//    private func offBeatMetronome(fileName: String, rhythm: String, timeInterval: CGFloat) {
-//        let timeSigniture = (rhythm == "4/4") ? 3.0 : 5.0 // Only two options. 4/4 or 6/8 atm
-//        var runCount = 0
-//        Timer.scheduledTimer(withTimeInterval: (timeInterval/(timeSigniture + 1)), repeats: true) { timer in
-//            runCount += 1
-//            if (runCount == Int(timeSigniture)) {
-//                timer.invalidate()
-//            }
-//            Sound.play(file: fileName, fileExtension: "mp3")
-//        }
-//    }
     
     /**
      Returns the singular note from the arrays component. Determines whether to use flats or sharps for the scale.

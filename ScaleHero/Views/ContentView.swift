@@ -20,6 +20,8 @@ struct AppContentView: View {
     // Also saved under settings view
     private let scaleInstruments = ["Cello", "Jesse's Vocals"]
     
+    private let droneInstruments = ["Cello", "TuningFork1"]
+    
     // Also saved under settingsView
     private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
     
@@ -32,6 +34,7 @@ struct AppContentView: View {
     private var transposition : String
     private var transpositionMode : String
     private var metronomePulse: String
+    private var selectedDrone : String
 
     /**
     Initialises the background image style and sets the instrumentation for each components of the app.
@@ -72,6 +75,13 @@ struct AppContentView: View {
             metronomePulse = "4/4"
             fileReaderAndWriter.writeNewMetronomePulse(newPulse: metronomePulse)
         }
+        
+        selectedDrone = fileReaderAndWriter.readDroneInstrument()
+        if (!droneInstruments.contains(selectedDrone)) {
+            // the default selected instrument is chosen here:
+            selectedDrone = "Cello"
+            fileReaderAndWriter.writeDroneInstrument(newDrone: selectedDrone)
+        }
     }
     
     /**
@@ -88,7 +98,7 @@ struct AppContentView: View {
             case "otherview":
                 OtherScalesView(screenType: self.$screenType, specialTitle: musicNotes.type, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "settings":
-                SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomePulse)
+                SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomePulse, droneSelected: selectedDrone)
             case "soundview":
                 let scaleType = musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type
                 SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)

@@ -34,16 +34,15 @@ struct PlaySounds {
     }()
     
     lazy var drone: String = {
-        return "Cello"
-//        [self] in
-//        switch self.fileReaderAndWriter.readScaleInstrument() {
-//        case "Cello":
-//            return "Cello"
-//        case "Jesse's Vocals":
-//            return "JTest"
-//        default:
-//            return "Cello"
-//        }
+        [self] in
+        switch self.fileReaderAndWriter.readDroneInstrument() {
+        case "Cello":
+            return "Cello"
+        case "TuningFork1":
+            return "TuningFork1"
+        default:
+            return "Cello"
+        }
     }()
     
     /**
@@ -83,10 +82,10 @@ struct PlaySounds {
     /**
      Sets the amount of offbeat pulses for the metronome
      */
-    mutating func offBeatMetronome(fileName: String, rhythm: String, timeInterval: CGFloat) {
+    mutating func offBeatMetronome(fileName: String, rhythm: String, timeInterval: CGFloat) { /// AQServer.cpp:72    Exception caught in AudioQueueInternalNotifyRunning - error -66671
         let timeSigniture = (rhythm == "4/4") ? 3.0 : 2.0 // Only two options. 4/4 or 3/4 atm
         var runCount = 0
-        var player3: AVAudioPlayer?
+        var player3: AVAudioPlayer? // Maybe later try to move outside of this function
                 
         Timer.scheduledTimer(withTimeInterval: (timeInterval/(timeSigniture + 1)), repeats: true) { timer in
             if (runCount == Int(timeSigniture)) {
@@ -106,7 +105,7 @@ struct PlaySounds {
     mutating func playDroneSound(duration: CGFloat, startingNote: String) {
         let startingFileNote = startingNote.replacingOccurrences(of: "/", with: "|")
         let droneSoundFile = "\(drone)-Drone-\(startingFileNote)"
-        
+
         if let droneURL = Bundle.main.url(forResource: droneSoundFile, withExtension: "mp3") {
             self.player = try! AVAudioPlayer(contentsOf: droneURL)
             self.player?.play()
@@ -114,6 +113,7 @@ struct PlaySounds {
             if (duration != -1 ) {
             
                 let totalDuration = duration + 2.5
+                self.player?.numberOfLoops = 4 // Increases all drones to 4 minutes at least
                     
                 DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: { [self] in
                     self.player?.setVolume(0.05, fadeDuration: 2.5)
@@ -156,9 +156,4 @@ struct PlaySounds {
         cancelDroneSound()
         cancelMetronomeSound()
     }
-//    
-//    func tempoToSeconds(tempo: CGFloat) -> CGFloat {
-//        let noteLength = CGFloat(60/tempo)
-//        return noteLength
-//    }
 }
