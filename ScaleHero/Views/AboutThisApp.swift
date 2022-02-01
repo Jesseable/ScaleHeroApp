@@ -1,13 +1,13 @@
 //
-//  FavouritesInfoView.swift
+//  AboutThisApp.swift
 //  ScaleHero
 //
-//  Created by Jesse Graf on 22/1/22.
+//  Created by Jesse Graf on 1/2/22.
 //
 
 import SwiftUI
 
-struct FavouritesInfoView: View {
+struct AboutThisApp: View {
     
     var backgroundImage: String
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -22,7 +22,7 @@ struct FavouritesInfoView: View {
 
             VStack {
                     ScrollView {
-                        Text("Favourites Info")
+                        Text("App Info")
                                     .font(.largeTitle.bold())
                                     .accessibilityAddTraits(.isHeader)
                                     .foregroundColor(Color.white)
@@ -30,26 +30,33 @@ struct FavouritesInfoView: View {
                         
                         Divider().background(Color.white)
                         
-                        Text("**Adding To Favourites Page**")
-                            .font(.title2)
-                            .foregroundColor(Color.white)
-                            .padding(5)
-                        
-                        Text(infoText())
-                            .font(.title3)
-                            .foregroundColor(Color.white)
-                            .padding(.horizontal)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Group {
+                            Text("**Cello Drone Sound File:**")
+                                .font(.title2)
+                                .foregroundColor(Color.white)
+                                .padding(5)
+                            
+                            Text(musician47Info())
+                                .font(.title3)
+                                .foregroundColor(Color.white)
+                                .padding(.horizontal)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Button {
+                                youtubeLink()
+                            } label: {
+                                MainUIButton(buttonText: "Musician 47 Link", type: 4, height: UIScreen.main.bounds.height/20)
+                            }
+                        }
                         
                         Divider().background(Color.white)
                         
-                        
-                        Text("**Deleting From Favourites Page:**")
+                        Text("**Image Designer:**")
                             .font(.title2)
                             .foregroundColor(Color.white)
                             .padding(5)
                         
-                        Text(deletionInfoText())
+                        Text(designerInfoText())
                             .font(.title3)
                             .foregroundColor(Color.white)
                             .padding(.horizontal)
@@ -66,29 +73,25 @@ struct FavouritesInfoView: View {
         }
     }
     
-    func infoText() -> String {
+    func musician47Info() -> String {
         let text = """
-        1. Select a scale and adjust characteristics as desired
-        2. Scroll down to the 'Save' button
-        3. Press and confirm
-        4. Congratulations! You have saved the scale
+        The Cello Drone Files were downloaded from 'Musician 47' on youtube
+        You can access these wonderful sound files on youtube through this link:
         """
         return text
     }
     
-    func deletionInfoText() -> String {
+    func youtubeLink() {
+        if let url = URL(string: "https://www.youtube.com/channel/UCroo7Q3k4YH_xcwWuxynf5g?app=desktop") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    func designerInfoText() -> String {
         let text = """
-        1. Select the delete button
-        2. All buttons will turn red
-        3. Click on the scale to delete
-        4. Congratulations! This scale is now deleted
+        All images were designed by my close friend Jyllianne
+        A huge thanks for all of her help!
         """
         return text
     }
 }
-//
-//struct FavouritesInfoView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        FavouritesInfoView()
-//    }
-//}

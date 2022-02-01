@@ -28,7 +28,7 @@ struct SettingsView: View {
     @State var transposition : String
     @State var metronomePulseSelected : String
     @State var droneSelected : String
-
+    @State private var isPresented = false
     
     var body: some View {
         let buttonHeight = universalSize.height/18
@@ -164,6 +164,12 @@ struct SettingsView: View {
                     } label: {
                         MainUIButton(buttonText: "Apply SystemImage star.circle", type: 1, height: bottumButtonHeight)
                     }
+                    
+                    Button {
+                        isPresented = true
+                    } label: {
+                        MainUIButton(buttonText: "About This App", type: 1, height: bottumButtonHeight)
+                    }
                 }
                     
                 Spacer()
@@ -182,7 +188,12 @@ struct SettingsView: View {
                 }
             }
         }
+        .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
+        .sheet(isPresented: $isPresented) {
+            AboutThisApp(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
+        }
     }
+    
     private func applyScaleInstrument(scaleInstruments: [String]) {
         for scaleInstrument in scaleInstruments {
             if (instrumentSelected == scaleInstrument) {
