@@ -25,7 +25,7 @@ struct AppContentView: View {
     // Also saved under settingsView
     private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
     
-    private let metronomePulses = ["4/4", "3/4"]
+    private let metronomePulses = ["Compound", "Simple"]
     
     private let transpositionTypes = ["C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F", "Basoon C", "Clarinet Bb", "Clarinet Eb", "Euphonium C", "Horn F", "Oboe C", "Recorder C", "Recorder F", "Flute C", "Saxophone Bb", "Saxophone Eb", "Strings C", "Trombone C", "Trumpet Bb", "Tuba F"]
     
@@ -72,7 +72,7 @@ struct AppContentView: View {
         metronomePulse = fileReaderAndWriter.readMetronomePulse()
         if (!metronomePulses.contains(metronomePulse)) {
             // the default selected background image is chosen here:
-            metronomePulse = "4/4"
+            metronomePulse = "Simple"
             fileReaderAndWriter.writeNewMetronomePulse(newPulse: metronomePulse)
         }
         
@@ -106,6 +106,8 @@ struct AppContentView: View {
                 DroneView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "favouritesview":
                 FavouritesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+            case "aboutview":
+                AboutView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             default:
                 HomePage(screenType: $screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             }
@@ -200,9 +202,9 @@ struct HomePage : View {
                 }
                     
                 Button {
-                    self.screenType = "settings"
+                    self.screenType = "aboutview"
                 } label: {
-                    MainUIButton(buttonText: "Settings", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "About / Settings", type: 3, height: buttonHeight)
                 }
             }
         }.onAppear() {

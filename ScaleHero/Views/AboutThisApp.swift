@@ -22,7 +22,7 @@ struct AboutThisApp: View {
 
             VStack {
                     ScrollView {
-                        Text("App Info")
+                        Text("Acknowledgements")
                                     .font(.largeTitle.bold())
                                     .accessibilityAddTraits(.isHeader)
                                     .foregroundColor(Color.white)
@@ -51,7 +51,7 @@ struct AboutThisApp: View {
                         
                         Divider().background(Color.white)
                         
-                        Text("**Image Designer:**")
+                        Text("**Graphic Designer:**")
                             .font(.title2)
                             .foregroundColor(Color.white)
                             .padding(5)
@@ -75,7 +75,7 @@ struct AboutThisApp: View {
     
     func musician47Info() -> String {
         let text = """
-        The Cello Drone Files were downloaded from 'Musician 47' on youtube
+        The Cello Drone Sound Files were downloaded from 'Musician 47' on YouTube.
         You can access these wonderful sound files on YouTube through this link:
         """
         return text
@@ -89,8 +89,7 @@ struct AboutThisApp: View {
     
     func designerInfoText() -> String {
         let text = """
-        All images were designed by my close friend Jyllianne
-        A huge thanks for all of her help!
+        A huge thanks to my good friend J.C. for their help in the graphic design of this app, including the creation of all images and the app design.
         """
         return text
     }

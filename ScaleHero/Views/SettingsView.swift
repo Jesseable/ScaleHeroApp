@@ -28,7 +28,6 @@ struct SettingsView: View {
     @State var transposition : String
     @State var metronomePulseSelected : String
     @State var droneSelected : String
-    @State private var isPresented = false
     
     var body: some View {
         let buttonHeight = universalSize.height/18
@@ -164,12 +163,6 @@ struct SettingsView: View {
                     } label: {
                         MainUIButton(buttonText: "Apply SystemImage star.circle", type: 9, height: bottumButtonHeight)
                     }
-                    
-                    Button {
-                        isPresented = true
-                    } label: {
-                        MainUIButton(buttonText: "About This App", type: 9, height: bottumButtonHeight)
-                    }
                 }
                     
                 Spacer()
@@ -182,15 +175,11 @@ struct SettingsView: View {
                              metronomePulse: metronomePulseSelected,
                              droneInstrument: droneSelected)
                     
-                    self.screenType = "HomeScreen"
+                    self.screenType = "aboutview"
                 } label: {
-                    MainUIButton(buttonText: "Home Page", type: 3, height: bottumButtonHeight)
+                    MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight)
                 }
             }
-        }
-        .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
-        .sheet(isPresented: $isPresented) {
-            AboutThisApp(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }
     }
     

@@ -57,6 +57,9 @@
 		C5321EFD27A8C57800A63085 /* Piano-3-A.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5321ECD27A8C57800A63085 /* Piano-3-A.mp3 */; };
 		C5321EFF27A8CC0C00A63085 /* SoundError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321EFE27A8CC0C00A63085 /* SoundError.swift */; };
 		C5321F0127A8E14F00A63085 /* AboutThisApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0027A8E14F00A63085 /* AboutThisApp.swift */; };
+		C5321F0327A92BF700A63085 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0227A92BF600A63085 /* AboutView.swift */; };
+		C5321F0527A92D5400A63085 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0427A92D5400A63085 /* TutorialView.swift */; };
+		C5321F0727A933A200A63085 /* AboutDeveloperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0627A933A200A63085 /* AboutDeveloperView.swift */; };
 		C5443227279B9F2C0068A239 /* DroneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5443226279B9F2B0068A239 /* DroneView.swift */; };
 		C5443229279BAB710068A239 /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5443228279BAB710068A239 /* FavouritesView.swift */; };
 		C544322B279BAD700068A239 /* FavouritesInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544322A279BAD700068A239 /* FavouritesInfoView.swift */; };
@@ -309,6 +312,9 @@
 		C5321ECD27A8C57800A63085 /* Piano-3-A.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Piano-3-A.mp3"; path = "../../../PianoSounds/Piano-3-A.mp3"; sourceTree = "<group>"; };
 		C5321EFE27A8CC0C00A63085 /* SoundError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundError.swift; sourceTree = "<group>"; };
 		C5321F0027A8E14F00A63085 /* AboutThisApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutThisApp.swift; sourceTree = "<group>"; };
+		C5321F0227A92BF600A63085 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		C5321F0427A92D5400A63085 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		C5321F0627A933A200A63085 /* AboutDeveloperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDeveloperView.swift; sourceTree = "<group>"; };
 		C5443226279B9F2B0068A239 /* DroneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroneView.swift; sourceTree = "<group>"; };
 		C5443228279BAB710068A239 /* FavouritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesView.swift; sourceTree = "<group>"; };
 		C544322A279BAD700068A239 /* FavouritesInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesInfoView.swift; sourceTree = "<group>"; };
@@ -668,6 +674,9 @@
 				C5443228279BAB710068A239 /* FavouritesView.swift */,
 				C544322A279BAD700068A239 /* FavouritesInfoView.swift */,
 				C5321F0027A8E14F00A63085 /* AboutThisApp.swift */,
+				C5321F0227A92BF600A63085 /* AboutView.swift */,
+				C5321F0427A92D5400A63085 /* TutorialView.swift */,
+				C5321F0627A933A200A63085 /* AboutDeveloperView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1234,9 +1243,11 @@
 				C5DBD5F227812A9E00DF5183 /* FileManager-DocumentsDirectory.swift in Sources */,
 				C5443229279BAB710068A239 /* FavouritesView.swift in Sources */,
 				C5443227279B9F2C0068A239 /* DroneView.swift in Sources */,
+				C5321F0327A92BF700A63085 /* AboutView.swift in Sources */,
 				C5321EFF27A8CC0C00A63085 /* SoundError.swift in Sources */,
 				C54532F12779B73D0041702C /* SettingsView.swift in Sources */,
 				C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */,
+				C5321F0527A92D5400A63085 /* TutorialView.swift in Sources */,
 				C574FEE1276B0AE000ADD3B3 /* SoundView.swift in Sources */,
 				C574FE78276886B700ADD3B3 /* ContentView.swift in Sources */,
 				C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */,
@@ -1247,6 +1258,7 @@
 				C574FEA02769BFE700ADD3B3 /* ScalesView.swift in Sources */,
 				C5DBD5F427812B6100DF5183 /* Scale.swift in Sources */,
 				C5321F0127A8E14F00A63085 /* AboutThisApp.swift in Sources */,
+				C5321F0727A933A200A63085 /* AboutDeveloperView.swift in Sources */,
 				C54531D227756F180041702C /* PlaySounds.swift in Sources */,
 				C58FE9F3278292B900075A4C /* OtherScalesView.swift in Sources */,
 			);
