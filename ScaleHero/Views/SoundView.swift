@@ -68,7 +68,7 @@ struct SoundView : View {
                         Sound.enabled = true
                         isPlaying = true
                     } label: {
-                        MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight*2)
                     }
 
                     Divider().background(Color.white)
@@ -157,9 +157,9 @@ struct SoundView : View {
                             musicNotes.metronome.toggle()
                         } label: {
                             if (musicNotes.metronome) {
-                                MainUIButton(buttonText: "Metronome SystemImage checkmark.square", type: 1, height: buttonHeight)
+                                MainUIButton(buttonText: "Presentation Pulse SystemImage checkmark.square", type: 1, height: buttonHeight)
                             } else {
-                                MainUIButton(buttonText: "Metronome SystemImage square", type: 1, height: buttonHeight)
+                                MainUIButton(buttonText: "Presentation Pulse SystemImage square", type: 1, height: buttonHeight)
                             }
                         }
                     }
@@ -238,24 +238,25 @@ struct SoundView : View {
                         }
                     }
                 } label: {
-                    if (musicNotes.isFavouriteScale) {
-                        MainUIButton(buttonText: "Favourites Page", type: 3, height: bottumButtonHeight)
-                    } else {
-                        switch musicNotes.type.lowercased() {
-                        case "mode":
-                            MainUIButton(buttonText: "Modes", type: 3, height: bottumButtonHeight)
-                        case "chromatic-scale", "whole-tone-scale", "major-pentatonic-scale", "minor-pentatonic-scale", "blues-scale":
-                            MainUIButton(buttonText: "Special", type: 3, height: bottumButtonHeight)
-                        case "harmonic","melodic":
-                            MainUIButton(buttonText: "Scales", type: 3, height: bottumButtonHeight)
-                        case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
-                            MainUIButton(buttonText: "Tetrads", type: 3, height: bottumButtonHeight)
-                        case "pentatonic", "":
-                            MainUIButton(buttonText: "Abstract Scales", type: 3, height: bottumButtonHeight)
-                        default:
-                            MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
-                        }
-                    }
+                    MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight)
+//                    if (musicNotes.isFavouriteScale) {
+//                        MainUIButton(buttonText: "Favourites Page", type: 3, height: bottumButtonHeight)
+//                    } else {
+//                        switch musicNotes.type.lowercased() {
+//                        case "mode":
+//                            MainUIButton(buttonText: "Modes", type: 3, height: bottumButtonHeight)
+//                        case "chromatic-scale", "whole-tone-scale", "major-pentatonic-scale", "minor-pentatonic-scale", "blues-scale":
+//                            MainUIButton(buttonText: "Special", type: 3, height: bottumButtonHeight)
+//                        case "harmonic","melodic":
+//                            MainUIButton(buttonText: "Scales", type: 3, height: bottumButtonHeight)
+//                        case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
+//                            MainUIButton(buttonText: "Tetrads", type: 3, height: bottumButtonHeight)
+//                        case "pentatonic", "":
+//                            MainUIButton(buttonText: "Abstract Scales", type: 3, height: bottumButtonHeight)
+//                        default:
+//                            MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
+//                        }
+//                    }
                 }
             }
             .alert(isPresented: $presentAlert) {

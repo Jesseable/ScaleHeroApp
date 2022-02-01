@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftySound
+import AVFoundation
 
 struct DroneView : View {
     
@@ -48,6 +49,12 @@ struct DroneView : View {
                     Button {
                         if (!isPlaying) {
                             let transposedNoteName = getTransposedNote(selectedNote: musicNotes.noteName)
+                            // Allows sound to play when ringer is on silent
+                            do {
+                                try AVAudioSession.sharedInstance().setCategory(.playback)
+                            } catch(let error) {
+                                print(error.localizedDescription)
+                            }
                             playScale.playDroneSound(duration: -1, startingNote: transposedNoteName)
                     
                         Sound.enabled = true

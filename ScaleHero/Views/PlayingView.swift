@@ -55,6 +55,14 @@ struct PlayingView: View {
                 }
             }
             .onAppear(perform: {
+                
+                // Allows sound to play when ringer is on silent
+                do {
+                    try AVAudioSession.sharedInstance().setCategory(.playback)
+                } catch(let error) {
+                    print(error.localizedDescription)
+                }
+                
                 if (playDrone) {
                     let extraDuration : Int
                     if musicNotes.tempo >= 80 {
@@ -65,29 +73,12 @@ struct PlayingView: View {
                     
                     let duration = (tempoToSeconds(tempo: self.musicNotes.tempo)
                                     * CGFloat(self.musicNotes.scaleNotes.count + extraDuration))
+                    
                     playSounds.playDroneSound(duration: duration,
                                               startingNote: currentNote)
                 }
             })
             .onReceive(musicNotes.timer) { time in
-                
-                if (playScaleNotes) {
-                        
-                    // stop the previous sound
-                    if (index != 0) {
-                        Sound.stop(file: musicNotes.scaleNotes[index-1], fileExtension: "mp3")
-                    } else {
-                        Sound.stop(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
-                    }
-                    if (index == musicNotes.scaleNotes.count - 1) {
-                        musicNotes.timer.upstream.connect().cancel()
-                        
-                        // Add in a short delay before this is called  You will have to debug this thouroughly
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-                }
                     
                 if (musicNotes.scaleNoteNames[index].contains("Metronome")) {
                     let numBeats = self.musicNotes.getNumTempoBeats()
@@ -101,21 +92,49 @@ struct PlayingView: View {
                     currentNote = musicNotes.scaleNoteNames[self.index].components(separatedBy: "-")[2]
                 }
                 
+                // Allows sound to play when ringer is on silent
+                do {
+                    try AVAudioSession.sharedInstance().setCategory(.playback)
+                } catch(let error) {
+                    print(error.localizedDescription)
+                }
+                
                 // plays the next note
                 if (playScaleNotes) {
                     if !musicNotes.scaleNotes[index].contains("Metronome") {
                         Sound.play(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
                     } else {
                         if musicNotes.metronome {
-                        playSounds.playMetronome()
-                            if (musicNotes.tempo < 70) {
-                                playSounds.offBeatMetronome(fileName: "Metronome1",
-                                                            rhythm: fileReaderAndWriter.readMetronomePulse(),
-                                                            timeInterval: tempoToSeconds(tempo: self.musicNotes.tempo))
+                            do {
+                                try playSounds.playMetronome()
+                                if (musicNotes.tempo < 70) {
+                                    playSounds.offBeatMetronome(fileName: "Metronome1",
+                                                                rhythm: fileReaderAndWriter.readMetronomePulse(),
+                                                                timeInterval: tempoToSeconds(tempo: self.musicNotes.tempo))
+                                }
+                            } catch {
+                                print("File Error When reading metronome")
                             }
                         }
                     }
                 }
+                    
+                // stop the previous sound
+                if (index > 0) {
+                    if (musicNotes.scaleNotes[index] != musicNotes.scaleNotes[index-1]) {
+                        Sound.stop(file: musicNotes.scaleNotes[index-1], fileExtension: "mp3")
+                    }
+                }
+                
+                if (index == musicNotes.scaleNotes.count - 1) {
+                    musicNotes.timer.upstream.connect().cancel()
+                    
+                    // Add in a short delay before this is called  You will have to debug this thouroughly
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
+                
                 self.index += 1
             }
         }

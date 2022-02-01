@@ -19,7 +19,7 @@ struct SettingsView: View {
     private let scaleInstruments = ["Strings", "Piano", "Organ"]
     private let droneInstruments = ["Cello", "Tuning Fork"]
     private let transpositionModes = ["Notes", "Instrument"]
-    private let metronomePulses = ["3/4", "4/4"]
+    private let metronomePulses = ["Compound", "Simple"]
     // These are also on contentView
     private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
     @State var instrumentSelected : String
@@ -136,7 +136,7 @@ struct SettingsView: View {
                     Divider().background(Color.white)
                     
                     Group {
-                        MainUIButton(buttonText: "Metronome Pulse:", type: 4, height: buttonHeight)
+                        MainUIButton(buttonText: "Presentation Pulse:", type: 4, height: buttonHeight)
                         ZStack {
                             MainUIButton(buttonText: "", type: 7, height: buttonHeight)
                             Section {

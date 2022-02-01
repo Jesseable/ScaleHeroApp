@@ -130,12 +130,16 @@ struct PlaySounds {
     /**
      Plays the metronomes sound files
      */
-    mutating func playMetronome() {
+    mutating func playMetronome() throws {
         let metronomeFile = "Metronome"
-        if let metronomeURL = Bundle.main.url(forResource: metronomeFile, withExtension: "mp3") {
+        guard let metronomeURL = Bundle.main.url(
+            forResource: metronomeFile, withExtension: "mp3"
+        ) else {
+            throw SoundError.fileNoteFound(fileName: metronomeFile)
+        }
+//        if let metronomeURL = try? AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource(metronomeFile, ofType: "mp3")!) as URL) { //Bundle.main.url(forResource: metronomeFile, withExtension: "mp3") {
             player2 = try! AVAudioPlayer(contentsOf: metronomeURL)
             player2?.play()
-        }
     }
     
     private mutating func cancelPreviousTimer() {
