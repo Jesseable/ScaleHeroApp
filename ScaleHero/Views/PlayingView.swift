@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftySound
 import AVFoundation
 
 struct PlayingView: View {
@@ -66,9 +65,9 @@ struct PlayingView: View {
                 if (playDrone) {
                     let extraDuration : Int
                     if musicNotes.tempo >= 80 {
-                        extraDuration = 4
+                        extraDuration = 2
                     } else {
-                        extraDuration = 1
+                        extraDuration = 0
                     }
                     
                     let duration = (tempoToSeconds(tempo: self.musicNotes.tempo)
@@ -99,10 +98,22 @@ struct PlayingView: View {
                     print(error.localizedDescription)
                 }
                 
+//                // stop the previous sound
+//                if (index > 0) {
+//                    if (musicNotes.scaleNotes[index] != musicNotes.scaleNotes[index-1]) {
+//                        //Sound.stop(file: musicNotes.scaleNotes[index-1], fileExtension: "mp3") // CHANGE THIS TO AVAudio!!!!!!!!!!!!!!!!!
+//                    }
+//                }
+                
                 // plays the next note
                 if (playScaleNotes) {
                     if !musicNotes.scaleNotes[index].contains("Metronome") {
-                        Sound.play(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
+                        do {
+                            try playSounds.playScaleNote(scaleFileName: musicNotes.scaleNotes[index], duration: tempoToSeconds(tempo: self.musicNotes.tempo))
+                        } catch {
+                            print("File Error When attempting to play scale Notes")
+                        }
+                        //Sound.play(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
                     } else {
                         if musicNotes.metronome {
                             do {
@@ -118,19 +129,12 @@ struct PlayingView: View {
                         }
                     }
                 }
-                    
-                // stop the previous sound
-                if (index > 0) {
-                    if (musicNotes.scaleNotes[index] != musicNotes.scaleNotes[index-1]) {
-                        Sound.stop(file: musicNotes.scaleNotes[index-1], fileExtension: "mp3")
-                    }
-                }
                 
                 if (index == musicNotes.scaleNotes.count - 1) {
                     musicNotes.timer.upstream.connect().cancel()
                     
                     // Add in a short delay before this is called  You will have to debug this thouroughly
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }

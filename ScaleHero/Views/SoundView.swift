@@ -44,32 +44,35 @@ struct SoundView : View {
                             .accessibilityAddTraits(.isHeader)
                             .foregroundColor(Color.white)
                             .multilineTextAlignment(.center)
-
-                ScrollView {
-                    
-                    Button {
-                        let scaleTypeArr = scaleType.components(separatedBy: " ")
-                        let startingNote = scaleTypeArr[0]
-                        let tonality = scaleTypeArr[1].lowercased()
-                        let scaleType = scaleTypeArr[2].lowercased()
-                        var scale = WriteScales(type: scaleType.lowercased())
-                        let scaleInfo = scale.ScaleNotes(startingNote: startingNote,
-                                                         octave: musicNotes.octaves,
-                                                         tonality: tonality,
-                                                         tonicOption: musicNotes.tonicis,
-                                                         startingOctave: musicNotes.startingOctave)
-                        let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo, tempo: Int(musicNotes.tempo))
-                        let delay = CGFloat(60/musicNotes.tempo)
-                        musicNotes.scaleNotes = scaleSoundFiles
-                        musicNotes.scaleNoteNames = playScale.convertToSoundFile(scaleInfoArray: scale.getScaleNoteNames(), tempo: Int(musicNotes.tempo))
-                        musicNotes.timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
-                        musicNotes.noteName = startingNote
-                    
-                        Sound.enabled = true
-                        isPlaying = true
-                    } label: {
-                        MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight*2)
+                
+                // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
+                Button {
+                    if (musicNotes.isFavouriteScale) {
+                        self.screenType = "favouritesview"
+                        musicNotes.isFavouriteScale.toggle()
+                    } else {
+                        switch musicNotes.type.lowercased() {
+                        case "mode":
+                            musicNotes.type = "Major Scale Modes"
+                            self.screenType = "otherview"
+                        case "chromatic-scale", "whole-tone-scale", "major-pentatonic-scale", "minor-pentatonic-scale", "blues-scale":
+                            musicNotes.type = "special"
+                            self.screenType = "otherview"
+                        case "harmonic","melodic":
+                            self.screenType = "scale"
+                        case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
+                            musicNotes.type = "Tetrads"
+                            self.screenType = "otherview"
+                        case "pentatonic", "":
+                            self.screenType = "abstractview"
+                        default:
+                            self.screenType = musicNotes.type
+                        }
                     }
+                } label: {
+                    MainUIButton(buttonText: "Back", type: 9, height: bottumButtonHeight)
+                }
+                ScrollView {
 
                     Divider().background(Color.white)
                     
@@ -157,9 +160,9 @@ struct SoundView : View {
                             musicNotes.metronome.toggle()
                         } label: {
                             if (musicNotes.metronome) {
-                                MainUIButton(buttonText: "Presentation Pulse SystemImage checkmark.square", type: 1, height: buttonHeight)
+                                MainUIButton(buttonText: "Presentation-Pulse SystemImage checkmark.square", type: 1, height: buttonHeight)
                             } else {
-                                MainUIButton(buttonText: "Presentation Pulse SystemImage square", type: 1, height: buttonHeight)
+                                MainUIButton(buttonText: "Presentation-Pulse SystemImage square", type: 1, height: buttonHeight)
                             }
                         }
                     }
@@ -212,51 +215,28 @@ struct SoundView : View {
                     
                     Spacer()
                 }
-                
-                // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
                 Button {
-                    if (musicNotes.isFavouriteScale) {
-                        self.screenType = "favouritesview"
-                        musicNotes.isFavouriteScale.toggle()
-                    } else {
-                        switch musicNotes.type.lowercased() {
-                        case "mode":
-                            musicNotes.type = "Major Scale Modes"
-                            self.screenType = "otherview"
-                        case "chromatic-scale", "whole-tone-scale", "major-pentatonic-scale", "minor-pentatonic-scale", "blues-scale":
-                            musicNotes.type = "special"
-                            self.screenType = "otherview"
-                        case "harmonic","melodic":
-                            self.screenType = "scale"
-                        case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
-                            musicNotes.type = "tetrads"
-                            self.screenType = "otherview"
-                        case "pentatonic", "":
-                            self.screenType = "abstractview"
-                        default:
-                            self.screenType = musicNotes.type
-                        }
-                    }
+                    let scaleTypeArr = scaleType.components(separatedBy: " ")
+                    let startingNote = scaleTypeArr[0]
+                    let tonality = scaleTypeArr[1].lowercased()
+                    let scaleType = scaleTypeArr[2].lowercased()
+                    var scale = WriteScales(type: scaleType.lowercased())
+                    let scaleInfo = scale.ScaleNotes(startingNote: startingNote,
+                                                     octave: musicNotes.octaves,
+                                                     tonality: tonality,
+                                                     tonicOption: musicNotes.tonicis,
+                                                     startingOctave: musicNotes.startingOctave)
+                    let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo, tempo: Int(musicNotes.tempo))
+                    let delay = CGFloat(60/musicNotes.tempo)
+                    musicNotes.scaleNotes = scaleSoundFiles
+                    musicNotes.scaleNoteNames = playScale.convertToSoundFile(scaleInfoArray: scale.getScaleNoteNames(), tempo: Int(musicNotes.tempo))
+                    musicNotes.timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
+                    musicNotes.noteName = startingNote
+                
+                    Sound.enabled = true
+                    isPlaying = true
                 } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight)
-//                    if (musicNotes.isFavouriteScale) {
-//                        MainUIButton(buttonText: "Favourites Page", type: 3, height: bottumButtonHeight)
-//                    } else {
-//                        switch musicNotes.type.lowercased() {
-//                        case "mode":
-//                            MainUIButton(buttonText: "Modes", type: 3, height: bottumButtonHeight)
-//                        case "chromatic-scale", "whole-tone-scale", "major-pentatonic-scale", "minor-pentatonic-scale", "blues-scale":
-//                            MainUIButton(buttonText: "Special", type: 3, height: bottumButtonHeight)
-//                        case "harmonic","melodic":
-//                            MainUIButton(buttonText: "Scales", type: 3, height: bottumButtonHeight)
-//                        case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
-//                            MainUIButton(buttonText: "Tetrads", type: 3, height: bottumButtonHeight)
-//                        case "pentatonic", "":
-//                            MainUIButton(buttonText: "Abstract Scales", type: 3, height: bottumButtonHeight)
-//                        default:
-//                            MainUIButton(buttonText: musicNotes.type, type: 3, height: bottumButtonHeight)
-//                        }
-//                    }
+                    MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 3, height: buttonHeight*2)
                 }
             }
             .alert(isPresented: $presentAlert) {

@@ -6,7 +6,6 @@
 //
 
 import Swift
-import SwiftySound
 import AVFoundation
 
 /**
@@ -15,11 +14,16 @@ import AVFoundation
 struct PlaySounds {
     
     private var fileReaderAndWriter = FileReaderAndWriter()
+    private var toggler = true
     var metronomeTimer: Timer? = nil
     // For the drone
     var player: AVAudioPlayer?
     // For the metronome
     var player2: AVAudioPlayer?
+    // For the scaleNotes
+    var player3: AVAudioPlayer?
+    // For the scaleNotes
+    var player4: AVAudioPlayer?
     
     lazy var instrument: String = {
         [self] in
@@ -48,6 +52,36 @@ struct PlaySounds {
     }()
     
     /**
+     Play ScaleNote Sounds
+     */
+    mutating func playScaleNote(scaleFileName: String, duration: CGFloat) throws {
+        let extra = 0.05
+        guard let fileURL = Bundle.main.url(
+            forResource: scaleFileName, withExtension: "mp3"
+        ) else {
+            throw SoundError.fileNoteFound(fileName: scaleFileName)
+        }
+        if toggler {
+            self.player3 = try! AVAudioPlayer(contentsOf: fileURL)
+            self.player3?.play()
+            toggler.toggle()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration + extra, execute: { [self] in
+                cancelScaleNoteSound1()
+            })
+        } else {
+            self.player4 = try! AVAudioPlayer(contentsOf: fileURL)
+            self.player4?.play()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration + extra, execute: { [self] in
+                cancelScaleNoteSound2()
+            })
+        }
+        
+        
+    }
+    
+    /**
      Converts the array into a readable file name (mp3 format)
      */
     mutating func convertToSoundFile(scaleInfoArray: [String], tempo: Int) -> [String] {
@@ -61,7 +95,7 @@ struct PlaySounds {
         }
         
         soundFileArr.insert(contentsOf: addMetronome(tempo: tempo), at: 0)
-
+        
         return soundFileArr
     }
     
@@ -137,14 +171,22 @@ struct PlaySounds {
         ) else {
             throw SoundError.fileNoteFound(fileName: metronomeFile)
         }
-//        if let metronomeURL = try? AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource(metronomeFile, ofType: "mp3")!) as URL) { //Bundle.main.url(forResource: metronomeFile, withExtension: "mp3") {
-            player2 = try! AVAudioPlayer(contentsOf: metronomeURL)
-            player2?.play()
+        
+        player2 = try! AVAudioPlayer(contentsOf: metronomeURL)
+        player2?.play()
     }
     
     private mutating func cancelPreviousTimer() {
         metronomeTimer?.invalidate()
         self.metronomeTimer = nil
+    }
+    
+    private func cancelScaleNoteSound1() {
+        self.player3?.stop()
+    }
+    
+    private func cancelScaleNoteSound2() {
+        self.player4?.stop()
     }
     
     private func cancelDroneSound() {
@@ -153,13 +195,13 @@ struct PlaySounds {
     
     private func cancelMetronomeSound() {
         self.player2?.stop()
-        //self.player3?.stop()
     }
     
     mutating func cancelAllSounds() {
-        Sound.enabled = false
         cancelPreviousTimer()
         cancelDroneSound()
         cancelMetronomeSound()
+        cancelScaleNoteSound1()
+        cancelScaleNoteSound2()
     }
 }

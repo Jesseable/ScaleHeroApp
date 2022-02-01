@@ -85,7 +85,7 @@ struct ScalesView: View {
                             Button("Note: \(note)", action: {musicNotes.noteName = note})
                         }
                     } label: {
-                        MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 9, height: buttonHeight)
                     }.padding(.top)
                     
                     Button {

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftySound
 import AVFoundation
 
 struct DroneView : View {
@@ -43,7 +42,7 @@ struct DroneView : View {
                             Button("Note: \(note)", action: {musicNotes.noteName = note})
                         }
                     } label: {
-                        MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 9, height: buttonHeight)
                     }.padding(.top)
                     
                     Button {
@@ -56,8 +55,7 @@ struct DroneView : View {
                                 print(error.localizedDescription)
                             }
                             playScale.playDroneSound(duration: -1, startingNote: transposedNoteName)
-                    
-                        Sound.enabled = true
+
                         isPlaying = true
                         } else {
                             playScale.cancelAllSounds()
@@ -117,7 +115,6 @@ struct DroneView : View {
     }
     
     private func findNote(transposedNote: String, selectedNote: String) -> String {
-        // {"C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F"} Music alphebet
         let orderedAlphabet = ["A","A#/Bb","B","C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab","A","A#/Bb","B","C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab"]
         // Twice as long too allow only going forwards
         let transposedIndex = orderedAlphabet.firstIndex(of: transposedNote) ?? 0

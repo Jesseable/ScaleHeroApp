@@ -31,7 +31,7 @@ struct AboutThisApp: View {
                         Divider().background(Color.white)
                         
                         Group {
-                            Text("**Cello Drone Sound File:**")
+                            Text("**Cello Drone Sound Files:**")
                                 .font(.title2)
                                 .foregroundColor(Color.white)
                                 .padding(5)
@@ -45,7 +45,7 @@ struct AboutThisApp: View {
                             Button {
                                 youtubeLink()
                             } label: {
-                                MainUIButton(buttonText: "Musician 47 Link", type: 4, height: UIScreen.main.bounds.height/20)
+                                MainUIButton(buttonText: "Musician 47 Link", type: 9, height: UIScreen.main.bounds.height/20)
                             }
                         }
                         
@@ -76,7 +76,7 @@ struct AboutThisApp: View {
     func musician47Info() -> String {
         let text = """
         The Cello Drone Files were downloaded from 'Musician 47' on youtube
-        You can access these wonderful sound files on youtube through this link:
+        You can access these wonderful sound files on YouTube through this link:
         """
         return text
     }

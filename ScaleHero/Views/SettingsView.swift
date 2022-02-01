@@ -162,13 +162,13 @@ struct SettingsView: View {
                                  droneInstrument: droneSelected)
 
                     } label: {
-                        MainUIButton(buttonText: "Apply SystemImage star.circle", type: 1, height: bottumButtonHeight)
+                        MainUIButton(buttonText: "Apply SystemImage star.circle", type: 9, height: bottumButtonHeight)
                     }
                     
                     Button {
                         isPresented = true
                     } label: {
-                        MainUIButton(buttonText: "About This App", type: 1, height: bottumButtonHeight)
+                        MainUIButton(buttonText: "About This App", type: 9, height: bottumButtonHeight)
                     }
                 }
                     
