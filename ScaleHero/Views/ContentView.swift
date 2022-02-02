@@ -27,7 +27,7 @@ struct AppContentView: View {
     
     private let metronomePulses = ["Compound", "Simple"]
     
-    private let transpositionTypes = ["C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F", "Basoon C", "Clarinet Bb", "Clarinet Eb", "Euphonium C", "Horn F", "Oboe C", "Recorder C", "Recorder F", "Flute C", "Saxophone Bb", "Saxophone Eb", "Strings C", "Trombone C", "Trumpet Bb", "Tuba F"]
+    private let transpositionTypes = ["C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F", "Basoon in C", "Clarinet in Bb", "Clarinet in Eb", "Euphonium in C", "Horn in F", "Oboe in C", "Recorder in C", "Recorder in F", "Flute in C", "Saxophone in Bb", "Saxophone in Eb", "Strings in C", "Trombone in C", "Trumpet in Bb", "Tuba in F"]
     
     private var selectedInstrument : String
     private var selectedBackground : String
@@ -79,7 +79,7 @@ struct AppContentView: View {
         selectedDrone = fileReaderAndWriter.readDroneInstrument()
         if (!droneInstruments.contains(selectedDrone)) {
             // the default selected instrument is chosen here:
-            selectedDrone = "Tuning Fork"
+            selectedDrone = "Cello"
             fileReaderAndWriter.writeDroneInstrument(newDrone: selectedDrone)
         }
     }

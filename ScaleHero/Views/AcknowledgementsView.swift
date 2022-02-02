@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AboutThisApp: View {
+struct AcknowledgementsView: View {
     
     var backgroundImage: String
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>

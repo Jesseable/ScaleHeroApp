@@ -182,7 +182,7 @@ struct WriteScales {
         // Does the transposition
         var transpositionNote = fileReaderAndWriter.readTransposition()
         if (transpositionNote.components(separatedBy: " ").count > 1) {
-            transpositionNote = transpositionNote.components(separatedBy: " ")[1]
+            transpositionNote = transpositionNote.components(separatedBy: " ")[2]
             transpositionNote = getFullNote(singularNote: transpositionNote)
         }
         let transpositionKey = startingNoteKeyFinder(startingNote: transpositionNote, startingOctave: startingOctave)

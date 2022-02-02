@@ -235,6 +235,10 @@ struct SoundView : View {
                 
                     Sound.enabled = true
                     isPlaying = true
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+                        musicNotes.dismissable = true
+                    }
                 } label: {
                     MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 3, height: buttonHeight*2)
                 }

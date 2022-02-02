@@ -90,7 +90,7 @@ struct MainUIButton: View {
                 Image(systemName: stringArr[1])
                     .foregroundColor(Color.white)
                     .frame(maxWidth: universalSize.width * 0.5, alignment: .trailing)
-                    .padding(.horizontal, universalSize.width/9)
+                    .padding(.horizontal, universalSize.width/11)
                     .scaleEffect(scaleEffect)
 
             } else {

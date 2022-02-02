@@ -83,7 +83,7 @@ struct SettingsView: View {
                             if (mode == "Notes") {
                                 transposition = "C"
                             } else {
-                                transposition = "Strings C"
+                                transposition = "Strings in C"
                             }
                         }
                         

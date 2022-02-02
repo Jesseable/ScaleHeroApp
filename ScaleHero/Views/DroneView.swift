@@ -47,7 +47,7 @@ struct DroneView : View {
                     
                     Button {
                         if (!isPlaying) {
-                            let transposedNoteName = getTransposedNote(selectedNote: musicNotes.noteName)
+                            let transposedNoteName = playScale.getTransposedNote(selectedNote: musicNotes.noteName)
                             // Allows sound to play when ringer is on silent
                             do {
                                 try AVAudioSession.sharedInstance().setCategory(.playback)
@@ -76,70 +76,5 @@ struct DroneView : View {
             }
         }
         .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
-    }
-    
-    private func getTransposedNote(selectedNote: String) -> String {
-        var transpositionNote = fileReaderAndWriter.readTransposition()
-        if (transpositionNote.components(separatedBy: " ").count > 1) {
-            transpositionNote = transpositionNote.components(separatedBy: " ")[1]
-            transpositionNote = getFullNote(singularNote: transpositionNote)
-        }
-        switch transpositionNote {
-        case "C":
-            return findNote(transposedNote: "C", selectedNote: selectedNote)
-        case "G":
-            return findNote(transposedNote: "G", selectedNote: selectedNote)
-        case "D":
-            return findNote(transposedNote: "D", selectedNote: selectedNote)
-        case "A":
-            return findNote(transposedNote: "A", selectedNote: selectedNote)
-        case "E":
-            return findNote(transposedNote: "E", selectedNote: selectedNote)
-        case "B":
-            return findNote(transposedNote: "B", selectedNote: selectedNote)
-        case "F#/Gb":
-            return findNote(transposedNote: "F#/Gb", selectedNote: selectedNote)
-        case "C#/Db":
-            return findNote(transposedNote: "C#/Db", selectedNote: selectedNote)
-        case "G#/Ab":
-            return findNote(transposedNote: "G#/Ab", selectedNote: selectedNote)
-        case "D#/Eb":
-            return findNote(transposedNote: "D#/Eb", selectedNote: selectedNote)
-        case "A#/Bb":
-            return findNote(transposedNote: "A#/Bb", selectedNote: selectedNote)
-        case "F":
-            return findNote(transposedNote: "F", selectedNote: selectedNote)
-        default:
-            return "not Found"
-        }
-    }
-    
-    private func findNote(transposedNote: String, selectedNote: String) -> String {
-        let orderedAlphabet = ["A","A#/Bb","B","C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab","A","A#/Bb","B","C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab"]
-        // Twice as long too allow only going forwards
-        let transposedIndex = orderedAlphabet.firstIndex(of: transposedNote) ?? 0
-        let CIndex = orderedAlphabet.firstIndex(of: "C") ?? 0
-        let selectedIndex = orderedAlphabet.firstIndex(of: selectedNote) ?? 0
-        let difference = CIndex - transposedIndex
-        let arrayIndex = selectedIndex - difference
-        return orderedAlphabet[arrayIndex]
-    }
-    
-    /// ALSO IN WRITE SCALES
-    private func getFullNote(singularNote: String) -> String{
-        switch singularNote {
-        case "F#", "Gb":
-            return "F#/Gb"
-        case "C#", "Db":
-            return "C#/Db"
-        case "G#", "Ab":
-            return "G#/Ab"
-        case "D#", "Eb":
-            return "D#/Eb"
-        case "A#", "Bb":
-            return "A#/Bb"
-        default:
-            return singularNote
-        }
     }
 }

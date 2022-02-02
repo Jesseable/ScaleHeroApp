@@ -68,7 +68,7 @@ struct AboutView: View {
         }
         .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
         .sheet(isPresented: $isPresented1) {
-            AboutThisApp(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
+            AcknowledgementsView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }
         .sheet(isPresented: $isPresented2) {
             TutorialView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)

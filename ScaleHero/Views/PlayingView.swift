@@ -49,6 +49,7 @@ struct PlayingView: View {
                 Button {
                     playSounds.cancelAllSounds()
                     presentationMode.wrappedValue.dismiss()
+                    musicNotes.dismissable = false
                 } label: {
                     MainUIButton(buttonText: "Stop", type: 3, height: buttonHeight)
                 }
@@ -73,8 +74,10 @@ struct PlayingView: View {
                     let duration = (tempoToSeconds(tempo: self.musicNotes.tempo)
                                     * CGFloat(self.musicNotes.scaleNotes.count + extraDuration))
                     
+                    let transposedNoteName = playSounds.getTransposedNote(selectedNote: musicNotes.noteName)
+                    
                     playSounds.playDroneSound(duration: duration,
-                                              startingNote: currentNote)
+                                              startingNote: transposedNoteName)
                 }
             })
             .onReceive(musicNotes.timer) { time in
@@ -109,7 +112,13 @@ struct PlayingView: View {
                 if (playScaleNotes) {
                     if !musicNotes.scaleNotes[index].contains("Metronome") {
                         do {
-                            try playSounds.playScaleNote(scaleFileName: musicNotes.scaleNotes[index], duration: tempoToSeconds(tempo: self.musicNotes.tempo))
+                            let finalNote : Bool
+                            if (index == musicNotes.scaleNotes.count - 1) {
+                                finalNote = true
+                            } else {
+                                finalNote = false
+                            }
+                            try playSounds.playScaleNote(scaleFileName: musicNotes.scaleNotes[index], duration: tempoToSeconds(tempo: self.musicNotes.tempo), finalNote: finalNote)
                         } catch {
                             print("File Error When attempting to play scale Notes")
                         }
@@ -134,11 +143,12 @@ struct PlayingView: View {
                     musicNotes.timer.upstream.connect().cancel()
                     
                     // Add in a short delay before this is called  You will have to debug this thouroughly
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        presentationMode.wrappedValue.dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        if musicNotes.dismissable {
+                            presentationMode.wrappedValue.dismiss()
+                        }
                     }
                 }
-                
                 self.index += 1
             }
         }
