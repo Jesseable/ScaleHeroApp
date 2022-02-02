@@ -19,7 +19,7 @@ struct SettingsView: View {
     private let scaleInstruments = ["Strings", "Piano", "Organ"]
     private let droneInstruments = ["Cello", "Tuning Fork"]
     private let transpositionModes = ["Notes", "Instrument"]
-    private let metronomePulses = ["Compound", "Simple"]
+    private let metronomePulses = ["Compound", "Simple", "Off"]
     // These are also on contentView
     private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
     @State var instrumentSelected : String

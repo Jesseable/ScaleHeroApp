@@ -48,6 +48,7 @@ struct PlayingView: View {
                 
                 Button {
                     playSounds.cancelAllSounds()
+                    musicNotes.timer.upstream.connect().cancel()
                     presentationMode.wrappedValue.dismiss()
                     musicNotes.dismissable = false
                 } label: {
@@ -128,7 +129,7 @@ struct PlayingView: View {
                             do {
                                 try playSounds.playMetronome()
                                 if (musicNotes.tempo < 70) {
-                                    playSounds.offBeatMetronome(fileName: "Metronome1",
+                                    try playSounds.offBeatMetronome(fileName: "Metronome1",
                                                                 rhythm: fileReaderAndWriter.readMetronomePulse(),
                                                                 timeInterval: tempoToSeconds(tempo: self.musicNotes.tempo))
                                 }

@@ -7,6 +7,7 @@
 
 import Swift
 import AVFoundation
+import SwiftySound
 
 /**
  Play the sound files in various patterns to produce scales
@@ -122,20 +123,57 @@ struct PlaySounds {
     /**
      Sets the amount of offbeat pulses for the metronome
      */
-    mutating func offBeatMetronome(fileName: String, rhythm: String, timeInterval: CGFloat) { /// AQServer.cpp:72    Exception caught in AudioQueueInternalNotifyRunning - error -66671
-        let timeSigniture = (rhythm.lowercased() == "simple") ? 3.0 : 2.0 // Only two options. 4/4 or 3/4 atm
+    mutating func offBeatMetronome(fileName: String, rhythm: String, timeInterval: CGFloat) throws { /// AQServer.cpp:72    Exception caught in AudioQueueInternalNotifyRunning - error -66671
         var runCount = 0
-        var player3: AVAudioPlayer? // Maybe later try to move outside of this function
-                
+        // For the offbeat metronome
+        var player5: AVAudioPlayer?
+        var player6: AVAudioPlayer?
+        var player7: AVAudioPlayer?
+        var player8: AVAudioPlayer?
+        
+        let timeSigniture : CGFloat
+        
+        switch rhythm.lowercased() {
+        case "simple":
+            timeSigniture = 3.0
+        case "compound":
+            timeSigniture = 2.0
+        case "off":
+            timeSigniture = 1.0
+        default:
+            timeSigniture = 1.0
+        }
+        
+        guard let offBeatMetronomeURL = Bundle.main.url(
+            forResource: fileName, withExtension: "mp3"
+        ) else {
+            throw SoundError.fileNoteFound(fileName: fileName)
+        }
+        
+        player5 = try! AVAudioPlayer(contentsOf: offBeatMetronomeURL)
+        player6 = try! AVAudioPlayer(contentsOf: offBeatMetronomeURL)
+        player7 = try! AVAudioPlayer(contentsOf: offBeatMetronomeURL)
+        player8 = try! AVAudioPlayer(contentsOf: offBeatMetronomeURL)
+    
         Timer.scheduledTimer(withTimeInterval: (timeInterval/(timeSigniture + 1)), repeats: true) { timer in
+            
+            runCount += 1
+            
             if (runCount == Int(timeSigniture)) {
                 timer.invalidate()
             }
-            if let offBeatMetronomeURL = Bundle.main.url(forResource: fileName, withExtension: "mp3") {
-                player3 = try! AVAudioPlayer(contentsOf: offBeatMetronomeURL)
-                player3?.play()
+            switch runCount {
+            case 0:
+                player5?.play()
+            case 1:
+                player6?.play()
+            case 2:
+                player7?.play()
+            case 3:
+                player8?.play()
+            default:
+                player5?.play()
             }
-            runCount += 1
         }
     }
     
