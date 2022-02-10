@@ -24,6 +24,7 @@ struct PlayingView: View {
     @State var isPlaying = false
     @State var firstTime = true
     @State var delay : CGFloat?
+    @State var repeatNotes : Bool
     let universalSize = UIScreen.main.bounds
     @State var firstNoteDisplay = true
     
@@ -56,6 +57,11 @@ struct PlayingView: View {
                 }
             }
             .onAppear(perform: {
+                
+                if (repeatNotes) {
+                    musicNotes.scaleNotes = repeateAllNotes(in: musicNotes.scaleNotes)
+                    musicNotes.scaleNoteNames = repeateAllNotes(in: musicNotes.scaleNoteNames)
+                }
                 
                 // Allows sound to play when ringer is on silent
                 do {
@@ -144,7 +150,7 @@ struct PlayingView: View {
                     musicNotes.timer.upstream.connect().cancel()
                     
                     // Add in a short delay before this is called  You will have to debug this thouroughly
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
                         if musicNotes.dismissable {
                             presentationMode.wrappedValue.dismiss()
                         }
@@ -213,6 +219,27 @@ struct PlayingView: View {
             return 1
         }
         return 0
+    }
+    
+    /**
+     Repeats every element in the array
+     */
+    private func repeateAllNotes(in soundFileArray: [String]) -> [String] {
+        assert(soundFileArray.count > 0, "count must be greater than 0")
+        
+        var newSoundFIle = soundFileArray
+        var index = 0
+        
+        for soundFile in newSoundFIle {
+            if !newSoundFIle[index].contains("Metronome") {
+                newSoundFIle.insert(soundFile, at: index)
+                index += 2
+            } else {
+                index += 1
+            }
+        }
+
+        return newSoundFIle
     }
     
     /**

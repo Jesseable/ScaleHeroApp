@@ -60,11 +60,11 @@ struct TutorialView: View {
             6.  Explore new scales and have fun!!!
         
         Scales can be customized as follows:
-            a.  Instrument selection (piano, organ, strings);
+            a.  Instrument selection (piano, organ, strings)
             b.  Drone Selection (cello, tuning fork)
             c.  Transposition option for all keys
-            d.  Scale selection (All recognized scales, inculding Major, Natural minor, Harmonic minor, Melodic minor, Modes, Arpeggios, Pentatonics, Blues, etc.);
-            e.  Adjustment of tempo, time signature, starting note, starting octave, number of octaves, repetition of tonic note, presentation pulse (count in metronome);
+            d.  Scale selection (All recognized scales, including Major, Natural minor, Harmonic minor, Melodic minor, Modes, Arpeggios, Pentatonics, Blues, etc.)
+            e.  Adjustment of tempo, time signature, starting note, starting octave, number of octaves, repetition of tonic note, presentation pulse (count in metronome)
             f.  Selection/addition of drone
             g.  Displayed Notes can be shown either as sharps or flats
         

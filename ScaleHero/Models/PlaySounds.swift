@@ -7,7 +7,6 @@
 
 import Swift
 import AVFoundation
-import SwiftySound
 
 /**
  Play the sound files in various patterns to produce scales
@@ -56,7 +55,7 @@ struct PlaySounds {
      Play ScaleNote Sounds
      */
     mutating func playScaleNote(scaleFileName: String, duration: CGFloat, finalNote: Bool) throws {
-        let extra = 0.05
+        let extra = 0.1
         guard let fileURL = Bundle.main.url(
             forResource: scaleFileName, withExtension: "mp3"
         ) else {
@@ -68,6 +67,11 @@ struct PlaySounds {
             toggler.toggle()
             
             if !finalNote {
+                // Adds the fade effect
+                DispatchQueue.main.asyncAfter(deadline: .now() + duration - 0.05, execute: { [self] in
+                    self.player3?.setVolume(0.1, fadeDuration: 0.15)
+                })
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + duration + extra, execute: { [self] in
                     cancelScaleNoteSound1()
                 })
@@ -77,6 +81,11 @@ struct PlaySounds {
             self.player4?.play()
             
             if !finalNote {
+                // Adds the fade effect
+                DispatchQueue.main.asyncAfter(deadline: .now() + duration - 0.05, execute: { [self] in
+                    self.player4?.setVolume(0.1, fadeDuration: 0.15)
+                })
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + duration + extra, execute: { [self] in
                     cancelScaleNoteSound2()
                 })

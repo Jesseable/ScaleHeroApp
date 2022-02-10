@@ -4,12 +4,12 @@
 <dict>
 	<key>UILaunchScreen</key>
 	<dict>
-		<key>UIImageRespectsSafeAreaInsets</key>
-		<false/>
 		<key>UIColorName</key>
 		<string>PurpleDark</string>
 		<key>UIImageName</key>
 		<string>LaunchScreenImage1</string>
+		<key>UIImageRespectsSafeAreaInsets</key>
+		<false/>
 	</dict>
 </dict>
 </plist>

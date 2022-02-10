@@ -156,13 +156,25 @@ struct SoundView : View {
                         }
                     }
                     Group {
-                        Button {
-                            musicNotes.metronome.toggle()
-                        } label: {
-                            if (musicNotes.metronome) {
-                                MainUIButton(buttonText: "Presentation-Pulse SystemImage checkmark.square", type: 1, height: buttonHeight)
-                            } else {
-                                MainUIButton(buttonText: "Presentation-Pulse SystemImage square", type: 1, height: buttonHeight)
+                        HStack {
+                            Button {
+                                musicNotes.metronome.toggle()
+                            } label: {
+                                if (musicNotes.metronome) {
+                                    MainUIButton(buttonText: "Intro-Pulse SystemImage checkmark.square", type: 6, height: buttonHeight)
+                                } else {
+                                    MainUIButton(buttonText: "Intro-Pulse SystemImage square", type: 6, height: buttonHeight)
+                                }
+                            }
+                            
+                            Button {
+                                musicNotes.repeatNotes.toggle()
+                            } label: {
+                                if (musicNotes.repeatNotes) {
+                                    MainUIButton(buttonText: "Repeat-Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
+                                } else {
+                                    MainUIButton(buttonText: "Repeat-Notes SystemImage square", type: 5, height: buttonHeight)
+                                }
                             }
                         }
                     }
@@ -279,7 +291,8 @@ struct SoundView : View {
                         playDrone: musicNotes.playDrone,
                         playSounds: playScale,
                         title: title,
-                        currentNote: musicNotes.noteName)
+                        currentNote: musicNotes.noteName,
+                        repeatNotes: musicNotes.repeatNotes)
         }
     }
 }

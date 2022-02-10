@@ -60,6 +60,7 @@
 		C5321F0327A92BF700A63085 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0227A92BF600A63085 /* AboutView.swift */; };
 		C5321F0527A92D5400A63085 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0427A92D5400A63085 /* TutorialView.swift */; };
 		C5321F0727A933A200A63085 /* AboutDeveloperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0627A933A200A63085 /* AboutDeveloperView.swift */; };
+		C5321F0A27ACEE3E00A63085 /* SwiftySound in Frameworks */ = {isa = PBXBuildFile; productRef = C5321F0927ACEE3E00A63085 /* SwiftySound */; };
 		C5443227279B9F2C0068A239 /* DroneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5443226279B9F2B0068A239 /* DroneView.swift */; };
 		C5443229279BAB710068A239 /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5443228279BAB710068A239 /* FavouritesView.swift */; };
 		C544322B279BAD700068A239 /* FavouritesInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544322A279BAD700068A239 /* FavouritesInfoView.swift */; };
@@ -112,7 +113,6 @@
 		C574FE91276886BD00ADD3B3 /* ScaleHeroUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE90276886BD00ADD3B3 /* ScaleHeroUITests.swift */; };
 		C574FE93276886BD00ADD3B3 /* ScaleHeroUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE92276886BD00ADD3B3 /* ScaleHeroUITestsLaunchTests.swift */; };
 		C574FEA02769BFE700ADD3B3 /* ScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE9F2769BFE700ADD3B3 /* ScalesView.swift */; };
-		C574FEA32769C00C00ADD3B3 /* SwiftySound in Frameworks */ = {isa = PBXBuildFile; productRef = C574FEA22769C00C00ADD3B3 /* SwiftySound */; };
 		C574FEA92769CFDF00ADD3B3 /* ArpeggioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FEA82769CFDF00ADD3B3 /* ArpeggioView.swift */; };
 		C574FEE1276B0AE000ADD3B3 /* SoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FEE0276B0AE000ADD3B3 /* SoundView.swift */; };
 		C574FF3B2773F48F00ADD3B3 /* WriteScales.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FF3A2773F48F00ADD3B3 /* WriteScales.swift */; };
@@ -505,7 +505,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C574FEA32769C00C00ADD3B3 /* SwiftySound in Frameworks */,
+				C5321F0A27ACEE3E00A63085 /* SwiftySound in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,6 +526,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C5321F0827ACEE3E00A63085 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C544322F279D794F0068A239 /* Scale Note Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -599,6 +606,7 @@
 				C574FE85276886BD00ADD3B3 /* ScaleHeroTests */,
 				C574FE8F276886BD00ADD3B3 /* ScaleHeroUITests */,
 				C574FE73276886B700ADD3B3 /* Products */,
+				C5321F0827ACEE3E00A63085 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -914,7 +922,7 @@
 			);
 			name = ScaleHero;
 			packageProductDependencies = (
-				C574FEA22769C00C00ADD3B3 /* SwiftySound */,
+				C5321F0927ACEE3E00A63085 /* SwiftySound */,
 			);
 			productName = ScaleHero;
 			productReference = C574FE72276886B700ADD3B3 /* ScaleHero.app */;
@@ -1425,6 +1433,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ScaleHero/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ScaleHero;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -1434,8 +1443,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "Jesse-Graf.ScaleHero";
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = co.jessegraf.ScaleHero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1455,6 +1464,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ScaleHero/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ScaleHero;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -1464,8 +1474,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "Jesse-Graf.ScaleHero";
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = co.jessegraf.ScaleHero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1622,7 +1632,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C574FEA22769C00C00ADD3B3 /* SwiftySound */ = {
+		C5321F0927ACEE3E00A63085 /* SwiftySound */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C574FEA12769C00C00ADD3B3 /* XCRemoteSwiftPackageReference "SwiftySound" */;
 			productName = SwiftySound;

@@ -135,7 +135,7 @@ struct SettingsView: View {
                     Divider().background(Color.white)
                     
                     Group {
-                        MainUIButton(buttonText: "Presentation Pulse:", type: 4, height: buttonHeight)
+                        MainUIButton(buttonText: "Intro Pulse:", type: 4, height: buttonHeight)
                         ZStack {
                             MainUIButton(buttonText: "", type: 7, height: buttonHeight)
                             Section {
