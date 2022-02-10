@@ -27,6 +27,7 @@ struct PlayingView: View {
     @State var repeatNotes : Bool
     let universalSize = UIScreen.main.bounds
     @State var firstNoteDisplay = true
+    @State var num = 0
     
     var body: some View {
         let buttonHeight = universalSize.height/10
@@ -88,75 +89,86 @@ struct PlayingView: View {
                 }
             })
             .onReceive(musicNotes.timer) { time in
-                    
-                if (musicNotes.scaleNoteNames[index].contains("Metronome")) {
-                    let numBeats = self.musicNotes.getNumTempoBeats()
-                    var countingImageArr = ["Two", "One"]
-                    if (numBeats == 4) {
-                        countingImageArr.insert("Three", at: 0)
-                        countingImageArr.insert("Four", at: 0)
+                if (num % musicNotes.metronomePulse != 0 && musicNotes.metronome) {
+                    do {
+                        try playSounds.playOffbeatMetronome()
+                    } catch {
+                        print("File Error When reading off beat metronome")
                     }
-                    currentNote = countingImageArr[self.index]
+                
                 } else {
-                    currentNote = musicNotes.scaleNoteNames[self.index].components(separatedBy: "-")[2]
-                }
-                
-                // Allows sound to play when ringer is on silent
-                do {
-                    try AVAudioSession.sharedInstance().setCategory(.playback)
-                } catch(let error) {
-                    print(error.localizedDescription)
-                }
-                
-//                // stop the previous sound
-//                if (index > 0) {
-//                    if (musicNotes.scaleNotes[index] != musicNotes.scaleNotes[index-1]) {
-//                        //Sound.stop(file: musicNotes.scaleNotes[index-1], fileExtension: "mp3") // CHANGE THIS TO AVAudio!!!!!!!!!!!!!!!!!
-//                    }
-//                }
-                
-                // plays the next note
-                if (playScaleNotes) {
-                    if !musicNotes.scaleNotes[index].contains("Metronome") {
-                        do {
-                            let finalNote : Bool
-                            if (index == musicNotes.scaleNotes.count - 1) {
-                                finalNote = true
-                            } else {
-                                finalNote = false
-                            }
-                            try playSounds.playScaleNote(scaleFileName: musicNotes.scaleNotes[index], duration: tempoToSeconds(tempo: self.musicNotes.tempo), finalNote: finalNote)
-                        } catch {
-                            print("File Error When attempting to play scale Notes")
-                        }
-                        //Sound.play(file: musicNotes.scaleNotes[index], fileExtension: "mp3")
-                    } else {
-                        if musicNotes.metronome {
-                            do {
-                                try playSounds.playMetronome()
-                                if (musicNotes.tempo < 70) {
-                                    try playSounds.offBeatMetronome(fileName: "Metronome1",
-                                                                rhythm: fileReaderAndWriter.readMetronomePulse(),
-                                                                timeInterval: tempoToSeconds(tempo: self.musicNotes.tempo))
-                                }
-                            } catch {
-                                print("File Error When reading metronome")
-                            }
-                        }
-                    }
-                }
-                
-                if (index == musicNotes.scaleNotes.count - 1) {
-                    musicNotes.timer.upstream.connect().cancel()
                     
-                    // Add in a short delay before this is called  You will have to debug this thouroughly
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-                        if musicNotes.dismissable {
-                            presentationMode.wrappedValue.dismiss()
+                    // Metronome sound
+                    if musicNotes.metronome {
+                        do {
+                            try playSounds.playMetronome()
+                        } catch {
+                            print("File Error When reading metronome")
                         }
                     }
+                    
+                    if (musicNotes.scaleNoteNames[index].contains("Metronome")) {
+                        let numBeats = self.musicNotes.getNumTempoBeats()
+                        var countingImageArr = ["Two", "One"]
+                        if (numBeats == 4) {
+                            countingImageArr.insert("Three", at: 0)
+                            countingImageArr.insert("Four", at: 0)
+                        }
+                        currentNote = countingImageArr[self.index]
+                    } else {
+                        currentNote = musicNotes.scaleNoteNames[self.index].components(separatedBy: "-")[2]
+                    }
+                    
+                    // Allows sound to play when ringer is on silent
+                    do {
+                        try AVAudioSession.sharedInstance().setCategory(.playback)
+                    } catch(let error) {
+                        print(error.localizedDescription)
+                    }
+                    
+                    // plays the next note
+                    if (playScaleNotes) {
+                        if !musicNotes.scaleNotes[index].contains("Metronome") {
+                            do {
+                                let finalNote : Bool
+                                if (index == musicNotes.scaleNotes.count - 1) {
+                                    finalNote = true
+                                } else {
+                                    finalNote = false
+                                }
+                                try playSounds.playScaleNote(scaleFileName: musicNotes.scaleNotes[index], duration: tempoToSeconds(tempo: self.musicNotes.tempo), finalNote: finalNote)
+                            } catch {
+                                print("File Error When attempting to play scale Notes")
+                            }
+                        } else {
+                            if musicNotes.metronome {
+//                                do {
+//                                    try playSounds.playMetronome()
+//                                    if (musicNotes.tempo < 70) {
+//                                        try playSounds.offBeatMetronome(fileName: "Metronome1",
+//                                                                    rhythm: fileReaderAndWriter.readMetronomePulse(),
+//                                                                    timeInterval: tempoToSeconds(tempo: self.musicNotes.tempo))
+//                                    }
+//                                } catch {
+//                                    print("File Error When reading metronome")
+//                                }
+                            }
+                        }
+                    }
+                    
+                    if (index == musicNotes.scaleNotes.count - 1) {
+                        musicNotes.timer.upstream.connect().cancel()
+                        
+                        // Add in a short delay before this is called  You will have to debug this thouroughly
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
+                            if musicNotes.dismissable {
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        }
+                    }
+                    self.index += 1
                 }
-                self.index += 1
+                num += 1
             }
         }
     }

@@ -36,6 +36,7 @@ class MusicNotes: ObservableObject {
     @Published var metronome = true
     @Published var dismissable = false
     @Published var repeatNotes = false
+    @Published var metronomePulse = 1
     
     func getMusicAlphabet() -> [String] {
         return musicAlphabet

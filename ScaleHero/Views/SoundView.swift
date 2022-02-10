@@ -161,9 +161,9 @@ struct SoundView : View {
                                 musicNotes.metronome.toggle()
                             } label: {
                                 if (musicNotes.metronome) {
-                                    MainUIButton(buttonText: "Intro-Pulse SystemImage checkmark.square", type: 6, height: buttonHeight)
+                                    MainUIButton(buttonText: "Metronome SystemImage checkmark.square", type: 6, height: buttonHeight)
                                 } else {
-                                    MainUIButton(buttonText: "Intro-Pulse SystemImage square", type: 6, height: buttonHeight)
+                                    MainUIButton(buttonText: "Metronome SystemImage square", type: 6, height: buttonHeight)
                                 }
                             }
                             
@@ -171,9 +171,9 @@ struct SoundView : View {
                                 musicNotes.repeatNotes.toggle()
                             } label: {
                                 if (musicNotes.repeatNotes) {
-                                    MainUIButton(buttonText: "Repeat-Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
+                                    MainUIButton(buttonText: "Repeat-All SystemImage checkmark.square", type: 5, height: buttonHeight)
                                 } else {
-                                    MainUIButton(buttonText: "Repeat-Notes SystemImage square", type: 5, height: buttonHeight)
+                                    MainUIButton(buttonText: "Repeat-All SystemImage square", type: 5, height: buttonHeight)
                                 }
                             }
                         }
@@ -242,7 +242,21 @@ struct SoundView : View {
                     let delay = CGFloat(60/musicNotes.tempo)
                     musicNotes.scaleNotes = scaleSoundFiles
                     musicNotes.scaleNoteNames = playScale.convertToSoundFile(scaleInfoArray: scale.getScaleNoteNames(), tempo: Int(musicNotes.tempo))
-                    musicNotes.timer = Timer.publish(every: delay, on: .main, in: .common).autoconnect()
+                    
+                    switch fileReaderAndWriter.readMetronomePulse().lowercased() {
+                    case "simple":
+                        musicNotes.metronomePulse = 4
+                    case "compound":
+                        musicNotes.metronomePulse = 3
+                    case "off":
+                        musicNotes.metronomePulse = 1
+                    default:
+                        musicNotes.metronomePulse = 1
+                    }
+                    if musicNotes.tempo >= 70 {
+                        musicNotes.metronomePulse = 1
+                    }
+                    musicNotes.timer = Timer.publish(every: delay/CGFloat(musicNotes.metronomePulse), on: .main, in: .common).autoconnect()
                     musicNotes.noteName = startingNote
                 
                     Sound.enabled = true
