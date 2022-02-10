@@ -64,9 +64,10 @@ struct TutorialView: View {
             b.  Drone Selection (cello, tuning fork)
             c.  Transposition option for all keys
             d.  Scale selection (All recognized scales, including Major, Natural minor, Harmonic minor, Melodic minor, Modes, Arpeggios, Pentatonics, Blues, etc.)
-            e.  Adjustment of tempo, time signature, starting note, starting octave, number of octaves, repetition of tonic note, presentation pulse (count in metronome)
+            e.  Adjustment of tempo, time signature, starting note, starting octave, number of octaves, repetition of tonic note, metronome (simple or compound time)
             f.  Selection/addition of drone
             g.  Displayed Notes can be shown either as sharps or flats
+            h.  Repeating note option to enable real time listen and play of each note
         
         Customized scale formats also can be saved as favourites
         

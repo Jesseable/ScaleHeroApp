@@ -140,19 +140,6 @@ struct PlayingView: View {
                             } catch {
                                 print("File Error When attempting to play scale Notes")
                             }
-                        } else {
-                            if musicNotes.metronome {
-//                                do {
-//                                    try playSounds.playMetronome()
-//                                    if (musicNotes.tempo < 70) {
-//                                        try playSounds.offBeatMetronome(fileName: "Metronome1",
-//                                                                    rhythm: fileReaderAndWriter.readMetronomePulse(),
-//                                                                    timeInterval: tempoToSeconds(tempo: self.musicNotes.tempo))
-//                                    }
-//                                } catch {
-//                                    print("File Error When reading metronome")
-//                                }
-                            }
                         }
                     }
                     

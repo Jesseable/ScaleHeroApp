@@ -219,6 +219,8 @@ struct SoundView : View {
                         }
                     }
                     
+                    Divider().background(Color.white)
+                    
                     Button {
                         presentAlert = true
                     } label: {
@@ -253,7 +255,7 @@ struct SoundView : View {
                     default:
                         musicNotes.metronomePulse = 1
                     }
-                    if musicNotes.tempo >= 70 {
+                    if musicNotes.tempo >= 70 { // ALLOW them to adjust this in settings maybe????????????????????????????????????????????????????????????????
                         musicNotes.metronomePulse = 1
                     }
                     musicNotes.timer = Timer.publish(every: delay/CGFloat(musicNotes.metronomePulse), on: .main, in: .common).autoconnect()

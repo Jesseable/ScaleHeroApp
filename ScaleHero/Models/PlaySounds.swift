@@ -148,63 +148,6 @@ struct PlaySounds {
         player2?.play()
     }
     
-//    /**
-//     Sets the amount of offbeat pulses for the metronome
-//     */
-//    mutating func offBeatMetronome(fileName: String, rhythm: String, timeInterval: CGFloat) throws { /// AQServer.cpp:72    Exception caught in AudioQueueInternalNotifyRunning - error -66671
-//        var runCount = 0
-//        // For the offbeat metronome
-//        var player5: AVAudioPlayer?
-//        var player6: AVAudioPlayer?
-//        var player7: AVAudioPlayer?
-//        var player8: AVAudioPlayer?
-//
-//        let timeSigniture : CGFloat
-//
-//        switch rhythm.lowercased() {
-//        case "simple":
-//            timeSigniture = 3.0
-//        case "compound":
-//            timeSigniture = 2.0
-//        case "off":
-//            timeSigniture = 1.0
-//        default:
-//            timeSigniture = 1.0
-//        }
-//
-//        guard let offBeatMetronomeURL = Bundle.main.url(
-//            forResource: fileName, withExtension: "mp3"
-//        ) else {
-//            throw SoundError.fileNoteFound(fileName: fileName)
-//        }
-//
-//        player5 = try! AVAudioPlayer(contentsOf: offBeatMetronomeURL)
-//        player6 = try! AVAudioPlayer(contentsOf: offBeatMetronomeURL)
-//        player7 = try! AVAudioPlayer(contentsOf: offBeatMetronomeURL)
-//        player8 = try! AVAudioPlayer(contentsOf: offBeatMetronomeURL)
-//
-//        Timer.scheduledTimer(withTimeInterval: (timeInterval/(timeSigniture + 1)), repeats: true) { timer in
-//
-//            runCount += 1
-//
-//            if (runCount == Int(timeSigniture)) {
-//                timer.invalidate()
-//            }
-//            switch runCount {
-//            case 0:
-//                player5?.play()
-//            case 1:
-//                player6?.play()
-//            case 2:
-//                player7?.play()
-//            case 3:
-//                player8?.play()
-//            default:
-//                player5?.play()
-//            }
-//        }
-//    }
-    
     /**
      Plays the drone sound effects
      */

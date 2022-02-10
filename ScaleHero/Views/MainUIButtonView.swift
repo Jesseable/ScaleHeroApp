@@ -85,7 +85,8 @@ struct MainUIButton: View {
                 Text(stringArr[0])
                     .foregroundColor(Color.white).bold()
                     .scaleEffect(scaleEffect)
-                    .frame(maxWidth: universalSize.width * 0.5, alignment: .center)
+                    .frame(maxWidth: universalSize.width * 0.5, alignment: (type == 5 || type == 6) ? .leading : .center)
+                    .padding(.horizontal, universalSize.width/11)
                 
                 Image(systemName: stringArr[1])
                     .foregroundColor(Color.white)
