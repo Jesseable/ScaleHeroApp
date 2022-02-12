@@ -24,4 +24,5 @@ struct Scale: Identifiable, Codable, Equatable {
     let scaleDescription: String
     let startingNote: String
     let noteDisplay: Int
+    let endlessLoop: Bool
 }

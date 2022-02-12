@@ -12,6 +12,7 @@ struct FavouritesInfoView: View {
     var backgroundImage: String
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
+    let universalSize = UIScreen.main.bounds
     var fileReaderAndWriter : FileReaderAndWriter
     
     var body: some View {

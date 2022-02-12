@@ -25,9 +25,10 @@ struct PlayingView: View {
     @State var firstTime = true
     @State var delay : CGFloat?
     @State var repeatNotes : Bool
-    let universalSize = UIScreen.main.bounds
+    private let universalSize = UIScreen.main.bounds
     @State var firstNoteDisplay = true
     @State var num = 0
+    @State var repeatingEndlessly : Bool // Chnage to a variable
     
     var body: some View {
         let buttonHeight = universalSize.height/10
@@ -53,11 +54,14 @@ struct PlayingView: View {
                     musicNotes.timer.upstream.connect().cancel()
                     presentationMode.wrappedValue.dismiss()
                     musicNotes.dismissable = false
+                    UIApplication.shared.isIdleTimerDisabled = false
                 } label: {
                     MainUIButton(buttonText: "Stop", type: 3, height: buttonHeight)
                 }
             }
             .onAppear(perform: {
+                // So the screen will never turn off when on this setting
+                UIApplication.shared.isIdleTimerDisabled = true
                 
                 if (repeatNotes) {
                     musicNotes.scaleNotes = repeateAllNotes(in: musicNotes.scaleNotes)
@@ -84,8 +88,13 @@ struct PlayingView: View {
                     
                     let transposedNoteName = playSounds.getTransposedNote(selectedNote: musicNotes.noteName)
                     
-                    playSounds.playDroneSound(duration: duration,
+                    if !repeatingEndlessly {
+                        playSounds.playDroneSound(duration: duration,
                                               startingNote: transposedNoteName)
+                    } else {
+                        playSounds.playDroneSound(duration: -1,
+                                              startingNote: transposedNoteName)
+                    }
                 }
             })
             .onReceive(musicNotes.timer) { time in
@@ -144,13 +153,18 @@ struct PlayingView: View {
                     }
                     
                     if (index == musicNotes.scaleNotes.count - 1) {
-                        musicNotes.timer.upstream.connect().cancel()
-                        
-                        // Add in a short delay before this is called  You will have to debug this thouroughly
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-                            if musicNotes.dismissable {
-                                presentationMode.wrappedValue.dismiss()
+                        // Create a function called stop scale
+                        if !self.repeatingEndlessly { // just to test
+                            musicNotes.timer.upstream.connect().cancel()
+                            
+                            // Add in a short delay before this is called  You will have to debug this thouroughly
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
+                                if musicNotes.dismissable {
+                                    presentationMode.wrappedValue.dismiss()
+                                }
                             }
+                        } else { // Function repeat scale
+                            self.index = -1 // Since it will have one added in a second
                         }
                     }
                     self.index += 1

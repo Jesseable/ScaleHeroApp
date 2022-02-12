@@ -171,10 +171,19 @@ struct SoundView : View {
                                 musicNotes.repeatNotes.toggle()
                             } label: {
                                 if (musicNotes.repeatNotes) {
-                                    MainUIButton(buttonText: "Repeat-All SystemImage checkmark.square", type: 5, height: buttonHeight)
+                                    MainUIButton(buttonText: "Repeat All SystemImage checkmark.square", type: 5, height: buttonHeight)
                                 } else {
-                                    MainUIButton(buttonText: "Repeat-All SystemImage square", type: 5, height: buttonHeight)
+                                    MainUIButton(buttonText: "Repeat All SystemImage square", type: 5, height: buttonHeight)
                                 }
+                            }
+                        }
+                        Button {
+                            musicNotes.endlessLoop.toggle()
+                        } label: {
+                            if (musicNotes.endlessLoop) {
+                                MainUIButton(buttonText: "Endless Loop SystemImage checkmark.square", type: 1, height: buttonHeight)
+                            } else {
+                                MainUIButton(buttonText: "Endless Loop SystemImage square", type: 1, height: buttonHeight)
                             }
                         }
                     }
@@ -255,7 +264,7 @@ struct SoundView : View {
                     default:
                         musicNotes.metronomePulse = 1
                     }
-                    if musicNotes.tempo >= 70 { // ALLOW them to adjust this in settings maybe????????????????????????????????????????????????????????????????
+                    if (musicNotes.tempo >= 70 || !musicNotes.metronome) { // ALLOW them to adjust this in settings maybe????????????????????????????????????????????????????????????????
                         musicNotes.metronomePulse = 1
                     }
                     musicNotes.timer = Timer.publish(every: delay/CGFloat(musicNotes.metronomePulse), on: .main, in: .common).autoconnect()
@@ -289,7 +298,8 @@ struct SoundView : View {
                                                     scaleNotes: musicNotes.playScaleNotes,
                                                     drone: musicNotes.playDrone,
                                                     startingNote: musicNotes.noteName,
-                                                    noteDisplay: musicNotes.noteDisplay)
+                                                    noteDisplay: musicNotes.noteDisplay,
+                                                    endlessLoop: musicNotes.endlessLoop)
                         
                         }
                         // Goes to the favourites screen
@@ -308,7 +318,8 @@ struct SoundView : View {
                         playSounds: playScale,
                         title: title,
                         currentNote: musicNotes.noteName,
-                        repeatNotes: musicNotes.repeatNotes)
+                        repeatNotes: musicNotes.repeatNotes,
+                        repeatingEndlessly: musicNotes.endlessLoop)
         }
     }
 }

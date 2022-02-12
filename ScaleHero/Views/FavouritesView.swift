@@ -54,6 +54,7 @@ struct FavouritesView: View {
                                 musicNotes.playScaleNotes = scale.scaleNotes
                                 musicNotes.noteName = scale.startingNote
                                 musicNotes.noteDisplay = scale.noteDisplay
+                                musicNotes.endlessLoop = scale.endlessLoop
 
                                 self.screenType = "soundview"
                             }

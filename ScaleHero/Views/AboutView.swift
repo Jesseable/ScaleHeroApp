@@ -67,13 +67,13 @@ struct AboutView: View {
             }.padding(.top, 50)
         }
         .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
-        .sheet(isPresented: $isPresented1) {
+        .fullScreenCover(isPresented: $isPresented1) {
             AcknowledgementsView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }
-        .sheet(isPresented: $isPresented2) {
+        .fullScreenCover(isPresented: $isPresented2) {
             TutorialView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }
-        .sheet(isPresented: $isPresented3) {
+        .fullScreenCover(isPresented: $isPresented3) {
             AboutDeveloperView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }
     }
