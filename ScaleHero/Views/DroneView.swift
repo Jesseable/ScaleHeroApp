@@ -45,7 +45,7 @@ struct DroneView : View {
                             Button("Note: \(note)", action: {musicNotes.noteName = note})
                         }
                     } label: {
-                        MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 9, height: buttonHeight)
+                        MainUIButton(buttonText: "Note: \(musicNotes.noteName) SystemImage arrow.down.square", type: 9, height: buttonHeight)
                     }.padding(.top)
                     
                     Button {

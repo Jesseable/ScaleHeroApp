@@ -38,7 +38,7 @@ struct ArpeggioView : View {
                             Button("Note: \(note)", action: {musicNotes.noteName = note})
                         }
                     } label: {
-                        MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 9, height: buttonHeight)
+                        MainUIButton(buttonText: "Note: \(musicNotes.noteName) SystemImage arrow.down.square", type: 9, height: buttonHeight)
                     }.padding(.top)
                     
                     Button {
@@ -70,7 +70,7 @@ struct ArpeggioView : View {
                 Button {
                     self.screenType = "HomeScreen"
                 } label: {
-                    MainUIButton(buttonText: "HomeScreen", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
                 }
             }
         }

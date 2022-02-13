@@ -45,7 +45,7 @@ struct OtherScalesView: View {
                             Button("Note: \(note)", action: {musicNotes.noteName = note})
                         }
                     } label: {
-                        MainUIButton(buttonText: "Note: \(musicNotes.noteName)", type: 9, height: buttonHeight)
+                        MainUIButton(buttonText: "Note: \(musicNotes.noteName) SystemImage arrow.down.square", type: 9, height: buttonHeight)
                     }.padding(.top)
                 
                     switch specialTitle.lowercased() {
@@ -93,11 +93,7 @@ struct OtherScalesView: View {
                         self.screenType = "scale"
                     }
                 } label: {
-                    if (musicNotes.type == "Tetrads") {
-                        MainUIButton(buttonText: "Arpeggios", type: 3, height: buttonHeight)
-                    } else {
-                        MainUIButton(buttonText: "Scale", type: 3, height: buttonHeight)
-                    }
+                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
                 }
             }
         }
