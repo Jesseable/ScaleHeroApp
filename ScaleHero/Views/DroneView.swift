@@ -8,6 +8,9 @@
 import SwiftUI
 import AVFoundation
 
+/**
+ Plays the drone notes alone for an inifnit amount of time until it says stop.
+ */
 struct DroneView : View {
     
     @EnvironmentObject var musicNotes: MusicNotes

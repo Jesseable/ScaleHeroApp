@@ -25,12 +25,6 @@ struct AboutView: View {
 
             VStack {
                 
-//                Text("About")
-//                            .font(.largeTitle.bold())
-//                            .accessibilityAddTraits(.isHeader)
-//                            .foregroundColor(Color.white)
-//                            .multilineTextAlignment(.center)
-                
                 ScrollView {
                     
                     Button {

@@ -104,7 +104,7 @@ struct FavouritesView: View {
             }
         }
         .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
-        .sheet(isPresented: $isPresented) {
+        .fullScreenCover(isPresented: $isPresented) {
             FavouritesInfoView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }
     }

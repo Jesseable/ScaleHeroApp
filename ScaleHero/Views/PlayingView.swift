@@ -153,23 +153,29 @@ struct PlayingView: View {
                     }
                     
                     if (index == musicNotes.scaleNotes.count - 1) {
-                        // Create a function called stop scale
-                        if !self.repeatingEndlessly { // just to test
-                            musicNotes.timer.upstream.connect().cancel()
-                            
-                            // Add in a short delay before this is called  You will have to debug this thouroughly
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-                                if musicNotes.dismissable {
-                                    presentationMode.wrappedValue.dismiss()
-                                }
-                            }
-                        } else { // Function repeat scale
+                        if !self.repeatingEndlessly {
+                            terminateScale()
+                        } else {
                             self.index = -1 // Since it will have one added in a second
                         }
                     }
                     self.index += 1
                 }
                 num += 1
+            }
+        }
+    }
+    
+    /**
+     Repeats the scale
+     */
+    private func terminateScale() {
+        musicNotes.timer.upstream.connect().cancel()
+        
+        // Add in a short delay before this is called  You will have to debug this thouroughly
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
+            if musicNotes.dismissable {
+                presentationMode.wrappedValue.dismiss()
             }
         }
     }

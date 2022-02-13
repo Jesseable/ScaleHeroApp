@@ -148,9 +148,9 @@ struct SoundView : View {
                                 musicNotes.playScaleNotes.toggle()
                             } label: {
                                 if (musicNotes.playScaleNotes) {
-                                    MainUIButton(buttonText: "Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
+                                    MainUIButton(buttonText: "Play Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
                                 } else {
-                                    MainUIButton(buttonText: "Notes SystemImage square", type: 5, height: buttonHeight)
+                                    MainUIButton(buttonText: "Play Notes SystemImage square", type: 5, height: buttonHeight)
                                 }
                             }
                         }
@@ -171,9 +171,9 @@ struct SoundView : View {
                                 musicNotes.repeatNotes.toggle()
                             } label: {
                                 if (musicNotes.repeatNotes) {
-                                    MainUIButton(buttonText: "Repeat All SystemImage checkmark.square", type: 5, height: buttonHeight)
+                                    MainUIButton(buttonText: "Repeat Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
                                 } else {
-                                    MainUIButton(buttonText: "Repeat All SystemImage square", type: 5, height: buttonHeight)
+                                    MainUIButton(buttonText: "Repeat Notes SystemImage square", type: 5, height: buttonHeight)
                                 }
                             }
                         }

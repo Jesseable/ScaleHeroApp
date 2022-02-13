@@ -80,19 +80,13 @@ struct MainUIButton: View {
 
             let scaleEffect = (height - 30)/height + 1
             if (buttonText.contains("SystemImage")) {
-                let stringArr = buttonText.replacingOccurrences(of: " ", with: "").components(separatedBy: "SystemImage")
+                let stringArr = buttonText.components(separatedBy: " SystemImage ")
 
-                Text(stringArr[0])
+                Text(" \(stringArr[0]) \(Image(systemName: stringArr[1]))")
                     .foregroundColor(Color.white).bold()
                     .scaleEffect(scaleEffect)
-                    .frame(maxWidth: universalSize.width * 0.5, alignment: (type == 5 || type == 6) ? .leading : .center)
+                    .frame(maxWidth: universalSize.width * 0.5, alignment: .center)
                     .padding(.horizontal, universalSize.width/11)
-                
-                Image(systemName: stringArr[1])
-                    .foregroundColor(Color.white)
-                    .frame(maxWidth: universalSize.width * 0.5, alignment: .trailing)
-                    .padding(.horizontal, universalSize.width/11)
-                    .scaleEffect(scaleEffect)
 
             } else {
                 Text(buttonText)
