@@ -86,7 +86,7 @@ struct MainUIButton: View {
                     .foregroundColor(Color.white).bold()
                     .scaleEffect(scaleEffect)
                     .frame(maxWidth: universalSize.width * 0.5, alignment: .center)
-                    .padding(.horizontal, universalSize.width/11)
+                    .allowsTightening(true)
 
             } else {
                 Text(buttonText)

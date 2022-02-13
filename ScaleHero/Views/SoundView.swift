@@ -29,7 +29,7 @@ struct SoundView : View {
     
     var body: some View {
         let title = scaleType
-        let buttonHeight = universalSize.height/18
+        let buttonHeight = universalSize.height/17
         let bottumButtonHeight = universalSize.height/10
         let maxFavourites = 7
         var disableOctaveSelection = (musicNotes.octaves < 2) ? false : true
