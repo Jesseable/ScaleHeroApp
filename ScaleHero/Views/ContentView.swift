@@ -8,7 +8,9 @@
 import SwiftUI
 
 /**
- The main class behind the app. Controls all of the views and sets the background image and default asthetic choices.
+ The view controller struct.
+ Controls all of the views and sets the background image and default
+ asthetic choices based off of the file descriptions.
  */
 struct AppContentView: View {
     
@@ -33,13 +35,13 @@ struct AppContentView: View {
     private var selectedBackground : String
     private var transposition : String
     private var transpositionMode : String
-    private var metronomePulse: String
+    private var metronomeOffBeatPulse: String
     private var selectedDrone : String
 
     /**
-    Initialises the background image style and sets the instrumentation for each components of the app.
+    Initialises the  components of the app.
      */
-    init() { // Test by changing Iphone type at one point!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    init() {
         selectedInstrument = fileReaderAndWriter.readScaleInstrument()
         if (!scaleInstruments.contains(selectedInstrument)) {
             // the default selected instrument is chosen here:
@@ -49,7 +51,7 @@ struct AppContentView: View {
         
         selectedBackground = fileReaderAndWriter.readBackgroundImage()
         if (!backgrounds.contains(selectedBackground)) {
-            // the default selected background image is chosen here:
+            // the default selected background colour is chosen here:
             selectedBackground = "Purple"
             fileReaderAndWriter.writeBackgroundImage(newImage: selectedBackground)
         }
@@ -57,7 +59,7 @@ struct AppContentView: View {
         
         transposition = fileReaderAndWriter.readTransposition()
         if (!transpositionTypes.contains(transposition)) {
-            // the default selected background image is chosen here:
+            // the default selected transposition note is chosen here:
             transposition = "C"
             fileReaderAndWriter.writeNewTransposition(newTransposition: transposition)
         }
@@ -69,11 +71,11 @@ struct AppContentView: View {
             transpositionMode = "Notes"
         }
         
-        metronomePulse = fileReaderAndWriter.readMetronomePulse()
-        if (!metronomePulses.contains(metronomePulse)) {
-            // the default selected background image is chosen here:
-            metronomePulse = "Off"
-            fileReaderAndWriter.writeNewMetronomePulse(newPulse: metronomePulse)
+        metronomeOffBeatPulse = fileReaderAndWriter.readMetronomePulse()
+        if (!metronomePulses.contains(metronomeOffBeatPulse)) {
+            // the default selected metronome is chosen here:
+            metronomeOffBeatPulse = "Off"
+            fileReaderAndWriter.writeNewMetronomePulse(newPulse: metronomeOffBeatPulse)
         }
         
         selectedDrone = fileReaderAndWriter.readDroneInstrument()
@@ -85,7 +87,7 @@ struct AppContentView: View {
     }
     
     /**
-     Sets the current view for the app, and transferes the needed parameters with them.
+     Toggles between views, transfering the needed parameters.
      */
     var body: some View {
         
@@ -98,7 +100,7 @@ struct AppContentView: View {
             case "otherview":
                 OtherScalesView(screenType: self.$screenType, specialTitle: musicNotes.type, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "settings":
-                SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomePulse, droneSelected: selectedDrone)
+                SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone)
             case "soundview":
                 let scaleType = musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type
                 SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
@@ -116,7 +118,7 @@ struct AppContentView: View {
 }
 
 /**
- The default view for the app. Set up when the app first opens.
+ The Initial view for the app.
  Contains buttons for settings, favourites and different scale types.
  Also contains the falling note animations.
  */
@@ -214,7 +216,7 @@ struct HomePage : View {
 }
 
 /**
- Creates the animated image for the screen.
+ Creates the animated notes for the screen.
  Starts above the display, falls vertically downwards until it is below the display.
  */
 struct ImageAnimation: View {

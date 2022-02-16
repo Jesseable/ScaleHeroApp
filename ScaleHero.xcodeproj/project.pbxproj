@@ -237,6 +237,7 @@
 		C58AFFAA27A7B88700C6A497 /* Cello-Drone-F#|Gb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C58AFF9E27A7B88700C6A497 /* Cello-Drone-F#|Gb.mp3 */; };
 		C58AFFAB27A7B88700C6A497 /* Cello-Drone-G.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C58AFF9F27A7B88700C6A497 /* Cello-Drone-G.mp3 */; };
 		C58FE9F3278292B900075A4C /* OtherScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58FE9F2278292B900075A4C /* OtherScalesView.swift */; };
+		C5A826A127BC866B002F2F66 /* NoteSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A826A027BC866B002F2F66 /* NoteSelectionButton.swift */; };
 		C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B03BDC278416EB00643E7C /* PlayingView.swift */; };
 		C5DBD5C1278078FF00DF5183 /* MainUIButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */; };
 		C5DBD5F227812A9E00DF5183 /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */; };
@@ -494,6 +495,7 @@
 		C58AFF9E27A7B88700C6A497 /* Cello-Drone-F#|Gb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Cello-Drone-F#|Gb.mp3"; path = "../../../CelloSoundDrone/Cello-Drone-F#|Gb.mp3"; sourceTree = "<group>"; };
 		C58AFF9F27A7B88700C6A497 /* Cello-Drone-G.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Cello-Drone-G.mp3"; path = "../../../CelloSoundDrone/Cello-Drone-G.mp3"; sourceTree = "<group>"; };
 		C58FE9F2278292B900075A4C /* OtherScalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherScalesView.swift; sourceTree = "<group>"; };
+		C5A826A027BC866B002F2F66 /* NoteSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSelectionButton.swift; sourceTree = "<group>"; };
 		C5B03BDC278416EB00643E7C /* PlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingView.swift; sourceTree = "<group>"; };
 		C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUIButtonView.swift; sourceTree = "<group>"; };
 		C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
@@ -670,12 +672,12 @@
 		C574FEA72769CF9F00ADD3B3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C5A8269F27BC8650002F2F66 /* Buttons */,
 				C574FE77276886B700ADD3B3 /* ContentView.swift */,
 				C574FE9F2769BFE700ADD3B3 /* ScalesView.swift */,
 				C574FEA82769CFDF00ADD3B3 /* ArpeggioView.swift */,
 				C574FEE0276B0AE000ADD3B3 /* SoundView.swift */,
 				C54532F02779B73D0041702C /* SettingsView.swift */,
-				C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */,
 				C58FE9F2278292B900075A4C /* OtherScalesView.swift */,
 				C5B03BDC278416EB00643E7C /* PlayingView.swift */,
 				C5443226279B9F2B0068A239 /* DroneView.swift */,
@@ -903,6 +905,15 @@
 				C5321EC427A8C57700A63085 /* Piano-4-G#|Ab.mp3 */,
 			);
 			path = PianoSounds;
+			sourceTree = "<group>";
+		};
+		C5A8269F27BC8650002F2F66 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */,
+				C5A826A027BC866B002F2F66 /* NoteSelectionButton.swift */,
+			);
+			path = Buttons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1265,6 +1276,7 @@
 				C545330F277E866C0041702C /* FileReaderAndWriter.swift in Sources */,
 				C574FEA02769BFE700ADD3B3 /* ScalesView.swift in Sources */,
 				C5DBD5F427812B6100DF5183 /* Scale.swift in Sources */,
+				C5A826A127BC866B002F2F66 /* NoteSelectionButton.swift in Sources */,
 				C5321F0127A8E14F00A63085 /* AcknowledgementsView.swift in Sources */,
 				C5321F0727A933A200A63085 /* AboutDeveloperView.swift in Sources */,
 				C54531D227756F180041702C /* PlaySounds.swift in Sources */,

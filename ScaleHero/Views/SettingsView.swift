@@ -38,10 +38,7 @@ struct SettingsView: View {
             
             VStack {
                 
-                Text("SETTINGS")
-                    .font(.largeTitle.bold())
-                    .accessibilityAddTraits(.isHeader)
-                    .foregroundColor(Color.white)
+                Text("SETTINGS").asTitle()
                 
                 ScrollView {
                     

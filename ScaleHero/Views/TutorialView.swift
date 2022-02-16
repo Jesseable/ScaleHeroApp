@@ -22,10 +22,7 @@ struct TutorialView: View {
 
             VStack {
                     ScrollView {
-                        Text("Tutorial")
-                                    .font(.largeTitle.bold())
-                                    .accessibilityAddTraits(.isHeader)
-                                    .foregroundColor(Color.white)
+                        Text("Tutorial").asTitle()
                                     .padding()
                         
                         Divider().background(Color.white)

@@ -32,21 +32,11 @@ struct OtherScalesView: View {
             Image(backgroundImage).resizable().ignoresSafeArea()
         
             VStack {
-                Text(specialTitle).textCase(.uppercase)
-                    .font(.largeTitle.bold())
-                    .accessibilityAddTraits(.isHeader)
-                    .foregroundColor(Color.white)
-                    .multilineTextAlignment(.center)
+                Text(specialTitle).asTitle()
                 
                 ScrollView {
                     
-                    Menu {
-                        ForEach(musicNotes.getMusicAlphabet(), id: \.self) { note in
-                            Button("Note: \(note)", action: {musicNotes.noteName = note})
-                        }
-                    } label: {
-                        MainUIButton(buttonText: "Note: \(musicNotes.noteName) SystemImage arrow.down.square", type: 9, height: buttonHeight)
-                    }.padding(.top)
+                    NoteSelectionButton(buttonHeight: buttonHeight)
                 
                     switch specialTitle.lowercased() {
                     case "major scale modes":

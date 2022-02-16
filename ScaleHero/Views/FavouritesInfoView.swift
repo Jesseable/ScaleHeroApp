@@ -23,10 +23,7 @@ struct FavouritesInfoView: View {
 
             VStack {
                     ScrollView {
-                        Text("Favourites Info")
-                                    .font(.largeTitle.bold())
-                                    .accessibilityAddTraits(.isHeader)
-                                    .foregroundColor(Color.white)
+                        Text("Favourites Info").asTitle()
                                     .padding()
                         
                         Divider().background(Color.white)

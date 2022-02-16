@@ -27,11 +27,7 @@ struct FavouritesView: View {
 
             VStack {
                 
-                Text("Favourites")
-                            .font(.largeTitle.bold())
-                            .accessibilityAddTraits(.isHeader)
-                            .foregroundColor(Color.white)
-                            .multilineTextAlignment(.center)
+                Text("Favourites").asTitle()
                 
                 ScrollView {
                     
@@ -49,7 +45,7 @@ struct FavouritesView: View {
                                 musicNotes.tempo = CGFloat(scale.tempo)
                                 musicNotes.startingOctave = scale.startingOctave
                                 musicNotes.octaves = scale.numOctave
-                                musicNotes.tonicis = scale.tonicSelection
+                                musicNotes.tonicMode = scale.tonicSelection
                                 musicNotes.playDrone = scale.drone
                                 musicNotes.playScaleNotes = scale.scaleNotes
                                 musicNotes.noteName = scale.startingNote

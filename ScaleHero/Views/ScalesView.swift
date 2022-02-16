@@ -16,11 +16,11 @@ class MusicNotes: ObservableObject {
     private let instrumentSelection = ["Bassoon in C", "Clarinet in Bb", "Clarinet in Eb", "Euphonium in C", "Horn in F", "Oboe in C", "Recorder in C", "Recorder in F", "Flute in C", "Saxophone in Bb", "Saxophone in Eb", "Strings in C", "Trombone in C", "Trumpet in Bb", "Tuba in F"]
     
     @Published var noteName = "C"
-//    @Published var currentNote = "C"
-    @Published var tempo = CGFloat(60)
+    @Published var tempo = 60.0
     @Published var octaves = 1
-    // in cases: 1 being never, 2: always, 3: always except for the first note
-    @Published var tonicis = 1
+    
+    // tonicMode cases: 1 being never, 2: always, 3: always except for the first note
+    @Published var tonicMode = 1
     @Published var type = "Scale"
     @Published var tonality = "Major"
     @Published var scaleNotes = [""]
@@ -75,23 +75,14 @@ struct ScalesView: View {
             Image(backgroundImage).resizable().ignoresSafeArea()
         
             VStack {
-                
-                Text("SCALES")
-                    .font(.largeTitle.bold())
-                    .accessibilityAddTraits(.isHeader)
-                    .foregroundColor(Color.white)
-                    .multilineTextAlignment(.center)
+
+                Text("SCALES").asTitle()
                 
                 ScrollView {
                     
-                    Menu {
-                        ForEach(musicNotes.getMusicAlphabet(), id: \.self) { note in
-                            Button("Note: \(note)", action: {musicNotes.noteName = note})
-                        }
-                    } label: {
-                        MainUIButton(buttonText: "Note: \(musicNotes.noteName) SystemImage arrow.down.square", type: 9, height: buttonHeight)
-                    }.padding(.top)
+                    NoteSelectionButton(buttonHeight: buttonHeight)
                     
+                    // Major scale
                     Button {
                         musicNotes.tonality = "Major"
                         musicNotes.type = "scale"
@@ -100,6 +91,7 @@ struct ScalesView: View {
                         MainUIButton(buttonText: "Major", type: 1, height: buttonHeight)
                     }
                     
+                    // Minor scale
                     Button {
                         musicNotes.tonality = "Minor"
                         musicNotes.type = "scale"
@@ -108,6 +100,8 @@ struct ScalesView: View {
                         MainUIButton(buttonText: "Natural Minor", type: 1, height: buttonHeight)
                     }
                     
+                    
+                    // Harmonic Minor Scale
                     Button {
                         musicNotes.tonality = "Minor"
                         musicNotes.type = "harmonic"
@@ -116,6 +110,8 @@ struct ScalesView: View {
                         MainUIButton(buttonText: "Harmonic Minor", type: 1, height: buttonHeight)
                     }
                     
+                    
+                    // Melodic minor scale
                     Button {
                         musicNotes.tonality = "Minor"
                         musicNotes.type = "melodic"
@@ -124,6 +120,7 @@ struct ScalesView: View {
                         MainUIButton(buttonText: "Melodic Minor", type: 1, height: buttonHeight)
                     }
                     
+                    // Major scale modes
                     Button {
                         musicNotes.type = "Major Scale Modes"
                         self.screenType = "otherview"
@@ -131,6 +128,7 @@ struct ScalesView: View {
                         MainUIButton(buttonText: "Modes", type: 1, height: buttonHeight)
                     }
                     
+                    // Other Special scale options
                     Button {
                         musicNotes.type = "special"
                         self.screenType = "otherview"
@@ -147,5 +145,17 @@ struct ScalesView: View {
                 }
             }
         }
+    }
+}
+
+/**
+ Sets the text field requirements.
+ */
+extension Text {
+    func asTitle() -> some View {
+        font(.largeTitle.bold())
+            .textCase(.uppercase)
+            .accessibilityAddTraits(.isHeader)
+            .foregroundColor(Color.white)
     }
 }

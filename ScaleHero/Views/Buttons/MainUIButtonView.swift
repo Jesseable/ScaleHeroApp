@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainUIButton: View {
-//    @EnvironmentObject var musicNotes: MusicNotes
+
     var buttonText: String
     var type : Int
     var height : CGFloat

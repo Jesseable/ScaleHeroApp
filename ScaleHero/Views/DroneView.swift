@@ -33,20 +33,11 @@ struct DroneView : View {
 
             VStack {
                 
-                Text(title)
-                            .font(.largeTitle.bold())
-                            .accessibilityAddTraits(.isHeader)
-                            .foregroundColor(Color.white)
+                Text(title).asTitle()
                 
                 ScrollView {
                     
-                    Menu {
-                        ForEach(musicNotes.getMusicAlphabet(), id: \.self) { note in
-                            Button("Note: \(note)", action: {musicNotes.noteName = note})
-                        }
-                    } label: {
-                        MainUIButton(buttonText: "Note: \(musicNotes.noteName) SystemImage arrow.down.square", type: 9, height: buttonHeight)
-                    }.padding(.top)
+                    NoteSelectionButton(buttonHeight: buttonHeight)
                     
                     Button {
                         if (!isPlaying) {

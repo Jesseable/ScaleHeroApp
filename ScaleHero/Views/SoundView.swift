@@ -15,10 +15,6 @@ struct SoundView : View {
     @Binding var screenType: String
     @State var scaleType: String
     @State private var isPlaying = false
-//    @State private var musicNotes.playDrone = true
-//    @State private var chords = false
-//    @State private var musicNotes.playScaleNotes = true
-//    @State private var musicNotes.startingOctave = 1
     @State private var presentAlert = false
     @State private var disableOctaveSelection = false
     @State var playScale = PlaySounds()
@@ -39,11 +35,7 @@ struct SoundView : View {
 
             VStack {
                 
-                Text(musicNotes.getMusicTitile(from: title))
-                            .font(.largeTitle.bold())
-                            .accessibilityAddTraits(.isHeader)
-                            .foregroundColor(Color.white)
-                            .multilineTextAlignment(.center)
+                Text(musicNotes.getMusicTitile(from: title)).asTitle()
                 
                 // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
                 Button {
@@ -195,7 +187,7 @@ struct SoundView : View {
                         ZStack {
                             MainUIButton(buttonText: "", type: 7, height: buttonHeight)
                             Section {
-                                Picker("Tonic selection", selection: $musicNotes.tonicis) {
+                                Picker("Tonic selection", selection: $musicNotes.tonicMode) {
                                     Text("Never").tag(1)
                                     Text("All").tag(2)
                                     Text("Not Initial").tag(3)
@@ -247,7 +239,7 @@ struct SoundView : View {
                     let scaleInfo = scale.ScaleNotes(startingNote: startingNote,
                                                      octave: musicNotes.octaves,
                                                      tonality: tonality,
-                                                     tonicOption: musicNotes.tonicis,
+                                                     tonicOption: musicNotes.tonicMode,
                                                      startingOctave: musicNotes.startingOctave)
                     let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo, tempo: Int(musicNotes.tempo))
                     let delay = CGFloat(60/musicNotes.tempo)
@@ -294,7 +286,7 @@ struct SoundView : View {
                                                     tempo: Int(musicNotes.tempo),
                                                     startingOctave: musicNotes.startingOctave,
                                                     numOctave: musicNotes.octaves,
-                                                    tonicSelection: musicNotes.tonicis,
+                                                    tonicSelection: musicNotes.tonicMode,
                                                     scaleNotes: musicNotes.playScaleNotes,
                                                     drone: musicNotes.playDrone,
                                                     startingNote: musicNotes.noteName,

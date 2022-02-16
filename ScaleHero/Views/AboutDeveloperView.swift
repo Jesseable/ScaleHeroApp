@@ -22,10 +22,7 @@ struct AboutDeveloperView: View {
 
             VStack {
                     ScrollView {
-                        Text("Developer: Jesse Graf")
-                                    .font(.largeTitle.bold())
-                                    .accessibilityAddTraits(.isHeader)
-                                    .foregroundColor(Color.white)
+                        Text("Developer: Jesse Graf").asTitle()
                                     .padding()
                         
                         Divider().background(Color.white)
