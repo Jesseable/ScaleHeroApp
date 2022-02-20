@@ -80,7 +80,7 @@ struct PlayingView: View {
                     if musicNotes.tempo >= 80 {
                         extraDuration = 2
                     } else {
-                        extraDuration = 0
+                        extraDuration = 1
                     }
                     
                     let duration = (tempoToSeconds(tempo: self.musicNotes.tempo)

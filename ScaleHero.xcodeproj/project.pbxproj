@@ -60,7 +60,6 @@
 		C5321F0327A92BF700A63085 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0227A92BF600A63085 /* AboutView.swift */; };
 		C5321F0527A92D5400A63085 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0427A92D5400A63085 /* TutorialView.swift */; };
 		C5321F0727A933A200A63085 /* AboutDeveloperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0627A933A200A63085 /* AboutDeveloperView.swift */; };
-		C5321F0A27ACEE3E00A63085 /* SwiftySound in Frameworks */ = {isa = PBXBuildFile; productRef = C5321F0927ACEE3E00A63085 /* SwiftySound */; };
 		C5443227279B9F2C0068A239 /* DroneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5443226279B9F2B0068A239 /* DroneView.swift */; };
 		C5443229279BAB710068A239 /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5443228279BAB710068A239 /* FavouritesView.swift */; };
 		C544322B279BAD700068A239 /* FavouritesInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544322A279BAD700068A239 /* FavouritesInfoView.swift */; };
@@ -507,7 +506,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5321F0A27ACEE3E00A63085 /* SwiftySound in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -672,21 +670,14 @@
 		C574FEA72769CF9F00ADD3B3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C5A826A327BC8A53002F2F66 /* ScaleViews */,
+				C5A826A227BC8A21002F2F66 /* InfoPages */,
 				C5A8269F27BC8650002F2F66 /* Buttons */,
 				C574FE77276886B700ADD3B3 /* ContentView.swift */,
-				C574FE9F2769BFE700ADD3B3 /* ScalesView.swift */,
-				C574FEA82769CFDF00ADD3B3 /* ArpeggioView.swift */,
 				C574FEE0276B0AE000ADD3B3 /* SoundView.swift */,
 				C54532F02779B73D0041702C /* SettingsView.swift */,
-				C58FE9F2278292B900075A4C /* OtherScalesView.swift */,
 				C5B03BDC278416EB00643E7C /* PlayingView.swift */,
-				C5443226279B9F2B0068A239 /* DroneView.swift */,
-				C5443228279BAB710068A239 /* FavouritesView.swift */,
-				C544322A279BAD700068A239 /* FavouritesInfoView.swift */,
-				C5321F0027A8E14F00A63085 /* AcknowledgementsView.swift */,
 				C5321F0227A92BF600A63085 /* AboutView.swift */,
-				C5321F0427A92D5400A63085 /* TutorialView.swift */,
-				C5321F0627A933A200A63085 /* AboutDeveloperView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -916,6 +907,29 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
+		C5A826A227BC8A21002F2F66 /* InfoPages */ = {
+			isa = PBXGroup;
+			children = (
+				C5321F0627A933A200A63085 /* AboutDeveloperView.swift */,
+				C5321F0427A92D5400A63085 /* TutorialView.swift */,
+				C5321F0027A8E14F00A63085 /* AcknowledgementsView.swift */,
+				C544322A279BAD700068A239 /* FavouritesInfoView.swift */,
+				C5443228279BAB710068A239 /* FavouritesView.swift */,
+			);
+			path = InfoPages;
+			sourceTree = "<group>";
+		};
+		C5A826A327BC8A53002F2F66 /* ScaleViews */ = {
+			isa = PBXGroup;
+			children = (
+				C5443226279B9F2B0068A239 /* DroneView.swift */,
+				C58FE9F2278292B900075A4C /* OtherScalesView.swift */,
+				C574FEA82769CFDF00ADD3B3 /* ArpeggioView.swift */,
+				C574FE9F2769BFE700ADD3B3 /* ScalesView.swift */,
+			);
+			path = ScaleViews;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -933,7 +947,6 @@
 			);
 			name = ScaleHero;
 			packageProductDependencies = (
-				C5321F0927ACEE3E00A63085 /* SwiftySound */,
 			);
 			productName = ScaleHero;
 			productReference = C574FE72276886B700ADD3B3 /* ScaleHero.app */;
@@ -1008,7 +1021,6 @@
 			);
 			mainGroup = C574FE69276886B700ADD3B3;
 			packageReferences = (
-				C574FEA12769C00C00ADD3B3 /* XCRemoteSwiftPackageReference "SwiftySound" */,
 			);
 			productRefGroup = C574FE73276886B700ADD3B3 /* Products */;
 			projectDirPath = "";
@@ -1631,25 +1643,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		C574FEA12769C00C00ADD3B3 /* XCRemoteSwiftPackageReference "SwiftySound" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/adamcichy/SwiftySound.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		C5321F0927ACEE3E00A63085 /* SwiftySound */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C574FEA12769C00C00ADD3B3 /* XCRemoteSwiftPackageReference "SwiftySound" */;
-			productName = SwiftySound;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C574FE6A276886B700ADD3B3 /* Project object */;
 }

@@ -121,9 +121,15 @@ struct PlaySounds {
         var metronomeFileArr: [String] = []
         
         if (tempo < 70) {
-            metronomeFileArr = [metronomeFile, metronomeFile]
+            2.times {
+                metronomeFileArr.append(metronomeFile)
+            }
+            //metronomeFileArr = [metronomeFile, metronomeFile]
         } else {
-            metronomeFileArr = [metronomeFile, metronomeFile, metronomeFile, metronomeFile]
+            4.times {
+                metronomeFileArr.append(metronomeFile)
+            }
+            //metronomeFileArr = [metronomeFile, metronomeFile, metronomeFile, metronomeFile]
         }
         
         return metronomeFileArr
@@ -162,7 +168,7 @@ struct PlaySounds {
             if (duration != -1 ) {
             
                 let totalDuration = duration + 2.5
-                self.player?.numberOfLoops = 4 // Increases all drones to 4 minutes at least
+                self.player?.numberOfLoops = 4 // Increases all drones to 5 minutes at least
                     
                 DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: { [self] in
                     self.player?.setVolume(0.05, fadeDuration: 2.5)
@@ -170,6 +176,8 @@ struct PlaySounds {
                 DispatchQueue.main.asyncAfter(deadline: .now() + totalDuration, execute: { [self] in
                     self.player?.stop()
                 })
+            } else {
+                self.player?.numberOfLoops = -1 // Loops the sound continuously
             }
         }
     }

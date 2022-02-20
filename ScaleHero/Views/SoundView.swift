@@ -246,6 +246,7 @@ struct SoundView : View {
                     musicNotes.scaleNotes = scaleSoundFiles
                     musicNotes.scaleNoteNames = playScale.convertToSoundFile(scaleInfoArray: scale.getScaleNoteNames(), tempo: Int(musicNotes.tempo))
                     
+                    // Could add in quavers?
                     switch fileReaderAndWriter.readMetronomePulse().lowercased() {
                     case "simple":
                         musicNotes.metronomePulse = 4
@@ -256,13 +257,13 @@ struct SoundView : View {
                     default:
                         musicNotes.metronomePulse = 1
                     }
-                    if (musicNotes.tempo >= 70 || !musicNotes.metronome) { // ALLOW them to adjust this in settings maybe????????????????????????????????????????????????????????????????
+                    // This line of code sets at what tempo when the metronome off beat pulses will not play
+                    if (musicNotes.tempo >= 70 || !musicNotes.metronome) {
                         musicNotes.metronomePulse = 1
                     }
                     musicNotes.timer = Timer.publish(every: delay/CGFloat(musicNotes.metronomePulse), on: .main, in: .common).autoconnect()
                     musicNotes.noteName = startingNote
                 
-                    Sound.enabled = true
                     isPlaying = true
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
