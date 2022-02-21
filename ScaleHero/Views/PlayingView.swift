@@ -117,12 +117,19 @@ struct PlayingView: View {
                     }
                     
                     if (musicNotes.scaleNoteNames[index].contains("Metronome")) {
-                        let numBeats = self.musicNotes.getNumTempoBeats()
-                        var countingImageArr = ["Two", "One"]
-                        if (numBeats == 4) {
-                            countingImageArr.insert("Three", at: 0)
-                            countingImageArr.insert("Four", at: 0)
+                        let countingArr = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"]
+                        let numIntroBeats = numIntroBeats(tempo: Int(musicNotes.tempo), fileReader: fileReaderAndWriter)
+                        var i = 0
+                        var countingImageArr = [String]()
+                        numIntroBeats.times {
+                            countingImageArr.insert(countingArr[i], at: 0)
+                            i += 1
                         }
+//                        var countingImageArr = ["Two", "One"]
+//                        if (numBeats == 4) {
+//                            countingImageArr.insert("Three", at: 0)
+//                            countingImageArr.insert("Four", at: 0)
+//                        }
                         currentNote = countingImageArr[self.index]
                     } else {
                         currentNote = musicNotes.scaleNoteNames[self.index].components(separatedBy: "-")[2]
@@ -184,7 +191,7 @@ struct PlayingView: View {
      Returns the singular note from the arrays component. Determines whether to use flats or sharps for the scale.
      */
     private func getNote(from currentNote: String, for tonality: String) -> String {
-        let index = self.musicNotes.getNumTempoBeats()
+        let index = numIntroBeats(tempo: Int(musicNotes.tempo), fileReader: fileReaderAndWriter)
         let noteArr = currentNote.replacingOccurrences(of: "/", with: "|").components(separatedBy: "|")
         let startingNote = musicNotes.scaleNotes[index].components(separatedBy: "-")[2].uppercased()
         
@@ -238,6 +245,18 @@ struct PlayingView: View {
             return 1
         }
         return 0
+    }
+    
+    /**
+     Returns the amount of introduction beats to be played
+     */
+    private func numIntroBeats(tempo: Int, fileReader: FileReaderAndWriter) -> Int {
+        let tempoBeatsArr = fileReader.readDIntroBeats().components(separatedBy: "-")
+        if tempo < 70 {
+            return Int(tempoBeatsArr[0])!
+        } else {
+            return Int(tempoBeatsArr[1])!
+        }
     }
     
     /**

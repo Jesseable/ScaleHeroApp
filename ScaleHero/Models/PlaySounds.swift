@@ -119,14 +119,17 @@ struct PlaySounds {
     private func addMetronome(tempo: Int) -> [String] {
         let metronomeFile = "Metronome"
         var metronomeFileArr: [String] = []
+        let introBeatsArr = fileReaderAndWriter.readDIntroBeats().components(separatedBy: "-")
+        let slowTempoIntro = Int(introBeatsArr[0])
+        let fastTempoIntro = Int(introBeatsArr[1])
         
         if (tempo < 70) {
-            2.times {
+            slowTempoIntro?.times { // USE A FILEREADER TO CHANGE THESE OPTIONS IN SETTINGS
                 metronomeFileArr.append(metronomeFile)
             }
             //metronomeFileArr = [metronomeFile, metronomeFile]
         } else {
-            4.times {
+            fastTempoIntro?.times {
                 metronomeFileArr.append(metronomeFile)
             }
             //metronomeFileArr = [metronomeFile, metronomeFile, metronomeFile, metronomeFile]

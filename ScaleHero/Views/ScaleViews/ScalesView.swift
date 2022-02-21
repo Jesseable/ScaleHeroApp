@@ -47,11 +47,6 @@ class MusicNotes: ObservableObject {
         return instrumentSelection
     }
     
-    func getNumTempoBeats() -> Int {
-        let determiner = tempo < 70
-        return determiner ? 2: 4
-    }
-    
     func getMusicTitile(from title: String) -> String {
         return title.replacingOccurrences(of: "-", with: " ").uppercased().replacingOccurrences(of: "TETRAD ", with: "").replacingOccurrences(of: "SEVENTH", with: "7th").replacingOccurrences(of: "OTHERS ", with: "")
     }
@@ -100,7 +95,6 @@ struct ScalesView: View {
                         MainUIButton(buttonText: "Natural Minor", type: 1, height: buttonHeight)
                     }
                     
-                    
                     // Harmonic Minor Scale
                     Button {
                         musicNotes.tonality = "Minor"
@@ -109,7 +103,6 @@ struct ScalesView: View {
                     } label: {
                         MainUIButton(buttonText: "Harmonic Minor", type: 1, height: buttonHeight)
                     }
-                    
                     
                     // Melodic minor scale
                     Button {

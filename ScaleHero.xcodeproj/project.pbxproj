@@ -63,8 +63,6 @@
 		C5443227279B9F2C0068A239 /* DroneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5443226279B9F2B0068A239 /* DroneView.swift */; };
 		C5443229279BAB710068A239 /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5443228279BAB710068A239 /* FavouritesView.swift */; };
 		C544322B279BAD700068A239 /* FavouritesInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544322A279BAD700068A239 /* FavouritesInfoView.swift */; };
-		C5443232279E54580068A239 /* Metronome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5443231279E54580068A239 /* Metronome.mp3 */; };
-		C5443234279E545D0068A239 /* Metronome1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5443233279E545D0068A239 /* Metronome1.mp3 */; };
 		C54531D227756F180041702C /* PlaySounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54531D127756F180041702C /* PlaySounds.swift */; };
 		C545322327796F830041702C /* Cello-3-G#|Ab.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C54531FF27796F810041702C /* Cello-3-G#|Ab.mp3 */; };
 		C545322427796F830041702C /* Cello-1-F#|Gb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C545320027796F810041702C /* Cello-1-F#|Gb.mp3 */; };
@@ -104,6 +102,8 @@
 		C545324627796F830041702C /* Cello-2-G.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C545322227796F830041702C /* Cello-2-G.mp3 */; };
 		C54532F12779B73D0041702C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54532F02779B73D0041702C /* SettingsView.swift */; };
 		C545330F277E866C0041702C /* FileReaderAndWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C545330E277E866C0041702C /* FileReaderAndWriter.swift */; };
+		C555641627C3A8CB009AC00C /* Metronome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C555641527C3A8CB009AC00C /* Metronome.mp3 */; };
+		C555641827C3A8D0009AC00C /* Metronome1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C555641727C3A8D0009AC00C /* Metronome1.mp3 */; };
 		C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */; };
 		C574FE78276886B700ADD3B3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE77276886B700ADD3B3 /* ContentView.swift */; };
 		C574FE7A276886BC00ADD3B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C574FE79276886BC00ADD3B3 /* Assets.xcassets */; };
@@ -318,8 +318,6 @@
 		C5443226279B9F2B0068A239 /* DroneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroneView.swift; sourceTree = "<group>"; };
 		C5443228279BAB710068A239 /* FavouritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesView.swift; sourceTree = "<group>"; };
 		C544322A279BAD700068A239 /* FavouritesInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesInfoView.swift; sourceTree = "<group>"; };
-		C5443231279E54580068A239 /* Metronome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome.mp3; path = ../../Metronome.mp3; sourceTree = "<group>"; };
-		C5443233279E545D0068A239 /* Metronome1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome1.mp3; path = ../../Metronome1.mp3; sourceTree = "<group>"; };
 		C54531D127756F180041702C /* PlaySounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySounds.swift; sourceTree = "<group>"; };
 		C54531FF27796F810041702C /* Cello-3-G#|Ab.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Cello-3-G#|Ab.mp3"; path = "../../../Cello Testing notes mp3/Cello-3-G#|Ab.mp3"; sourceTree = "<group>"; };
 		C545320027796F810041702C /* Cello-1-F#|Gb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Cello-1-F#|Gb.mp3"; path = "../../../Cello Testing notes mp3/Cello-1-F#|Gb.mp3"; sourceTree = "<group>"; };
@@ -359,6 +357,8 @@
 		C545322227796F830041702C /* Cello-2-G.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "Cello-2-G.mp3"; path = "../../../Cello Testing notes mp3/Cello-2-G.mp3"; sourceTree = "<group>"; };
 		C54532F02779B73D0041702C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C545330E277E866C0041702C /* FileReaderAndWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileReaderAndWriter.swift; sourceTree = "<group>"; };
+		C555641527C3A8CB009AC00C /* Metronome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome.mp3; path = ../../ScaleHeroAppResources/Metronome.mp3; sourceTree = "<group>"; };
+		C555641727C3A8D0009AC00C /* Metronome1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome1.mp3; path = ../../ScaleHeroAppResources/Metronome1.mp3; sourceTree = "<group>"; };
 		C574FE72276886B700ADD3B3 /* ScaleHero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScaleHero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleHeroApp.swift; sourceTree = "<group>"; };
 		C574FE77276886B700ADD3B3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -547,8 +547,8 @@
 		C5443230279E54440068A239 /* Metronomes */ = {
 			isa = PBXGroup;
 			children = (
-				C5443233279E545D0068A239 /* Metronome1.mp3 */,
-				C5443231279E54580068A239 /* Metronome.mp3 */,
+				C555641727C3A8D0009AC00C /* Metronome1.mp3 */,
+				C555641527C3A8CB009AC00C /* Metronome.mp3 */,
 			);
 			path = Metronomes;
 			sourceTree = "<group>";
@@ -1089,6 +1089,7 @@
 				C58AFF3C27A77AAF00C6A497 /* TuningFork1-Drone-F#|Gb.mp3 in Resources */,
 				C58A012B27A7E2F300C6A497 /* Organ-4-A.mp3 in Resources */,
 				C58A012427A7E2F300C6A497 /* Organ-1-A.mp3 in Resources */,
+				C555641827C3A8D0009AC00C /* Metronome1.mp3 in Resources */,
 				C58A005E27A7DD8600C6A497 /* Strings-2-C.mp3 in Resources */,
 				C58A010F27A7E2F300C6A497 /* Organ-2-D.mp3 in Resources */,
 				C58A012027A7E2F300C6A497 /* Organ-1-G.mp3 in Resources */,
@@ -1112,7 +1113,6 @@
 				C58A004C27A7DD8600C6A497 /* Strings-4-A#|Bb.mp3 in Resources */,
 				C58A013027A7E2F300C6A497 /* Organ-4-D.mp3 in Resources */,
 				C545322427796F830041702C /* Cello-1-F#|Gb.mp3 in Resources */,
-				C5443232279E54580068A239 /* Metronome.mp3 in Resources */,
 				C58A005A27A7DD8600C6A497 /* Strings-3-D.mp3 in Resources */,
 				C5321ED627A8C57800A63085 /* Piano-4-C.mp3 in Resources */,
 				C58A006127A7DD8600C6A497 /* Strings-1-G.mp3 in Resources */,
@@ -1165,6 +1165,7 @@
 				C58A010A27A7E2F300C6A497 /* Organ-2-C#|Db.mp3 in Resources */,
 				C5321EF127A8C57800A63085 /* Piano-1-B.mp3 in Resources */,
 				C58AFF4127A77AAF00C6A497 /* TuningFork1-Drone-G.mp3 in Resources */,
+				C555641627C3A8CB009AC00C /* Metronome.mp3 in Resources */,
 				C545322627796F830041702C /* Cello-2-A#|Bb.mp3 in Resources */,
 				C545323A27796F830041702C /* Cello-1-D#|Eb.mp3 in Resources */,
 				C58A011B27A7E2F300C6A497 /* Organ-1-A#|Bb.mp3 in Resources */,
@@ -1204,7 +1205,6 @@
 				C5321EEE27A8C57800A63085 /* Piano-2-D#|Eb.mp3 in Resources */,
 				C58AFFA727A7B88700C6A497 /* Cello-Drone-A.mp3 in Resources */,
 				C58A011127A7E2F300C6A497 /* Organ-3-F.mp3 in Resources */,
-				C5443234279E545D0068A239 /* Metronome1.mp3 in Resources */,
 				C5321ED127A8C57800A63085 /* Piano-1-F#|Gb.mp3 in Resources */,
 				C5321EEF27A8C57800A63085 /* Piano-4-F#|Gb.mp3 in Resources */,
 				C58A004727A7DD8600C6A497 /* Strings-3-G#|Ab.mp3 in Resources */,

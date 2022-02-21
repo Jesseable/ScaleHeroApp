@@ -37,6 +37,8 @@ struct AppContentView: View {
     private var transpositionMode : String
     private var metronomeOffBeatPulse: String
     private var selectedDrone : String
+    private var introBeats : String
+    private var introBeatsArr : [String]
 
     /**
     Initialises the  components of the app.
@@ -84,6 +86,14 @@ struct AppContentView: View {
             selectedDrone = "Cello"
             fileReaderAndWriter.writeDroneInstrument(newDrone: selectedDrone)
         }
+        
+        if !fileReaderAndWriter.checkFilePath() { // CHANGE ALL OF THE ABOVE TO THIS METHOD!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            introBeats = "2-4"
+            fileReaderAndWriter.writeIntroBeats(beats: introBeats)
+        } else {
+            introBeats = fileReaderAndWriter.readDIntroBeats()
+        }
+        introBeatsArr = introBeats.components(separatedBy: "-")
     }
     
     /**
@@ -100,7 +110,7 @@ struct AppContentView: View {
             case "otherview":
                 OtherScalesView(screenType: self.$screenType, specialTitle: musicNotes.type, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "settings":
-                SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone)
+                SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
             case "soundview":
                 let scaleType = musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type
                 SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)

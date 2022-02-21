@@ -22,12 +22,15 @@ struct SettingsView: View {
     private let metronomePulses = ["Compound", "Simple", "Off"]
     // These are also on contentView
     private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
+    private let introPulseOptions = ["1", "2", "3", "4", "5", "6", "7", "8"]
     @State var instrumentSelected : String
     @State var backgroundColour : String
     @State var transpositionMode : String
     @State var transposition : String
     @State var metronomePulseSelected : String
     @State var droneSelected : String
+    @State var slowIntroBeatsSelected : String
+    @State var fastIntroBeatsSelected : String
     
     var body: some View {
         let buttonHeight = universalSize.height/18
@@ -52,9 +55,7 @@ struct SettingsView: View {
                                         Image($0)
                                     }
                                 }
-                                .pickerStyle( .segmented)
-                                .colorScheme(.light)
-                                .padding(.horizontal, 11)
+                                .formatted()
                             }
                         }
                         
@@ -72,9 +73,7 @@ struct SettingsView: View {
                                         Text($0)
                                     }
                                 }
-                                .pickerStyle( .segmented)
-                                .colorScheme(.light)
-                                .padding(.horizontal, 11)
+                                .formatted()
                             }
                         }.onChange(of: transpositionMode) { mode in /// COULD TRY TO CUSTOMISE MORE LATER ON
                             if (mode == "Notes") {
@@ -105,27 +104,23 @@ struct SettingsView: View {
                                         Text($0)
                                     }
                                 }
-                                .pickerStyle( .segmented)
-                                .colorScheme(.light)
-                                .padding(.horizontal, 11)
+                                .formatted()
                             }
                         }
                         
                         Divider().background(Color.white)
-                    }
                     
-                    MainUIButton(buttonText: "Drone: ", type: 4, height: buttonHeight)
-                    ZStack {
-                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                        Section {
-                            Picker("DroneNote Selection", selection: $droneSelected) {
-                                ForEach(droneInstruments, id: \.self) {
-                                    Text($0)
+                        MainUIButton(buttonText: "Drone: ", type: 4, height: buttonHeight)
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                            Section {
+                                Picker("DroneNote Selection", selection: $droneSelected) {
+                                    ForEach(droneInstruments, id: \.self) {
+                                        Text($0)
+                                    }
                                 }
+                                .formatted()
                             }
-                            .pickerStyle( .segmented)
-                            .colorScheme(.light)
-                            .padding(.horizontal, 11)
                         }
                     }
                     
@@ -141,12 +136,43 @@ struct SettingsView: View {
                                         Text($0)
                                     }
                                 }
-                                .pickerStyle( .segmented)
-                                .colorScheme(.light)
-                                .padding(.horizontal, 11)
+                                .formatted()
                             }
                         }
                         
+                        Divider().background(Color.white)
+                    }
+                    
+                    Group {
+                        MainUIButton(buttonText: "Into Beats (<=70bpm):", type: 4, height: buttonHeight)
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                            Section {
+                                Picker("Metronome Count", selection: $slowIntroBeatsSelected) {
+                                    ForEach(introPulseOptions, id: \.self) {
+                                        Text($0)
+                                    }
+                                }
+                                .formatted()
+                            }
+                        }
+                        Divider().background(Color.white)
+                    }
+
+                    Group {
+                        MainUIButton(buttonText: "Into Beats (>70bpm):", type: 4, height: buttonHeight)
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                            Section {
+                                Picker("Metronome Count", selection: $fastIntroBeatsSelected) {
+                                    ForEach(introPulseOptions, id: \.self) {
+                                        Text($0)
+                                    }
+                                }
+                                .formatted()
+                            }
+                        }
+
                         Divider().background(Color.white)
                     }
                     
@@ -155,7 +181,9 @@ struct SettingsView: View {
                                  backgrounds: backgrounds,
                                  transposition: transposition,
                                  metronomePulse: metronomePulseSelected,
-                                 droneInstrument: droneSelected)
+                                 droneInstrument: droneSelected,
+                                 fastBeats: fastIntroBeatsSelected,
+                                 slowBeats: slowIntroBeatsSelected)
 
                     } label: {
                         MainUIButton(buttonText: "Apply SystemImage star.circle", type: 9, height: bottumButtonHeight)
@@ -170,7 +198,9 @@ struct SettingsView: View {
                              backgrounds: backgrounds,
                              transposition: transposition,
                              metronomePulse: metronomePulseSelected,
-                             droneInstrument: droneSelected)
+                             droneInstrument: droneSelected,
+                             fastBeats: fastIntroBeatsSelected,
+                             slowBeats: slowIntroBeatsSelected)
                     
                     self.screenType = "aboutview"
                 } label: {
@@ -178,6 +208,10 @@ struct SettingsView: View {
                 }
             }
         }
+    }
+    
+    private func applyIntroBeats(fastBeats: String, slowBeats: String) {
+        fileReaderAndWriter.writeIntroBeats(beats: "\(slowBeats)-\(fastBeats)")
     }
     
     private func applyScaleInstrument(scaleInstruments: [String]) {
@@ -210,11 +244,29 @@ struct SettingsView: View {
         musicNotes.transposition = transposition
     }
     
-    private func applyAll(scaleInstruments: [String], backgrounds: [String], transposition: String, metronomePulse: String, droneInstrument: String) {
+    private func applyAll(scaleInstruments: [String],
+                          backgrounds: [String],
+                          transposition: String,
+                          metronomePulse: String,
+                          droneInstrument: String,
+                          fastBeats: String,
+                          slowBeats: String) {
         applyTransposition(transposition: transposition)
         applyBackground(backgrounds: backgrounds)
         applyScaleInstrument(scaleInstruments: scaleInstruments)
         applyMetronomePulse(for: metronomePulse)
         applyDroneInstrument(droneInstrument: droneInstrument)
+        applyIntroBeats(fastBeats: fastBeats, slowBeats: slowBeats)
+    }
+}
+
+/**
+ Sets the text field requirements.
+ */
+extension Picker {
+    func formatted() -> some View {
+        pickerStyle( .segmented)
+        .colorScheme(.light)
+        .padding(.horizontal, 11)
     }
 }
