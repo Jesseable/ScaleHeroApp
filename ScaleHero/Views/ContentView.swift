@@ -8,7 +8,9 @@
 import SwiftUI
 
 /**
- The main class behind the app. Controls all of the views and sets the background image and default asthetic choices.
+ The view controller struct.
+ Controls all of the views and sets the background image and default
+ asthetic choices based off of the file descriptions.
  */
 struct AppContentView: View {
     
@@ -18,36 +20,84 @@ struct AppContentView: View {
     private var fileReaderAndWriter = FileReaderAndWriter()
     
     // Also saved under settings view
-    private let scaleInstruments = ["Cello", "Jesse's Vocals"]
+    private let scaleInstruments = ["Strings", "Piano", "Organ"]
+    
+    private let droneInstruments = ["Cello", "Tuning Fork"]
     
     // Also saved under settingsView
     private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
     
+    private let metronomePulses = ["Compound", "Simple", "Off"]
+    
+    private let transpositionTypes = ["C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F", "Bassoon in C", "Clarinet in Bb", "Clarinet in Eb", "Euphonium in C", "Horn in F", "Oboe in C", "Recorder in C", "Recorder in F", "Flute in C", "Saxophone in Bb", "Saxophone in Eb", "Strings in C", "Trombone in C", "Trumpet in Bb", "Tuba in F"]
+    
     private var selectedInstrument : String
     private var selectedBackground : String
+    private var transposition : String
+    private var transpositionMode : String
+    private var metronomeOffBeatPulse: String
+    private var selectedDrone : String
+    private var introBeats : String
+    private var introBeatsArr : [String]
 
     /**
-    Initialises the background image style and sets the instrumentation for each components of the app.
+    Initialises the  components of the app.
      */
-    init() { // Test by changing Iphone type at one point!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    init() {
         selectedInstrument = fileReaderAndWriter.readScaleInstrument()
         if (!scaleInstruments.contains(selectedInstrument)) {
             // the default selected instrument is chosen here:
-            selectedInstrument = "Cello"
+            selectedInstrument = "Piano"
             fileReaderAndWriter.writeScaleInstrument(newInstrument: selectedInstrument)
         }
         
         selectedBackground = fileReaderAndWriter.readBackgroundImage()
         if (!backgrounds.contains(selectedBackground)) {
-            // the default selected background image is chosen here:
+            // the default selected background colour is chosen here:
             selectedBackground = "Purple"
             fileReaderAndWriter.writeBackgroundImage(newImage: selectedBackground)
         }
         backgroundImage = "Background" + selectedBackground
+        
+        transposition = fileReaderAndWriter.readTransposition()
+        if (!transpositionTypes.contains(transposition)) {
+            // the default selected transposition note is chosen here:
+            transposition = "C"
+            fileReaderAndWriter.writeNewTransposition(newTransposition: transposition)
+        }
+        
+        let transpositionArr = transposition.components(separatedBy: " ")
+        if (transpositionArr.count > 1) {
+            transpositionMode = "Instrument"
+        } else {
+            transpositionMode = "Notes"
+        }
+        
+        metronomeOffBeatPulse = fileReaderAndWriter.readMetronomePulse()
+        if (!metronomePulses.contains(metronomeOffBeatPulse)) {
+            // the default selected metronome is chosen here:
+            metronomeOffBeatPulse = "Off"
+            fileReaderAndWriter.writeNewMetronomePulse(newPulse: metronomeOffBeatPulse)
+        }
+        
+        selectedDrone = fileReaderAndWriter.readDroneInstrument()
+        if (!droneInstruments.contains(selectedDrone)) {
+            // the default selected instrument is chosen here:
+            selectedDrone = "Cello"
+            fileReaderAndWriter.writeDroneInstrument(newDrone: selectedDrone)
+        }
+        
+        if !fileReaderAndWriter.checkFilePath() { // CHANGE ALL OF THE ABOVE TO THIS METHOD!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            introBeats = "2-4"
+            fileReaderAndWriter.writeIntroBeats(beats: introBeats)
+        } else {
+            introBeats = fileReaderAndWriter.readDIntroBeats()
+        }
+        introBeatsArr = introBeats.components(separatedBy: "-")
     }
     
     /**
-     Sets the current view for the app, and transferes the needed parameters with them.
+     Toggles between views, transfering the needed parameters.
      */
     var body: some View {
         
@@ -57,15 +107,19 @@ struct AppContentView: View {
                 ScalesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "arpeggio":
                 ArpeggioView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "specialview":
-                SpecialView(screenType: self.$screenType, specialTitle: musicNotes.type, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+            case "otherview":
+                OtherScalesView(screenType: self.$screenType, specialTitle: musicNotes.type, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "settings":
-                SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage())
+                SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
             case "soundview":
                 let scaleType = musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type
                 SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "abstractview":
-                AbstractView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+            case "droneview":
+                DroneView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+            case "favouritesview":
+                FavouritesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+            case "aboutview":
+                AboutView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             default:
                 HomePage(screenType: $screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             }
@@ -74,7 +128,7 @@ struct AppContentView: View {
 }
 
 /**
- The default view for the app. Set up when the app first opens.
+ The Initial view for the app.
  Contains buttons for settings, favourites and different scale types.
  Also contains the falling note animations.
  */
@@ -145,13 +199,13 @@ struct HomePage : View {
                     }
                     
                     Button {
-                        self.screenType = "abstractview"
+                        self.screenType = "droneview"
                     } label: {
-                        MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: "Drone", type: 1, height: buttonHeight)
                     }
                     
                     Button {
-                        // do nothing
+                        self.screenType = "favouritesview"
                     } label: {
                         MainUIButton(buttonText: "Favourites", type: 2, height: buttonHeight)
                     }
@@ -160,9 +214,9 @@ struct HomePage : View {
                 }
                     
                 Button {
-                    self.screenType = "settings"
+                    self.screenType = "aboutview"
                 } label: {
-                    MainUIButton(buttonText: "Settings", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "About / Settings", type: 3, height: buttonHeight)
                 }
             }
         }.onAppear() {
@@ -172,7 +226,7 @@ struct HomePage : View {
 }
 
 /**
- Creates the animated image for the screen.
+ Creates the animated notes for the screen.
  Starts above the display, falls vertically downwards until it is below the display.
  */
 struct ImageAnimation: View {
