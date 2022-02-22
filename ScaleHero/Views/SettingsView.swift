@@ -144,7 +144,7 @@ struct SettingsView: View {
                     }
                     
                     Group {
-                        MainUIButton(buttonText: "Into Beats (<=70bpm):", type: 4, height: buttonHeight)
+                        MainUIButton(buttonText: "Intro Beats (<=70bpm):", type: 4, height: buttonHeight)
                         ZStack {
                             MainUIButton(buttonText: "", type: 7, height: buttonHeight)
                             Section {
@@ -160,7 +160,7 @@ struct SettingsView: View {
                     }
 
                     Group {
-                        MainUIButton(buttonText: "Into Beats (>70bpm):", type: 4, height: buttonHeight)
+                        MainUIButton(buttonText: "Intro Beats (>70bpm):", type: 4, height: buttonHeight)
                         ZStack {
                             MainUIButton(buttonText: "", type: 7, height: buttonHeight)
                             Section {
@@ -176,17 +176,41 @@ struct SettingsView: View {
                         Divider().background(Color.white)
                     }
                     
-                    Button {
-                        applyAll(scaleInstruments: scaleInstruments,
-                                 backgrounds: backgrounds,
-                                 transposition: transposition,
-                                 metronomePulse: metronomePulseSelected,
-                                 droneInstrument: droneSelected,
-                                 fastBeats: fastIntroBeatsSelected,
-                                 slowBeats: slowIntroBeatsSelected)
+                    Group {
+                        Button {
+                            applyAll(scaleInstruments: scaleInstruments,
+                                     backgrounds: backgrounds,
+                                     transposition: transposition,
+                                     metronomePulse: metronomePulseSelected,
+                                     droneInstrument: droneSelected,
+                                     fastBeats: fastIntroBeatsSelected,
+                                     slowBeats: slowIntroBeatsSelected)
 
-                    } label: {
-                        MainUIButton(buttonText: "Apply SystemImage star.circle", type: 9, height: bottumButtonHeight)
+                        } label: {
+                            MainUIButton(buttonText: "Apply SystemImage star.circle", type: 9, height: bottumButtonHeight)
+                        }
+                        
+                        // ADD A DEFAULT BUTTON TO RESET TO DEFAULT ATTRIBUTES. MAKE SURE TO CONNECT THE VALUES USED IN CONTENT VIEW
+                        Button {
+                            backgroundColour = "Purple"
+                            instrumentSelected = "Piano"
+                            transpositionMode = "Notes"
+                            transposition = "C"
+                            droneSelected = "Cello"
+                            metronomePulseSelected = "Off"
+                            slowIntroBeatsSelected = "2"
+                            fastIntroBeatsSelected = "4"
+
+                            applyAll(scaleInstruments: scaleInstruments,
+                                     backgrounds: backgrounds,
+                                     transposition: transposition,
+                                     metronomePulse: metronomePulseSelected,
+                                     droneInstrument: droneSelected,
+                                     fastBeats: fastIntroBeatsSelected,
+                                     slowBeats: slowIntroBeatsSelected)
+                        } label: {
+                            MainUIButton(buttonText: "Reset to Default", type: 9, height: bottumButtonHeight)
+                        }
                     }
                 }
                     
