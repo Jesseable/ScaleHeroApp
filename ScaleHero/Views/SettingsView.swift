@@ -23,6 +23,7 @@ struct SettingsView: View {
     // These are also on contentView
     private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
     private let introPulseOptions = ["1", "2", "3", "4", "5", "6", "7", "8"]
+    @State private var presentAlert = false
     @State var instrumentSelected : String
     @State var backgroundColour : String
     @State var transpositionMode : String
@@ -192,22 +193,7 @@ struct SettingsView: View {
                         
                         // ADD A DEFAULT BUTTON TO RESET TO DEFAULT ATTRIBUTES. MAKE SURE TO CONNECT THE VALUES USED IN CONTENT VIEW
                         Button {
-                            backgroundColour = "Purple"
-                            instrumentSelected = "Piano"
-                            transpositionMode = "Notes"
-                            transposition = "C"
-                            droneSelected = "Cello"
-                            metronomePulseSelected = "Off"
-                            slowIntroBeatsSelected = "2"
-                            fastIntroBeatsSelected = "4"
-
-                            applyAll(scaleInstruments: scaleInstruments,
-                                     backgrounds: backgrounds,
-                                     transposition: transposition,
-                                     metronomePulse: metronomePulseSelected,
-                                     droneInstrument: droneSelected,
-                                     fastBeats: fastIntroBeatsSelected,
-                                     slowBeats: slowIntroBeatsSelected)
+                            presentAlert = true
                         } label: {
                             MainUIButton(buttonText: "Reset to Default", type: 9, height: bottumButtonHeight)
                         }
@@ -230,6 +216,32 @@ struct SettingsView: View {
                 } label: {
                     MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight)
                 }
+            }
+            .alert(isPresented: $presentAlert) {
+                Alert(
+                    title: Text("Reset to Default"),
+                    message: Text("Are you sure?"),
+                    primaryButton: .default(Text("Confirm"), action: {
+                        
+                        backgroundColour = "Purple"
+                        instrumentSelected = "Piano"
+                        transpositionMode = "Notes"
+                        transposition = "C"
+                        droneSelected = "Cello"
+                        metronomePulseSelected = "Off"
+                        slowIntroBeatsSelected = "2"
+                        fastIntroBeatsSelected = "4"
+
+                        applyAll(scaleInstruments: scaleInstruments,
+                                 backgrounds: backgrounds,
+                                 transposition: transposition,
+                                 metronomePulse: metronomePulseSelected,
+                                 droneInstrument: droneSelected,
+                                 fastBeats: fastIntroBeatsSelected,
+                                 slowBeats: slowIntroBeatsSelected)
+                    }),
+                    secondaryButton: .cancel(Text("Cancel"), action: { /*Do Nothing*/ })
+                )
             }
         }
     }
