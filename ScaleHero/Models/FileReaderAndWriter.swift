@@ -8,11 +8,12 @@
 import Foundation
 
 /**
- Handles all of the reading and writing of files throughout the app
+ Handles any reading and writing of files for the app
  */
 class FileReaderAndWriter: ObservableObject {
     
     @Published var scales: [Scale]
+    
     let filePath = FileManager.documentsDirectory.appendingPathComponent("FavouriteScales")
     let scaleInstrumentPath = FileManager.documentsDirectory.appendingPathComponent("ScaleInstrument")
     let backgroundColourPath = FileManager.documentsDirectory.appendingPathComponent("backGroundColour")
@@ -43,7 +44,18 @@ class FileReaderAndWriter: ObservableObject {
         }
     }
 
-    func add(scaleInfo: String, tonality: String, type: String, tempo: Int, startingOctave: Int, numOctave: Int, tonicSelection: Int, scaleNotes: Bool, drone: Bool, startingNote: String, noteDisplay: Int, endlessLoop: Bool) {
+    func add(scaleInfo: String,
+             tonality: String,
+             type: String,
+             tempo: Int,
+             startingOctave: Int,
+             numOctave: Int,
+             tonicSelection: Int,
+             scaleNotes: Bool,
+             drone: Bool,
+             startingNote: String,
+             noteDisplay: Int,
+             endlessLoop: Bool) {
 
         let scale = Scale(id: UUID(),
                           scaleInfo: scaleInfo,
@@ -75,9 +87,8 @@ class FileReaderAndWriter: ObservableObject {
             try newImage.write(to: backgroundColourPath, atomically: true, encoding: String.Encoding.utf8)
         }
         catch {
-            // Look into this or make the pop up errors occur for users when this occurs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             Swift.print(error)
-            print("error has occured when writing to the file")
+            print("error has occured when writing to the background file")
         }
     }
     
@@ -88,7 +99,7 @@ class FileReaderAndWriter: ObservableObject {
         }
         catch {
             Swift.print(error)
-            return "Error caught when reading instrument file" // Return default option IN FUTURE WHEN DECIDED UPON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return "Error caught when reading the background file"
         }
     }
     
@@ -98,9 +109,8 @@ class FileReaderAndWriter: ObservableObject {
             try newInstrument.write(to: scaleInstrumentPath, atomically: true, encoding: String.Encoding.utf8)
         }
         catch {
-            // Look into this or make the pop up errors occur for users when this occurs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             Swift.print(error)
-            print("error has occured when writing to the file")
+            print("error has occured when writing to the Instrument file")
         }
     }
     
@@ -111,7 +121,7 @@ class FileReaderAndWriter: ObservableObject {
         }
         catch {
             Swift.print(error)
-            return "Error caught when reading instrument file" // Return default option IN FUTURE WHEN DECIDED UPON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return "Error caught when reading the instrument file"
         }
     }
     
@@ -121,9 +131,8 @@ class FileReaderAndWriter: ObservableObject {
             try newTransposition.write(to: transpositionPath, atomically: true, encoding: String.Encoding.utf8)
         }
         catch {
-            // Look into this or make the pop up errors occur for users when this occurs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             Swift.print(error)
-            print("error has occured when writing to the file")
+            print("error has occured when writing to the Transposition file")
         }
     }
     
@@ -134,7 +143,7 @@ class FileReaderAndWriter: ObservableObject {
         }
         catch {
             Swift.print(error)
-            return "Error caught when reading instrument file" // Return default option IN FUTURE WHEN DECIDED UPON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return "Error caught when reading Transposition file"
         }
     }
     
@@ -144,9 +153,8 @@ class FileReaderAndWriter: ObservableObject {
             try newPulse.write(to: metronomePulsePath, atomically: true, encoding: String.Encoding.utf8)
         }
         catch {
-            // Look into this or make the pop up errors occur for users when this occurs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             Swift.print(error)
-            print("error has occured when writing to the file")
+            print("error has occured when writing to the Metronome file")
         }
     }
     
@@ -157,7 +165,7 @@ class FileReaderAndWriter: ObservableObject {
         }
         catch {
             Swift.print(error)
-            return "Error caught when reading instrument file" // Return default option IN FUTURE WHEN DECIDED UPON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return "Error caught when reading the metronome file"
         }
     }
     
@@ -167,9 +175,8 @@ class FileReaderAndWriter: ObservableObject {
             try newDrone.write(to: droneInstrumentPath, atomically: true, encoding: String.Encoding.utf8)
         }
         catch {
-            // Look into this or make the pop up errors occur for users when this occurs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             Swift.print(error)
-            print("error has occured when writing to the file")
+            print("error has occured when writing to the Drone file")
         }
     }
     
@@ -180,7 +187,7 @@ class FileReaderAndWriter: ObservableObject {
         }
         catch {
             Swift.print(error)
-            return "Error caught when reading instrument file" // Return default option IN FUTURE WHEN DECIDED UPON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return "Error caught when reading the drone file"
         }
     }
     
@@ -190,28 +197,48 @@ class FileReaderAndWriter: ObservableObject {
             try beats.write(to: countInBeatsPath, atomically: true, encoding: String.Encoding.utf8)
         }
         catch {
-            // Look into this or make the pop up errors occur for users when this occurs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             Swift.print(error)
-            print("error has occured when writing to the file")
+            print("error has occured when writing to the Drone file")
         }
     }
     
-    func readDIntroBeats() -> String {
+    func readIntroBeats() -> String {
         //reading
         do {
             return try String(contentsOf: countInBeatsPath, encoding: .utf8)
         }
         catch {
             Swift.print(error)
-            return "Error caught when reading instrument file" // Return default option IN FUTURE WHEN DECIDED UPON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return "Error caught when reading the IntroBeats file"
         }
     }
     
-    func checkFilePath() -> Bool {
-        if FileManager.default.fileExists(atPath: countInBeatsPath.path) {
+    /**
+     Checks if the file exists
+     */
+    func checkFilePath(for fileDescription: String) -> Bool {
+        var path : String
+        switch fileDescription.lowercased() {
+        case "intropulse":
+            path = countInBeatsPath.path
+        case "droneinstrument":
+            path = droneInstrumentPath.path
+        case "scaleinstrument":
+            path = scaleInstrumentPath.path
+        case "background":
+            path = backgroundColourPath.path
+        case "transposition":
+            path = transpositionPath.path
+        case "metronome":
+            path = metronomePulsePath.path
+        default:
+            // Error message displayed
+            print("Not a valid file descirption when searching for the file")
+            path = "No File Could Be Found"
+        }
+        if FileManager.default.fileExists(atPath: path) {
             return true
         }
-            
         return false
     }
 }

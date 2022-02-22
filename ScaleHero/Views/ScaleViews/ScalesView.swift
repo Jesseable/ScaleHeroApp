@@ -92,7 +92,7 @@ struct ScalesView: View {
                         musicNotes.type = "scale"
                         self.screenType = "soundview"
                     } label: {
-                        MainUIButton(buttonText: "Natural Minor", type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: "Minor", type: 1, height: buttonHeight)
                     }
                     
                     // Harmonic Minor Scale

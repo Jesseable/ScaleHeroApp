@@ -19,18 +19,6 @@ struct AppContentView: View {
     @State private var backgroundImage : String
     private var fileReaderAndWriter = FileReaderAndWriter()
     
-    // Also saved under settings view
-    private let scaleInstruments = ["Strings", "Piano", "Organ"]
-    
-    private let droneInstruments = ["Cello", "Tuning Fork"]
-    
-    // Also saved under settingsView
-    private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
-    
-    private let metronomePulses = ["Compound", "Simple", "Off"]
-    
-    private let transpositionTypes = ["C", "G", "D", "A", "E", "B", "F#/Gb", "C#/Db", "G#/Ab", "D#/Eb", "A#/Bb", "F", "Bassoon in C", "Clarinet in Bb", "Clarinet in Eb", "Euphonium in C", "Horn in F", "Oboe in C", "Recorder in C", "Recorder in F", "Flute in C", "Saxophone in Bb", "Saxophone in Eb", "Strings in C", "Trombone in C", "Trumpet in Bb", "Tuba in F"]
-    
     private var selectedInstrument : String
     private var selectedBackground : String
     private var transposition : String
@@ -44,28 +32,30 @@ struct AppContentView: View {
     Initialises the  components of the app.
      */
     init() {
-        selectedInstrument = fileReaderAndWriter.readScaleInstrument()
-        if (!scaleInstruments.contains(selectedInstrument)) {
-            // the default selected instrument is chosen here:
+        //SCALE INSTRUMENT
+        if fileReaderAndWriter.checkFilePath(for: "scaleinstrument") {
+            selectedInstrument = fileReaderAndWriter.readScaleInstrument()
+        } else {
             selectedInstrument = "Piano"
             fileReaderAndWriter.writeScaleInstrument(newInstrument: selectedInstrument)
         }
         
-        selectedBackground = fileReaderAndWriter.readBackgroundImage()
-        if (!backgrounds.contains(selectedBackground)) {
-            // the default selected background colour is chosen here:
+        //BACKGROUND
+        if fileReaderAndWriter.checkFilePath(for: "background") {
+            selectedBackground = fileReaderAndWriter.readBackgroundImage()
+        } else {
             selectedBackground = "Purple"
             fileReaderAndWriter.writeBackgroundImage(newImage: selectedBackground)
         }
         backgroundImage = "Background" + selectedBackground
         
-        transposition = fileReaderAndWriter.readTransposition()
-        if (!transpositionTypes.contains(transposition)) {
-            // the default selected transposition note is chosen here:
+        //TRANSPOSITION
+        if fileReaderAndWriter.checkFilePath(for: "transposition") {
+            transposition = fileReaderAndWriter.readTransposition()
+        } else {
             transposition = "C"
             fileReaderAndWriter.writeNewTransposition(newTransposition: transposition)
         }
-        
         let transpositionArr = transposition.components(separatedBy: " ")
         if (transpositionArr.count > 1) {
             transpositionMode = "Instrument"
@@ -73,25 +63,28 @@ struct AppContentView: View {
             transpositionMode = "Notes"
         }
         
-        metronomeOffBeatPulse = fileReaderAndWriter.readMetronomePulse()
-        if (!metronomePulses.contains(metronomeOffBeatPulse)) {
-            // the default selected metronome is chosen here:
+        //METRONOME
+        if fileReaderAndWriter.checkFilePath(for: "metronome") {
+            metronomeOffBeatPulse = fileReaderAndWriter.readMetronomePulse()
+        } else {
             metronomeOffBeatPulse = "Off"
             fileReaderAndWriter.writeNewMetronomePulse(newPulse: metronomeOffBeatPulse)
         }
         
-        selectedDrone = fileReaderAndWriter.readDroneInstrument()
-        if (!droneInstruments.contains(selectedDrone)) {
-            // the default selected instrument is chosen here:
+        //DRONE
+        if fileReaderAndWriter.checkFilePath(for: "droneinstrument") {
+            selectedDrone = fileReaderAndWriter.readDroneInstrument()
+        } else {
             selectedDrone = "Cello"
             fileReaderAndWriter.writeDroneInstrument(newDrone: selectedDrone)
         }
         
-        if !fileReaderAndWriter.checkFilePath() { // CHANGE ALL OF THE ABOVE TO THIS METHOD!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //INTRO BEATS
+        if fileReaderAndWriter.checkFilePath(for: "intropulse") {
+            introBeats = fileReaderAndWriter.readIntroBeats()
+        } else {
             introBeats = "2-4"
             fileReaderAndWriter.writeIntroBeats(beats: introBeats)
-        } else {
-            introBeats = fileReaderAndWriter.readDIntroBeats()
         }
         introBeatsArr = introBeats.components(separatedBy: "-")
     }
