@@ -48,7 +48,20 @@ class MusicNotes: ObservableObject {
     }
     
     func getMusicTitile(from title: String) -> String {
-        return title.replacingOccurrences(of: "-", with: " ").uppercased().replacingOccurrences(of: "TETRAD ", with: "").replacingOccurrences(of: "SEVENTH", with: "7th").replacingOccurrences(of: "OTHERS ", with: "")
+
+        var newtitle =  title.replacingOccurrences(of: "-", with: " ")
+                .uppercased()
+                .replacingOccurrences(of: "TETRAD ", with: "")
+                .replacingOccurrences(of: "SEVENTH", with: "7th")
+                .replacingOccurrences(of: "OTHERS ", with: "")
+        
+        if noteName.count > 1 {
+            let start = title.index(title.startIndex, offsetBy: 4) // Makes the BB appeare as Bb instead
+            let end = title.index(title.endIndex, offsetBy: -2)
+            let range = start..<end
+            newtitle = newtitle.replacingOccurrences(of: "B", with: "b", options: .literal, range: range)
+        }
+        return newtitle
     }
 }
 
@@ -147,7 +160,6 @@ struct ScalesView: View {
 extension Text {
     func asTitle() -> some View {
         font(.largeTitle.bold())
-            .textCase(.uppercase)
             .accessibilityAddTraits(.isHeader)
             .foregroundColor(Color.white)
     }
