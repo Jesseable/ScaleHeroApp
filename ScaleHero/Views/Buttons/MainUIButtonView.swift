@@ -16,6 +16,7 @@ struct MainUIButton: View {
     private let universalSize = UIScreen.main.bounds
     
     var body: some View {
+        let buttonWidth = universalSize.width 
         
         ZStack {
             let buttonColor = fileReaderAndWriter.readBackgroundImage()
@@ -24,58 +25,44 @@ struct MainUIButton: View {
                 CroppedBelowButton()
                     .fill(style: FillStyle(eoFill: true))
                     .foregroundColor(Color(buttonColor))
-                    .padding(.horizontal, 10)
-                    .frame(width: universalSize.width, height: height)
-                    .opacity(0.8)
+                    .formatted(height: height, width: buttonWidth)
             case 3:
                 CroppedAboveButton() // Bottum Buttons
                         .fill(style: FillStyle(eoFill: true))
                     .foregroundColor(Color(buttonColor + "Dark"))
-                    .padding(.horizontal, 10)
-                    .frame(width: universalSize.width, height: height)
-                    .opacity(0.8)
+                    .formatted(height: height, width: buttonWidth)
             case 4:
                 RectangularButton() // Not able to select buttons
                     .fill(Color("GrayBasic"))
-                    .padding(.horizontal, 10)
-                    .frame(width: universalSize.width, height: height)
-                    .opacity(0.8)
+                    .formatted(height: height, width: buttonWidth)
             case 5:
                 RectangularButton()
                     .fill(Color(buttonColor))
                     .padding(.trailing, 10)
-                    .frame(width: universalSize.width * 0.5, height: height)
+                    .frame(width: buttonWidth * 0.5, height: height)
                     .opacity(0.8)
             case 6:
                 RectangularButton()
                     .fill(Color(buttonColor))
                     .padding(.leading, 10)
-                    .frame(width: universalSize.width * 0.5, height: height)
+                    .frame(width: buttonWidth * 0.5, height: height)
                     .opacity(0.8)
             case 7:
                 RectangularButton()
                     .fill(Color("LightGrayBasic"))
-                    .padding(.horizontal, 10)
-                    .frame(width: universalSize.width, height: height)
-                    .opacity(0.8)
+                    .formatted(height: height, width: buttonWidth)
             case 8:
                 RectangularButton()
                     .fill(Color("Red"))
-                    .padding(.horizontal, 10)
-                    .frame(width: universalSize.width, height: height)
-                    .opacity(0.8)
+                    .formatted(height: height, width: buttonWidth)
             case 9:
                 RectangularButton()
                     .fill(Color(buttonColor + "Dark"))
-                    .padding(.horizontal, 10)
-                    .frame(width: universalSize.width, height: height)
-                    .opacity(0.8)
+                    .formatted(height: height, width: buttonWidth)
             default:
                 RectangularButton()
                     .fill(Color(buttonColor))
-                    .padding(.horizontal, 10)
-                    .frame(width: universalSize.width, height: height)
-                    .opacity(0.8)
+                    .formatted(height: height, width: buttonWidth)
             }
 
             let scaleEffect = (height - 30)/height + 1
@@ -85,7 +72,7 @@ struct MainUIButton: View {
                 Text(" \(stringArr[0]) \(Image(systemName: stringArr[1]))")
                     .foregroundColor(Color.white).bold()
                     .scaleEffect(scaleEffect)
-                    .frame(maxWidth: universalSize.width * 0.5, alignment: .center)
+                    .frame(maxWidth: buttonWidth * 0.5, alignment: .center)
                     .allowsTightening(true)
 
             } else {
@@ -130,5 +117,16 @@ struct CroppedBelowButton: Shape {
                       controlPoint1: CGPoint(x: rect.maxX * (0.15), y: rect.maxY - 25),
                       controlPoint2: CGPoint(x: rect.maxX * (0.9), y: rect.maxY + 20))
         return Path(path.cgPath)
+    }
+}
+
+/**
+ Sets the Shapes paramater requirements by extendiong the view..
+ */
+extension View {
+    func formatted(height: CGFloat, width: CGFloat) -> some View {
+            padding(.horizontal, 10)
+            .frame(width: width, height: height)
+            .opacity(0.8)
     }
 }
