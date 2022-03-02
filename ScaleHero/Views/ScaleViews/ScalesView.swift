@@ -57,7 +57,7 @@ class MusicNotes: ObservableObject {
         
         if noteName.count > 1 {
             let start = title.index(title.startIndex, offsetBy: 4) // Makes the BB appeare as Bb instead
-            let end = title.index(title.endIndex, offsetBy: -2)
+            let end = title.index(title.startIndex, offsetBy: 6)
             let range = start..<end
             newtitle = newtitle.replacingOccurrences(of: "B", with: "b", options: .literal, range: range)
         }
