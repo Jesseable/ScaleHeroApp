@@ -53,7 +53,7 @@ struct MainUIButton: View {
                     .formatted(height: height, width: buttonWidth)
             case 8:
                 RectangularButton()
-                    .fill(Color("Red"))
+                    .fill(Color("RedDark"))
                     .formatted(height: height, width: buttonWidth)
             case 9:
                 RectangularButton()

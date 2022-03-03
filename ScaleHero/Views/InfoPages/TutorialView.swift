@@ -59,7 +59,7 @@ struct TutorialView: View {
     
     func infoText() -> String {
         let text = """
-        This app is intended to support music students in their scale practice.
+        This app is intended to support music students in their scale practice
         
         The app enables and encourages students to:
             1.  Practice alongside scale notes, listening closely to intonation
@@ -82,7 +82,7 @@ struct TutorialView: View {
         
         Customized scale formats also can be saved as favourites
         
-        Background colour can be adjusted and saved.
+        Background colour can be adjusted and saved
         """
         return text
     }
