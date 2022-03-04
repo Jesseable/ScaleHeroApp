@@ -251,7 +251,7 @@ struct PlayingView: View {
      Returns the amount of introduction beats to be played
      */
     private func numIntroBeats(tempo: Int, fileReader: FileReaderAndWriter) -> Int {
-        let tempoBeatsArr = fileReader.readDIntroBeats().components(separatedBy: "-")
+        let tempoBeatsArr = fileReader.readIntroBeats().components(separatedBy: "-")
         if tempo < 70 {
             return Int(tempoBeatsArr[0])!
         } else {

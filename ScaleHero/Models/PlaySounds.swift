@@ -20,9 +20,9 @@ struct PlaySounds {
     var player: AVAudioPlayer?
     // For the metronome
     var player2: AVAudioPlayer?
-    // For the scaleNotes
+    // For the scaleNotes1
     var player3: AVAudioPlayer?
-    // For the scaleNotes
+    // For the scaleNotes2
     var player4: AVAudioPlayer?
     
     lazy var instrument: String = {
@@ -119,20 +119,18 @@ struct PlaySounds {
     private func addMetronome(tempo: Int) -> [String] {
         let metronomeFile = "Metronome"
         var metronomeFileArr: [String] = []
-        let introBeatsArr = fileReaderAndWriter.readDIntroBeats().components(separatedBy: "-")
+        let introBeatsArr = fileReaderAndWriter.readIntroBeats().components(separatedBy: "-")
         let slowTempoIntro = Int(introBeatsArr[0])
         let fastTempoIntro = Int(introBeatsArr[1])
         
         if (tempo < 70) {
-            slowTempoIntro?.times { // USE A FILEREADER TO CHANGE THESE OPTIONS IN SETTINGS
+            slowTempoIntro?.times { // USE A FILEREADER TO CHANGE THESE OPTIONS IN SETTINGS Possibly also the 70bpm
                 metronomeFileArr.append(metronomeFile)
             }
-            //metronomeFileArr = [metronomeFile, metronomeFile]
         } else {
             fastTempoIntro?.times {
                 metronomeFileArr.append(metronomeFile)
             }
-            //metronomeFileArr = [metronomeFile, metronomeFile, metronomeFile, metronomeFile]
         }
         
         return metronomeFileArr
@@ -225,9 +223,9 @@ struct PlaySounds {
         let orderedAlphabet = ["A","A#/Bb","B","C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab","A","A#/Bb","B","C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab"]
         // Twice as long too allow only going forwards
         let transposedIndex = orderedAlphabet.firstIndex(of: transposedNote) ?? 0
-        let CIndex = orderedAlphabet.firstIndex(of: "C") ?? 0
+        let indexOfNoteC = orderedAlphabet.firstIndex(of: "C") ?? 0
         let selectedIndex = orderedAlphabet.firstIndex(of: selectedNote) ?? 0
-        let difference = CIndex - transposedIndex
+        let difference = indexOfNoteC - transposedIndex
         let arrayIndex = selectedIndex - difference
         return orderedAlphabet[arrayIndex]
     }

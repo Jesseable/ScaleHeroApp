@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftySound
 
 struct SoundView : View {
     
@@ -78,10 +77,7 @@ struct SoundView : View {
                                     Text("2").tag(2)
                                     Text("3").font(.title).tag(3)
                                 }
-                                .padding(.horizontal)
-                                .pickerStyle( .segmented)
-                                .colorScheme(.light)
-                                .padding(.horizontal, 11)
+                                .formatted()
                             }
                         }.onChange(of: musicNotes.octaves) { octave in
                             if (octave == 1) {
@@ -100,10 +96,7 @@ struct SoundView : View {
                                     Text("2").tag(2)
                                     Text("3").tag(3)
                                 }
-                                .padding(.horizontal)
-                                .pickerStyle( .segmented)
-                                .colorScheme(.light) 
-                                .padding(.horizontal, 11)
+                                .formatted()
                                 .disabled(disableOctaveSelection)
                             }
                         }.onChange(of: musicNotes.octaves) { octave in
@@ -192,10 +185,7 @@ struct SoundView : View {
                                     Text("All").tag(2)
                                     Text("Not Initial").tag(3)
                                 }
-                                .padding(.horizontal)
-                                .pickerStyle( .segmented)
-                                .colorScheme(.light)
-                                .padding(.horizontal, 11)
+                                .formatted()
                             }
                         }
                     }
@@ -212,10 +202,7 @@ struct SoundView : View {
                                     Text("Automatic").tag(2)
                                     Image("Flat").tag(3)
                                 }
-                                .padding(.horizontal)
-                                .pickerStyle( .segmented)
-                                .colorScheme(.light)
-                                .padding(.horizontal, 11)
+                                .formatted()
                             }
                         }
                     }

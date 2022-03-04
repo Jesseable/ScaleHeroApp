@@ -59,7 +59,7 @@ struct TutorialView: View {
     
     func infoText() -> String {
         let text = """
-        This app is intended to support music students in their scale practice.
+        This app is intended to support music students in their scale practice
         
         The app enables and encourages students to:
             1.  Practice alongside scale notes, listening closely to intonation
@@ -70,19 +70,19 @@ struct TutorialView: View {
             6.  Explore new scales and have fun!!!
         
         Scales can be customized as follows:
-            a.  Instrument selection (piano, organ, strings)
-            b.  Drone Selection (cello, tuning fork)
-            c.  Transposition option for all keys
-            d.  Scale selection (All recognized scales, including Major, Natural minor, Harmonic minor, Melodic minor, Modes, Arpeggios, Pentatonics, Blues, etc.)
-            e.  Adjustment of tempo, time signature, starting note, starting octave, number of octaves, repetition of tonic note, metronome (simple or compound time)
-            f.  Selection/addition of drone
-            g.  Displayed Notes can be shown either as sharps or flats
-            h.  Repeating note option to enable real time listen and play of each note
-            i.  The 'Endless Loop' button plays the scale on repeat endlessly. As soon as the scale ends it loops directly back into the metronome count in
+            1.  Instrument selection (piano, organ, strings)
+            2.  Drone Selection (cello, tuning fork)
+            3.  Transposition option for all keys
+            4.  Scale selection (All recognized scales, including Major, Natural minor, Harmonic minor, Melodic minor, Modes, Arpeggios, Pentatonics, Blues, etc.)
+            5.  Adjustment of tempo, time signature, starting note, starting octave, number of octaves, repetition of tonic note, metronome (simple or compound time), number of intro beats
+            6.  Selection/addition of drone
+            7.  Displayed Notes can be shown either as sharps or flats
+            8.  Repeating note option to enable real time listen and play of each note
+            9.  The 'Endless Loop' button plays the scale on repeat endlessly. As soon as the scale ends it loops directly back into the metronome count in
         
         Customized scale formats also can be saved as favourites
         
-        Background colour can be adjusted and saved.
+        Background colour can be adjusted and saved
         """
         return text
     }
@@ -115,6 +115,7 @@ struct TutorialView: View {
                 d. Drone: Select the drone sound
                 e. Metronome: This option allows you to add off-beat metronome clicks into the scales. The two options are simple (three off beat notes) or compound (two off beat notes). Note that this option is only avaliable for scales with a tempo under 70bpm
                 f. Apply: This option applies the changes you have made to the app. Note that pressing the back button also applies the changes directly to the app
+                g. Intro Beats: These buttons will adjust the number of count in beats. There are two options, '<=70bpm' and '>70bpm'. This will ajust the count in beats for two different scenarios: when the tempo is either less than or eaqual to 70 beats per minute or, when the tempo is greater than 70 beats per minute
         """
         return text
     }
