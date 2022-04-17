@@ -11,7 +11,7 @@
                     "naturalMinor": ["C", "D", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "D", "C"],
                     "harmonicMinor": ["C", "D", "Eb", "F", "G", "Ab", "B", "C", "B", "Ab", "G", "F", "Eb", "D", "C"],
                     "melodicMinor": ["C", "D", "Eb", "F", "G", "A", "B", "C", "Bb", "Ab", "G", "F", "Eb", "D", "C"],
-                    "chromatic": ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "B" "Bb", "A", "Ab", "G", "Gb", "F", "E" "Eb", "D", "Db", "C"],
+                    "chromatic": ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "B" "Bb", "A", "Ab", "G", "Gb", "F", "E" "Eb", "D", "Db", "C"], ///// WHOLE TONE IS EVERY SECOND ONE OF THESE
                     "pentatonic": ["C", "D", "E", "G", "A", "C", "A", "G", "E", "D", "C"], ///// MAKOE IT INTO MINOR AND ALL POSSIBLE MODES
                     "Blues": ["C", "Eb", "F", "Gb", "G", "Bb", "C", "Bb", "G", "Gb", "F", "Eb", "C"]
                 },
@@ -22,7 +22,7 @@
                     "naturalMinor": ["C#", "D#", "E", "F#", "G#", "A", "B", "C#", "B", "A", "G#", "F#", "E", "D#", "C#"],
                     "harmonicMinor": ["C#", "D#", "E", "F#", "G#", "A", "B#", "C#", "B#", "A", "G#", "F#", "E", "D#", "C#"],
                     "melodicMinor": ["C#", "D#", "E", "F#", "G#", "A#", "B#", "C#", "B", "A", "G#", "F#", "E", "D#", "C#"],
-                    "chromatic": ["C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "B" "Bb", "A", "Ab", "G", "Gb", "F", "E" "Eb", "D", "Db"],
+                    "chromatic": ["C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "C", "B" "Bb", "A", "Ab", "G", "Gb", "F", "E" "Eb", "D", "Db"],
                     "pentatonic": ["C#", "D#", "E#", "G#", "A#", "C#", "A#", "G#", "E#", "D#", "C#"],
                     "Blues": ["C#", "E", "F#", "G", "G#", "B", "C#", "B", "G#", "G", "F#", "E", "C#"]
                 },
@@ -33,7 +33,7 @@
                     "naturalMinor": ["Db", "Eb", "Fb", "Gb", "Ab", "Bbb", "Cb", "Db", "Cb", "Bbb", "Ab", "Gb", "Fb", "Eb", "Db"],
                     "harmonicMinor": ["Db", "Eb", "Fb", "Gb", "Ab", "Bbb", "C", "Db", "C", "Bbb", "Ab", "Gb", "Fb", "Eb", "Db"],
                     "melodicMinor": ["Db", "Eb", "Fb", "Gb", "Ab", "Bb", "C", "Db", "Cb", "Bbb", "Ab", "Gb", "Fb", "Eb", "Db"],
-                    "chromatic": ["C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "B" "Bb", "A", "Ab", "G", "Gb", "F", "E" "Eb", "D", "Db"],
+                    "chromatic": ["C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "Db", "C", "B" "Bb", "A", "Ab", "G", "Gb", "F", "E" "Eb", "D", "Db"],
                     "pentatonic": ["Db", "Eb", "F", "Ab", "Bb", "Db", "Bb", "Ab", "F", "Eb", "Db"],
                     "Blues": ["Db", "E", "Gb", "G", "Ab", "B", "Db", "B", "Ab", "G", "Gb", "E", "Db"]
                 },
@@ -44,25 +44,31 @@
                     "naturalMinor": ["D", "E", "F", "G", "A", "Bb", "C", "D", "C", "Bb", "A", "G", "F", "E", "D"],
                     "harmonicMinor": ["D", "E", "F", "G", "A", "Bb", "C#", "D", "C#", "Bb", "A", "G", "F", "E", "D"],
                     "melodicMinor": ["D", "E", "F", "G", "A", "B", "C#", "D", "C", "Bb", "A", "G", "F", "E", "D"],
-                    "chromatic": ["D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "B" "Bb", "A", "Ab", "G", "Gb", "F", "E" "Eb", "D", "Db", "D"],
+                    "chromatic": ["D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "Db", "C" "B" "Bb", "A", "Ab", "G", "Gb", "F", "E" "Eb", "D"],
                     "pentatonic": ["D", "E", "F#", "A", "B", "D", "B", "A", "F#", "E", "D"],
                     "Blues": ["D", "F", "G", "Ab", "A", "C", "D", "C", "A", "Ab", "G", "F", "D"]
                 },
                 {
                     "id": "33C363E4-C802-4CB3-A045-0FDAB76142D7",
-                    "name": "Flat White",
-                    "caffeine": [60, 120, 200],
-                    "coffeeBased": true,
-                    "servedWithMilk": true,
-                    "baseCalories": 60
+                    "note": "D#",
+                    "major": ["D#", "E#", "F##", "G#", "A#", "B#", "C##", "D#", "C##", "B#", "A#", "G#", "F##", "E#", "D#"],
+                    "naturalMinor": ["D#", "E#", "F#", "G#", "A#", "B", "C#", "D#", "C#", "B", "A#", "G#", "F#", "E#", "D#"],
+                    "harmonicMinor": ["D#", "E#", "F#", "G#", "A#", "B", "C##", "D#", "C##", "B", "A#", "G#", "F#", "E#", "D#"],
+                    "melodicMinor": ["D#", "E#", "F#", "G#", "A#", "B#", "C##", "D#", "C#", "B", "A#", "G#", "F#", "E#", "D#"],
+                    "chromatic": ["D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "D", "Db", "C", "B" "Bb", "A", "Ab", "G", "Gb", "F", "E" "Eb"],
+                    "pentatonic": ["D#", "F", "G", "A#", "C", "D#", "C", "A#", "G", "F", "D#"],
+                    "Blues": ["D#", "F#", "G#", "A", "A#", "C#", "D#", "C#", "A#", "A", "G#", "F#", "D#"]
                 },
                 {
                     "id": "9F900841-67E3-4B6E-9065-69023FBA9B8E",
-                    "name": "Latte",
-                    "caffeine": [60, 120, 200],
-                    "coffeeBased": true,
-                    "servedWithMilk": true,
-                    "baseCalories": 120
+                    "note": "Eb",
+                    "major": ["Eb", "F", "G", "Ab", "Bb", "C", "D", "Eb", "D", "C", "Bb", "Ab", "G", "F", "Eb"],
+                    "naturalMinor": ["Eb", "F", "Gb", "Ab", "Bb", "Cb", "Db", "Eb", "Db", "Cb", "Bb", "Ab", "Gb", "F", "Eb"],
+                    "harmonicMinor": ["Eb", "F", "Gb", "Ab", "Bb", "Cb", "D", "Eb", "D", "Cb", "Bb", "Ab", "Gb", "F", "Eb"],
+                    "melodicMinor": ["Eb", "F", "Gb", "Ab", "Bb", "C", "D", "Eb", "Db", "Cb", "Bb", "Ab", "Gb", "F", "Eb"],
+                    "chromatic": ["D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "D", "Db", "C", "B" "Bb", "A", "Ab", "G", "Gb", "F", "E" "Eb"],
+                    "pentatonic": ["Eb", "F", "G", "Bb", "C", "Eb", "C", "Bb", "G", "F", "Eb"],
+                    "Blues": ["Eb", "Gb", "Ab", "A", "Bb", "Db", "Eb", "Db", "Bb", "A", "Ab", "Gb", "Eb"]
                 },
                 {
                     "id": "59F7CB30-18C7-43C1-A1B0-94E22D06C2A4",
