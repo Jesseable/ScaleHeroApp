@@ -175,6 +175,7 @@
 		C5468413280A937F00DA9BC8 /* TuningFork1-Drone-B.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5468407280A937F00DA9BC8 /* TuningFork1-Drone-B.mp3 */; };
 		C5468414280A937F00DA9BC8 /* TuningFork1-Drone-G#|Ab.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5468408280A937F00DA9BC8 /* TuningFork1-Drone-G#|Ab.mp3 */; };
 		C546841C280BDC7600DA9BC8 /* PlaySoundsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C546841B280BDC7600DA9BC8 /* PlaySoundsTests.swift */; };
+		C5468421280C081B00DA9BC8 /* ScaleOptions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5468420280C081B00DA9BC8 /* ScaleOptions.json */; };
 		C555641627C3A8CB009AC00C /* Metronome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C555641527C3A8CB009AC00C /* Metronome.mp3 */; };
 		C555641827C3A8D0009AC00C /* Metronome1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C555641727C3A8D0009AC00C /* Metronome1.mp3 */; };
 		C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */; };
@@ -383,6 +384,7 @@
 		C5468407280A937F00DA9BC8 /* TuningFork1-Drone-B.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "TuningFork1-Drone-B.mp3"; sourceTree = "<group>"; };
 		C5468408280A937F00DA9BC8 /* TuningFork1-Drone-G#|Ab.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "TuningFork1-Drone-G#|Ab.mp3"; sourceTree = "<group>"; };
 		C546841B280BDC7600DA9BC8 /* PlaySoundsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySoundsTests.swift; sourceTree = "<group>"; };
+		C5468420280C081B00DA9BC8 /* ScaleOptions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ScaleOptions.json; sourceTree = "<group>"; };
 		C555641527C3A8CB009AC00C /* Metronome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome.mp3; path = ../../ScaleHeroAppResources/Metronome.mp3; sourceTree = "<group>"; };
 		C555641727C3A8D0009AC00C /* Metronome1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome1.mp3; path = ../../ScaleHeroAppResources/Metronome1.mp3; sourceTree = "<group>"; };
 		C574FE72276886B700ADD3B3 /* ScaleHero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScaleHero.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -490,6 +492,7 @@
 				C574FEA72769CF9F00ADD3B3 /* Views */,
 				C574FF392773F47A00ADD3B3 /* Models */,
 				C574FE79276886BC00ADD3B3 /* Assets.xcassets */,
+				C5468420280C081B00DA9BC8 /* ScaleOptions.json */,
 				C574FE7B276886BC00ADD3B3 /* Preview Content */,
 			);
 			path = ScaleHero;
@@ -967,6 +970,7 @@
 				C5468313280A90DE00DA9BC8 /* Strings-2-A#|Bb.mp3 in Resources */,
 				C546836C280A913D00DA9BC8 /* Organ-2-G#|Ab.mp3 in Resources */,
 				C5468366280A913D00DA9BC8 /* Organ-3-F#|Gb.mp3 in Resources */,
+				C5468421280C081B00DA9BC8 /* ScaleOptions.json in Resources */,
 				C54683AB280A917500DA9BC8 /* Piano-1-C#|Db.mp3 in Resources */,
 				C54682F2280A90DE00DA9BC8 /* Strings-3-D.mp3 in Resources */,
 				C54682E8280A90DE00DA9BC8 /* Strings-4-D.mp3 in Resources */,
