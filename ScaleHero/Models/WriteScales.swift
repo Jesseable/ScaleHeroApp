@@ -13,131 +13,57 @@ import UIKit
  */
 struct WriteScales {
     
-    let type : String
+    //let type : String
     var fileReaderAndWriter = FileReaderAndWriter()
-    var scaleNoteNames : [String] = []
     
-    // Sets the major pattern for differnet types of scales. Measured in semitones
-    lazy var majorPattern : [Int] = {
-        [self] in
-        switch self.type.lowercased() {
-        case "arpeggio":
-            return [4, 3, 5]
-        case "scale":
-            return [2, 2, 1, 2, 2, 2, 1]
-        case "mode":
-            return [2, 2, 1, 2, 2, 2, 1]
-//        case "pentatonic":
-//            return [2, 2, 3, 2, 3]
-        default:
-            return[-1]
-        }
-    }()
-    
-    lazy var minorPattern : [Int] = {
-        [self] in
-        switch self.type.lowercased() {
-        case "arpeggio":
-            return [3, 4, 5]
-        case "scale":
-            return [2, 1, 2, 2, 1, 2, 2]
-        case "harmonic":
-            return [2, 1, 2, 2, 1, 3, 1]
-        case "melodic":
-            return [2, 1, 2, 2, 2, 2, 1]
-        default:
-            return [-1]
-        }
-    }()
-    
-    lazy var tetradsPattern : [Int] = {
-        [self] in
-        switch self.type.lowercased() {
-        case "dominant-seventh":
-            return [4, 3, 3, 2]
-        case "major-seventh":
-            return [4, 3, 4, 1]
-        case "minor-seventh":
-            return [3, 4, 3, 2]
-        case "diminished-seventh":
-            return [3, 3, 3, 3]
-        default:
-            return[-1]
-        }
-    }()
-    
-    lazy var otherPattern : [Int] = {
-        switch self.type.lowercased() {
-        case "chromatic-scale":
-            return [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        case "whole-tone-scale":
-            return [2, 2, 2, 2, 2, 2]
-        case "major-pentatonic-scale":
-            return [2, 2, 3, 2, 3]
-        case "minor-pentatonic-scale":
-            return [3, 2, 2, 3, 2]
-        case "blues-scale":
-            return [3, 2, 1, 1, 3, 2]
-        default:
-            return[-1]
-        }
-    }()
-    
-    var accendingNotes = [1: "1:A",
-                          2: "1:A#/Bb",
+    private let accendingNotes = [1: "1:A",
+                          2: "1:A#|Bb",
                           3: "1:B",
                           4: "1:C",
-                          5: "1:C#/Db",
+                          5: "1:C#|Db",
                           6: "1:D",
-                          7: "1:D#/Eb",
+                          7: "1:D#|Eb",
                           8: "1:E",
                           9: "1:F",
-                          10: "1:F#/Gb",
+                          10: "1:F#|Gb",
                           11: "1:G",
-                          12: "1:G#/Ab",
+                          12: "1:G#|Ab",
                           13: "2:A",
-                          14: "2:A#/Bb",
+                          14: "2:A#|Bb",
                           15: "2:B",
                           16: "2:C",
-                          17: "2:C#/Db",
+                          17: "2:C#|Db",
                           18: "2:D",
-                          19: "2:D#/Eb",
+                          19: "2:D#|Eb",
                           20: "2:E",
                           21: "2:F",
-                          22: "2:F#/Gb",
+                          22: "2:F#|Gb",
                           23: "2:G",
-                          24: "2:G#/Ab",
+                          24: "2:G#|Ab",
                           25: "3:A",
-                          26: "3:A#/Bb",
+                          26: "3:A#|Bb",
                           27: "3:B",
                           28: "3:C",
-                          29: "3:C#/Db",
+                          29: "3:C#|Db",
                           30: "3:D",
-                          31: "3:D#/Eb",
+                          31: "3:D#|Eb",
                           32: "3:E",
                           33: "3:F",
-                          34: "3:F#/Gb",
+                          34: "3:F#|Gb",
                           35: "3:G",
-                          36: "3:G#/Ab",
+                          36: "3:G#|Ab",
                           37: "4:A",
-                          38: "4:A#/Bb",
+                          38: "4:A#|Bb",
                           39: "4:B",
                           40: "4:C",
-                          41: "4:C#/Db",
+                          41: "4:C#|Db",
                           42: "4:D",
-                          43: "4:D#/Eb",
+                          43: "4:D#|Eb",
                           44: "4:E",
                           45: "4:F",
-                          46: "4:F#/Gb",
+                          46: "4:F#|Gb",
                           47: "4:G",
-                          48: "4:G#/Ab"]
-    
-    /*
-     Return the scale Note Names
-     */
-    func getScaleNoteNames() -> [String] {
-        return scaleNoteNames
-    }
+                          48: "4:G#|Ab"]
     
     /*
      Just a tester to be deleted
@@ -148,48 +74,191 @@ struct WriteScales {
         }
     }
     
-    func convertToScaleArray(baseScale: [String], octavesToPlay: Int, tonicOption: Int, startingOctave: Int) -> [String] {
-        if (octavesToPlay == 1 && startingOctave == 1 && tonicOption == 1) {
-            return baseScale
+    /*
+     Return the correct octave size
+     ----------------
+     @param arrayOfNotes: the notes held in the array
+     @param numOctaves: an integer of the number of octaves to make the scale
+     */
+    private func convertToOctaveSize(arrayOfNotes: [String], numOctaves: Int) -> [String] {
+        
+        var octavesArray: [String]
+        let splitArr = arrayOfNotes.split()
+        var firstHalfArr = splitArr.left
+        let secondhalfArr = splitArr.right
+        // Add first half of the scale to the array to be retrued
+        octavesArray = firstHalfArr
+        
+        
+        // Remove first element in firstHalfArr so as to not have repeating tonics
+        firstHalfArr.remove(at: 0)
+    
+        // Loop through number of octaves and add to the array accordingly accending
+        let times = numOctaves - 1
+        times.times {
+            octavesArray.append(contentsOf: firstHalfArr)
         }
-        return [""]
+        
+        // decending adding
+        numOctaves.times {
+            octavesArray.append(contentsOf: secondhalfArr)
+        }
+        
+        return octavesArray
+    }
+    
+    /*
+     Return an Array of strings with the tonics repeating as desired.
+     ----------------
+     @param scaleArray: the notes held in the array (with the octaves implemented)
+     @param tonicOption: Whether the tonic note will be repeated or note. Cases are; 1: never, 2: always, 3: always/first
+     */
+    private func convertToTonicOptions(scaleArray: [String], tonicOption: Int) -> [String] {
+        var valueArr = scaleArray
+        let tonic = valueArr[0]
+        var itr = 0
+    
+        // repeat all tonics
+        for note in scaleArray {
+            if (note == tonic) {
+                valueArr.insert(note, at: itr)
+                itr += 1 // so it increments by 2 on this round
+            }
+            itr += 1
+        }
+        
+        // remove first and last tonics if specified
+        if (tonicOption == 3) {
+            valueArr.removeFirst()
+            valueArr.removeLast()
+        }
+        return valueArr
+    }
+    
+    /*
+     Retruns a scale array that has the characteristics required
+     ----------------
+     @param baseScale: An array of strings contsining one octave of the scale accending and decending. Only one note per index
+     @param octavesToPlay: The number of octaves in the scale. From 1 to 3
+     @param tonicOption: Whether the tonic note will be repeated or note. Cases are; 1: never, 2: always, 3: always/first
+     @param initialOctave: The octave the scale will start at.
+     @param scaleMode: ......
+     */
+    func convertToScaleArray(baseScale: [String], octavesToPlay: Int, tonicOption: Int, scaleMode: String) -> [String] {
+        var alteredScale = baseScale
+        
+        // Check if it is in a mode of wholetone scale
+        if (!scaleMode.isEmpty) {
+            // convert to the scale specified
+            return ["Was not empty"]
+        }
+        
+        // Make the scale the desired length from octaves
+        if (octavesToPlay > 1) {
+            alteredScale = convertToOctaveSize(arrayOfNotes: alteredScale, numOctaves: octavesToPlay)
+        }
+        
+        // Make the scale the desired tonic options
+        if (tonicOption > 1) {
+            alteredScale = convertToTonicOptions(scaleArray: alteredScale, tonicOption: tonicOption)
+        }
+
+        return alteredScale
+    }
+    
+    /*
+     Converts the scaleArray into a file readable by playSounds class. e.g. "1:C#|Db", "1:D#|Eb" etc
+     ----------------
+     @param scaleArray: An Array of String that has all of the notes of the scale in order
+     @param initialOctave: The octave the scale will start at.
+     @param octavesToPlay: The number of octaves in the scale. From 1 to 3
+     */
+    func createScaleInfoArray(scaleArray: [String], initialOctave: Int, octavesToPlay: Int) -> [String] {
+        
+        // convert the notes into Full name. e.g. A# = A#|Bb
+        var scaleInfoArray = scaleArray
+        var itr = 0
+        var fullNote : String
+        var octaveNumber = initialOctave
+        var previousKey = -1
+        var newNoteString : String
+        
+        for note in scaleArray {
+            if (note.count > 1) {
+                fullNote = getFullNote(singularNote: note)
+                scaleInfoArray[itr] = fullNote
+            }
+            itr += 1
+        }
+        
+        // reinitialise itr to 0
+        itr = 0
+        var flag = true
+        var previousNote = "Previous note"
+        
+        // Add the correct octave number next to the note. e.g. 1:A#|Bb
+        for note in scaleInfoArray {
+            newNoteString = "\(octaveNumber):\(note)"
+            previousKey = noteKeyFinder(noteSelected: newNoteString, previousKey: previousKey)
+            
+            if (previousKey == 100) {
+                if (flag) {
+                    octaveNumber += 1
+                } else {
+                    octaveNumber -= 1
+                }
+                if (octaveNumber == (octavesToPlay + 2)) { // Plus 2 due to the sounds files starting on octave 1 and the increment just beforehand
+                    flag = false
+                    octaveNumber -= 1 // To remove the added one from before
+                }
+                newNoteString = "\(octaveNumber):\(note)"
+                if (!flag) {
+                    scaleInfoArray[itr - 1] = "\(octaveNumber):\(previousNote)"
+                }
+            }
+            
+            scaleInfoArray[itr] = newNoteString
+            itr += 1
+            previousNote = note
+        }
+        
+        return scaleInfoArray
     }
     
     /*
      Returns the starting notes key in the musicNotes dictionary
      */
-    private func startingNoteKeyFinder(startingNote: String, startingOctave: Int) -> Int {
-        var key = -1 // stays -1 if unchanged
+    private func noteKeyFinder(noteSelected: String, previousKey: Int) -> Int { /// MAYBE WILL NEED AN ACCENDING DECENDING CHECK
         
-        for note in accendingNotes {
-            let noteOctaveArr = note.value.components(separatedBy: ":")
-            if (noteOctaveArr[1] == startingNote && noteOctaveArr[0] == String(startingOctave)) {
-                key = note.key
-            }
+        let selectedNotesKey = accendingNotes.key(from: noteSelected) ?? -1
+        if (selectedNotesKey < previousKey && previousKey != 100) {
+            return 100; // since 100 is not a valid key and is greater than any previousKey
+        } else {
+            return selectedNotesKey
         }
-        return key
     }
     
+    /*
+     Returns the sound file identifiable note from a signle note
+     */
     private func getFullNote(singularNote: String) -> String{
         switch singularNote {
         case "F#", "Gb":
-            return "F#/Gb"
+            return "F#|Gb"
         case "C#", "Db":
-            return "C#/Db"
+            return "C#|Db"
         case "G#", "Ab":
-            return "G#/Ab"
+            return "G#|Ab"
         case "D#", "Eb":
-            return "D#/Eb"
+            return "D#|Eb"
         case "A#", "Bb":
-            return "A#/Bb"
+            return "A#|Bb"
         default:
             return singularNote
         }
     }
     
-    /**
-     Returns an array of the notes to play in the specific scale
-     */
+    /*
     mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String, tonicOption: Int, startingOctave: Int) -> [String] {
         var startingKey = startingNoteKeyFinder(startingNote: startingNote, startingOctave: startingOctave)
         let originalStartingKey = startingKey
@@ -248,8 +317,6 @@ struct WriteScales {
             // Needs to be altered to do multiple octaves as well. Should create another function for this purpose!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             reversedValuesArr = valueArray.reversed()
             noteNameReversedValuesArr = noteNameValueArray.reversed()
-            reversedValuesArr = melodicMinorDecendingAlterations(on: reversedValuesArr, for: octave)
-            noteNameReversedValuesArr = melodicMinorDecendingAlterations(on: noteNameReversedValuesArr, for: octave)
             
             // removed a value so as to not repeat the tonic
             reversedValuesArr.removeFirst()
@@ -264,190 +331,7 @@ struct WriteScales {
         self.scaleNoteNames = noteNameScaleArray
         return scaleArray
     }
-    
-    /**
-     If the repeating tonic buttons are selected than the array repeats the neccessary tonic notes
      */
-    private func addRepeatingTonics(for scaleArr: [String], tonicOption: Int) -> [String] {
-        var valueArr = scaleArr
-        
-        if (tonicOption >= 2) {
-            // repeat all
-            let startingNote = scaleArr[0].components(separatedBy: ":")[1]
-            var firstHalf = true
-            
-            for note in valueArr {
-
-                let currentNote = note.components(separatedBy: ":")[1]
-                if (currentNote == startingNote) {
-                    let index : Int
-                    if (firstHalf) {
-                        index = valueArr.firstIndex(of: note)!
-                    } else {
-                       index = valueArr.lastIndex(of: note)!
-                    }
-
-                    valueArr.insert(note, at: index)
-                    if (index >= scaleArr.count/2) {
-                        firstHalf = false
-                    }
-                }
-            }
-            
-            if (tonicOption == 3) {
-                // Reapeat all/First
-                valueArr.removeFirst()
-                valueArr.removeLast()
-            }
-        }
-        // Else: repeat none
-        return valueArr
-    }
-        
-    /**
-     If a melodic minor scale has been chosen than this allows it to be altered to a natural minor scale when decending.
-     */
-    private func melodicMinorDecendingAlterations(on reversedValuesArr: [String], for octave: Int) -> [String] {
-        var reversedValues = reversedValuesArr
-        let seventhNote = reversedValues.remove(at: 1)
-        let sixthNote = reversedValues.remove(at: 1)
-        let firstSeventhNoteKey = accendingNotes.key(from: seventhNote)
-        let firstSixthNoteKey = accendingNotes.key(from: sixthNote)
-        
-        if (octave > 1) {
-            reversedValues.remove(at: 6)
-            reversedValues.remove(at: 6)
-        }
-        if (octave > 2) {
-            reversedValues.remove(at: 11)
-            reversedValues.remove(at: 11)
-        }
-        var seventhIndexPos = 1
-        var sixthIndexPos = 2
-        var newSeventhNotesKey = (firstSeventhNoteKey! - 1)
-        var newSixthhNotesKey = (firstSixthNoteKey! - 1)
-        
-        octave.times {
-            reversedValues.insert(accendingNotes[newSeventhNotesKey]!, at: seventhIndexPos)
-            seventhIndexPos += 6
-            newSeventhNotesKey -= 12
-        }
-        octave.times {
-            reversedValues.insert(accendingNotes[newSixthhNotesKey]!, at: sixthIndexPos)
-            sixthIndexPos += 7
-            newSixthhNotesKey -= 12
-        }
-        
-        return reversedValues
-    }
-    
-    /**
-     Returns an array of the keys for the relative scale in the accending notes dictionary
-     */
-    private mutating func dictKeysArray(startingKey: Int, tonality: String, octave: Int, keysArray: [Int]) -> [Int] {
-        
-        var startingNum = startingKey
-        var dictKeysArray = keysArray
-        var curruntOctave = 1
-        
-        while !(curruntOctave > octave) {
-            switch tonality.lowercased() {
-            case "major":
-                for num in majorPattern {
-                    startingNum += num
-                    dictKeysArray.append(startingNum)
-                }
-            case "minor":
-                for num in minorPattern {
-                    startingNum += num
-                    dictKeysArray.append(startingNum)
-                }
-            case "ionian":
-                for num in majorPattern {
-                    startingNum += num
-                    dictKeysArray.append(startingNum)
-                }
-            case "dorian":
-                var dorianPattern = majorPattern
-                let firstNum = dorianPattern.removeFirst()
-                dorianPattern.append(firstNum)
-                for num in dorianPattern {
-                    startingNum += num
-                    dictKeysArray.append(startingNum)
-                }
-            case "phrygian":
-                var phrygianPattern = majorPattern
-                2.times {
-                    let content = phrygianPattern.removeFirst()
-                    phrygianPattern.append(content)
-                }
-
-                for num in phrygianPattern {
-                    startingNum += num
-                    dictKeysArray.append(startingNum)
-                }
-            case "lydian":
-                var lydianPattern = majorPattern
-                3.times {
-                    let content = lydianPattern.removeFirst()
-                    lydianPattern.append(content)
-                }
-
-                for num in lydianPattern {
-                    startingNum += num
-                    dictKeysArray.append(startingNum)
-                }
-            case "mixolydian":
-                var mixolydianPattern = majorPattern
-                4.times {
-                    let content = mixolydianPattern.removeFirst()
-                    mixolydianPattern.append(content)
-                }
-
-                for num in mixolydianPattern {
-                    startingNum += num
-                    dictKeysArray.append(startingNum)
-                }
-            case "aeolian":
-                var aeolianPattern = majorPattern
-                5.times {
-                    let content = aeolianPattern.removeFirst()
-                    aeolianPattern.append(content)
-                }
-
-                for num in aeolianPattern {
-                    startingNum += num
-                    dictKeysArray.append(startingNum)
-                }
-            case "locrian":
-                var locrianPattern = majorPattern
-                6.times {
-                    let content = locrianPattern.removeFirst()
-                    locrianPattern.append(content)
-                }
-
-                for num in locrianPattern {
-                    startingNum += num
-                    dictKeysArray.append(startingNum)
-                }
-            case "others":
-                for num in otherPattern {
-                    startingNum += num
-                    dictKeysArray.append(startingNum)
-                }
-            case "tetrad":
-                for num in tetradsPattern {
-                    startingNum += num
-                    dictKeysArray.append(startingNum)
-                }
-            default:
-                print("dictionary of notes failed")
-                return [-1]
-            }
-            curruntOctave += 1
-        }
-        return dictKeysArray
-    }
 }
 
 /**
@@ -478,5 +362,15 @@ extension Dictionary where Value: Equatable {
     
     func allKeys(forValue val: Value) -> [Key] {
         return self.filter { $1 == val }.map { $0.0 }
+    }
+}
+
+extension Array {
+    func split() -> (left: [Element], right: [Element]) {
+        let ct = self.count
+        let half = ct / 2 + ct % 2
+        let leftSplit = self[0 ..< half]
+        let rightSplit = self[half ..< ct]
+        return (left: Array(leftSplit), right: Array(rightSplit))
     }
 }

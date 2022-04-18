@@ -248,17 +248,20 @@ struct SoundView : View {
                         fatalError()
                     }
                     
-                    var scale = WriteScales(type: scaleType.lowercased())
+                    var scale = WriteScales()
                     scale.getJsonScale(stringArr: baseScaleNotes)
+                    let scaleInfo = ["1:A", "1:B", "1:C#/Db", "1:D", "1:E", "1:F#/Gb", "1:G#/Ab", "2:A", "2:B", "2:C#/Db", "2:D", "2:E", "2:F#/Gb", "2:G#/Ab", "3:A", "2:G#/Ab", "2:F#/Gb", "2:E", "2:D", "2:C#/Db", "2:B", "2:A", "1:G#/Ab", "1:F#/Gb", "1:E", "1:D", "1:C#/Db", "1:B", "1:A"]
+                    /*
                     let scaleInfo = scale.ScaleNotes(startingNote: startingNote,
                                                      octave: musicNotes.octaves,
                                                      tonality: tonality,
                                                      tonicOption: musicNotes.tonicMode,
                                                      startingOctave: musicNotes.startingOctave)
+                     */
                     let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo, tempo: Int(musicNotes.tempo))
                     let delay = CGFloat(60/musicNotes.tempo)
                     musicNotes.scaleNotes = scaleSoundFiles
-                    musicNotes.scaleNoteNames = playScale.convertToSoundFile(scaleInfoArray: scale.getScaleNoteNames(), tempo: Int(musicNotes.tempo))
+                    musicNotes.scaleNoteNames = playScale.convertToSoundFile(scaleInfoArray: ["A", "B"], tempo: Int(musicNotes.tempo))
                     
                     // Could add in quavers?
                     switch fileReaderAndWriter.readMetronomePulse().lowercased() {
