@@ -12,7 +12,7 @@ import Foundation
  */
 class FileReaderAndWriter: ObservableObject {
     
-    @Published var scales: [Scale]
+    @Published var scales: [ScaleCharacteristics]
     
     let filePath = FileManager.documentsDirectory.appendingPathComponent("FavouriteScales")
     let scaleInstrumentPath = FileManager.documentsDirectory.appendingPathComponent("ScaleInstrument")
@@ -25,7 +25,7 @@ class FileReaderAndWriter: ObservableObject {
     init() {
         do {
             let data = try Data(contentsOf: filePath)
-            scales = try JSONDecoder().decode([Scale].self, from: data)
+            scales = try JSONDecoder().decode([ScaleCharacteristics].self, from: data)
         } catch {
             scales = []
         }
@@ -57,7 +57,7 @@ class FileReaderAndWriter: ObservableObject {
              noteDisplay: Int,
              endlessLoop: Bool) {
 
-        let scale = Scale(id: UUID(),
+        let scale = ScaleCharacteristics(id: UUID(),
                           scaleInfo: scaleInfo,
                           tonality: tonality,
                           type: type,
@@ -75,7 +75,7 @@ class FileReaderAndWriter: ObservableObject {
         save()
     }
     
-    func delete(_ scale: Scale) {
+    func delete(_ scale: ScaleCharacteristics) {
         if let index = scales.firstIndex(of: scale) {
             scales.remove(at: index)
             save()

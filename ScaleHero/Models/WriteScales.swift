@@ -132,14 +132,30 @@ struct WriteScales {
                           47: "4:G",
                           48: "4:G#/Ab"]
     
-    /**
+    /*
      Return the scale Note Names
      */
     func getScaleNoteNames() -> [String] {
         return scaleNoteNames
     }
     
-    /**
+    /*
+     Just a tester to be deleted
+     */
+    func getJsonScale(stringArr: [String]) {
+        for string in stringArr {
+            print("\(string)")
+        }
+    }
+    
+    func convertToScaleArray(baseScale: [String], octavesToPlay: Int, tonicOption: Int, startingOctave: Int) -> [String] {
+        if (octavesToPlay == 1 && startingOctave == 1 && tonicOption == 1) {
+            return baseScale
+        }
+        return [""]
+    }
+    
+    /*
      Returns the starting notes key in the musicNotes dictionary
      */
     private func startingNoteKeyFinder(startingNote: String, startingOctave: Int) -> Int {

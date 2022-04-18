@@ -175,7 +175,12 @@
 		C5468413280A937F00DA9BC8 /* TuningFork1-Drone-B.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5468407280A937F00DA9BC8 /* TuningFork1-Drone-B.mp3 */; };
 		C5468414280A937F00DA9BC8 /* TuningFork1-Drone-G#|Ab.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5468408280A937F00DA9BC8 /* TuningFork1-Drone-G#|Ab.mp3 */; };
 		C546841C280BDC7600DA9BC8 /* PlaySoundsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C546841B280BDC7600DA9BC8 /* PlaySoundsTests.swift */; };
-		C5468421280C081B00DA9BC8 /* ScaleOptions.json in Resources */ = {isa = PBXBuildFile; fileRef = C5468420280C081B00DA9BC8 /* ScaleOptions.json */; };
+		C5468423280CE34100DA9BC8 /* ScaleOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5468422280CE34100DA9BC8 /* ScaleOptions.swift */; };
+		C5468425280CE5C800DA9BC8 /* Scales.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5468424280CE5C800DA9BC8 /* Scales.swift */; };
+		C5468427280CE6A200DA9BC8 /* ScaleArrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5468426280CE6A200DA9BC8 /* ScaleArrays.swift */; };
+		C546842B280CE98800DA9BC8 /* WriteScalesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C546842A280CE98800DA9BC8 /* WriteScalesTests.swift */; };
+		C546842F280CF62500DA9BC8 /* Arpeggios.swift in Sources */ = {isa = PBXBuildFile; fileRef = C546842E280CF62500DA9BC8 /* Arpeggios.swift */; };
+		C5468432280CFACF00DA9BC8 /* scale-data.json in Resources */ = {isa = PBXBuildFile; fileRef = C5468431280CFACF00DA9BC8 /* scale-data.json */; };
 		C555641627C3A8CB009AC00C /* Metronome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C555641527C3A8CB009AC00C /* Metronome.mp3 */; };
 		C555641827C3A8D0009AC00C /* Metronome1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C555641727C3A8D0009AC00C /* Metronome1.mp3 */; };
 		C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */; };
@@ -194,7 +199,7 @@
 		C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B03BDC278416EB00643E7C /* PlayingView.swift */; };
 		C5DBD5C1278078FF00DF5183 /* MainUIButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */; };
 		C5DBD5F227812A9E00DF5183 /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */; };
-		C5DBD5F427812B6100DF5183 /* Scale.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F327812B6100DF5183 /* Scale.swift */; };
+		C5DBD5F427812B6100DF5183 /* ScaleCharacteristics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F327812B6100DF5183 /* ScaleCharacteristics.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -384,7 +389,12 @@
 		C5468407280A937F00DA9BC8 /* TuningFork1-Drone-B.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "TuningFork1-Drone-B.mp3"; sourceTree = "<group>"; };
 		C5468408280A937F00DA9BC8 /* TuningFork1-Drone-G#|Ab.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "TuningFork1-Drone-G#|Ab.mp3"; sourceTree = "<group>"; };
 		C546841B280BDC7600DA9BC8 /* PlaySoundsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySoundsTests.swift; sourceTree = "<group>"; };
-		C5468420280C081B00DA9BC8 /* ScaleOptions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ScaleOptions.json; sourceTree = "<group>"; };
+		C5468422280CE34100DA9BC8 /* ScaleOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleOptions.swift; sourceTree = "<group>"; };
+		C5468424280CE5C800DA9BC8 /* Scales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scales.swift; sourceTree = "<group>"; };
+		C5468426280CE6A200DA9BC8 /* ScaleArrays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleArrays.swift; sourceTree = "<group>"; };
+		C546842A280CE98800DA9BC8 /* WriteScalesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteScalesTests.swift; sourceTree = "<group>"; };
+		C546842E280CF62500DA9BC8 /* Arpeggios.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arpeggios.swift; sourceTree = "<group>"; };
+		C5468431280CFACF00DA9BC8 /* scale-data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "scale-data.json"; sourceTree = "<group>"; };
 		C555641527C3A8CB009AC00C /* Metronome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome.mp3; path = ../../ScaleHeroAppResources/Metronome.mp3; sourceTree = "<group>"; };
 		C555641727C3A8D0009AC00C /* Metronome1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome1.mp3; path = ../../ScaleHeroAppResources/Metronome1.mp3; sourceTree = "<group>"; };
 		C574FE72276886B700ADD3B3 /* ScaleHero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScaleHero.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -406,7 +416,7 @@
 		C5B03BDC278416EB00643E7C /* PlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingView.swift; sourceTree = "<group>"; };
 		C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUIButtonView.swift; sourceTree = "<group>"; };
 		C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
-		C5DBD5F327812B6100DF5183 /* Scale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scale.swift; sourceTree = "<group>"; };
+		C5DBD5F327812B6100DF5183 /* ScaleCharacteristics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleCharacteristics.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -487,12 +497,16 @@
 		C574FE74276886B700ADD3B3 /* ScaleHero */ = {
 			isa = PBXGroup;
 			children = (
+				C5468431280CFACF00DA9BC8 /* scale-data.json */,
 				C51BFE87279A8BF3001BF9A3 /* Info.plist */,
 				C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */,
 				C574FEA72769CF9F00ADD3B3 /* Views */,
 				C574FF392773F47A00ADD3B3 /* Models */,
 				C574FE79276886BC00ADD3B3 /* Assets.xcassets */,
-				C5468420280C081B00DA9BC8 /* ScaleOptions.json */,
+				C5468422280CE34100DA9BC8 /* ScaleOptions.swift */,
+				C5468424280CE5C800DA9BC8 /* Scales.swift */,
+				C546842E280CF62500DA9BC8 /* Arpeggios.swift */,
+				C5468426280CE6A200DA9BC8 /* ScaleArrays.swift */,
 				C574FE7B276886BC00ADD3B3 /* Preview Content */,
 			);
 			path = ScaleHero;
@@ -511,6 +525,7 @@
 			children = (
 				C574FE86276886BD00ADD3B3 /* ScaleHeroTests.swift */,
 				C546841B280BDC7600DA9BC8 /* PlaySoundsTests.swift */,
+				C546842A280CE98800DA9BC8 /* WriteScalesTests.swift */,
 			);
 			path = ScaleHeroTests;
 			sourceTree = "<group>";
@@ -555,7 +570,7 @@
 				C54531D127756F180041702C /* PlaySounds.swift */,
 				C545330E277E866C0041702C /* FileReaderAndWriter.swift */,
 				C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */,
-				C5DBD5F327812B6100DF5183 /* Scale.swift */,
+				C5DBD5F327812B6100DF5183 /* ScaleCharacteristics.swift */,
 				C5321EFE27A8CC0C00A63085 /* SoundError.swift */,
 			);
 			path = Models;
@@ -892,6 +907,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5468432280CFACF00DA9BC8 /* scale-data.json in Resources */,
 				C54683BA280A917500DA9BC8 /* Piano-4-A.mp3 in Resources */,
 				C5468316280A90DE00DA9BC8 /* Strings-4-C#|Db.mp3 in Resources */,
 				C54682FB280A90DE00DA9BC8 /* Strings-1-D#|Eb.mp3 in Resources */,
@@ -970,7 +986,6 @@
 				C5468313280A90DE00DA9BC8 /* Strings-2-A#|Bb.mp3 in Resources */,
 				C546836C280A913D00DA9BC8 /* Organ-2-G#|Ab.mp3 in Resources */,
 				C5468366280A913D00DA9BC8 /* Organ-3-F#|Gb.mp3 in Resources */,
-				C5468421280C081B00DA9BC8 /* ScaleOptions.json in Resources */,
 				C54683AB280A917500DA9BC8 /* Piano-1-C#|Db.mp3 in Resources */,
 				C54682F2280A90DE00DA9BC8 /* Strings-3-D.mp3 in Resources */,
 				C54682E8280A90DE00DA9BC8 /* Strings-4-D.mp3 in Resources */,
@@ -1094,9 +1109,13 @@
 				C574FEA92769CFDF00ADD3B3 /* ArpeggioView.swift in Sources */,
 				C545330F277E866C0041702C /* FileReaderAndWriter.swift in Sources */,
 				C574FEA02769BFE700ADD3B3 /* ScalesView.swift in Sources */,
-				C5DBD5F427812B6100DF5183 /* Scale.swift in Sources */,
+				C5468423280CE34100DA9BC8 /* ScaleOptions.swift in Sources */,
+				C5DBD5F427812B6100DF5183 /* ScaleCharacteristics.swift in Sources */,
+				C5468425280CE5C800DA9BC8 /* Scales.swift in Sources */,
 				C5A826A127BC866B002F2F66 /* NoteSelectionButton.swift in Sources */,
 				C5321F0127A8E14F00A63085 /* AcknowledgementsView.swift in Sources */,
+				C546842F280CF62500DA9BC8 /* Arpeggios.swift in Sources */,
+				C5468427280CE6A200DA9BC8 /* ScaleArrays.swift in Sources */,
 				C5321F0727A933A200A63085 /* AboutDeveloperView.swift in Sources */,
 				C54531D227756F180041702C /* PlaySounds.swift in Sources */,
 				C58FE9F3278292B900075A4C /* OtherScalesView.swift in Sources */,
@@ -1108,6 +1127,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C574FE87276886BD00ADD3B3 /* ScaleHeroTests.swift in Sources */,
+				C546842B280CE98800DA9BC8 /* WriteScalesTests.swift in Sources */,
 				C546841C280BDC7600DA9BC8 /* PlaySoundsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

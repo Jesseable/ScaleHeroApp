@@ -12,6 +12,7 @@ struct SoundView : View {
     private let universalSize = UIScreen.main.bounds
     
     @Binding var screenType: String
+    @EnvironmentObject var scaleOptions: ScaleOptions
     @State var scaleType: String
     @State private var isPlaying = false
     @State private var presentAlert = false
@@ -222,7 +223,33 @@ struct SoundView : View {
                     let startingNote = scaleTypeArr[0]
                     let tonality = scaleTypeArr[1].lowercased()
                     let scaleType = scaleTypeArr[2].lowercased()
+                    
+                    let scales  = scaleOptions.scales
+                    var baseScaleNotes : [String] = []
+                    
+                    /// HERE MUST INSERT CODE TO DECIDE WHETHER ARPEGGIO OR SCALE
+                    for scale in scales {
+                        
+                        if (scale.name.elementsEqual("notes")) {
+                            for scaleArray in scale.scaleArrays {
+                                if (scaleArray.note.elementsEqual(startingNote)) {
+                                    // FOR NOW ALWAYS ASSUME MAJOR. WILL CHANGE TO SWICTH ON TONALITY
+                                    baseScaleNotes = scaleArray.major
+                                    break
+                                }
+                                
+                            }
+                            break // This is all that we want. No need to continue in the loop
+                        }
+                    }
+                    
+                    if (baseScaleNotes.isEmpty) {
+                        print("failed due to not being able to read base scale notes from the json file")
+                        fatalError()
+                    }
+                    
                     var scale = WriteScales(type: scaleType.lowercased())
+                    scale.getJsonScale(stringArr: baseScaleNotes)
                     let scaleInfo = scale.ScaleNotes(startingNote: startingNote,
                                                      octave: musicNotes.octaves,
                                                      tonality: tonality,
