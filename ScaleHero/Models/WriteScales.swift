@@ -82,6 +82,7 @@ struct WriteScales {
      */
     private func convertToOctaveSize(arrayOfNotes: [String], numOctaves: Int) -> [String] {
         
+        // Split the array into two halves
         var octavesArray: [String]
         let splitArr = arrayOfNotes.split()
         var firstHalfArr = splitArr.left
@@ -150,7 +151,7 @@ struct WriteScales {
         // Check if it is in a mode of wholetone scale
         if (!scaleMode.isEmpty) {
             // convert to the scale specified
-            return ["Was not empty"]
+            return ["Was not empty"] /// HAVE TO EDIT THIS SECTION
         }
         
         // Make the scale the desired length from octaves
@@ -173,15 +174,12 @@ struct WriteScales {
      @param initialOctave: The octave the scale will start at.
      @param octavesToPlay: The number of octaves in the scale. From 1 to 3
      */
-    func createScaleInfoArray(scaleArray: [String], initialOctave: Int, octavesToPlay: Int) -> [String] {
+    func createScaleInfoArray(scaleArray: [String], initialOctave: Int) -> [String] {
         
         // convert the notes into Full name. e.g. A# = A#|Bb
         var scaleInfoArray = scaleArray
         var itr = 0
         var fullNote : String
-        var octaveNumber = initialOctave
-        var previousKey = -1
-        var newNoteString : String
         
         for note in scaleArray {
             if (note.count > 1) {
@@ -191,38 +189,70 @@ struct WriteScales {
             itr += 1
         }
         
-        // reinitialise itr to 0
-        itr = 0
-        var flag = true
-        var previousNote = "Previous note"
-        
         // Add the correct octave number next to the note. e.g. 1:A#|Bb
-        for note in scaleInfoArray {
+        scaleInfoArray = appendOctaveNumberToArray(scaleArray: scaleInfoArray, initialOctave: initialOctave)
+        
+        return scaleInfoArray
+    }
+    
+    /*
+     Returns the array with the octave numbers added. e.g. A -> 1:A
+     ----------------
+     @param scaleArray: An Array of String that has all of the notes of the scale in order
+     @param initialOctave: The octave the scale will start at.
+     @param octavesToPlay: The number of octaves in the scale. From 1 to 3
+     */
+    private func appendOctaveNumberToArray(scaleArray: [String], initialOctave: Int) -> [String] {
+        
+        var scaleArrayWithOctaves : [String]
+        var octaveProgressionAscending: [Int] = []
+        
+        // Split the array into two halves. If there is an uneven number the first half will contain the middle array
+        let splitArr = scaleArray.split()
+        var firstHalfArr = splitArr.left
+        var secondhalfArr = splitArr.right
+        
+        var octaveNumber = initialOctave
+        var previousKey = -1
+        var newNoteString : String
+        var itr = 0
+        
+        // Add the correct octave number next to the first half of strings
+        for note in firstHalfArr {
             newNoteString = "\(octaveNumber):\(note)"
             previousKey = noteKeyFinder(noteSelected: newNoteString, previousKey: previousKey)
             
             if (previousKey == 100) {
-                if (flag) {
-                    octaveNumber += 1
-                } else {
-                    octaveNumber -= 1
-                }
-                if (octaveNumber == (octavesToPlay + 2)) { // Plus 2 due to the sounds files starting on octave 1 and the increment just beforehand
-                    flag = false
-                    octaveNumber -= 1 // To remove the added one from before
-                }
+                octaveNumber += 1
                 newNoteString = "\(octaveNumber):\(note)"
-                if (!flag) {
-                    scaleInfoArray[itr - 1] = "\(octaveNumber):\(previousNote)"
-                }
             }
-            
-            scaleInfoArray[itr] = newNoteString
+            octaveProgressionAscending.append(octaveNumber)
+            firstHalfArr[itr] = newNoteString
             itr += 1
-            previousNote = note
         }
         
-        return scaleInfoArray
+        // reset itr
+        itr = 0
+        var octavesItr = 0
+        // Add the octaves from the octaveProgressionsAscendignArray in reverse order to the secondHalfArray
+        if (firstHalfArr.count > secondhalfArr.count) {
+            octavesItr = 1
+        }
+        let reveresedOctaveNumsArr: [Int] = octaveProgressionAscending.reversed()
+        
+        for note in secondhalfArr {
+            octaveNumber = reveresedOctaveNumsArr[octavesItr]
+            newNoteString = "\(octaveNumber):\(note)"
+            secondhalfArr[itr] = newNoteString
+            itr  += 1
+            octavesItr += 1
+        }
+        
+        // combine the first and second half arrays 
+        scaleArrayWithOctaves = firstHalfArr
+        scaleArrayWithOctaves.append(contentsOf: secondhalfArr)
+        
+        return scaleArrayWithOctaves
     }
     
     /*

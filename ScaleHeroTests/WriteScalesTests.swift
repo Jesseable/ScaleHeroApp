@@ -84,13 +84,10 @@ class WriteScalesTests: XCTestCase {
         let basicScale2 = ["C", "C", "D", "E", "F", "G", "A", "B", "C", "C", "D", "E", "F", "G", "A", "B", "C", "C", "B", "A", "G", "F", "E", "D", "C", "C", "B", "A", "G", "F", "E", "D", "C", "C"]
         let initialOctave = 1
         
-        let scaleInfoArray1 = writeScale.createScaleInfoArray(scaleArray: basicScale1, initialOctave: initialOctave, octavesToPlay: 1)
-        let scaleInfoArray2 = writeScale.createScaleInfoArray(scaleArray: basicScale2, initialOctave: initialOctave, octavesToPlay: 2)
+        let scaleInfoArray1 = writeScale.createScaleInfoArray(scaleArray: basicScale1, initialOctave: initialOctave)
+        let scaleInfoArray2 = writeScale.createScaleInfoArray(scaleArray: basicScale2, initialOctave: initialOctave)
         
         let expectedNotesArray1 = ["1:D", "1:E", "1:F#|Gb", "2:A", "2:B", "2:D", "2:B", "2:A", "1:F#|Gb", "1:E", "1:D"]
-                                // "1:D", "1:E", "1:F#|Gb", "2:A", "2:B", "2:D", "2:B", "2:A", "2:F#|Gb", "1:E", "1:D"
-        
-        
         let expectedNotesArray2 = ["1:C", "1:C", "1:D", "1:E", "1:F", "1:G", "2:A", "2:B", "2:C", "2:C", "2:D", "2:E", "2:F", "2:G", "3:A", "3:B", "3:C", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D", "2:C", "2:C", "2:B", "2:A", "1:G", "1:F", "1:E", "1:D", "1:C", "1:C"]
         
         XCTAssertEqual(scaleInfoArray1, expectedNotesArray1, "expected array1 is incorrect with infoScale 1")
