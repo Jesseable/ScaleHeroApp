@@ -94,6 +94,9 @@ class WriteScalesTests: XCTestCase {
         XCTAssertEqual(scaleInfoArray2, expectedNotesArray2, "expected array2 is incorrect with InfoScale 2")
     }
     
+    /*
+     Tests the whole tone scale works
+     */
     func testWholeToneScale() {
         let chromaticC = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db", "C"]
         let chromaticD = ["D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "Db", "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D"]
@@ -106,6 +109,51 @@ class WriteScalesTests: XCTestCase {
         
         XCTAssertEqual(wholeToneCScale, expectedChromaticC, "expected chromaticC is incorrect")
         XCTAssertEqual(wholeToneDScale, expectedChromaticD, "expected chromaticD is incorrect")
+    }
+    
+    /*
+     Tests the whole tone scale adequetly exits when not given a chromatic array
+     */
+    func testWholeToneScaleError() {
+        let chromaticC = ["C", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db", "C"]
+        let chromaticD = ["D", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "Db", "C", "B", "Bb", "A", "Ab", "G", "Gb", "D"]
+        
+        let wholeToneCScale = writeScale.convertToWholeToneScale(scaleArray: chromaticC)
+        let wholeToneDScale = writeScale.convertToWholeToneScale(scaleArray: chromaticD)
+        
+        let expectedChromaticC = ["Whole Tone Scale Failed, Invalid Input"]
+        let expectedChromaticD = ["Whole Tone Scale Failed, Invalid Input"]
+        
+        XCTAssertEqual(wholeToneCScale, expectedChromaticC, "expected chromaticC error is incorrect")
+        XCTAssertEqual(wholeToneDScale, expectedChromaticD, "expected chromaticD error is incorrect")
+    }
+    
+    func testModeMajorScale() {
+        let baseScale = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
+        
+        let ionian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.ionian)
+        let dorian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.dorian)
+        let phrygian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.phrygian)
+        let lydian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.lydian)
+        let mixolydian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.mixolydian)
+        let aeolian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.aeolian)
+        let locrian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.locrian)
+        
+        let ionianExpected = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
+        let dorianExpected = ["D", "E", "F", "G", "A", "B", "C", "D", "C", "B", "A", "G", "F", "E", "D"]
+        let phrygianExpected = ["E", "F", "G", "A", "B", "C", "D", "E", "D", "C", "B", "A", "G", "F", "E"]
+        let lydianExpected = ["F", "G", "A", "B", "C", "D", "E", "F", "E", "D", "C", "B", "A", "G", "F"]
+        let mixolydianExpected = ["G", "A", "B", "C", "D", "E", "F", "G", "F", "E", "D", "C", "B", "A", "G"]
+        let aeolianExpected = ["A", "B", "C", "D", "E", "F", "G", "A", "G", "F", "E", "D", "C", "B", "A"]
+        let locrianExpected = ["B", "C", "D", "E", "F", "G", "A", "B", "A", "G", "F", "E", "D", "C", "B"]
+        
+        XCTAssertEqual(ionian, ionianExpected, "ionian is incorrect")
+        XCTAssertEqual(dorian, dorianExpected, "dorian is incorrect")
+        XCTAssertEqual(phrygian, phrygianExpected, "phrygian is incorrect")
+        XCTAssertEqual(lydian, lydianExpected, "lydian is incorrect")
+        XCTAssertEqual(mixolydian, mixolydianExpected, "mixolydian is incorrect")
+        XCTAssertEqual(aeolian, aeolianExpected, "aeolian is incorrect")
+        XCTAssertEqual(locrian, locrianExpected, "locrian is incorrect")
     }
     
     /*

@@ -13,7 +13,7 @@ enum ScaleType {
 }
 
 // The int is the rotations in the major scale it must undertake
-enum ScaleMode : Int {
+enum ScaleMode : Int, CaseIterable {
     case ionian = 0
     case dorian = 1
     case phrygian = 2
@@ -200,28 +200,45 @@ struct WriteScales {
         return alteredScale
     }
     
-    private func convertToScaleMode(scaleArray: [String], mode: ScaleMode) -> [String] {
-        switch mode {
-        case .ionian:
-            <#code#>
-        case .dorian:
-            <#code#>
-        case .phrygian:
-            <#code#>
-        case .lydian:
-            <#code#>
-        case .mixolydian:
-            <#code#>
-        case .aeolian:
-            <#code#>
-        case .locrian:
-            <#code#>
+    func convertToScaleMode(scaleArray: [String], mode: ScaleMode) -> [String] {
+        if (scaleArray.count != 15) {
+            return ["Major scale not used when playing a major mode"]
         }
+
+        var scaleModeArr = scaleArray
+        ScaleMode.allCases.forEach {
+            if ($0 == mode) {
+                $0.rawValue.times {
+                    scaleModeArr = rotateScale(scaleArray: scaleModeArr)
+                }
+            }
+        }
+        return scaleModeArr
     }
     
-    func rotateScale(scaleArray: [String], amount: Int) -> [String] {
+    private func rotateScale(scaleArray: [String]) -> [String] {
+
+        var rotatedScaleArr = scaleArray
+        var i = 0
+        var j = 0
         
+        while (i < 14) {
+
+            rotatedScaleArr[i] = scaleArray[j + 1]
+            i += 1
+            j += 1
+            
+            if (i == 6) { // The first note
+                rotatedScaleArr[i] = scaleArray[j + 1]
+                rotatedScaleArr[i + 1] = rotatedScaleArr[0]
+                rotatedScaleArr[i + 2] = rotatedScaleArr[j + 1]
+                i += 2
+            }
+        }
+        // first note and last note are both the tonic
+        rotatedScaleArr[14] = rotatedScaleArr[0]
         
+        return rotatedScaleArr
     }
     
     func convertToWholeToneScale(scaleArray: [String]) -> [String] {
