@@ -28,7 +28,7 @@ class WriteScalesTests: XCTestCase {
         let octavesToPlay = 1
         let tonicOption = 1
         
-        let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: octavesToPlay, tonicOption: tonicOption, scaleMode: "")
+        let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
         
         let expectedNotesArray1 = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
         
@@ -44,9 +44,9 @@ class WriteScalesTests: XCTestCase {
         var octavesToPlay = 2
         let tonicOption = 1
         
-        let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: octavesToPlay, tonicOption: tonicOption, scaleMode: "")
+        let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
         octavesToPlay = 3
-        let notesArray2 = writeScale.convertToScaleArray(baseScale: baseScale2, octavesToPlay: octavesToPlay, tonicOption: tonicOption, scaleMode: "")
+        let notesArray2 = writeScale.convertToScaleArray(baseScale: baseScale2, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
         
         let expectedNotesArray1 = ["C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C", "B", "A", "G", "F", "E", "D", "C"]
         let expectedNotesArray2 = ["D", "E", "F#", "A", "B", "D", "E", "F#", "A", "B", "D", "E", "F#", "A", "B", "D", "B", "A", "F#", "E", "D", "B", "A", "F#", "E", "D", "B", "A", "F#", "E", "D"]
@@ -64,10 +64,10 @@ class WriteScalesTests: XCTestCase {
         var octavesToPlay = 2
         var tonicOption = 2
         
-        let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: octavesToPlay, tonicOption: tonicOption, scaleMode: "")
+        let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
         octavesToPlay = 3
         tonicOption = 3
-        let notesArray2 = writeScale.convertToScaleArray(baseScale: baseScale2, octavesToPlay: octavesToPlay, tonicOption: tonicOption, scaleMode: "")
+        let notesArray2 = writeScale.convertToScaleArray(baseScale: baseScale2, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
         
         let expectedNotesArray1 = ["C", "C", "D", "E", "F", "G", "A", "B", "C", "C", "D", "E", "F", "G", "A", "B", "C", "C", "B", "A", "G", "F", "E", "D", "C", "C", "B", "A", "G", "F", "E", "D", "C", "C"]
         let expectedNotesArray2 = ["D", "E", "F#", "A", "B", "D", "D", "E", "F#", "A", "B", "D", "D", "E", "F#", "A", "B", "D", "D", "B", "A", "F#", "E", "D", "D", "B", "A", "F#", "E", "D", "D", "B", "A", "F#", "E", "D"]
@@ -92,6 +92,20 @@ class WriteScalesTests: XCTestCase {
         
         XCTAssertEqual(scaleInfoArray1, expectedNotesArray1, "expected array1 is incorrect with infoScale 1")
         XCTAssertEqual(scaleInfoArray2, expectedNotesArray2, "expected array2 is incorrect with InfoScale 2")
+    }
+    
+    func testWholeToneScale() {
+        let chromaticC = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db", "C"]
+        let chromaticD = ["D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "Db", "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D"]
+        
+        let wholeToneCScale = writeScale.convertToWholeToneScale(scaleArray: chromaticC)
+        let wholeToneDScale = writeScale.convertToWholeToneScale(scaleArray: chromaticD)
+        
+        let expectedChromaticC = ["C", "D", "E", "F#", "G#", "A#", "C", "Bb", "Ab","Gb", "E", "D", "C"]
+        let expectedChromaticD = ["D", "E", "F#","G#", "A#", "C", "D", "C", "Bb", "Ab", "Gb", "E", "D"]
+        
+        XCTAssertEqual(wholeToneCScale, expectedChromaticC, "expected chromaticC is incorrect")
+        XCTAssertEqual(wholeToneDScale, expectedChromaticD, "expected chromaticD is incorrect")
     }
     
     /*

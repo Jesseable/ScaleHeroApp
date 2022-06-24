@@ -240,7 +240,7 @@ struct SoundView : View {
                                 
                             }
                             break // This is all that we want. No need to continue in the loop
-                        }
+                        } // else something arpeggio
                     }
                     
                     if (baseScaleNotes.isEmpty) {
@@ -274,6 +274,7 @@ struct SoundView : View {
                     default:
                         musicNotes.metronomePulse = 1
                     }
+
                     // This line of code sets at what tempo when the metronome off beat pulses will not play
                     if (musicNotes.tempo >= 70 || !musicNotes.metronome) {
                         musicNotes.metronomePulse = 1

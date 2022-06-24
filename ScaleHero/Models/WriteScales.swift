@@ -7,14 +7,36 @@
 
 import UIKit
 
+enum ScaleType {
+    case mode(mode: ScaleMode)
+    case wholetone
+}
+
+// The int is the rotations in the major scale it must undertake
+enum ScaleMode : Int {
+    case ionian = 0
+    case dorian = 1
+    case phrygian = 2
+    case lydian = 3
+    case mixolydian = 4
+    case aeolian = 5
+    case locrian = 6
+}
+
 /**
  Class  Writescales
  Returns the string representations of the sound files in an ordered array ready to be accessed for playing the scale
  */
 struct WriteScales {
     
+    // constants required
+    let INVALID_KEY = 100 // since 100 is not a valid key and is greater than any previousKey
+    let NO_REPEATED_TONIC = 1
+    let REPEATED_TONIC_ALL = 2
+    let REPEATED_TONIC = 3
+    
     //let type : String
-    var fileReaderAndWriter = FileReaderAndWriter()
+    var fileReaderAndWriter = FileReaderAndWriter() // NOT USED ANYWHERE???
     
     private let accendingNotes = [1: "1:A",
                           2: "1:A#|Bb",
@@ -75,10 +97,13 @@ struct WriteScales {
     }
     
     /*
-     Return the correct octave size
+     Alters a string array of notes (symbolising one octave) to contain
+         the number of octaves specified in the function.
      ----------------
      @param arrayOfNotes: the notes held in the array
      @param numOctaves: an integer of the number of octaves to make the scale
+     Returns: a string array containing the notes to be outputted in order with
+         the correct number of octaves
      */
     private func convertToOctaveSize(arrayOfNotes: [String], numOctaves: Int) -> [String] {
         
@@ -109,10 +134,12 @@ struct WriteScales {
     }
     
     /*
-     Return an Array of strings with the tonics repeating as desired.
+     Alters an array of notes to repeat tonics.
      ----------------
      @param scaleArray: the notes held in the array (with the octaves implemented)
-     @param tonicOption: Whether the tonic note will be repeated or note. Cases are; 1: never, 2: always, 3: always/first
+     @param tonicOption: Whether the tonic note will be repeated or note.
+         Cases are; 1: never, 2: always, 3: always/first
+     Returns: an Array of strings with the tonics repeating as desired.
      */
     private func convertToTonicOptions(scaleArray: [String], tonicOption: Int) -> [String] {
         var valueArr = scaleArray
@@ -123,13 +150,13 @@ struct WriteScales {
         for note in scaleArray {
             if (note == tonic) {
                 valueArr.insert(note, at: itr)
-                itr += 1 // so it increments by 2 on this round
+                itr += 1 // Jumps over the added tonic
             }
             itr += 1
         }
         
         // remove first and last tonics if specified
-        if (tonicOption == 3) {
+        if (tonicOption == REPEATED_TONIC) {
             valueArr.removeFirst()
             valueArr.removeLast()
         }
@@ -137,21 +164,27 @@ struct WriteScales {
     }
     
     /*
-     Retruns a scale array that has the characteristics required
+     Takes in a string array of a 1 octave scale and alters it depending on the inputted arguments.
      ----------------
      @param baseScale: An array of strings contsining one octave of the scale accending and decending. Only one note per index
      @param octavesToPlay: The number of octaves in the scale. From 1 to 3
      @param tonicOption: Whether the tonic note will be repeated or note. Cases are; 1: never, 2: always, 3: always/first
      @param initialOctave: The octave the scale will start at.
      @param scaleMode: ......
+     Retruns: a string array containing a scale array that has the required characteristics
      */
-    func convertToScaleArray(baseScale: [String], octavesToPlay: Int, tonicOption: Int, scaleMode: String) -> [String] {
+    func convertToScaleArray(baseScale: [String], octavesToPlay: Int, tonicOption: Int, scaleType: ScaleType? = nil) -> [String] {
         var alteredScale = baseScale
         
         // Check if it is in a mode of wholetone scale
-        if (!scaleMode.isEmpty) {
+        if (scaleType != nil) {
             // convert to the scale specified
-            return ["Was not empty"] /// HAVE TO EDIT THIS SECTION
+            switch scaleType {
+            case .wholetone:
+                alteredScale = convertToWholeToneScale(scaleArray: alteredScale)
+            default:
+                alteredScale = ["some shit"]
+            }
         }
         
         // Make the scale the desired length from octaves
@@ -160,11 +193,45 @@ struct WriteScales {
         }
         
         // Make the scale the desired tonic options
-        if (tonicOption > 1) {
+        if (tonicOption > NO_REPEATED_TONIC) {
             alteredScale = convertToTonicOptions(scaleArray: alteredScale, tonicOption: tonicOption)
         }
 
         return alteredScale
+    }
+    
+    private func convertToScaleMode(scaleArray: [String], mode: ScaleMode) -> [String] {
+        switch mode {
+        case .ionian:
+            <#code#>
+        case .dorian:
+            <#code#>
+        case .phrygian:
+            <#code#>
+        case .lydian:
+            <#code#>
+        case .mixolydian:
+            <#code#>
+        case .aeolian:
+            <#code#>
+        case .locrian:
+            <#code#>
+        }
+    }
+    
+    func rotateScale(scaleArray: [String], amount: Int) -> [String] {
+        
+        
+    }
+    
+    func convertToWholeToneScale(scaleArray: [String]) -> [String] {
+        // check it has a chromatic scale given (only chromatic scales can be turned into wholetone
+        if (scaleArray.count != 25) {
+            return ["Whole Tone Scale Failed, Invalid Input"]
+        }
+        let newCount = scaleArray.count/2 + 1 // avoid odd numbers
+        let scaleWholeToneArray = (0..<newCount).map { scaleArray[$0 + $0] }
+        return scaleWholeToneArray
     }
     
     /*
@@ -172,7 +239,7 @@ struct WriteScales {
      ----------------
      @param scaleArray: An Array of String that has all of the notes of the scale in order
      @param initialOctave: The octave the scale will start at.
-     @param octavesToPlay: The number of octaves in the scale. From 1 to 3
+     Returns: a string array containing the sound file readable format: "[octave_num]:[note_name]"
      */
     func createScaleInfoArray(scaleArray: [String], initialOctave: Int) -> [String] {
         
@@ -196,11 +263,11 @@ struct WriteScales {
     }
     
     /*
-     Returns the array with the octave numbers added. e.g. A -> 1:A
+     Inserts the octave numbers beside each note in the scale array
      ----------------
      @param scaleArray: An Array of String that has all of the notes of the scale in order
-     @param initialOctave: The octave the scale will start at.
-     @param octavesToPlay: The number of octaves in the scale. From 1 to 3
+     @param initialOctave: The octave the scale will start at
+     Returns: A string array of the notes with the addition of octave numbers beside them. e.g. A -> 1:A
      */
     private func appendOctaveNumberToArray(scaleArray: [String], initialOctave: Int) -> [String] {
         
@@ -222,7 +289,7 @@ struct WriteScales {
             newNoteString = "\(octaveNumber):\(note)"
             previousKey = noteKeyFinder(noteSelected: newNoteString, previousKey: previousKey)
             
-            if (previousKey == 100) {
+            if (previousKey == INVALID_KEY) {
                 octaveNumber += 1
                 newNoteString = "\(octaveNumber):\(note)"
             }
@@ -258,11 +325,11 @@ struct WriteScales {
     /*
      Returns the starting notes key in the musicNotes dictionary
      */
-    private func noteKeyFinder(noteSelected: String, previousKey: Int) -> Int { /// MAYBE WILL NEED AN ACCENDING DECENDING CHECK
+    private func noteKeyFinder(noteSelected: String, previousKey: Int) -> Int {
         
         let selectedNotesKey = accendingNotes.key(from: noteSelected) ?? -1
         if (selectedNotesKey < previousKey && previousKey != 100) {
-            return 100; // since 100 is not a valid key and is greater than any previousKey
+            return INVALID_KEY;
         } else {
             return selectedNotesKey
         }
