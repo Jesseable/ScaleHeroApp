@@ -8,12 +8,12 @@
 import UIKit
 
 enum ScaleType {
-    case mode(mode: ScaleMode)
+    case mode(mode: MajorScaleMode)
     case wholetone
 }
 
 // The int is the rotations in the major scale it must undertake
-enum ScaleMode : Int, CaseIterable {
+enum MajorScaleMode : Int, CaseIterable {
     case ionian = 0
     case dorian = 1
     case phrygian = 2
@@ -21,6 +21,11 @@ enum ScaleMode : Int, CaseIterable {
     case mixolydian = 4
     case aeolian = 5
     case locrian = 6
+}
+
+enum Case : CaseIterable {
+    case arpeggio
+    case scale
 }
 
 /**
@@ -36,7 +41,7 @@ struct WriteScales {
     let REPEATED_TONIC = 3
     
     //let type : String
-    var fileReaderAndWriter = FileReaderAndWriter() // NOT USED ANYWHERE???
+    var scaleOptions: ScaleOptions
     
     private let accendingNotes = [1: "1:A",
                           2: "1:A#|Bb",
@@ -93,6 +98,54 @@ struct WriteScales {
     func getJsonScale(stringArr: [String]) {
         for string in stringArr {
             print("\(string)")
+        }
+    }
+    
+    /*
+     Queries the json file scale-data to get the scale data for the starting note
+     ----------------
+     @param startingNote: the tonic of the scale
+     Returns: a string array containing the scale notes to be outputted (1 octave with no repeating tonics)
+     */
+    private func getScale(startingNote: String) -> [String] {
+        let scales = scaleOptions.scales
+        for scale in scales {
+            if (scale.name.elementsEqual("notes")) {
+                for scaleArray in scale.scaleArrays {
+                    if (scaleArray.note.elementsEqual(startingNote)) {
+                        let baseScaleNotes = scaleArray.major
+                        return baseScaleNotes
+                    }
+                }
+            }
+        }
+        print("failed due to not being able to read base scale notes from the json file")
+        fatalError()
+    }
+    
+    /*
+     Queries the json file scale-data to get the arpeggio data for the starting note
+     ----------------
+     @param startingNote: the tonic of the scale
+     Returns: a string array containing the arpeggio notes to be outputted (1 octave with no repeating tonics)
+     */
+    private func getArpeggio(startingNote: String) -> [String] { /// TO BE FIXED
+        return ["A", "B"]
+    }
+    
+    /*
+     From the starting note and type of scale (arpeggio or scale), the scale is returned from the json file scale-data
+     ----------------
+     @param type: enum Case, containing either arpeggio or scale
+     @param firstNote: the tonic of the scale
+     Returns: a string array containing the notes to be outputted (1 octave with no repeating tonics)
+     */
+    func returnScaleNotesArray(for type: Case, startingAt firstNote: String) -> [String] {
+        switch type {
+        case .arpeggio:
+            return getArpeggio(startingNote: firstNote)
+        case .scale:
+            return getScale(startingNote: firstNote)
         }
     }
     
@@ -200,13 +253,24 @@ struct WriteScales {
         return alteredScale
     }
     
-    func convertToScaleMode(scaleArray: [String], mode: ScaleMode) -> [String] {
+    /*
+     Converts a major scale to the modal scale specified
+     ----------------
+     @param scaleArray: An array of strings containing one octave of scale notes (ascending and descending).
+     @param scaleArray: A ScaleMode, e.g. dorian, phrygian, ionian etc
+     Retruns: a string array containing a scale array that has the modified mode
+     */
+    func convertToScaleMode(scaleArray: [String], mode: MajorScaleMode) -> [String] {
         if (scaleArray.count != 15) {
             return ["Major scale not used when playing a major mode"]
         }
-
-        var scaleModeArr = scaleArray
-        ScaleMode.allCases.forEach {
+        let tonicNote = scaleArray[0]
+        let alterNotes = AlterNotes()
+        let startingIonianNote = alterNotes.getMajorIonianStartingNote(from: tonicNote, in: mode)
+        print(startingIonianNote)
+        var scaleModeArr = returnScaleNotesArray(for: .scale, startingAt: startingIonianNote)
+        // rotate this scale to the appropriate tonic note for the scale
+        MajorScaleMode.allCases.forEach {
             if ($0 == mode) {
                 $0.rawValue.times {
                     scaleModeArr = rotateScale(scaleArray: scaleModeArr)

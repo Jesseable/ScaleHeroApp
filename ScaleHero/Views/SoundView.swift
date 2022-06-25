@@ -224,32 +224,16 @@ struct SoundView : View {
                     let tonality = scaleTypeArr[1].lowercased()
                     let scaleType = scaleTypeArr[2].lowercased()
                     
-                    let scales  = scaleOptions.scales
-                    var baseScaleNotes : [String] = []
+                    let writeScale = WriteScales(scaleOptions: scaleOptions)
                     
-                    /// HERE MUST INSERT CODE TO DECIDE WHETHER ARPEGGIO OR SCALE
-                    for scale in scales {
-                        
-                        if (scale.name.elementsEqual("notes")) {
-                            for scaleArray in scale.scaleArrays {
-                                if (scaleArray.note.elementsEqual(startingNote)) {
-                                    // FOR NOW ALWAYS ASSUME MAJOR. WILL CHANGE TO SWICTH ON TONALITY
-                                    baseScaleNotes = scaleArray.major
-                                    break
-                                }
-                                
-                            }
-                            break // This is all that we want. No need to continue in the loop
-                        } // else something arpeggio
-                    }
+                    let notesArray = writeScale.returnScaleNotesArray(for: Case.scale, startingAt: startingNote)
                     
-                    if (baseScaleNotes.isEmpty) {
+                    if (notesArray.isEmpty) {
                         print("failed due to not being able to read base scale notes from the json file")
                         fatalError()
                     }
                     
-                    var scale = WriteScales()
-                    scale.getJsonScale(stringArr: baseScaleNotes)
+                    writeScale.getJsonScale(stringArr: notesArray)
                     let scaleInfo = ["1:A", "1:B", "1:C#/Db", "1:D", "1:E", "1:F#/Gb", "1:G#/Ab", "2:A", "2:B", "2:C#/Db", "2:D", "2:E", "2:F#/Gb", "2:G#/Ab", "3:A", "2:G#/Ab", "2:F#/Gb", "2:E", "2:D", "2:C#/Db", "2:B", "2:A", "1:G#/Ab", "1:F#/Gb", "1:E", "1:D", "1:C#/Db", "1:B", "1:A"]
                     /*
                     let scaleInfo = scale.ScaleNotes(startingNote: startingNote,

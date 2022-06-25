@@ -10,7 +10,7 @@ import XCTest
 
 class WriteScalesTests: XCTestCase {
     
-    var writeScale = WriteScales()
+    var writeScale = WriteScales(scaleOptions: ScaleOptions())
     
     /*
      Initialise the fileReaderAndWriter
@@ -18,6 +18,19 @@ class WriteScalesTests: XCTestCase {
     override class func setUp() {
         let fileReaderAndWriter = FileReaderAndWriter()
         fileReaderAndWriter.writeNewTransposition(newTransposition: "C")
+    }
+    
+    func testJsonFileReturnsScale() {
+        let scaleArray1 : [String]
+        let scaleArray2 : [String]
+        scaleArray1 = writeScale.returnScaleNotesArray(for: Case.scale, startingAt: "C")
+        scaleArray2 = writeScale.returnScaleNotesArray(for: Case.scale, startingAt: "A")
+        
+        let expectedScaleArray1 = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
+        let expectedScaleArray2 = ["A", "B", "C#", "D", "E", "F#", "G#", "A", "G#", "F#", "E", "D", "C#", "B", "A"]
+        
+        XCTAssertEqual(scaleArray1, expectedScaleArray1, "jsonFile reading for C major scale failed")
+        XCTAssertEqual(scaleArray2, expectedScaleArray2, "jsonFile reading for A major scale failed")
     }
     
     /*
@@ -131,21 +144,21 @@ class WriteScalesTests: XCTestCase {
     func testModeMajorScale() {
         let baseScale = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
         
-        let ionian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.ionian)
-        let dorian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.dorian)
-        let phrygian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.phrygian)
-        let lydian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.lydian)
-        let mixolydian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.mixolydian)
-        let aeolian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.aeolian)
-        let locrian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: ScaleMode.locrian)
+        let ionian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: MajorScaleMode.ionian)
+        let dorian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: MajorScaleMode.dorian)
+        let phrygian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: MajorScaleMode.phrygian)
+        let lydian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: MajorScaleMode.lydian)
+        let mixolydian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: MajorScaleMode.mixolydian)
+        let aeolian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: MajorScaleMode.aeolian)
+        let locrian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: MajorScaleMode.locrian)
         
         let ionianExpected = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
-        let dorianExpected = ["D", "E", "F", "G", "A", "B", "C", "D", "C", "B", "A", "G", "F", "E", "D"]
-        let phrygianExpected = ["E", "F", "G", "A", "B", "C", "D", "E", "D", "C", "B", "A", "G", "F", "E"]
-        let lydianExpected = ["F", "G", "A", "B", "C", "D", "E", "F", "E", "D", "C", "B", "A", "G", "F"]
-        let mixolydianExpected = ["G", "A", "B", "C", "D", "E", "F", "G", "F", "E", "D", "C", "B", "A", "G"]
-        let aeolianExpected = ["A", "B", "C", "D", "E", "F", "G", "A", "G", "F", "E", "D", "C", "B", "A"]
-        let locrianExpected = ["B", "C", "D", "E", "F", "G", "A", "B", "A", "G", "F", "E", "D", "C", "B"]
+        let dorianExpected = ["C", "D", "Eb", "F", "G", "A", "Bb", "C", "Bb", "A", "G", "F", "Eb", "D", "C"]
+        let phrygianExpected = ["C", "Db", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "Db", "C"]
+        let lydianExpected = ["C", "D", "E", "F#", "G", "A", "B", "C", "B", "A", "G", "F#", "E", "D", "C"]
+        let mixolydianExpected = ["C", "D", "E", "F", "D", "A", "Bb", "C", "Bb", "A", "D", "F", "E", "D", "C"]
+        let aeolianExpected = ["C", "D", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "D", "C"]
+        let locrianExpected = ["C", "Db", "Eb", "F", "Gb", "Ab", "Bb", "C", "Bb", "Ab", "Gb", "F", "Eb", "Db", "C"]
         
         XCTAssertEqual(ionian, ionianExpected, "ionian is incorrect")
         XCTAssertEqual(dorian, dorianExpected, "dorian is incorrect")
@@ -155,18 +168,4 @@ class WriteScalesTests: XCTestCase {
         XCTAssertEqual(aeolian, aeolianExpected, "aeolian is incorrect")
         XCTAssertEqual(locrian, locrianExpected, "locrian is incorrect")
     }
-    
-    /*
-     Test to see what file I am trying to return
-     TO BE DELETED LATER WITH THE METHOD
-     */
-    /*
-    func testScaleNotes() {
-        let scaleArray = writeScale.ScaleNotes(startingNote: "A", octave: 2, tonality: "major", tonicOption: 1, startingOctave: 1)
-        
-        let expectedArray = ["1:A", "1:B", "1:C#/Db", "1:D", "1:E", "1:F#/Gb", "1:G#/Ab", "2:A", "2:B", "2:C#/Db", "2:D", "2:E", "2:F#/Gb", "2:G#/Ab", "3:A", "2:G#/Ab", "2:F#/Gb", "2:E", "2:D", "2:C#/Db", "2:B", "2:A", "1:G#/Ab", "1:F#/Gb", "1:E", "1:D", "1:C#/Db", "1:B", "1:A"]
-        
-        XCTAssertEqual(scaleArray, expectedArray, "expected scaleArray is incorrect")
-    }
-    */
 }
