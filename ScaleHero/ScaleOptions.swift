@@ -9,21 +9,19 @@ import Foundation
 
 class ScaleOptions: ObservableObject, Codable {
     let scales: [Scales]
-    //let arpeggios: [Arpeggios]
+    let arpeggios: [Arpeggios]
 
     init() {
         do {
             guard let url = Bundle.main.url(forResource: "scale-data", withExtension: "json") else {
                 fatalError("Failed to located scaleOptions.json")
             }
-            //let bundlePath = Bundle.main.path(forResource: "scaleOptions", ofType: "json")
-            //let data = try String(contentsOfFile: bundlePath!).data(using: .utf8)
             let jsonData = try Data(contentsOf: url)
             let scaleOptionsData = try JSONDecoder().decode(ScaleOptions.self, from: jsonData)
-            print(scaleOptionsData)
+            print(scaleOptionsData) // TO DELETE???
 
             scales = scaleOptionsData.scales
-            //arpeggios = scaleOptionsData.arpeggios
+            arpeggios = scaleOptionsData.arpeggios
         } catch {
             //print(error.localizedDescription)
             //print(error)

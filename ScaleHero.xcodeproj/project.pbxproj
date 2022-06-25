@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C51F8D532866AF2B00D5AED2 /* AlterNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51F8D522866AF2B00D5AED2 /* AlterNotes.swift */; };
 		C51F8D552866AFBA00D5AED2 /* AlterNotesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51F8D542866AFBA00D5AED2 /* AlterNotesTests.swift */; };
+		C51F8D572866FF8700D5AED2 /* ArpeggioArrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51F8D562866FF8700D5AED2 /* ArpeggioArrays.swift */; };
 		C5321EFF27A8CC0C00A63085 /* SoundError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321EFE27A8CC0C00A63085 /* SoundError.swift */; };
 		C5321F0127A8E14F00A63085 /* AcknowledgementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0027A8E14F00A63085 /* AcknowledgementsView.swift */; };
 		C5321F0327A92BF700A63085 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0227A92BF600A63085 /* AboutView.swift */; };
@@ -225,6 +226,7 @@
 		C51BFE87279A8BF3001BF9A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C51F8D522866AF2B00D5AED2 /* AlterNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterNotes.swift; sourceTree = "<group>"; };
 		C51F8D542866AFBA00D5AED2 /* AlterNotesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterNotesTests.swift; sourceTree = "<group>"; };
+		C51F8D562866FF8700D5AED2 /* ArpeggioArrays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArpeggioArrays.swift; sourceTree = "<group>"; };
 		C5321EFE27A8CC0C00A63085 /* SoundError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundError.swift; sourceTree = "<group>"; };
 		C5321F0027A8E14F00A63085 /* AcknowledgementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsView.swift; sourceTree = "<group>"; };
 		C5321F0227A92BF600A63085 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -511,6 +513,7 @@
 				C5468424280CE5C800DA9BC8 /* Scales.swift */,
 				C546842E280CF62500DA9BC8 /* Arpeggios.swift */,
 				C5468426280CE6A200DA9BC8 /* ScaleArrays.swift */,
+				C51F8D562866FF8700D5AED2 /* ArpeggioArrays.swift */,
 				C574FE7B276886BC00ADD3B3 /* Preview Content */,
 			);
 			path = ScaleHero;
@@ -1103,6 +1106,7 @@
 				C5443229279BAB710068A239 /* FavouritesView.swift in Sources */,
 				C5443227279B9F2C0068A239 /* DroneView.swift in Sources */,
 				C5321F0327A92BF700A63085 /* AboutView.swift in Sources */,
+				C51F8D572866FF8700D5AED2 /* ArpeggioArrays.swift in Sources */,
 				C5321EFF27A8CC0C00A63085 /* SoundError.swift in Sources */,
 				C54532F12779B73D0041702C /* SettingsView.swift in Sources */,
 				C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */,

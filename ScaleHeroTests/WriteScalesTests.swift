@@ -33,6 +33,19 @@ class WriteScalesTests: XCTestCase {
         XCTAssertEqual(scaleArray2, expectedScaleArray2, "jsonFile reading for A major scale failed")
     }
     
+    func testJsonFileReturnsArpeggio() {
+        let arpeggioArray1 : [String]
+        let arpeggioArray2 : [String]
+        arpeggioArray1 = writeScale.returnScaleNotesArray(for: Case.arpeggio, startingAt: "C")
+        arpeggioArray2 = writeScale.returnScaleNotesArray(for: Case.arpeggio, startingAt: "A")
+        
+        let expectedArpeggioArray1 = ["C", "E", "G", "C", "G", "E", "C"]
+        let expectedArpeggioArray2 = ["A", "C#", "E", "A", "E", "C#", "A"]
+        
+        XCTAssertEqual(arpeggioArray1, expectedArpeggioArray1, "jsonFile reading for C major arpeggio failed")
+        XCTAssertEqual(arpeggioArray2, expectedArpeggioArray2, "jsonFile reading for A major arpeggio failed")
+    }
+    
     /*
      Tests the basic case when the scale is not altered in any way
      */

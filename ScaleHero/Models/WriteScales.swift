@@ -113,7 +113,7 @@ struct WriteScales {
             if (scale.name.elementsEqual("notes")) {
                 for scaleArray in scale.scaleArrays {
                     if (scaleArray.note.elementsEqual(startingNote)) {
-                        let baseScaleNotes = scaleArray.major
+                        let baseScaleNotes = scaleArray.major /// SO FAR JUST GETTING MAJOR
                         return baseScaleNotes
                     }
                 }
@@ -129,8 +129,20 @@ struct WriteScales {
      @param startingNote: the tonic of the scale
      Returns: a string array containing the arpeggio notes to be outputted (1 octave with no repeating tonics)
      */
-    private func getArpeggio(startingNote: String) -> [String] { /// TO BE FIXED
-        return ["A", "B"]
+    private func getArpeggio(startingNote: String) -> [String] {
+        let arpeggios = scaleOptions.arpeggios
+        for arpeggio in arpeggios {
+            if (arpeggio.name.elementsEqual("notes")) {
+                for arpeggioArray in arpeggio.arpeggioArrays {
+                    if (arpeggioArray.note.elementsEqual(startingNote)) {
+                        let baseArpeggioNotes = arpeggioArray.major /// SO FAR JUST GETTING MAJOR
+                        return baseArpeggioNotes
+                    }
+                }
+            }
+        }
+        print("failed due to not being able to read base arpeggio notes from the json file")
+        fatalError()
     }
     
     /*
