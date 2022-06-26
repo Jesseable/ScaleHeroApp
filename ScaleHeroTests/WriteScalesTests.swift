@@ -23,8 +23,8 @@ class WriteScalesTests: XCTestCase {
     func testJsonFileReturnsScale() {
         let scaleArray1 : [String]
         let scaleArray2 : [String]
-        scaleArray1 = writeScale.returnScaleNotesArray(for: Case.scale, startingAt: "C")
-        scaleArray2 = writeScale.returnScaleNotesArray(for: Case.scale, startingAt: "A")
+        scaleArray1 = writeScale.returnScaleNotesArray(for: Case.scale(tonality: .major), startingAt: "C")
+        scaleArray2 = writeScale.returnScaleNotesArray(for: Case.scale(tonality: .major), startingAt: "A")
         
         let expectedScaleArray1 = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
         let expectedScaleArray2 = ["A", "B", "C#", "D", "E", "F#", "G#", "A", "G#", "F#", "E", "D", "C#", "B", "A"]
@@ -36,14 +36,14 @@ class WriteScalesTests: XCTestCase {
     func testJsonFileReturnsArpeggio() {
         let arpeggioArray1 : [String]
         let arpeggioArray2 : [String]
-        arpeggioArray1 = writeScale.returnScaleNotesArray(for: Case.arpeggio, startingAt: "C")
-        arpeggioArray2 = writeScale.returnScaleNotesArray(for: Case.arpeggio, startingAt: "A")
+        arpeggioArray1 = writeScale.returnScaleNotesArray(for: Case.arpeggio(tonality: .major), startingAt: "C")
+        arpeggioArray2 = writeScale.returnScaleNotesArray(for: Case.arpeggio(tonality: .diminished7th), startingAt: "A")
         
         let expectedArpeggioArray1 = ["C", "E", "G", "C", "G", "E", "C"]
-        let expectedArpeggioArray2 = ["A", "C#", "E", "A", "E", "C#", "A"]
+        let expectedArpeggioArray2 = ["A", "C", "Eb", "Gb", "A", "Gb", "Eb", "C", "A"]
         
         XCTAssertEqual(arpeggioArray1, expectedArpeggioArray1, "jsonFile reading for C major arpeggio failed")
-        XCTAssertEqual(arpeggioArray2, expectedArpeggioArray2, "jsonFile reading for A major arpeggio failed")
+        XCTAssertEqual(arpeggioArray2, expectedArpeggioArray2, "jsonFile reading for A diminished7th arpeggio failed")
     }
     
     /*
@@ -67,18 +67,22 @@ class WriteScalesTests: XCTestCase {
     func testConvertToScaleArrayOctaves() {
         let baseScale = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
         let baseScale2 = ["D", "E", "F#", "A", "B", "D", "B", "A", "F#", "E", "D"]
+        let baseScale3 = ["A", "C#", "E", "A", "E", "C#", "A"]
         var octavesToPlay = 2
         let tonicOption = 1
         
         let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
         octavesToPlay = 3
         let notesArray2 = writeScale.convertToScaleArray(baseScale: baseScale2, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
+        let notesArray3 = writeScale.convertToScaleArray(baseScale: baseScale3, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
         
         let expectedNotesArray1 = ["C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C", "B", "A", "G", "F", "E", "D", "C"]
         let expectedNotesArray2 = ["D", "E", "F#", "A", "B", "D", "E", "F#", "A", "B", "D", "E", "F#", "A", "B", "D", "B", "A", "F#", "E", "D", "B", "A", "F#", "E", "D", "B", "A", "F#", "E", "D"]
+        let expectedNotesArray3 = ["A", "C#", "E", "A", "C#", "E", "A", "C#", "E", "A", "E", "C#", "A", "E", "C#", "A", "E", "C#", "A"]
         
         XCTAssertEqual(notesArray1, expectedNotesArray1, "expected array1 is incorrect with octave 2")
         XCTAssertEqual(notesArray2, expectedNotesArray2, "expected array2 is incorrect with ocatve 3")
+        XCTAssertEqual(notesArray3, expectedNotesArray3, "expected array3 is incorrect with ocatve 3")
     }
     
     /*
@@ -180,5 +184,27 @@ class WriteScalesTests: XCTestCase {
         XCTAssertEqual(mixolydian, mixolydianExpected, "mixolydian is incorrect")
         XCTAssertEqual(aeolian, aeolianExpected, "aeolian is incorrect")
         XCTAssertEqual(locrian, locrianExpected, "locrian is incorrect")
+    }
+    
+    func testModePentatonic() {
+        let baseScale = ["C", "D", "E", "G", "A", "C", "A", "G", "E", "D", "C"]
+        
+        let mode1 = writeScale.convertToPentatonicMode(scaleArray: baseScale, mode: PentatonicScaleMode.mode1_major)
+        let mode2 = writeScale.convertToPentatonicMode(scaleArray: baseScale, mode: PentatonicScaleMode.mode2_egyptian)
+        let mode3 = writeScale.convertToPentatonicMode(scaleArray: baseScale, mode: PentatonicScaleMode.mode3_manGong)
+        let mode4 = writeScale.convertToPentatonicMode(scaleArray: baseScale, mode: PentatonicScaleMode.mode4_ritusen)
+        let mode5 = writeScale.convertToPentatonicMode(scaleArray: baseScale, mode: PentatonicScaleMode.mode5_minor)
+        
+        let mode1Expected = ["C", "D", "E", "G", "A", "C", "A", "G", "E", "D", "C"]
+        let mode2Expected = ["C", "D", "F", "G", "Bb", "C", "Bb", "G", "F", "D", "C"]
+        let mode3Expected = ["C", "Eb", "F", "Ab", "Bb", "C", "Bb", "Ab", "F", "Eb", "C"]
+        let mode4Expected = ["C", "D", "F", "G", "A", "C", "A", "G", "F", "D", "C"]
+        let mode5Expected = ["C", "Eb", "F", "G", "Bb", "C", "Bb", "G", "F", "Eb", "C"]
+        
+        XCTAssertEqual(mode1, mode1Expected, "ionian is incorrect")
+        XCTAssertEqual(mode2, mode2Expected, "dorian is incorrect")
+        XCTAssertEqual(mode3, mode3Expected, "phrygian is incorrect")
+        XCTAssertEqual(mode4, mode4Expected, "lydian is incorrect")
+        XCTAssertEqual(mode5, mode5Expected, "mixolydian is incorrect")
     }
 }

@@ -14,7 +14,7 @@ class AlterNotesTests: XCTestCase {
     let alterNotes = AlterNotes()
     
     /*
-     Tests the whole tone scale adequetly exits when not given a chromatic array
+     Tests the modes of a Major scale wors correctly
      */
     func testGetIonianTonicMajorScaleModes() {
         
@@ -43,4 +43,27 @@ class AlterNotesTests: XCTestCase {
         XCTAssertEqual(gFlatDorian, expected_gFlatDorian, "expected gFlatDorian is incorrect")
     }
 
+    /*
+     Tests the modes of a pentatonic scale works correctly
+     */
+    func testGetMajorTonicPentatonicScaleModes() {
+        
+        let cMode1 = alterNotes.getMajorPentatonicStartingNote(from: "C", in: .mode1_major)
+        let bbMode2 = alterNotes.getMajorPentatonicStartingNote(from: "Bb", in: .mode2_egyptian)
+        let aSharpMode3 = alterNotes.getMajorPentatonicStartingNote(from: "A#", in: .mode3_manGong)
+        let gbMode4 = alterNotes.getMajorPentatonicStartingNote(from: "Gb", in: .mode4_ritusen)
+        let fSharpMode5 = alterNotes.getMajorPentatonicStartingNote(from: "F#", in: .mode5_minor)
+        
+        let expected_cMode1 = "C"
+        let expected_bbMode2 = "G#"
+        let expected_aSharpMode3 = "F#"
+        let expected_gbMode4 = "B"
+        let expected_SharpMode5 = "A"
+        
+        XCTAssertEqual(cMode1, expected_cMode1, "expected cIonian is incorrect")
+        XCTAssertEqual(bbMode2, expected_bbMode2, "expected cMixolydian is incorrect")
+        XCTAssertEqual(aSharpMode3, expected_aSharpMode3, "expected dLocrian is incorrect")
+        XCTAssertEqual(gbMode4, expected_gbMode4, "expected bbPhrygian is incorrect")
+        XCTAssertEqual(fSharpMode5, expected_SharpMode5, "expected aSharpAeolian is incorrect")
+    }
 }

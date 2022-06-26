@@ -13,6 +13,9 @@ import Foundation
  */
 struct AlterNotes {
     
+    /*
+     AscendingNotes of a scale. If flat or sharp, then the note takes the form [sharp_varient]|[flat_varient]
+     */
     private let ascendingNotes = [1: "A",
                           2: "A#|Bb", // generally Bb
                           3: "B",
@@ -26,14 +29,34 @@ struct AlterNotes {
                           11: "G",
                           12: "G#|Ab"] // generally Ab
     
-    // Need getMinor starting notes as well
-    
-    func getMajorIonianStartingNote(from tonicNote : String, in mode : MajorScaleMode) -> String {
-        let modeDegree = calculateModeDegree(mode: mode) // degree away from tonic note in semitones
+    func getMajorPentatonicStartingNote(from tonicNote : String, in mode : PentatonicScaleMode) -> String {
+        let modeDegree = calculatePentatonicModeDegree(mode: mode) // degree away from tonic note in semitones
         
         let tonicNoteIndex = returnNoteIndex(for: tonicNote)
         if (tonicNoteIndex < 0) {
-            print("FAILED TO GET THE TONIC NOTE INDEX IN ALTERNOTES")
+            return "FAILED TO GET THE TONIC NOTE INDEX IN ALTERNOTES"
+        }
+        
+        // get the new index for the majorModeTonic note
+        var majorTonicIndex = tonicNoteIndex - modeDegree
+        if (majorTonicIndex < 1) {
+            majorTonicIndex = 12 + majorTonicIndex // the ionianTonicIndex is negative
+        }
+        
+        if var majorTonicNote = ascendingNotes[majorTonicIndex] {
+            majorTonicNote = checkSharpFlat(for: majorTonicNote, oldTonicNote: tonicNote)
+            
+            return majorTonicNote
+        } else {
+            return "FAILED to find IonianTonicNote in AlterNotes"
+        }
+    }
+    
+    func getMajorIonianStartingNote(from tonicNote : String, in mode : MajorScaleMode) -> String {
+        let modeDegree = calculateMajorModeDegree(mode: mode) // degree away from tonic note in semitones
+        
+        let tonicNoteIndex = returnNoteIndex(for: tonicNote)
+        if (tonicNoteIndex < 0) {
             return "FAILED TO GET THE TONIC NOTE INDEX IN ALTERNOTES"
         }
         
@@ -44,17 +67,7 @@ struct AlterNotes {
         }
         
         if var ionianTonicNote = ascendingNotes[ionianTonicIndex] {
-            let SharpOrFlat = ionianTonicNote.contains("|")
-            
-            if (SharpOrFlat) {
-                let notesArr = ionianTonicNote.components(separatedBy: "|")
-                let isSharp = tonicNote.contains("#")
-                if (isSharp) {
-                    ionianTonicNote = notesArr[0]
-                } else {
-                    ionianTonicNote = notesArr[1]
-                }
-            }
+            ionianTonicNote = checkSharpFlat(for: ionianTonicNote, oldTonicNote: tonicNote)
             
             return ionianTonicNote
         } else {
@@ -62,7 +75,24 @@ struct AlterNotes {
         }
     }
     
-    private func calculateModeDegree(mode: MajorScaleMode) -> Int {
+    private func checkSharpFlat(for tonicNote: String, oldTonicNote: String) -> String {
+        var newTonicNote = tonicNote
+        let hasSharpOrFlat = newTonicNote.contains("|")
+        
+        if (hasSharpOrFlat) {
+            let notesArr = newTonicNote.components(separatedBy: "|")
+            let isSharp = oldTonicNote.contains("#")
+            if (isSharp) {
+                newTonicNote = notesArr[0] // return sharp
+            } else {
+                newTonicNote = notesArr[1] // return flat
+            }
+        }
+        
+        return newTonicNote
+    }
+    
+    private func calculateMajorModeDegree(mode: MajorScaleMode) -> Int {
         switch mode {
         case .ionian:
             return 0
@@ -78,6 +108,21 @@ struct AlterNotes {
             return 9
         case .locrian:
             return 11
+        }
+    }
+    
+    private func calculatePentatonicModeDegree(mode: PentatonicScaleMode) -> Int {
+        switch mode {
+        case .mode1_major:
+            return 0
+        case .mode2_egyptian:
+            return 2
+        case .mode3_manGong:
+            return 4
+        case .mode4_ritusen:
+            return 7
+        case .mode5_minor:
+            return 9
         }
     }
     

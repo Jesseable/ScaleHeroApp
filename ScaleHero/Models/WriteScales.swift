@@ -7,27 +7,6 @@
 
 import UIKit
 
-enum ScaleType {
-    case mode(mode: MajorScaleMode)
-    case wholetone
-}
-
-// The int is the rotations in the major scale it must undertake
-enum MajorScaleMode : Int, CaseIterable {
-    case ionian = 0
-    case dorian = 1
-    case phrygian = 2
-    case lydian = 3
-    case mixolydian = 4
-    case aeolian = 5
-    case locrian = 6
-}
-
-enum Case : CaseIterable {
-    case arpeggio
-    case scale
-}
-
 /**
  Class  Writescales
  Returns the string representations of the sound files in an ordered array ready to be accessed for playing the scale
@@ -107,20 +86,20 @@ struct WriteScales {
      @param startingNote: the tonic of the scale
      Returns: a string array containing the scale notes to be outputted (1 octave with no repeating tonics)
      */
-    private func getScale(startingNote: String) -> [String] {
+    private func getScale(startingNote: String, tonality: ScaleTonality) -> [String] {
         let scales = scaleOptions.scales
+        
         for scale in scales {
             if (scale.name.elementsEqual("notes")) {
                 for scaleArray in scale.scaleArrays {
                     if (scaleArray.note.elementsEqual(startingNote)) {
-                        let baseScaleNotes = scaleArray.major /// SO FAR JUST GETTING MAJOR
+                        let baseScaleNotes = retrieveScaleRawNotes(for: scaleArray, with: tonality)
                         return baseScaleNotes
                     }
                 }
             }
         }
-        print("failed due to not being able to read base scale notes from the json file")
-        fatalError()
+        fatalError("failed due to not being able to read base scale notes from the json file")
     }
     
     /*
@@ -129,20 +108,70 @@ struct WriteScales {
      @param startingNote: the tonic of the scale
      Returns: a string array containing the arpeggio notes to be outputted (1 octave with no repeating tonics)
      */
-    private func getArpeggio(startingNote: String) -> [String] {
+    private func getArpeggio(startingNote: String, tonality: ArpeggioTonality) -> [String] {
         let arpeggios = scaleOptions.arpeggios
+        
         for arpeggio in arpeggios {
             if (arpeggio.name.elementsEqual("notes")) {
                 for arpeggioArray in arpeggio.arpeggioArrays {
                     if (arpeggioArray.note.elementsEqual(startingNote)) {
-                        let baseArpeggioNotes = arpeggioArray.major /// SO FAR JUST GETTING MAJOR
+                        let baseArpeggioNotes = retrieveArpeggioRawNotes(for: arpeggioArray, with: tonality)
                         return baseArpeggioNotes
                     }
                 }
             }
         }
-        print("failed due to not being able to read base arpeggio notes from the json file")
-        fatalError()
+        fatalError("failed due to not being able to read base arpeggio notes from the json file")
+    }
+    
+    /*
+     Retrieves the arpeggio array from the ArpeggioArrays struct (read from the json file scale-data)
+     ----------------
+     @param array: the array of arpeggios to select from
+     @param tonality: The arpeggio type/tonality to select
+     Returns: a string array containing the arpeggio notes
+     */
+    private func retrieveArpeggioRawNotes(for array: ArpeggioArrays, with tonality: ArpeggioTonality) -> [String] {
+        switch tonality {
+        case .major:
+            return array.major
+        case .minor:
+            return array.minor
+        case .dominant7th:
+            return array.dominant7th
+        case .diminished7th:
+            return array.diminished7th
+        case .major7th:
+            return array.major7th
+        case .minor7th:
+            return array.minor7th
+        }
+    }
+    
+    /*
+     Retrieves the scale array from the ScaleArrays struct (read from the json file scale-data)
+     ----------------
+     @param array: the array of scales to select from
+     @param tonality: The scale type/tonality to select
+     Returns: a string array containing the scale notes
+     */
+    private func retrieveScaleRawNotes(for array: ScaleArrays, with tonality: ScaleTonality) -> [String] {
+        switch tonality {
+        case .major:
+            return array.major
+        case .naturalMinor:
+            return array.naturalMinor
+        case .harmonicMinor:
+            return array.harmonicMinor
+        case .melodicMinor:
+            return array.melodicMinor
+        case .chromatic:
+            return array.chromatic
+        case .pentatonic:
+            return array.pentatonic
+        case .blues:
+            return array.blues
+        }
     }
     
     /*
@@ -154,10 +183,10 @@ struct WriteScales {
      */
     func returnScaleNotesArray(for type: Case, startingAt firstNote: String) -> [String] {
         switch type {
-        case .arpeggio:
-            return getArpeggio(startingNote: firstNote)
-        case .scale:
-            return getScale(startingNote: firstNote)
+        case .arpeggio(let tonality):
+            return getArpeggio(startingNote: firstNote, tonality: tonality)
+        case .scale(let tonality):
+            return getScale(startingNote: firstNote, tonality: tonality)
         }
     }
     
@@ -239,17 +268,18 @@ struct WriteScales {
      Retruns: a string array containing a scale array that has the required characteristics
      */
     func convertToScaleArray(baseScale: [String], octavesToPlay: Int, tonicOption: Int, scaleType: ScaleType? = nil) -> [String] {
-        var alteredScale = baseScale
+        var alteredScale : [String]
         
-        // Check if it is in a mode of wholetone scale
-        if (scaleType != nil) {
-            // convert to the scale specified
-            switch scaleType {
-            case .wholetone:
-                alteredScale = convertToWholeToneScale(scaleArray: alteredScale)
-            default:
-                alteredScale = ["some shit"]
-            }
+        // convert to the scale specified
+        switch scaleType {
+        case .wholetone:
+            alteredScale = convertToWholeToneScale(scaleArray: baseScale)
+        case .majorMode(mode: let mode):
+            alteredScale = convertToScaleMode(scaleArray: baseScale, mode: mode)
+        case .pentatonicMode(mode: let mode):
+            alteredScale = convertToPentatonicMode(scaleArray: baseScale, mode: mode)
+        case .none:
+            alteredScale = baseScale
         }
         
         // Make the scale the desired length from octaves
@@ -277,12 +307,37 @@ struct WriteScales {
             return ["Major scale not used when playing a major mode"]
         }
         let tonicNote = scaleArray[0]
-        let alterNotes = AlterNotes()
-        let startingIonianNote = alterNotes.getMajorIonianStartingNote(from: tonicNote, in: mode)
-        print(startingIonianNote)
-        var scaleModeArr = returnScaleNotesArray(for: .scale, startingAt: startingIonianNote)
+        let startingIonianNote = AlterNotes().getMajorIonianStartingNote(from: tonicNote, in: mode)
+
+        var scaleModeArr = returnScaleNotesArray(for: .scale(tonality: .major), startingAt: startingIonianNote)
         // rotate this scale to the appropriate tonic note for the scale
         MajorScaleMode.allCases.forEach {
+            if ($0 == mode) {
+                $0.rawValue.times {
+                    scaleModeArr = rotateScale(scaleArray: scaleModeArr)
+                }
+            }
+        }
+        return scaleModeArr
+    }
+    
+    /*
+     Converts a major scale to the modal scale specified
+     ----------------
+     @param scaleArray: An array of strings containing one octave of scale notes (ascending and descending).
+     @param scaleArray: A ScaleMode, e.g. dorian, phrygian, ionian etc
+     Retruns: a string array containing a scale array that has the modified mode
+     */
+    func convertToPentatonicMode(scaleArray: [String], mode: PentatonicScaleMode) -> [String] {
+        if (scaleArray.count != 11) {
+            return ["Pentatonic scale not used when playing a pentatonic mode"]
+        }
+        let tonicNote = scaleArray[0]
+        let startingMajorPentatonicNote = AlterNotes().getMajorPentatonicStartingNote(from: tonicNote, in: mode)
+
+        var scaleModeArr = returnScaleNotesArray(for: .scale(tonality: .pentatonic), startingAt: startingMajorPentatonicNote)
+        // rotate this scale to the appropriate tonic note for the scale
+        PentatonicScaleMode.allCases.forEach {
             if ($0 == mode) {
                 $0.rawValue.times {
                     scaleModeArr = rotateScale(scaleArray: scaleModeArr)
@@ -297,14 +352,16 @@ struct WriteScales {
         var rotatedScaleArr = scaleArray
         var i = 0
         var j = 0
+        let newMiddleNoteIndex = scaleArray.count / 2 - 1
+        let finalIndex = scaleArray.count - 1
         
-        while (i < 14) {
+        while (i < finalIndex) {
 
             rotatedScaleArr[i] = scaleArray[j + 1]
             i += 1
             j += 1
             
-            if (i == 6) { // The first note
+            if (i == newMiddleNoteIndex) { // The first note
                 rotatedScaleArr[i] = scaleArray[j + 1]
                 rotatedScaleArr[i + 1] = rotatedScaleArr[0]
                 rotatedScaleArr[i + 2] = rotatedScaleArr[j + 1]
@@ -312,7 +369,7 @@ struct WriteScales {
             }
         }
         // first note and last note are both the tonic
-        rotatedScaleArr[14] = rotatedScaleArr[0]
+        rotatedScaleArr[finalIndex] = rotatedScaleArr[0]
         
         return rotatedScaleArr
     }
@@ -447,81 +504,6 @@ struct WriteScales {
             return singularNote
         }
     }
-    
-    /*
-    mutating func ScaleNotes(startingNote: String, octave: Int, tonality: String, tonicOption: Int, startingOctave: Int) -> [String] {
-        var startingKey = startingNoteKeyFinder(startingNote: startingNote, startingOctave: startingOctave)
-        let originalStartingKey = startingKey
-        let noteCKey = startingNoteKeyFinder(startingNote: "C", startingOctave: startingOctave)
-        
-        // Does the transposition
-        var transpositionNote = fileReaderAndWriter.readTransposition()
-        if (transpositionNote.components(separatedBy: " ").count > 1) {
-            transpositionNote = transpositionNote.components(separatedBy: " ")[2]
-            transpositionNote = getFullNote(singularNote: transpositionNote)
-        }
-        let transpositionKey = startingNoteKeyFinder(startingNote: transpositionNote, startingOctave: startingOctave)
-        let difference = noteCKey - transpositionKey
-        startingKey -= difference
-        
-        // Makes sure the octave is correct
-        let oneOctave = 12
-        if (Int(accendingNotes[startingKey]?.components(separatedBy: ":")[0] ?? "-1") != startingOctave) {
-            startingKey -= oneOctave
-        }
-        
-        var valueArray : [String] = []
-        var noteNameValueArray : [String] = []
-        
-        var reversedValuesArr: [String] = []
-        var noteNameReversedValuesArr: [String] = []
-        
-        var keysArray = [startingKey]
-        var noteNameKeysArray = [(originalStartingKey)]
-        // if -1 needs an error image
-        
-        keysArray = dictKeysArray(startingKey: startingKey, tonality: tonality, octave: octave, keysArray: keysArray)
-        noteNameKeysArray = dictKeysArray(startingKey: (originalStartingKey), tonality: tonality, octave: octave, keysArray: noteNameKeysArray)
-        
-        for key in keysArray {
-            guard let noteName = accendingNotes[key] else { return ["Getting string access from key for music dictionary has failed"] }
-            valueArray.append(noteName)
-        }
-        
-        for key in noteNameKeysArray {
-            guard let noteName = accendingNotes[key] else { return ["Getting string access from key for music dictionary has failed"] }
-            noteNameValueArray.append(noteName)
-        }
-        
-        if (self.type != "melodic") {
-            reversedValuesArr = valueArray.reversed()
-            noteNameReversedValuesArr = noteNameValueArray.reversed()
-            
-            // removed a value so as to not repeat the tonic
-            reversedValuesArr.removeFirst()
-            noteNameReversedValuesArr.removeFirst()
-            
-            valueArray.append(contentsOf: reversedValuesArr)
-            noteNameValueArray.append(contentsOf: noteNameReversedValuesArr)
-        } else {
-            // Needs to be altered to do multiple octaves as well. Should create another function for this purpose!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            reversedValuesArr = valueArray.reversed()
-            noteNameReversedValuesArr = noteNameValueArray.reversed()
-            
-            // removed a value so as to not repeat the tonic
-            reversedValuesArr.removeFirst()
-            noteNameReversedValuesArr.removeFirst()
-            valueArray.append(contentsOf: reversedValuesArr)
-            noteNameValueArray.append(contentsOf: noteNameReversedValuesArr)
-        }
-        
-        let scaleArray = addRepeatingTonics(for: valueArray, tonicOption: tonicOption)
-        let noteNameScaleArray = addRepeatingTonics(for: noteNameValueArray, tonicOption: tonicOption)
-        
-        self.scaleNoteNames = noteNameScaleArray
-        return scaleArray
-    }
-     */
 }
 
 /**

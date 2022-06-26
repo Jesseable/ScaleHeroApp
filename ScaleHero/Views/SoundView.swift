@@ -221,12 +221,12 @@ struct SoundView : View {
                 Button {
                     let scaleTypeArr = scaleType.components(separatedBy: " ")
                     let startingNote = scaleTypeArr[0]
-                    let tonality = scaleTypeArr[1].lowercased()
-                    let scaleType = scaleTypeArr[2].lowercased()
+                    let tonality = scaleTypeArr[1].lowercased() // CHNAGE THIS STRING INTO AN ENUM
+                    let scaleType = scaleTypeArr[2].lowercased() // CHNAGE THIS ALSO TO AN ENUM
                     
                     let writeScale = WriteScales(scaleOptions: scaleOptions)
                     
-                    let notesArray = writeScale.returnScaleNotesArray(for: Case.scale, startingAt: startingNote)
+                    let notesArray = writeScale.returnScaleNotesArray(for: Case.scale(tonality: .major), startingAt: startingNote)
                     
                     if (notesArray.isEmpty) {
                         print("failed due to not being able to read base scale notes from the json file")

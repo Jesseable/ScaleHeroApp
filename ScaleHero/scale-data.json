@@ -144,7 +144,7 @@
 					"harmonicMinor": ["Ab", "Bb", "Cb", "Db", "Eb", "Fb", "G", "Ab", "G", "Fb", "Eb", "Db", "Cb", "Bb", "Ab"],
 					"melodicMinor": ["Ab", "Bb", "Cb", "Db", "Eb", "F", "G", "Ab", "Gb", "Fb", "Eb", "Db", "Cb", "Bb", "Ab"],
 					"chromatic": ["G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "G", "Gb", "F", "E", "Eb", "D", "Db", "C", "B", "Bb", "A", "Ab"],
-					"pentatonic": ["Ab", "Bb", "C", "EB", "F", "Ab", "F", "Eb", "C", "Bb", "Ab"],
+					"pentatonic": ["Ab", "Bb", "C", "Eb", "F", "Ab", "F", "Eb", "C", "Bb", "Ab"],
 					"blues": ["Ab", "B", "Db", "D", "Eb", "Gb", "Ab", "Gb", "Eb", "D", "Db", "B", "Ab"]
 				},
 				{
