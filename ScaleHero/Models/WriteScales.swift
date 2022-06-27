@@ -529,9 +529,35 @@ struct WriteScales {
         return intervalsAddedArray
     }
     
+    /*
+     Retrieves the element from the notes array with the correct octave number
+     ----------------
+     @param scale: An array of strings that contain all notes in the scale ascending order (1 octave) and octave numbers
+     @param indexNum: The index number (from 1) of the new element
+     @param topTonicPosition: The index position of the top tonic number (from 1)
+     Returns: A string containing a sound file readable note
+     */
+    private func getNoteElement(from scale: [String], for indexNum: Int, with topTonicPosition: Int) -> String {
+        let alterNotes = AlterNotes()
+        var newElement : String
+        
+        if (indexNum > topTonicPosition) {
+            newElement = scale[indexNum - topTonicPosition]
+            newElement = alterNotes.changeOctaveNumber(AlterAmount.increase, for: newElement)
+            
+        } else if (indexNum <= 0) {
+            newElement = scale[indexNum + (topTonicPosition - 2)]
+            newElement = alterNotes.changeOctaveNumber(AlterAmount.decrease, for: newElement)
+            
+        } else {
+            newElement = scale[indexNum - 1]
+        }
+        
+        return newElement
+    }
+    
     // Could change these all to one function taking an enum
     private func allUp(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
-        let alterNotes = AlterNotes()
         var newArray = Array(repeating: "", count: arraySize)
         let topTonicScaleNotePos = scale.count / 2 + 1
         var ascending = true
@@ -548,18 +574,7 @@ struct WriteScales {
                     secondTime = true
                 }
             }
-            
-            var newElement : String
-            if (j > topTonicScaleNotePos) {
-                newElement = scale[j - topTonicScaleNotePos]
-                newElement = alterNotes.changeOctaveNumber(AlterAmount.increase, for: newElement)
-            } else if (j <= 0) {
-                newElement = scale[j + (topTonicScaleNotePos - 2)]
-                newElement = alterNotes.changeOctaveNumber(AlterAmount.decrease, for: newElement)
-            } else {
-                newElement = scale[j - 1]
-            }
-            newArray[i] = newElement
+            newArray[i] = getNoteElement(from: scale, for: j, with: topTonicScaleNotePos)
             
             if (ascending) {
                 (i % 2 == 0) ? (j = j + interval.rawValue - 1) : (j = j - (interval.rawValue - 2))
@@ -573,15 +588,108 @@ struct WriteScales {
     }
     
     func allDown(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
-        return ["hi"]
+        var newArray = Array(repeating: "", count: arraySize)
+        let topTonicScaleNotePos = scale.count / 2 + 1
+        var ascending = true
+        var i = 0
+        var j = interval.rawValue
+        
+        while (i < arraySize) {
+            
+            if ((j - (interval.rawValue - 1)) == topTonicScaleNotePos && ascending == true) {
+                j -= (interval.rawValue - 1)
+                ascending = false // start descending in the scale
+            }
+            newArray[i] = getNoteElement(from: scale, for: j, with: topTonicScaleNotePos)
+            
+            if (ascending) {
+                (i % 2 == 1) ? (j = j + interval.rawValue) : (j = j - (interval.rawValue - 1))
+            } else {
+                (i % 2 == 1) ? (j = j - (interval.rawValue)) : (j = j + (interval.rawValue - 1))
+            }
+            i += 1
+        }
+        
+        return newArray
     }
     
     func oneUpOneDown(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
-        return ["hi"]
+        var newArray = Array(repeating: "", count: arraySize + 1)
+        let topTonicScaleNotePos = scale.count / 2 + 1
+        var ascending = true
+        var i = 0
+        var j = 1
+        
+        while (i < arraySize + 1) {
+            
+            if ((j - (interval.rawValue - 1)) == topTonicScaleNotePos && ascending == true) {
+                j -= (interval.rawValue - 1)
+                ascending = false // start descending in the scale
+            }
+            newArray[i] = getNoteElement(from: scale, for: j, with: topTonicScaleNotePos)
+            
+            if (ascending) {
+                if (i % 2 == 0) {
+                    (i % 4 == 0) ? (j = j + (interval.rawValue - 1)) : (j = j - (interval.rawValue - 1))
+                } else {
+                    j = j + 1
+                }
+            } else {
+                if (i % 2 == 0) {
+                    (i % 4 == 0) ? (j = j - (interval.rawValue - 1)) : (j = j + (interval.rawValue - 1))
+                } else {
+                    j = j - 1
+                }
+            }
+            i += 1
+        }
+        return newArray
     }
     
     func oneDownOneUp(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
-        return ["hi"]
+        let numArraySize : Int
+        switch interval {
+        case .thirds:
+            numArraySize = arraySize
+        case .fourths:
+            numArraySize = arraySize - 1
+        case .fifths:
+            numArraySize = arraySize + 5
+        }
+        var newArray = Array(repeating: "", count: numArraySize)
+        let topTonicScaleNotePos = scale.count / 2 + 1
+        var ascending = true
+        var secondTime = false
+        var i = 0
+        var j = interval.rawValue
+        
+        while (i < numArraySize) {
+            
+            if (j - 1 == topTonicScaleNotePos && ascending == true) {
+                if (secondTime) {
+                    ascending = false // start descending in the scale
+                } else {
+                    secondTime = true
+                }
+            }
+            newArray[i] = getNoteElement(from: scale, for: j, with: topTonicScaleNotePos)
+            
+            if (ascending) {
+                if (i % 2 == 0) {
+                    (i % 4 == 0) ? (j = j - (interval.rawValue - 1)) : (j = j + (interval.rawValue - 1))
+                } else {
+                    j = j + 1
+                }
+            } else {
+                if (i % 2 == 0) {
+                    (i % 4 == 0) ? (j = j + (interval.rawValue - 1)) : (j = j - (interval.rawValue - 1))
+                } else {
+                    j = j - 1
+                }
+            }
+            i += 1
+        }
+        return newArray
     }
 }
 

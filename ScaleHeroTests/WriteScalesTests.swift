@@ -214,15 +214,66 @@ class WriteScalesTests: XCTestCase {
         let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
 
         let allUpThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.allUp, for: baseScale)
-        let allUpFourths = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.allUp, for: baseScale2)
-        let allUpFifths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.allUp, for: baseScale)
+        let allUpFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.allUp, for: baseScale2)
+        let allUpFifths = writeScale.convertToIntervals(of: Interval.fifths, with: IntervalOption.allUp, for: baseScale)
         
         let allUpThirdsExpected = ["2:C", "2:E", "2:D", "3:F", "2:E", "2:G", "3:F", "3:A", "2:G", "3:B", "3:A", "3:C", "3:B", "3:D", "3:C", "3:A", "3:B", "2:G", "3:A", "3:F", "2:G", "2:E", "3:F", "2:D", "2:E", "2:C", "2:D", "2:B", "2:C"]
-        let allUpFourthsExpected = ["2:C", "2:E", "2:D", "2:G", "2:E", "3:A", "2:G", "3:C", "3:A", "3:D", "3:C", "2:G", "3:A", "2:E", "2:G", "2:D", "2:E", "2:C", "2:D", "2:A", "2:C"]
-        let allUpFifthsExpected = ["2:C", "3:F", "2:D", "2:G", "2:E", "3:A", "3:F", "3:B", "2:G", "3:C", "3:A", "3:D", "3:B", "3:E", "3:C", "2:G", "3:B", "3:F", "3:A", "2:E", "2:G", "2:D", "3:F", "2:C", "2:E", "2:B", "2:D", "2:A", "2:C"]
+        let allUpFourthsExpected = ["2:C", "2:G", "2:D", "3:A", "2:E", "3:C", "2:G", "3:D", "3:A", "3:E", "3:C", "2:E", "3:A", "2:D", "2:G", "2:C", "2:E", "2:A", "2:D", "1:G", "2:C"]
+        let allUpFifthsExpected = ["2:C", "2:G", "2:D", "3:A", "2:E", "3:B", "3:F", "3:C", "2:G", "3:D", "3:A", "3:E", "3:B", "4:F", "3:C", "3:F", "3:B", "2:E", "3:A", "2:D", "2:G", "2:C", "3:F", "2:B", "2:E", "2:A", "2:D", "1:G", "2:C"]
         
         XCTAssertEqual(allUpThirds, allUpThirdsExpected, "allupthirds is incorrect")
         XCTAssertEqual(allUpFourths, allUpFourthsExpected, "allupthirdsPentatonic is incorrect")
         XCTAssertEqual(allUpFifths, allUpFifthsExpected, "allupfifths is incorrect")
+    }
+    
+    func testConvertToIntervalsAllDowm() {
+        let baseScale = ["2:C", "2:D", "2:E", "3:F", "2:G", "3:A", "3:B", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D", "2:C"]
+        let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
+
+        let allDownThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.allDown, for: baseScale)
+        let allDownFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.allDown, for: baseScale2)
+        let allDownFifths = writeScale.convertToIntervals(of: Interval.fifths, with: IntervalOption.allDown, for: baseScale)
+        
+        let allDownThirdsExpected = ["2:E", "2:C", "3:F", "2:D", "2:G", "2:E", "3:A", "3:F", "3:B", "2:G", "3:C", "3:A", "3:D", "3:B", "3:C", "3:E", "3:B", "3:D", "3:A", "3:C", "2:G", "3:B", "3:F", "3:A", "2:E", "2:G", "2:D", "3:F", "2:C"]
+        let allDownFourthsExpected = ["2:G", "2:C", "3:A", "2:D", "3:C", "2:E", "3:D", "2:G", "3:E", "3:A", "3:C", "3:G", "3:A", "3:E", "2:G", "3:D", "2:E", "3:C", "2:D", "3:A", "2:C"]
+        let allDownFifthsExpected = ["2:G", "2:C", "3:A", "2:D", "3:B", "2:E", "3:C", "3:F", "3:D", "2:G", "3:E", "3:A", "4:F", "3:B", "3:C", "3:G", "3:B", "4:F", "3:A", "3:E", "2:G", "3:D", "3:F", "3:C", "2:E", "3:B", "2:D", "3:A", "2:C"]
+        
+        XCTAssertEqual(allDownThirds, allDownThirdsExpected, "alldownthirds is incorrect")
+        XCTAssertEqual(allDownFourths, allDownFourthsExpected, "alldownthirdsPentatonic is incorrect")
+        XCTAssertEqual(allDownFifths, allDownFifthsExpected, "alldownfifths is incorrect")
+    }
+    
+    func testConvertToIntervalsOneUpOneDowm() {
+        let baseScale = ["2:D", "2:E", "2:F", "2:G", "3:A", "3:B", "3:C", "3:D", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D"]
+        let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
+
+        let allDownThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.oneUpOneDown, for: baseScale)
+        let allDownFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.oneUpOneDown, for: baseScale2)
+        let allDownFifths = writeScale.convertToIntervals(of: Interval.fifths, with: IntervalOption.oneUpOneDown, for: baseScale)
+        
+        let allDownThirdsExpected = ["2:D", "2:F", "2:G", "2:E", "2:F", "3:A", "3:B", "2:G", "3:A", "3:C", "3:D", "3:B", "3:C", "3:E", "3:D", "3:F", "3:E", "3:C", "3:B", "3:D", "3:C", "3:A", "2:G", "3:B", "3:A", "2:F", "2:E", "2:G", "2:F", "2:D"]
+        let allDownFourthsExpected = ["2:C", "2:G", "3:A", "2:D", "2:E", "3:C", "3:D", "2:G", "3:A", "3:E", "3:C", "3:G", "3:E", "3:A", "2:G", "3:D", "3:C", "2:E", "2:D", "3:A", "2:G", "2:C"]
+        let allDownFifthsExpected = ["2:D", "3:A", "3:B", "2:E", "2:F", "3:C", "3:D", "2:G", "3:A", "3:E", "3:F", "3:B", "3:C", "3:G", "3:D", "4:A", "3:G", "3:C", "3:B", "3:F", "3:E", "3:A", "2:G", "3:D", "3:C", "2:F", "2:E", "3:B", "3:A", "2:D"]
+        
+        XCTAssertEqual(allDownThirds, allDownThirdsExpected, "alldownthirds is incorrect")
+        XCTAssertEqual(allDownFourths, allDownFourthsExpected, "alldownthirdsPentatonic is incorrect")
+        XCTAssertEqual(allDownFifths, allDownFifthsExpected, "alldownfifths is incorrect")
+    }
+    
+    func testConvertToIntervalsOneDownOneUp() {
+        let baseScale = ["2:D", "2:E", "2:F", "2:G", "3:A", "3:B", "3:C", "3:D", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D"]
+        let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
+
+        let allDownThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.oneDownOneUp, for: baseScale)
+        let allDownFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.oneDownOneUp, for: baseScale2)
+        let allDownFifths = writeScale.convertToIntervals(of: Interval.fifths, with: IntervalOption.oneDownOneUp, for: baseScale)
+        
+        let allDownThirdsExpected = ["2:F", "2:D", "2:E", "2:G", "3:A", "2:F", "2:G", "3:B", "3:C", "3:A", "3:B", "3:D", "3:E", "3:C", "3:D", "3:F", "3:G", "3:E", "3:D", "3:B", "3:A", "3:C", "3:B", "2:G", "2:F", "3:A", "2:G", "2:E", "2:D"]
+        let allDownFourthsExpected = ["2:G", "2:C", "2:D", "3:A", "3:C", "2:E", "2:G", "3:D", "3:E", "3:A", "3:C", "3:G", "4:A", "3:D", "3:C", "2:E", "2:D", "3:A", "2:G", "2:C"]
+        let allDownFifthsExpected = ["3:A", "2:D", "2:E", "3:B", "3:C", "2:F", "2:G", "3:D", "3:E", "3:A", "3:B", "3:F", "3:G", "3:C", "3:D", "4:A", "4:B", "3:E", "3:D", "2:G", "2:F", "3:C", "3:B", "2:E", "2:D", "3:A", "2:G", "2:C", "2:B", "2:F", "2:E", "2:A", "1:G", "2:D"]
+        
+        XCTAssertEqual(allDownThirds, allDownThirdsExpected, "alldownthirds is incorrect")
+        XCTAssertEqual(allDownFourths, allDownFourthsExpected, "alldownthirdsPentatonic is incorrect")
+        XCTAssertEqual(allDownFifths, allDownFifthsExpected, "alldownfifths is incorrect")
     }
 }
