@@ -15,9 +15,6 @@ struct WriteScales {
     
     // constants required
     let INVALID_KEY = 100 // since 100 is not a valid key and is greater than any previousKey
-    let NO_REPEATED_TONIC = 1
-    let REPEATED_TONIC_ALL = 2
-    let REPEATED_TONIC = 3
     
     //let type : String
     var scaleOptions: ScaleOptions
@@ -235,7 +232,7 @@ struct WriteScales {
          Cases are; 1: never, 2: always, 3: always/first
      Returns: an Array of strings with the tonics repeating as desired.
      */
-    private func convertToTonicOptions(scaleArray: [String], tonicOption: Int) -> [String] {
+    private func convertToTonicOptions(scaleArray: [String], tonicOption: TonicOption) -> [String] {
         var valueArr = scaleArray
         let tonic = valueArr[0]
         var itr = 0
@@ -250,7 +247,7 @@ struct WriteScales {
         }
         
         // remove first and last tonics if specified
-        if (tonicOption == REPEATED_TONIC) {
+        if (tonicOption == TonicOption.repeatedTonic) {
             valueArr.removeFirst()
             valueArr.removeLast()
         }
@@ -267,7 +264,7 @@ struct WriteScales {
      @param scaleMode: ......
      Retruns: a string array containing a scale array that has the required characteristics
      */
-    func convertToScaleArray(baseScale: [String], octavesToPlay: Int, tonicOption: Int, scaleType: ScaleType? = nil) -> [String] {
+    func convertToScaleArray(baseScale: [String], octavesToPlay: Int, tonicOption: TonicOption, scaleType: ScaleType? = nil) -> [String] {
         var alteredScale : [String]
         
         // convert to the scale specified
@@ -288,7 +285,7 @@ struct WriteScales {
         }
         
         // Make the scale the desired tonic options
-        if (tonicOption > NO_REPEATED_TONIC) {
+        if (tonicOption != TonicOption.noRepeatedTonic) {
             alteredScale = convertToTonicOptions(scaleArray: alteredScale, tonicOption: tonicOption)
         }
 
@@ -503,6 +500,88 @@ struct WriteScales {
         default:
             return singularNote
         }
+    }
+    
+    /*
+     Converts the scale array of one octave notes with octave numbers into a scale pattern with a specified
+         interval (e.g. 3rds) and style (e.g. One up One down)
+     ----------------
+     @param interval: An enum containing all interval options
+     @param option: An enum containing the style of the intervals (OneUpOneDown, AllUp, AllDown, OneDownOneUp)
+     @param scale: An array of strings that contain all notes in the scale ascending order (1 octave) and octave numbers
+     Returns: A string array of the notes in the correct inerval pattern with the chosen style
+     */
+    func convertToIntervals(of interval: Interval, with option: IntervalOption, for scale: [String]) -> [String] {
+        let newArraySize = scale.count * 2 - 1
+        var intervalsAddedArray : [String]
+        
+        switch option {
+        case .allUp:
+            intervalsAddedArray = allUp(for: scale, with: interval, arraySize: newArraySize)
+        case .allDown:
+            intervalsAddedArray = allDown(for: scale, with: interval, arraySize: newArraySize)
+        case .oneUpOneDown:
+            intervalsAddedArray = oneUpOneDown(for: scale, with: interval, arraySize: newArraySize)
+        case .oneDownOneUp:
+            intervalsAddedArray = oneDownOneUp(for: scale, with: interval, arraySize: newArraySize)
+        }
+        
+        return intervalsAddedArray
+    }
+    
+    // Could change these all to one function taking an enum
+    private func allUp(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
+        let alterNotes = AlterNotes()
+        var newArray = Array(repeating: "", count: arraySize)
+        let topTonicScaleNotePos = scale.count / 2 + 1
+        var ascending = true
+        var secondTime = false
+        var i = 0
+        var j = 1
+        
+        while (i < arraySize) {
+            
+            if (j == topTonicScaleNotePos && ascending == true) {
+                if (secondTime) {
+                    ascending = false // start descending in the scale
+                } else {
+                    secondTime = true
+                }
+            }
+            
+            var newElement : String
+            if (j > topTonicScaleNotePos) {
+                newElement = scale[j - topTonicScaleNotePos]
+                newElement = alterNotes.changeOctaveNumber(AlterAmount.increase, for: newElement)
+            } else if (j <= 0) {
+                newElement = scale[j + (topTonicScaleNotePos - 2)]
+                newElement = alterNotes.changeOctaveNumber(AlterAmount.decrease, for: newElement)
+            } else {
+                newElement = scale[j - 1]
+            }
+            newArray[i] = newElement
+            
+            if (ascending) {
+                (i % 2 == 0) ? (j = j + interval.rawValue - 1) : (j = j - (interval.rawValue - 2))
+            } else {
+                (i % 2 == 0) ? (j = j - (interval.rawValue - 1)) : (j = j + (interval.rawValue - 2))
+            }
+            i += 1
+        }
+        
+        return newArray
+    }
+    
+    func allDown(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
+        return ["hi"]
+    }
+    
+    func oneUpOneDown(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
+        return ["hi"]
+    }
+    
+    func oneDownOneUp(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
+        return ["hi"]
     }
 }
 

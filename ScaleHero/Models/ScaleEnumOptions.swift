@@ -13,6 +13,12 @@ enum ScaleType {
     case wholetone
 }
 
+enum TonicOption {
+    case noRepeatedTonic
+    case repeatedTonicAll
+    case repeatedTonic
+}
+
 // The int is the rotations in the major scale it must undertake
 enum MajorScaleMode : Int, CaseIterable {
     case ionian = 0
@@ -55,4 +61,22 @@ enum ScaleTonality : CaseIterable {
     case chromatic
     case pentatonic
     case blues
+}
+
+enum Interval : Int {
+    case thirds = 3
+    case fourths = 4
+    case fifths = 5
+}
+
+enum IntervalOption {
+    case allUp
+    case allDown
+    case oneUpOneDown
+    case oneDownOneUp
+}
+
+enum AlterAmount: Int {
+    case decrease = -1
+    case increase = 1
 }

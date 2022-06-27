@@ -9,7 +9,7 @@ import Foundation
 
 /**
  Class  AlterNotes
- Allows scale notes to be altered and shifted easily up or down the scale
+ Retrives tonic notes of major/ionion scales and converts scales into intervals, e.g. 3rds
  */
 struct AlterNotes {
     
@@ -155,4 +155,29 @@ struct AlterNotes {
         return ascendingNotes.key(from: modifiedNote) ?? -1
     }
     
+    /*
+     Changes the octave number of a sound file readable note e.g. "2:C#|Db" -> "1:C#|Db" etc
+     ----------------
+     @param amount: The amount to increase or decrease the value (can be negative)
+     @param initialOctave: The octave the scale will start at.
+     Returns: a string array containing the sound file readable format: "[octave_num]:[note_name]"
+     */
+    func changeOctaveNumber(_ amount: AlterAmount, for note: String) -> String {
+        //var newNote = note
+        let initialOctaveNumChar = note.first
+        var newOctaveNum : Int
+        
+        if let intValue = initialOctaveNumChar?.wholeNumberValue {
+            if (intValue  < 1 || intValue > 3) {
+                return "is not a valid octave number"
+            }
+            newOctaveNum = intValue + amount.rawValue
+        } else {
+            return "Not a valid integer"
+        }
+        
+        let newNote = "\(newOctaveNum)" + note.dropFirst()
+        
+        return newNote
+    }
 }

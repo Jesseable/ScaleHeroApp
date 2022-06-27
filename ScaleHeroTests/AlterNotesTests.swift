@@ -66,4 +66,24 @@ class AlterNotesTests: XCTestCase {
         XCTAssertEqual(gbMode4, expected_gbMode4, "expected bbPhrygian is incorrect")
         XCTAssertEqual(fSharpMode5, expected_SharpMode5, "expected aSharpAeolian is incorrect")
     }
+    
+    func testChangedOctaveNumber() {
+        var note1 = "1:C#|Db"
+        var note2 = "2:D#|Eb"
+        var note3 = "3:D"
+        
+        note1 = alterNotes.changeOctaveNumber(AlterAmount.increase, for: note1)
+        note2 = alterNotes.changeOctaveNumber(AlterAmount.increase, for: note2)
+        note3 = alterNotes.changeOctaveNumber(AlterAmount.decrease, for: note3)
+        
+        let expectedNote1 = "2:C#|Db"
+        let expectedNote2 = "3:D#|Eb"
+        let expectedNote3 = "2:D"
+        
+        XCTAssertEqual(note1, expectedNote1, "expected note1 is incorrect")
+        XCTAssertEqual(note2, expectedNote2, "expected note2 is incorrect")
+        XCTAssertEqual(note3, expectedNote3, "expected note3 is incorrect")
+    }
+    
+    // Test also for the edge cases of changed octave numbers
 }

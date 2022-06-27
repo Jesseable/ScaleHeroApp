@@ -52,9 +52,8 @@ class WriteScalesTests: XCTestCase {
     func testConvertToScaleArrayBasic() {
         let baseScale = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
         let octavesToPlay = 1
-        let tonicOption = 1
         
-        let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
+        let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: octavesToPlay, tonicOption: TonicOption.noRepeatedTonic)
         
         let expectedNotesArray1 = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
         
@@ -69,12 +68,14 @@ class WriteScalesTests: XCTestCase {
         let baseScale2 = ["D", "E", "F#", "A", "B", "D", "B", "A", "F#", "E", "D"]
         let baseScale3 = ["A", "C#", "E", "A", "E", "C#", "A"]
         var octavesToPlay = 2
-        let tonicOption = 1
         
-        let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
+        let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale,
+                                                         octavesToPlay: octavesToPlay, tonicOption: TonicOption.noRepeatedTonic)
         octavesToPlay = 3
-        let notesArray2 = writeScale.convertToScaleArray(baseScale: baseScale2, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
-        let notesArray3 = writeScale.convertToScaleArray(baseScale: baseScale3, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
+        let notesArray2 = writeScale.convertToScaleArray(baseScale: baseScale2,
+                                                         octavesToPlay: octavesToPlay, tonicOption: TonicOption.noRepeatedTonic)
+        let notesArray3 = writeScale.convertToScaleArray(baseScale: baseScale3,
+                                                         octavesToPlay: octavesToPlay, tonicOption: TonicOption.noRepeatedTonic)
         
         let expectedNotesArray1 = ["C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C", "B", "A", "G", "F", "E", "D", "C"]
         let expectedNotesArray2 = ["D", "E", "F#", "A", "B", "D", "E", "F#", "A", "B", "D", "E", "F#", "A", "B", "D", "B", "A", "F#", "E", "D", "B", "A", "F#", "E", "D", "B", "A", "F#", "E", "D"]
@@ -92,12 +93,12 @@ class WriteScalesTests: XCTestCase {
         let baseScale = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
         let baseScale2 = ["D", "E", "F#", "A", "B", "D", "B", "A", "F#", "E", "D"]
         var octavesToPlay = 2
-        var tonicOption = 2
         
-        let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
+        let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale,
+                                                         octavesToPlay: octavesToPlay, tonicOption: TonicOption.repeatedTonicAll)
         octavesToPlay = 3
-        tonicOption = 3
-        let notesArray2 = writeScale.convertToScaleArray(baseScale: baseScale2, octavesToPlay: octavesToPlay, tonicOption: tonicOption)
+        let notesArray2 = writeScale.convertToScaleArray(baseScale: baseScale2,
+                                                         octavesToPlay: octavesToPlay, tonicOption: TonicOption.repeatedTonic)
         
         let expectedNotesArray1 = ["C", "C", "D", "E", "F", "G", "A", "B", "C", "C", "D", "E", "F", "G", "A", "B", "C", "C", "B", "A", "G", "F", "E", "D", "C", "C", "B", "A", "G", "F", "E", "D", "C", "C"]
         let expectedNotesArray2 = ["D", "E", "F#", "A", "B", "D", "D", "E", "F#", "A", "B", "D", "D", "E", "F#", "A", "B", "D", "D", "B", "A", "F#", "E", "D", "D", "B", "A", "F#", "E", "D", "D", "B", "A", "F#", "E", "D"]
@@ -206,5 +207,22 @@ class WriteScalesTests: XCTestCase {
         XCTAssertEqual(mode3, mode3Expected, "phrygian is incorrect")
         XCTAssertEqual(mode4, mode4Expected, "lydian is incorrect")
         XCTAssertEqual(mode5, mode5Expected, "mixolydian is incorrect")
+    }
+    
+    func testConvertToIntervalsAllUp() {
+        let baseScale = ["2:C", "2:D", "2:E", "3:F", "2:G", "3:A", "3:B", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D", "2:C"]
+        let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
+
+        let allUpThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.allUp, for: baseScale)
+        let allUpFourths = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.allUp, for: baseScale2)
+        let allUpFifths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.allUp, for: baseScale)
+        
+        let allUpThirdsExpected = ["2:C", "2:E", "2:D", "3:F", "2:E", "2:G", "3:F", "3:A", "2:G", "3:B", "3:A", "3:C", "3:B", "3:D", "3:C", "3:A", "3:B", "2:G", "3:A", "3:F", "2:G", "2:E", "3:F", "2:D", "2:E", "2:C", "2:D", "2:B", "2:C"]
+        let allUpFourthsExpected = ["2:C", "2:E", "2:D", "2:G", "2:E", "3:A", "2:G", "3:C", "3:A", "3:D", "3:C", "2:G", "3:A", "2:E", "2:G", "2:D", "2:E", "2:C", "2:D", "2:A", "2:C"]
+        let allUpFifthsExpected = ["2:C", "3:F", "2:D", "2:G", "2:E", "3:A", "3:F", "3:B", "2:G", "3:C", "3:A", "3:D", "3:B", "3:E", "3:C", "2:G", "3:B", "3:F", "3:A", "2:E", "2:G", "2:D", "3:F", "2:C", "2:E", "2:B", "2:D", "2:A", "2:C"]
+        
+        XCTAssertEqual(allUpThirds, allUpThirdsExpected, "allupthirds is incorrect")
+        XCTAssertEqual(allUpFourths, allUpFourthsExpected, "allupthirdsPentatonic is incorrect")
+        XCTAssertEqual(allUpFifths, allUpFifthsExpected, "allupfifths is incorrect")
     }
 }
