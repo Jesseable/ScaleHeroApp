@@ -10,7 +10,7 @@ import SwiftUI
 struct AboutView: View {
     private let universalSize = UIScreen.main.bounds
     
-    @Binding var screenType: String
+    @Binding var screenType: ScreenType
     var backgroundImage: String
     @State private var isPresented1 = false
     @State private var isPresented2 = false
@@ -28,7 +28,7 @@ struct AboutView: View {
                 ScrollView {
                     
                     Button {
-                        self.screenType = "settings"
+                        self.screenType = .settings
                     } label: {
                         MainUIButton(buttonText: "Settings", type: 1, height: buttonHeight)
                     }
@@ -54,7 +54,7 @@ struct AboutView: View {
                 Spacer()
                 
                 Button {
-                    self.screenType = "homepage"
+                    self.screenType = .homepage
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
                 }

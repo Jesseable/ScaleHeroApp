@@ -45,8 +45,7 @@ class FileReaderAndWriter: ObservableObject {
     }
 
     func add(scaleInfo: String,
-             tonality: String,
-             type: String,
+             tonality: Case,
              tempo: Int,
              startingOctave: Int,
              numOctave: Int,
@@ -60,7 +59,6 @@ class FileReaderAndWriter: ObservableObject {
         let scale = ScaleCharacteristics(id: UUID(),
                           scaleInfo: scaleInfo,
                           tonality: tonality,
-                          type: type,
                           tempo: tempo,
                           startingOctave: startingOctave,
                           numOctave: numOctave,

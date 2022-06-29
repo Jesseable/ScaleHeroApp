@@ -18,7 +18,7 @@ struct DroneView : View {
     private let universalSize = UIScreen.main.bounds
     var fileReaderAndWriter = FileReaderAndWriter()
     
-    @Binding var screenType: String
+    @Binding var screenType: ScreenType
     @State private var isPlaying = false
     @State var playScale = PlaySounds()
     
@@ -63,7 +63,7 @@ struct DroneView : View {
                 Spacer()
                 
                 Button {
-                    self.screenType = "homescreen"
+                    self.screenType = ScreenType.homepage
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
                 }

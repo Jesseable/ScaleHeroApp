@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     
     @EnvironmentObject var musicNotes: MusicNotes
-    @Binding var screenType: String
+    @Binding var screenType: ScreenType
     
     private let universalSize = UIScreen.main.bounds
     var backgroundImage: String
@@ -212,7 +212,7 @@ struct SettingsView: View {
                              fastBeats: fastIntroBeatsSelected,
                              slowBeats: slowIntroBeatsSelected)
                     
-                    self.screenType = "aboutview"
+                    self.screenType = .aboutview
                 } label: {
                     MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight)
                 }

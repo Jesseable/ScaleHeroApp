@@ -12,7 +12,7 @@ import SwiftUI
  */
 struct OtherScalesView: View {
     
-    @Binding var screenType: String
+    @Binding var screenType: ScreenType
     @State var displayType: OtherScaleTypes
     @EnvironmentObject var musicNotes: MusicNotes
     
@@ -91,39 +91,6 @@ struct OtherScalesView: View {
                         }
                     }
                 }
-//
-//                    switch specialTitle.lowercased() {
-//                    case "major scale modes":
-//                        ForEach(modes, id: \.self) { mode in
-//                            Button {
-//                                musicNotes.tonality = mode
-//                                screenType = "soundview"
-//                            } label: {
-//                                MainUIButton(buttonText: mode, type: 1, height: buttonHeight)
-//                            }
-//                        }
-//                    case "special":
-//                        ForEach(specialTypes, id: \.self) { type in
-//                            Button {
-//                                musicNotes.tonality = "others"
-//                                screenType = "soundview"
-//                            } label: {
-//                                MainUIButton(buttonText: type.replacingOccurrences(of: "-", with: " "), type: 1, height: buttonHeight)
-//                            }
-//                        }
-//                    case "tetrads":
-//                        ForEach(tetrads, id: \.self) { type in
-//                            Button {
-//                                musicNotes.tonality = "tetrad"
-//                                screenType = "soundview"
-//                            } label: {
-//                                MainUIButton(buttonText: type.components(separatedBy: "-")[0] + " 7th", type: 1, height: buttonHeight)
-//                            }
-//                        }
-//                    default:
-//                        // make a clearer error message in the form of an UI button
-//                        MainUIButton(buttonText: "FAID TO LOAD", type: 1, height: buttonHeight)
-//                    }
                 Spacer()
                 
                 Button {
@@ -131,9 +98,9 @@ struct OtherScalesView: View {
                         displayType = .special
                     } else {
                         if (musicNotes.tonality == .scale) {
-                            self.screenType = "scale"
+                            self.screenType = ScreenType.scale
                         } else {
-                            self.screenType = "arpeggio"
+                            self.screenType = ScreenType.arpeggio
                         }
                     }
                 } label: {

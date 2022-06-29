@@ -14,7 +14,7 @@ struct ArpeggioView : View {
 
     @EnvironmentObject var musicNotes: MusicNotes
     
-    @Binding var screenType: String
+    @Binding var screenType: ScreenType
     let universalSize = UIScreen.main.bounds
     var backgroundImage: String
     
@@ -34,21 +34,21 @@ struct ArpeggioView : View {
                     
                     Button {
                         musicNotes.tonality = Case.arpeggio(tonality: .major)
-                        self.screenType = "soundview"
+                        self.screenType = ScreenType.soundview
                     } label: {
                         MainUIButton(buttonText: "Major (Triad)", type: 1, height: buttonHeight)
                     }
                     
                     Button {
                         musicNotes.tonality = Case.arpeggio(tonality: .minor)
-                        self.screenType = "soundview"
+                        self.screenType = ScreenType.soundview
                     } label: {
                         MainUIButton(buttonText: "Minor (Triad)", type: 1, height: buttonHeight)
                     }
                     
                     // go to new option view
                     Button {
-                        self.screenType = "otherview"
+                        self.screenType = ScreenType.otherview
                     } label: {
                         MainUIButton(buttonText: "7th's (Tetrads)", type: 1, height: buttonHeight)
                     }
@@ -57,7 +57,7 @@ struct ArpeggioView : View {
                 Spacer()
                 
                 Button {
-                    self.screenType = "HomeScreen"
+                    self.screenType = ScreenType.homepage
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
                 }

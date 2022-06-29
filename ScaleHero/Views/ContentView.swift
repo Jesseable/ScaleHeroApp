@@ -15,7 +15,7 @@ import SwiftUI
 struct AppContentView: View {
     
     @EnvironmentObject var musicNotes: MusicNotes
-    @State private var screenType = "HomePage"
+    @State private var screenType = ScreenType.homepage
     @State private var backgroundImage : String
     private var fileReaderAndWriter = FileReaderAndWriter()
     
@@ -96,22 +96,22 @@ struct AppContentView: View {
         
         return Group {
             switch screenType {
-            case "scale":
+            case .scale:
                 ScalesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "arpeggio":
+            case .arpeggio:
                 ArpeggioView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "otherview":
+            case .otherview:
                 OtherScalesView(screenType: self.$screenType, displayType: musicNotes.otherSpecificScaleTypes, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "settings":
+            case .settings:
                 SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
-            case "soundview":
+            case .soundview:
                 let scaleType = musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type
                 SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "droneview":
+            case .droneview:
                 DroneView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "favouritesview":
+            case .favouritesview:
                 FavouritesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "aboutview":
+            case .aboutview:
                 AboutView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             default:
                 HomePage(screenType: $screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)

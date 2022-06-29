@@ -14,6 +14,18 @@ enum ScaleType {
     case wholetone
 }
 
+enum ScreenType {
+    case homepage
+    case arpeggio
+    case scale
+    case otherview
+    case settings
+    case soundview
+    case droneview
+    case favouritesview
+    case aboutview
+}
+
 enum TonicOption {
     case noRepeatedTonic
     case repeatedTonicAll
@@ -21,7 +33,7 @@ enum TonicOption {
 }
 
 // The int is the rotations in the major scale it must undertake
-enum MajorScaleMode : Int, CaseIterable {
+enum MajorScaleMode : Int, CaseIterable, Equatable, Codable {
     case ionian = 0
     case dorian = 1
     case phrygian = 2
@@ -32,7 +44,7 @@ enum MajorScaleMode : Int, CaseIterable {
 }
 
 // The int is the rotations in the major pentatonic scale it must undertake
-enum PentatonicScaleMode : Int, CaseIterable {
+enum PentatonicScaleMode : Int, CaseIterable, Equatable, Codable {
     case mode1_major = 0
     case mode2_egyptian = 1
     case mode3_manGong = 2
@@ -40,12 +52,26 @@ enum PentatonicScaleMode : Int, CaseIterable {
     case mode5_minor = 4
 }
 
-enum Case {
+enum Case : Codable { // CHECK THAT THIS IS CORRECT
     case arpeggio(tonality: ArpeggioTonality)
     case scale(tonality: ScaleTonality)
 }
 
-enum ArpeggioTonality : String, CaseIterable {
+// DO I NEED THIS
+extension Case : Equatable {
+    static func == (lhs: Case, rhs: Case) -> Bool {
+        switch (lhs, rhs) {
+        case (.scale(let lhsType), .scale(let rhsType)):
+            return lhsType == rhsType
+        case (.arpeggio(let lhsType), .arpeggio(tonality: let rhsType)):
+            return lhsType == rhsType
+        default:
+            return false
+        }
+    }
+}
+
+enum ArpeggioTonality : String, CaseIterable, Equatable, Codable{
     case major = "major"
     case minor = "minor"
     case dominant7th = "dominant 7th"
@@ -54,13 +80,13 @@ enum ArpeggioTonality : String, CaseIterable {
     case minor7th = "minor 7th"
 }
 
-enum ChromaticAlteration : CaseIterable {
+enum ChromaticAlteration : CaseIterable, Equatable, Codable {
     case unchanged
     case wholeTone
     // possibly add third options here (up in minor thirds etc
 }
 
-enum ScaleTonality {
+enum ScaleTonality : Equatable, Codable {
     case major(mode: MajorScaleMode)
     case naturalMinor
     case harmonicMinor

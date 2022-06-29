@@ -10,11 +10,10 @@ import Foundation
 /**
  This is used to save the scales as a JSON dictionary value to be read and written to in the favourites page
  */
-struct ScaleCharacteristics: Identifiable, Codable, Equatable {
+struct ScaleCharacteristics: Identifiable, Equatable, Codable {
     var id: UUID
     let scaleInfo: String
-    let tonality: String
-    let type: String
+    let tonality: Case
     let tempo: Int
     let startingOctave: Int
     let numOctave: Int

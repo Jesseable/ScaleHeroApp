@@ -153,7 +153,7 @@ struct ScalesView: View {
     
     @EnvironmentObject var musicNotes: MusicNotes
     
-    @Binding var screenType: String
+    @Binding var screenType: ScreenType
     private let universalSize = UIScreen.main.bounds
     var backgroundImage: String
     
@@ -174,7 +174,7 @@ struct ScalesView: View {
                     // Major scale
                     Button {
                         musicNotes.tonality = .scale(tonality: .major(mode: .ionian))
-                        self.screenType = "soundview"
+                        self.screenType = ScreenType.soundview
                     } label: {
                         MainUIButton(buttonText: "Major", type: 1, height: buttonHeight)
                     }
@@ -182,7 +182,7 @@ struct ScalesView: View {
                     // Minor scale
                     Button {
                         musicNotes.tonality = .scale(tonality: .naturalMinor)
-                        self.screenType = "soundview"
+                        self.screenType = ScreenType.soundview
                     } label: {
                         MainUIButton(buttonText: "Minor", type: 1, height: buttonHeight)
                     }
@@ -190,7 +190,7 @@ struct ScalesView: View {
                     // Harmonic Minor Scale
                     Button {
                         musicNotes.tonality = .scale(tonality: .harmonicMinor)
-                        self.screenType = "soundview"
+                        self.screenType = ScreenType.soundview
                     } label: {
                         MainUIButton(buttonText: "Harmonic Minor", type: 1, height: buttonHeight)
                     }
@@ -198,7 +198,7 @@ struct ScalesView: View {
                     // Melodic minor scale
                     Button {
                         musicNotes.tonality = .scale(tonality: .melodicMinor)
-                        self.screenType = "soundview"
+                        self.screenType = ScreenType.soundview
                     } label: {
                         MainUIButton(buttonText: "Melodic Minor", type: 1, height: buttonHeight)
                     }
@@ -206,7 +206,7 @@ struct ScalesView: View {
                     // Major scale modes (goes to a new option screen)
                     Button {
                         musicNotes.otherSpecificScaleTypes = .majorModes
-                        self.screenType = "otherview"
+                        self.screenType = ScreenType.otherview
                     } label: {
                         MainUIButton(buttonText: "Major Modes", type: 1, height: buttonHeight)
                     }
@@ -214,7 +214,7 @@ struct ScalesView: View {
                     // Major scale modes (goes to a new option screen)
                     Button {
                         musicNotes.otherSpecificScaleTypes = .pentatonicModes
-                        self.screenType = "otherview"
+                        self.screenType = ScreenType.otherview
                     } label: {
                         MainUIButton(buttonText: "Pentatonic Modes", type: 1, height: buttonHeight)
                     }
@@ -222,7 +222,7 @@ struct ScalesView: View {
                     // Other Special scale options (goes to a new option screen)
                     Button {
                         musicNotes.otherSpecificScaleTypes = .special
-                        self.screenType = "otherview"
+                        self.screenType = ScreenType.otherview
                     } label: {
                         MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
                     }
@@ -230,7 +230,7 @@ struct ScalesView: View {
                     Spacer()
                 }
                 Button {
-                    self.screenType = "HomeScreen"
+                    self.screenType = ScreenType.homepage
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
                 }

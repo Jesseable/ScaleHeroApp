@@ -12,7 +12,7 @@ struct FavouritesView: View {
     @EnvironmentObject var musicNotes: MusicNotes
     private let universalSize = UIScreen.main.bounds
     
-    @Binding var screenType: String
+    @Binding var screenType: ScreenType
     var backgroundImage: String
     @State private var isPresented = false
     @State private var deletionMode = false
@@ -41,7 +41,6 @@ struct FavouritesView: View {
                             } else {
                                 musicNotes.isFavouriteScale = true
                                 musicNotes.tonality = scale.tonality
-                                musicNotes.type = scale.type
                                 musicNotes.tempo = CGFloat(scale.tempo)
                                 musicNotes.startingOctave = scale.startingOctave
                                 musicNotes.octaves = scale.numOctave
@@ -52,7 +51,7 @@ struct FavouritesView: View {
                                 musicNotes.noteDisplay = scale.noteDisplay
                                 musicNotes.endlessLoop = scale.endlessLoop
 
-                                self.screenType = "soundview"
+                                self.screenType = .soundview
                             }
                         } label: {
                             ZStack {
@@ -93,7 +92,7 @@ struct FavouritesView: View {
                 Spacer()
                 
                 Button {
-                    self.screenType = "homepage"
+                    self.screenType = .homepage
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: menuButtonHeight)
                 }

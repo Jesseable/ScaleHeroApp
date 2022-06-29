@@ -11,9 +11,9 @@ struct SoundView : View {
     
     private let universalSize = UIScreen.main.bounds
     
-    @Binding var screenType: String
+    @Binding var screenType: ScreenType
     @EnvironmentObject var scaleOptions: ScaleOptions
-    @State var scaleType: String // Change to from an enum
+    //@State var scaleType: String // Change to from an enum
     @State private var isPlaying = false
     @State private var presentAlert = false
     @State private var disableOctaveSelection = false
@@ -24,7 +24,7 @@ struct SoundView : View {
     var backgroundImage: String
     
     var body: some View {
-        let title = scaleType
+        let title = musicNotes.getTonality()
         let buttonHeight = universalSize.height/17
         let bottumButtonHeight = universalSize.height/10
         let maxFavourites = 7
@@ -43,23 +43,31 @@ struct SoundView : View {
                         self.screenType = "favouritesview"
                         musicNotes.isFavouriteScale.toggle()
                     } else {
-                        switch musicNotes.type.lowercased() {
-                        case "mode":
-                            musicNotes.type = "Major Scale Modes"
-                            self.screenType = "otherview"
-                        case "chromatic-scale", "whole-tone-scale", "major-pentatonic-scale", "minor-pentatonic-scale", "blues-scale":
-                            musicNotes.type = "special"
-                            self.screenType = "otherview"
-                        case "harmonic","melodic":
-                            self.screenType = "scale"
-                        case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
-                            musicNotes.type = "Tetrads"
-                            self.screenType = "otherview"
-                        case "pentatonic", "":
-                            self.screenType = "abstractview"
-                        default:
-                            self.screenType = musicNotes.type
+                        switch musicNotes.tonality { // TO BE CHANGED LATER
+                        case .scale:
+                            self.screenType = ScreenType.scale
+                        case .arpeggio:
+                            self.screenType = .ScreenType.arpeggio
+                        case .nil:
+                            fatalError("Case was NULL") // TO BE ALTERED
                         }
+//                        switch musicNotes.type.lowercased() {
+//                        case "mode":
+//                            musicNotes.type = "Major Scale Modes"
+//                            self.screenType = "otherview"
+//                        case "chromatic-scale", "whole-tone-scale", "major-pentatonic-scale", "minor-pentatonic-scale", "blues-scale":
+//                            musicNotes.type = "special"
+//                            self.screenType = "otherview"
+//                        case "harmonic","melodic":
+//                            self.screenType = "scale"
+//                        case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
+//                            musicNotes.type = "Tetrads"
+//                            self.screenType = "otherview"
+//                        case "pentatonic", "":
+//                            self.screenType = "abstractview"
+//                        default:
+//                            self.screenType = musicNotes.type
+//                        }
                     }
                 } label: {
                     MainUIButton(buttonText: "Back", type: 9, height: bottumButtonHeight)
@@ -222,11 +230,10 @@ struct SoundView : View {
                     let scaleTypeArr = scaleType.components(separatedBy: " ")
                     let startingNote = scaleTypeArr[0]
                     let tonality = scaleTypeArr[1].lowercased() // CHNAGE THIS STRING INTO AN ENUM
-                    let scaleType = scaleTypeArr[2].lowercased() // CHNAGE THIS ALSO TO AN ENUM
                     
                     let writeScale = WriteScales(scaleOptions: scaleOptions)
                     
-                    let notesArray = writeScale.returnScaleNotesArray(for: Case.scale(tonality: .major(mode: .ionian)), startingAt: startingNote)
+                    let notesArray = writeScale.returnScaleNotesArray(for: musicNotes.tonality, startingAt: startingNote)
                     
                     if (notesArray.isEmpty) {
                         print("failed due to not being able to read base scale notes from the json file")
@@ -307,7 +314,6 @@ struct SoundView : View {
         .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
         .fullScreenCover(isPresented: $isPlaying) {
             PlayingView(backgroundImage: backgroundImage,
-                        scaleType: scaleType,
                         playScaleNotes: musicNotes.playScaleNotes,
                         playDrone: musicNotes.playDrone,
                         playSounds: playScale,
