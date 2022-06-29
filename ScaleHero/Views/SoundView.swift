@@ -24,7 +24,7 @@ struct SoundView : View {
     var backgroundImage: String
     
     var body: some View {
-        let title = musicNotes.getTonality()
+        let title = "\(musicNotes.noteName) \(musicNotes.getTonality())"
         let buttonHeight = universalSize.height/17
         let bottumButtonHeight = universalSize.height/10
         let maxFavourites = 7
@@ -35,21 +35,22 @@ struct SoundView : View {
 
             VStack {
                 
-                Text(musicNotes.getMusicTitile(from: title)).asTitle()
+                Text(title).asTitle()
                 
                 // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
                 Button {
                     if (musicNotes.isFavouriteScale) {
-                        self.screenType = "favouritesview"
+                        self.screenType = .favouritesview
                         musicNotes.isFavouriteScale.toggle()
                     } else {
                         switch musicNotes.tonality { // TO BE CHANGED LATER
                         case .scale:
-                            self.screenType = ScreenType.scale
+                            self.screenType = .scale
                         case .arpeggio:
-                            self.screenType = .ScreenType.arpeggio
-                        case .nil:
-                            fatalError("Case was NULL") // TO BE ALTERED
+                            self.screenType = .arpeggio
+                        case .none:
+                            print("ERROR, screen type was null")
+                            self.screenType = .homepage
                         }
 //                        switch musicNotes.type.lowercased() {
 //                        case "mode":
@@ -199,22 +200,22 @@ struct SoundView : View {
                         }
                     }
                     
-                    Divider().background(Color.white)
-                    
-                    Group { /// TO BE DELETED
-                        MainUIButton(buttonText: "Note Display", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
-                        ZStack {
-                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                            Section {
-                                Picker("Sharps or Flats", selection: $musicNotes.noteDisplay) {
-                                    Image("Sharp").tag(1)
-                                    Text("Automatic").tag(2)
-                                    Image("Flat").tag(3)
-                                }
-                                .formatted()
-                            }
-                        }
-                    }
+//                    Divider().background(Color.white)
+//
+//                    Group { /// TO BE DELETED
+//                        MainUIButton(buttonText: "Note Display", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
+//                        ZStack {
+//                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+//                            Section {
+//                                Picker("Sharps or Flats", selection: $musicNotes.noteDisplay) {
+//                                    Image("Sharp").tag(1)
+//                                    Text("Automatic").tag(2)
+//                                    Image("Flat").tag(3)
+//                                }
+//                                .formatted()
+//                            }
+//                        }
+//                    }
                     
                     Divider().background(Color.white)
                     
@@ -227,13 +228,11 @@ struct SoundView : View {
                     Spacer()
                 }
                 Button {
-                    let scaleTypeArr = scaleType.components(separatedBy: " ")
-                    let startingNote = scaleTypeArr[0]
-                    let tonality = scaleTypeArr[1].lowercased() // CHNAGE THIS STRING INTO AN ENUM
-                    
+                    let startingNote = musicNotes.noteName
+
                     let writeScale = WriteScales(scaleOptions: scaleOptions)
                     
-                    let notesArray = writeScale.returnScaleNotesArray(for: musicNotes.tonality, startingAt: startingNote)
+                    let notesArray = writeScale.returnScaleNotesArray(for: musicNotes.tonality!, startingAt: startingNote)
                     
                     if (notesArray.isEmpty) {
                         print("failed due to not being able to read base scale notes from the json file")
@@ -290,9 +289,8 @@ struct SoundView : View {
                         
                         if (fileReaderAndWriter.scales.count < maxFavourites) {
                             
-                            fileReaderAndWriter.add(scaleInfo: scaleType,
-                                                    tonality: musicNotes.tonality,
-                                                    type: musicNotes.type,
+                            fileReaderAndWriter.add(scaleInfo: "IS THIS NEEDED: POSSIBLY DELETE",
+                                                    tonality: musicNotes.tonality!,
                                                     tempo: Int(musicNotes.tempo),
                                                     startingOctave: musicNotes.startingOctave,
                                                     numOctave: musicNotes.octaves,
@@ -305,7 +303,7 @@ struct SoundView : View {
                         
                         }
                         // Goes to the favourites screen
-                        self.screenType = "favouritesview"
+                        self.screenType = .favouritesview
                     }),
                     secondaryButton: .cancel(Text("Cancel"), action: { /*Do Nothing*/ })
                 )

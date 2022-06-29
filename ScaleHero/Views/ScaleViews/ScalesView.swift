@@ -116,34 +116,34 @@ class MusicNotes: ObservableObject {
     func getPentatonicModeName(mode: PentatonicScaleMode) -> String {
         switch mode {
         case .mode1_major:
-            return "major pentatonic"
+            return "mode 1: major pentatonic"
         case .mode2_egyptian:
-            return "egytpian scale"
+            return "mode 2: egytpian scale"
         case .mode3_manGong:
-            return "man gong scale"
+            return "mode 3: man gong scale"
         case .mode4_ritusen:
-            return "ritusen scale"
+            return "mode 4: ritusen scale"
         case .mode5_minor:
-            return "minor pentatonic"
+            return "mode 5: minor pentatonic"
         }
     }
-    
-    func getMusicTitile(from title: String) -> String {
-
-        var newtitle =  title.replacingOccurrences(of: "-", with: " ")
-                .uppercased()
-                .replacingOccurrences(of: "TETRAD ", with: "")
-                .replacingOccurrences(of: "SEVENTH", with: "7th")
-                .replacingOccurrences(of: "OTHERS ", with: "")
-        
-        if noteName.count > 1 {
-            let start = title.index(title.startIndex, offsetBy: 4) // Makes the BB appeare as Bb instead
-            let end = title.index(title.startIndex, offsetBy: 6)
-            let range = start..<end
-            newtitle = newtitle.replacingOccurrences(of: "B", with: "b", options: .literal, range: range)
-        }
-        return newtitle
-    }
+    ///Possibly do something similar capitalising every fist  letter of a word
+//    func getMusicTitile(from title: String) -> String {
+//
+//        var newtitle =  title.replacingOccurrences(of: "-", with: " ")
+//                .uppercased()
+//                .replacingOccurrences(of: "TETRAD ", with: "")
+//                .replacingOccurrences(of: "SEVENTH", with: "7th")
+//                .replacingOccurrences(of: "OTHERS ", with: "")
+//
+//        if noteName.count > 1 {
+//            let start = title.index(title.startIndex, offsetBy: 4) // Makes the BB appeare as Bb instead
+//            let end = title.index(title.startIndex, offsetBy: 6)
+//            let range = start..<end
+//            newtitle = newtitle.replacingOccurrences(of: "B", with: "b", options: .literal, range: range)
+//        }
+//        return newtitle
+//    }
 }
 
 /**

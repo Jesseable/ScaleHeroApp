@@ -15,7 +15,7 @@ import SwiftUI
 struct AppContentView: View {
     
     @EnvironmentObject var musicNotes: MusicNotes
-    @State private var screenType = ScreenType.homepage
+    @State private var screenType : ScreenType
     @State private var backgroundImage : String
     private var fileReaderAndWriter = FileReaderAndWriter()
     
@@ -32,6 +32,8 @@ struct AppContentView: View {
     Initialises the  components of the app.
      */
     init() {
+        screenType = .homepage
+        
         //SCALE INSTRUMENT
         if fileReaderAndWriter.checkFilePath(for: "scaleinstrument") {
             selectedInstrument = fileReaderAndWriter.readScaleInstrument()
@@ -93,28 +95,30 @@ struct AppContentView: View {
      The main switch statement to toggle between views, transfering the  parameters as required.
      */
     var body: some View {
+        let SelectedBackgroundImage = musicNotes.backgroundImage ?? self.backgroundImage
         
         return Group {
+            
             switch screenType {
             case .scale:
-                ScalesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+                ScalesView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
             case .arpeggio:
-                ArpeggioView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+                ArpeggioView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
             case .otherview:
-                OtherScalesView(screenType: self.$screenType, displayType: musicNotes.otherSpecificScaleTypes, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+                // Upon failing goes to special screen
+                OtherScalesView(screenType: self.$screenType, displayType: musicNotes.otherSpecificScaleTypes ?? OtherScaleTypes.special, backgroundImage: SelectedBackgroundImage)
             case .settings:
-                SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
+                SettingsView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
             case .soundview:
-                let scaleType = musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type
-                SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+                SoundView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
             case .droneview:
-                DroneView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+                DroneView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
             case .favouritesview:
-                FavouritesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+                FavouritesView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
             case .aboutview:
-                AboutView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+                AboutView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
             default:
-                HomePage(screenType: $screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+                HomePage(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
             }
         }
     }
@@ -129,7 +133,7 @@ struct HomePage : View {
     
     private let universalSize = UIScreen.main.bounds
     var fileReaderAndWriter = FileReaderAndWriter()
-    @Binding var screenType: String
+    @Binding var screenType: ScreenType
     @State private var offset: CGFloat = .zero
     var backgroundImage: String
 
@@ -180,25 +184,25 @@ struct HomePage : View {
                 ScrollView {
                     
                     Button {
-                        self.screenType = "scale"
+                        self.screenType = .scale
                     } label: {
                         MainUIButton(buttonText: "Scales", type: 1, height: buttonHeight)
                     }
 
                     Button {
-                        self.screenType = "arpeggio"
+                        self.screenType = .arpeggio
                     } label: {
                         MainUIButton(buttonText: "Arpeggio", type: 1, height: buttonHeight)
                     }
                     
                     Button {
-                        self.screenType = "droneview"
+                        self.screenType = .droneview
                     } label: {
                         MainUIButton(buttonText: "Drone", type: 1, height: buttonHeight)
                     }
                     
                     Button {
-                        self.screenType = "favouritesview"
+                        self.screenType = .favouritesview
                     } label: {
                         MainUIButton(buttonText: "Favourites", type: 2, height: buttonHeight)
                     }
@@ -207,7 +211,7 @@ struct HomePage : View {
                 }
                     
                 Button {
-                    self.screenType = "aboutview"
+                    self.screenType = .aboutview
                 } label: {
                     MainUIButton(buttonText: "About / Settings", type: 3, height: buttonHeight)
                 }
