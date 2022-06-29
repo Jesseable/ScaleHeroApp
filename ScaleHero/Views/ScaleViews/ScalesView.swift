@@ -21,8 +21,9 @@ class MusicNotes: ObservableObject {
     
     // tonicMode cases: 1 being never, 2: always, 3: always except for the first note
     @Published var tonicMode = 1
-    @Published var type = "Scale"
-    @Published var tonality = "Major"
+    // An enum containing either scale or arpeggio followed by the tonality, e.g. Case.scale(.major)
+    @Published var tonality : Case?
+    @Published var otherSpecificScaleTypes : OtherScaleTypes?
     @Published var scaleNotes = [""]
     @Published var scaleNoteNames = [""]
     @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -45,6 +46,86 @@ class MusicNotes: ObservableObject {
     
     func getInstrumentSelection() -> [String] {
         return instrumentSelection
+    }
+    
+    func getType() -> String {
+        switch tonality {
+        case .arpeggio:
+            return "arpeggio"
+        case .scale:
+            return "scale"
+        case .none:
+            return "Error: tonality was NULL"
+        }
+    }
+    
+    func getTonality() -> String {
+        switch tonality {
+        case .arpeggio(let tonality):
+            return tonality.rawValue
+        case .scale(let tonality):
+            switch tonality {
+            case .major(let mode):
+                return getMajorModeName(mode: mode)
+            case .naturalMinor:
+                return "minor"
+            case .harmonicMinor:
+                return "harmonic minor"
+            case .melodicMinor:
+                return "melodic minor"
+            case .chromatic(let alteration):
+                return getChromaticAlteration(for: alteration)
+            case .pentatonic(let mode):
+                return getPentatonicModeName(mode: mode)
+            case .blues:
+                return "blues"
+            }
+        case .none:
+            return "Error: tonality was NULL"
+        }
+    }
+    
+    func getChromaticAlteration(for alteration: ChromaticAlteration) -> String {
+        switch alteration {
+        case .unchanged:
+            return "chromatic"
+        case .wholeTone:
+            return "whole tone"
+        }
+    }
+    
+    func getMajorModeName(mode: MajorScaleMode) -> String {
+        switch mode {
+        case .ionian:
+            return "major"
+        case .dorian:
+            return "dorian mode"
+        case .phrygian:
+            return "phrygian mode"
+        case .lydian:
+            return "lydian mode"
+        case .mixolydian:
+            return "mixolydian mode"
+        case .aeolian:
+            return "aeolian mode"
+        case .locrian:
+            return "locrian mode"
+        }
+    }
+    
+    func getPentatonicModeName(mode: PentatonicScaleMode) -> String {
+        switch mode {
+        case .mode1_major:
+            return "major pentatonic"
+        case .mode2_egyptian:
+            return "egytpian scale"
+        case .mode3_manGong:
+            return "man gong scale"
+        case .mode4_ritusen:
+            return "ritusen scale"
+        case .mode5_minor:
+            return "minor pentatonic"
+        }
     }
     
     func getMusicTitile(from title: String) -> String {
@@ -92,8 +173,7 @@ struct ScalesView: View {
                     
                     // Major scale
                     Button {
-                        musicNotes.tonality = "Major"
-                        musicNotes.type = "scale"
+                        musicNotes.tonality = .scale(tonality: .major(mode: .ionian))
                         self.screenType = "soundview"
                     } label: {
                         MainUIButton(buttonText: "Major", type: 1, height: buttonHeight)
@@ -101,8 +181,7 @@ struct ScalesView: View {
                     
                     // Minor scale
                     Button {
-                        musicNotes.tonality = "Minor"
-                        musicNotes.type = "scale"
+                        musicNotes.tonality = .scale(tonality: .naturalMinor)
                         self.screenType = "soundview"
                     } label: {
                         MainUIButton(buttonText: "Minor", type: 1, height: buttonHeight)
@@ -110,8 +189,7 @@ struct ScalesView: View {
                     
                     // Harmonic Minor Scale
                     Button {
-                        musicNotes.tonality = "Minor"
-                        musicNotes.type = "harmonic"
+                        musicNotes.tonality = .scale(tonality: .harmonicMinor)
                         self.screenType = "soundview"
                     } label: {
                         MainUIButton(buttonText: "Harmonic Minor", type: 1, height: buttonHeight)
@@ -119,24 +197,31 @@ struct ScalesView: View {
                     
                     // Melodic minor scale
                     Button {
-                        musicNotes.tonality = "Minor"
-                        musicNotes.type = "melodic"
+                        musicNotes.tonality = .scale(tonality: .melodicMinor)
                         self.screenType = "soundview"
                     } label: {
                         MainUIButton(buttonText: "Melodic Minor", type: 1, height: buttonHeight)
                     }
                     
-                    // Major scale modes
+                    // Major scale modes (goes to a new option screen)
                     Button {
-                        musicNotes.type = "Major Scale Modes"
+                        musicNotes.otherSpecificScaleTypes = .majorModes
                         self.screenType = "otherview"
                     } label: {
-                        MainUIButton(buttonText: "Modes", type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: "Major Modes", type: 1, height: buttonHeight)
                     }
                     
-                    // Other Special scale options
+                    // Major scale modes (goes to a new option screen)
                     Button {
-                        musicNotes.type = "special"
+                        musicNotes.otherSpecificScaleTypes = .pentatonicModes
+                        self.screenType = "otherview"
+                    } label: {
+                        MainUIButton(buttonText: "Pentatonic Modes", type: 1, height: buttonHeight)
+                    }
+                    
+                    // Other Special scale options (goes to a new option screen)
+                    Button {
+                        musicNotes.otherSpecificScaleTypes = .special
                         self.screenType = "otherview"
                     } label: {
                         MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)

@@ -33,23 +33,21 @@ struct ArpeggioView : View {
                     NoteSelectionButton(buttonHeight: buttonHeight)
                     
                     Button {
-                        musicNotes.tonality = "Major"
-                        musicNotes.type = "arpeggio"
+                        musicNotes.tonality = Case.arpeggio(tonality: .major)
                         self.screenType = "soundview"
                     } label: {
                         MainUIButton(buttonText: "Major (Triad)", type: 1, height: buttonHeight)
                     }
                     
                     Button {
-                        musicNotes.tonality = "Minor"
-                        musicNotes.type = "arpeggio"
+                        musicNotes.tonality = Case.arpeggio(tonality: .minor)
                         self.screenType = "soundview"
                     } label: {
                         MainUIButton(buttonText: "Minor (Triad)", type: 1, height: buttonHeight)
                     }
                     
+                    // go to new option view
                     Button {
-                        musicNotes.type = "Tetrads"
                         self.screenType = "otherview"
                     } label: {
                         MainUIButton(buttonText: "7th's (Tetrads)", type: 1, height: buttonHeight)

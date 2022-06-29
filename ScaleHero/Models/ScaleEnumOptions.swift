@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TO BE DELETED
 enum ScaleType {
     case majorMode(mode: MajorScaleMode)
     case pentatonicMode(mode: PentatonicScaleMode)
@@ -44,22 +45,28 @@ enum Case {
     case scale(tonality: ScaleTonality)
 }
 
-enum ArpeggioTonality : CaseIterable {
-    case major
-    case minor
-    case dominant7th
-    case diminished7th
-    case major7th
-    case minor7th
+enum ArpeggioTonality : String, CaseIterable {
+    case major = "major"
+    case minor = "minor"
+    case dominant7th = "dominant 7th"
+    case diminished7th = "diminished 7th"
+    case major7th = "major 7th"
+    case minor7th = "minor 7th"
 }
 
-enum ScaleTonality : CaseIterable {
-    case major
+enum ChromaticAlteration : CaseIterable {
+    case unchanged
+    case wholeTone
+    // possibly add third options here (up in minor thirds etc
+}
+
+enum ScaleTonality {
+    case major(mode: MajorScaleMode)
     case naturalMinor
     case harmonicMinor
     case melodicMinor
-    case chromatic
-    case pentatonic
+    case chromatic(alteration: ChromaticAlteration)
+    case pentatonic(mode: PentatonicScaleMode)
     case blues
 }
 
@@ -76,7 +83,14 @@ enum IntervalOption {
     case oneDownOneUp
 }
 
-enum AlterAmount: Int {
+enum AlterAmount : Int {
     case decrease = -1
     case increase = 1
+}
+
+enum OtherScaleTypes : String {
+    case majorModes = "major modes"
+    case pentatonicModes = "pentatonic modes"
+    case special = "special scales"
+    case tetrads = "7th scales (tetrads)"
 }

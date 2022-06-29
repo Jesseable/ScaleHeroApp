@@ -306,7 +306,7 @@ struct WriteScales {
         let tonicNote = scaleArray[0]
         let startingIonianNote = AlterNotes().getMajorIonianStartingNote(from: tonicNote, in: mode)
 
-        var scaleModeArr = returnScaleNotesArray(for: .scale(tonality: .major), startingAt: startingIonianNote)
+        var scaleModeArr = returnScaleNotesArray(for: .scale(tonality: .major(mode: .ionian)), startingAt: startingIonianNote)
         // rotate this scale to the appropriate tonic note for the scale
         MajorScaleMode.allCases.forEach {
             if ($0 == mode) {
@@ -332,7 +332,7 @@ struct WriteScales {
         let tonicNote = scaleArray[0]
         let startingMajorPentatonicNote = AlterNotes().getMajorPentatonicStartingNote(from: tonicNote, in: mode)
 
-        var scaleModeArr = returnScaleNotesArray(for: .scale(tonality: .pentatonic), startingAt: startingMajorPentatonicNote)
+        var scaleModeArr = returnScaleNotesArray(for: .scale(tonality: .pentatonic(mode: .mode1_major)), startingAt: startingMajorPentatonicNote)
         // rotate this scale to the appropriate tonic note for the scale
         PentatonicScaleMode.allCases.forEach {
             if ($0 == mode) {

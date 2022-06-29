@@ -90,7 +90,7 @@ struct AppContentView: View {
     }
     
     /**
-     Toggles between views, transfering the needed parameters.
+     The main switch statement to toggle between views, transfering the  parameters as required.
      */
     var body: some View {
         
@@ -101,7 +101,7 @@ struct AppContentView: View {
             case "arpeggio":
                 ArpeggioView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "otherview":
-                OtherScalesView(screenType: self.$screenType, specialTitle: musicNotes.type, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+                OtherScalesView(screenType: self.$screenType, displayType: musicNotes.otherSpecificScaleTypes, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
             case "settings":
                 SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
             case "soundview":

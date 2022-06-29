@@ -13,7 +13,7 @@ struct SoundView : View {
     
     @Binding var screenType: String
     @EnvironmentObject var scaleOptions: ScaleOptions
-    @State var scaleType: String
+    @State var scaleType: String // Change to from an enum
     @State private var isPlaying = false
     @State private var presentAlert = false
     @State private var disableOctaveSelection = false
@@ -193,7 +193,7 @@ struct SoundView : View {
                     
                     Divider().background(Color.white)
                     
-                    Group {
+                    Group { /// TO BE DELETED
                         MainUIButton(buttonText: "Note Display", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
                         ZStack {
                             MainUIButton(buttonText: "", type: 7, height: buttonHeight)
@@ -226,7 +226,7 @@ struct SoundView : View {
                     
                     let writeScale = WriteScales(scaleOptions: scaleOptions)
                     
-                    let notesArray = writeScale.returnScaleNotesArray(for: Case.scale(tonality: .major), startingAt: startingNote)
+                    let notesArray = writeScale.returnScaleNotesArray(for: Case.scale(tonality: .major(mode: .ionian)), startingAt: startingNote)
                     
                     if (notesArray.isEmpty) {
                         print("failed due to not being able to read base scale notes from the json file")
