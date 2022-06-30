@@ -23,6 +23,7 @@ class MusicNotes: ObservableObject {
     @Published var tonicMode = 1
     // An enum containing either scale or arpeggio followed by the tonality, e.g. Case.scale(.major)
     @Published var tonality : Case?
+    @Published var backDisplay = ScreenType.homepage
     @Published var otherSpecificScaleTypes : OtherScaleTypes?
     @Published var scaleNotes = [""]
     @Published var scaleNoteNames = [""]
@@ -31,7 +32,7 @@ class MusicNotes: ObservableObject {
     @Published var playScaleNotes = true
     @Published var playDrone = true
     @Published var startingOctave = 1
-    @Published var isFavouriteScale = false
+    @Published var isFavouriteScale = false // SHOULD BE ABLE TO REMOVE THIS SOON
     @Published var transposition = "C"
     @Published var noteDisplay = 2
     @Published var metronome = true
@@ -174,7 +175,8 @@ struct ScalesView: View {
                     // Major scale
                     Button {
                         musicNotes.tonality = .scale(tonality: .major(mode: .ionian))
-                        self.screenType = ScreenType.soundview
+                        musicNotes.backDisplay = .scale
+                        self.screenType = .soundview
                     } label: {
                         MainUIButton(buttonText: "Major", type: 1, height: buttonHeight)
                     }
@@ -182,6 +184,7 @@ struct ScalesView: View {
                     // Minor scale
                     Button {
                         musicNotes.tonality = .scale(tonality: .naturalMinor)
+                        musicNotes.backDisplay = .scale
                         self.screenType = ScreenType.soundview
                     } label: {
                         MainUIButton(buttonText: "Minor", type: 1, height: buttonHeight)
@@ -190,6 +193,7 @@ struct ScalesView: View {
                     // Harmonic Minor Scale
                     Button {
                         musicNotes.tonality = .scale(tonality: .harmonicMinor)
+                        musicNotes.backDisplay = .scale
                         self.screenType = ScreenType.soundview
                     } label: {
                         MainUIButton(buttonText: "Harmonic Minor", type: 1, height: buttonHeight)
@@ -198,6 +202,7 @@ struct ScalesView: View {
                     // Melodic minor scale
                     Button {
                         musicNotes.tonality = .scale(tonality: .melodicMinor)
+                        musicNotes.backDisplay = .scale
                         self.screenType = ScreenType.soundview
                     } label: {
                         MainUIButton(buttonText: "Melodic Minor", type: 1, height: buttonHeight)
@@ -206,6 +211,7 @@ struct ScalesView: View {
                     // Major scale modes (goes to a new option screen)
                     Button {
                         musicNotes.otherSpecificScaleTypes = .majorModes
+                        musicNotes.backDisplay = .scale
                         self.screenType = ScreenType.otherview
                     } label: {
                         MainUIButton(buttonText: "Major Modes", type: 1, height: buttonHeight)
@@ -214,6 +220,7 @@ struct ScalesView: View {
                     // Major scale modes (goes to a new option screen)
                     Button {
                         musicNotes.otherSpecificScaleTypes = .pentatonicModes
+                        musicNotes.backDisplay = .scale
                         self.screenType = ScreenType.otherview
                     } label: {
                         MainUIButton(buttonText: "Pentatonic Modes", type: 1, height: buttonHeight)
@@ -222,6 +229,7 @@ struct ScalesView: View {
                     // Other Special scale options (goes to a new option screen)
                     Button {
                         musicNotes.otherSpecificScaleTypes = .special
+                        musicNotes.backDisplay = .scale
                         self.screenType = ScreenType.otherview
                     } label: {
                         MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
@@ -230,7 +238,8 @@ struct ScalesView: View {
                     Spacer()
                 }
                 Button {
-                    self.screenType = ScreenType.homepage
+                    musicNotes.backDisplay = .homepage
+                    self.screenType = musicNotes.backDisplay
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
                 }

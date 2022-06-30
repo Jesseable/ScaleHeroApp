@@ -34,6 +34,7 @@ struct ArpeggioView : View {
                     
                     Button {
                         musicNotes.tonality = Case.arpeggio(tonality: .major)
+                        musicNotes.backDisplay = .arpeggio
                         self.screenType = ScreenType.soundview
                     } label: {
                         MainUIButton(buttonText: "Major (Triad)", type: 1, height: buttonHeight)
@@ -41,6 +42,7 @@ struct ArpeggioView : View {
                     
                     Button {
                         musicNotes.tonality = Case.arpeggio(tonality: .minor)
+                        musicNotes.backDisplay = .arpeggio
                         self.screenType = ScreenType.soundview
                     } label: {
                         MainUIButton(buttonText: "Minor (Triad)", type: 1, height: buttonHeight)
@@ -48,6 +50,7 @@ struct ArpeggioView : View {
                     
                     // go to new option view
                     Button {
+                        musicNotes.backDisplay = .arpeggio
                         self.screenType = ScreenType.otherview
                     } label: {
                         MainUIButton(buttonText: "7th's (Tetrads)", type: 1, height: buttonHeight)
@@ -57,7 +60,8 @@ struct ArpeggioView : View {
                 Spacer()
                 
                 Button {
-                    self.screenType = ScreenType.homepage
+                    musicNotes.backDisplay = .homepage
+                    self.screenType = musicNotes.backDisplay
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
                 }

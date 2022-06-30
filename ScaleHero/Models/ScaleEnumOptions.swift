@@ -52,12 +52,11 @@ enum PentatonicScaleMode : Int, CaseIterable, Equatable, Codable {
     case mode5_minor = 4
 }
 
-enum Case : Codable { // CHECK THAT THIS IS CORRECT
+enum Case : Codable {
     case arpeggio(tonality: ArpeggioTonality)
     case scale(tonality: ScaleTonality)
 }
 
-// DO I NEED THIS
 extension Case : Equatable {
     static func == (lhs: Case, rhs: Case) -> Bool {
         switch (lhs, rhs) {

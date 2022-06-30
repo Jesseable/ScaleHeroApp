@@ -51,6 +51,7 @@ struct FavouritesView: View {
                                 musicNotes.noteDisplay = scale.noteDisplay
                                 musicNotes.endlessLoop = scale.endlessLoop
 
+                                musicNotes.backDisplay = .favouritesview
                                 self.screenType = .soundview
                             }
                         } label: {
@@ -92,7 +93,8 @@ struct FavouritesView: View {
                 Spacer()
                 
                 Button {
-                    self.screenType = .homepage
+                    musicNotes.backDisplay = .homepage
+                    self.screenType = musicNotes.backDisplay
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: menuButtonHeight)
                 }

@@ -63,7 +63,8 @@ struct DroneView : View {
                 Spacer()
                 
                 Button {
-                    self.screenType = ScreenType.homepage
+                    musicNotes.backDisplay = .homepage
+                    self.screenType = musicNotes.backDisplay
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
                 }

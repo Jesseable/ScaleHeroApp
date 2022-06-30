@@ -13,7 +13,6 @@ struct SoundView : View {
     
     @Binding var screenType: ScreenType
     @EnvironmentObject var scaleOptions: ScaleOptions
-    //@State var scaleType: String // Change to from an enum
     @State private var isPlaying = false
     @State private var presentAlert = false
     @State private var disableOctaveSelection = false
@@ -39,19 +38,22 @@ struct SoundView : View {
                 
                 // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
                 Button {
-                    if (musicNotes.isFavouriteScale) {
-                        self.screenType = .favouritesview
-                        musicNotes.isFavouriteScale.toggle()
-                    } else {
-                        switch musicNotes.tonality { // TO BE CHANGED LATER
-                        case .scale:
-                            self.screenType = .scale
-                        case .arpeggio:
-                            self.screenType = .arpeggio
-                        case .none:
-                            print("ERROR, screen type was null")
-                            self.screenType = .homepage
-                        }
+                    self.screenType = musicNotes.backDisplay
+                    
+//                    if (musicNotes.isFavouriteScale) {
+//                        self.screenType = .favouritesview
+//                        musicNotes.isFavouriteScale.toggle()
+//                    } else {
+//                        switch musicNotes.tonality { // TO BE CHANGED LATER
+//                        case .scale(let scaleTonality):
+//                            self.screenType = .scale
+//                        case .arpeggio(let arpeggioTonality):
+//                            self.screenType = .arpeggio
+//                        case .none:
+//                            print("ERROR, screen type was null")
+//                            self.screenType = .homepage
+//                        }
+//                    }
 //                        switch musicNotes.type.lowercased() {
 //                        case "mode":
 //                            musicNotes.type = "Major Scale Modes"
@@ -69,7 +71,6 @@ struct SoundView : View {
 //                        default:
 //                            self.screenType = musicNotes.type
 //                        }
-                    }
                 } label: {
                     MainUIButton(buttonText: "Back", type: 9, height: bottumButtonHeight)
                 }

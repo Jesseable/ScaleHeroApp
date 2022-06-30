@@ -35,69 +35,13 @@ struct OtherScalesView: View {
                 Text(displayType.rawValue).asTitle()
                 
                 ScrollView {
-                    
-                    NoteSelectionButton(buttonHeight: buttonHeight)
+                    NoteSelectionButton(buttonHeight: buttonHeight) // NEEDS TO ALSO CHANGE THE DISPLAY TO THE SOUND DISPLAY
                     getView(view: displayType, buttonHeight: buttonHeight)
-//                    switch displayType {
-//                    case .majorModes: // All Major Modes
-//                        ForEach (MajorScaleMode.allCases, id: \.self) { mode in
-//                            Button {
-//                                musicNotes.tonality = .scale(tonality: .major(mode: mode))
-//                            } label: {
-//                                let name = musicNotes.getMajorModeName(mode: mode)
-//                                MainUIButton(buttonText: name, type: 1, height: buttonHeight)
-//                            }
-//                        }
-//                    case .pentatonicModes: // All pentatonic modes
-//                        ForEach (PentatonicScaleMode.allCases, id: \.self) { mode in
-//                            Button {
-//                                musicNotes.tonality = .scale(tonality: .pentatonic(mode: mode))
-//                            } label: {
-//                                let name = musicNotes.getPentatonicModeName(mode: mode)
-//                                MainUIButton(buttonText: name, type: 1, height: buttonHeight)
-//                            }
-//                        }
-//                    case .special: // Can go to pentatonic modes screen and contains all chromatic scale alterations and blues scale
-//                        ForEach (ChromaticAlteration.allCases, id: \.self) { mode in
-//                            Button {
-//                                musicNotes.tonality = .scale(tonality: .chromatic(alteration: mode))
-//                            } label: {
-//                                let name = musicNotes.getChromaticAlteration(for: mode)
-//                                MainUIButton(buttonText: name, type: 1, height: buttonHeight)
-//                            }
-//                        }
-//                        Button {
-//                            musicNotes.tonality = .scale(tonality: .blues)
-//                        } label: {
-//                            let name = "blues"
-//                            MainUIButton(buttonText: name, type: 1, height: buttonHeight)
-//                        }
-//                        Button {
-//                            displayType = .pentatonicModes
-//                        } label: {
-//                            let name = "pentatonic modes"
-//                            MainUIButton(buttonText: name, type: 1, height: buttonHeight)
-//                        }
-//                    case .tetrads: // Lists all of the 7th scales
-//                        ForEach (ArpeggioTonality.allCases, id: \.self) { mode in
-//                            if (mode == .major || mode == .minor) {
-//                                continue
-//                            }
-//                            Button {
-//                                musicNotes.tonality = .arpeggio(tonality: $0)
-//                            } label: {
-//                                let name = $0.rawValue
-//                                MainUIButton(buttonText: name, type: 1, height: buttonHeight)
-//                            }
-//                        }
-//                    }
                 }
                 Spacer()
                 
                 Button {
-                    if (displayType == .pentatonicModes) {
-                        displayType = .special
-                    } else if (displayType == .tetrads) {
+                    if (displayType == .tetrads) {
                         self.screenType = .arpeggio
                     } else {
                         self.screenType = .scale
@@ -115,6 +59,8 @@ struct OtherScalesView: View {
             ForEach (MajorScaleMode.allCases, id: \.self) { mode in
                 Button {
                     musicNotes.tonality = .scale(tonality: .major(mode: mode))
+                    musicNotes.backDisplay = .otherview
+                    self.screenType = .soundview
                 } label: {
                     let name = musicNotes.getMajorModeName(mode: mode)
                     MainUIButton(buttonText: name, type: 1, height: buttonHeight)
@@ -124,6 +70,8 @@ struct OtherScalesView: View {
             ForEach (PentatonicScaleMode.allCases, id: \.self) { mode in
                 Button {
                     musicNotes.tonality = .scale(tonality: .pentatonic(mode: mode))
+                    musicNotes.backDisplay = .otherview
+                    self.screenType = .soundview
                 } label: {
                     let name = musicNotes.getPentatonicModeName(mode: mode)
                     MainUIButton(buttonText: name, type: 1, height: buttonHeight)
@@ -133,6 +81,8 @@ struct OtherScalesView: View {
             ForEach (ChromaticAlteration.allCases, id: \.self) { mode in
                 Button {
                     musicNotes.tonality = .scale(tonality: .chromatic(alteration: mode))
+                    musicNotes.backDisplay = .otherview
+                    self.screenType = .soundview
                 } label: {
                     let name = musicNotes.getChromaticAlteration(for: mode)
                     MainUIButton(buttonText: name, type: 1, height: buttonHeight)
@@ -140,6 +90,8 @@ struct OtherScalesView: View {
             }
             Button {
                 musicNotes.tonality = .scale(tonality: .blues)
+                musicNotes.backDisplay = .otherview
+                self.screenType = .soundview
             } label: {
                 let name = "blues"
                 MainUIButton(buttonText: name, type: 1, height: buttonHeight)
@@ -149,6 +101,8 @@ struct OtherScalesView: View {
                 if (mode != .major || mode != .minor) {
                     Button {
                         musicNotes.tonality = .arpeggio(tonality: mode)
+                        musicNotes.backDisplay = .otherview
+                        self.screenType = .soundview
                     } label: {
                         let name = mode.rawValue
                         MainUIButton(buttonText: name, type: 1, height: buttonHeight)

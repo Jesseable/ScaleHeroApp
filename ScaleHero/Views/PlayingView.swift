@@ -36,7 +36,7 @@ struct PlayingView: View {
             Image(backgroundImage).resizable().ignoresSafeArea()
             
             VStack {
-                Text(musicNotes.getMusicTitile(from: title))
+                Text(title) // TO BE CHANGED SOMEWHERE
                     .font(.largeTitle.bold())
                     .accessibilityAddTraits(.isHeader)
                     .foregroundColor(Color.white)
