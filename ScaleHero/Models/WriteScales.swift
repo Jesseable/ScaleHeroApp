@@ -264,18 +264,18 @@ struct WriteScales {
      @param scaleMode: ......
      Retruns: a string array containing a scale array that has the required characteristics
      */
-    func convertToScaleArray(baseScale: [String], octavesToPlay: Int, tonicOption: TonicOption, scaleType: ScaleType? = nil) -> [String] {
+    func convertToScaleArray(baseScale: [String], octavesToPlay: Int, tonicOption: TonicOption, scaleType: ScaleTonality? = nil) -> [String] {
         var alteredScale : [String]
         
         // convert to the scale specified
         switch scaleType {
-        case .wholetone:
-            alteredScale = convertToWholeToneScale(scaleArray: baseScale)
-        case .majorMode(mode: let mode):
+        case .major(mode: let mode):
             alteredScale = convertToScaleMode(scaleArray: baseScale, mode: mode)
-        case .pentatonicMode(mode: let mode):
+        case .pentatonic(mode: let mode):
             alteredScale = convertToPentatonicMode(scaleArray: baseScale, mode: mode)
-        case .none:
+        case .chromatic(alteration: let alteration): // TO BE USED LATER WITH 3rd intervals etc
+            alteredScale = convertToWholeToneScale(scaleArray: baseScale)
+        default:
             alteredScale = baseScale
         }
         
@@ -587,7 +587,7 @@ struct WriteScales {
         return newArray
     }
     
-    func allDown(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
+    private func allDown(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
         var newArray = Array(repeating: "", count: arraySize)
         let topTonicScaleNotePos = scale.count / 2 + 1
         var ascending = true
@@ -613,7 +613,7 @@ struct WriteScales {
         return newArray
     }
     
-    func oneUpOneDown(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
+    private func oneUpOneDown(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
         var newArray = Array(repeating: "", count: arraySize + 1)
         let topTonicScaleNotePos = scale.count / 2 + 1
         var ascending = true
@@ -646,7 +646,7 @@ struct WriteScales {
         return newArray
     }
     
-    func oneDownOneUp(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
+    private func oneDownOneUp(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
         let numArraySize : Int
         switch interval {
         case .thirds:
@@ -655,6 +655,8 @@ struct WriteScales {
             numArraySize = arraySize - 1
         case .fifths:
             numArraySize = arraySize + 5
+        case .none:
+            return scale
         }
         var newArray = Array(repeating: "", count: numArraySize)
         let topTonicScaleNotePos = scale.count / 2 + 1

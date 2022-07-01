@@ -49,7 +49,7 @@ class FileReaderAndWriter: ObservableObject {
              tempo: Int,
              startingOctave: Int,
              numOctave: Int,
-             tonicSelection: Int,
+             tonicSelection: TonicOption,
              scaleNotes: Bool,
              drone: Bool,
              startingNote: String,

@@ -8,7 +8,7 @@
 import SwiftUI
 import AVFoundation
 
-struct PlayingView: View {
+struct PlayingView: View { /// LOOK INTO HOW TO DELAY CODE TO COMPLETE FUNCTIONS BEFORE CONTINUEING
     @EnvironmentObject var musicNotes: MusicNotes
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var fileReaderAndWriter = FileReaderAndWriter()
@@ -44,7 +44,7 @@ struct PlayingView: View {
                 
                 Spacer()
                 // TO ALL BE CHANGED
-                //Image(getNote(from: currentNote, for: musicNotes.tonality)).resizable()
+                Image(currentNote).resizable()
                 
                 Spacer()
                 
@@ -63,8 +63,8 @@ struct PlayingView: View {
                 UIApplication.shared.isIdleTimerDisabled = true
                 
                 if (repeatNotes) {
-                    musicNotes.scaleNotes = repeateAllNotes(in: musicNotes.scaleNotes)
-                    musicNotes.scaleNoteNames = repeateAllNotes(in: musicNotes.scaleNoteNames)
+                    musicNotes.scaleNotes = repeatAllNotes(in: musicNotes.scaleNotes)
+                    musicNotes.scaleNoteNames = repeatAllNotes(in: musicNotes.scaleNoteNames)
                 }
                 
                 // Allows sound to play when ringer is on silent
@@ -114,25 +114,7 @@ struct PlayingView: View {
                             print("File Error When reading metronome")
                         }
                     }
-                    
-                    if (musicNotes.scaleNoteNames[index].contains("Metronome")) {
-                        let countingArr = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"]
-                        let numIntroBeats = numIntroBeats(tempo: Int(musicNotes.tempo), fileReader: fileReaderAndWriter)
-                        var i = 0
-                        var countingImageArr = [String]()
-                        numIntroBeats.times {
-                            countingImageArr.insert(countingArr[i], at: 0)
-                            i += 1
-                        }
-//                        var countingImageArr = ["Two", "One"]
-//                        if (numBeats == 4) {
-//                            countingImageArr.insert("Three", at: 0)
-//                            countingImageArr.insert("Four", at: 0)
-//                        }
-                        currentNote = countingImageArr[self.index]
-                    } else {
-                        currentNote = musicNotes.scaleNoteNames[self.index].components(separatedBy: "-")[2]
-                    }
+                    currentNote = musicNotes.scaleNoteNames[self.index]
                     
                     // Allows sound to play when ringer is on silent
                     do {
@@ -185,56 +167,6 @@ struct PlayingView: View {
             }
         }
     }
-//
-//    /**
-//     Returns the singular note from the arrays component. Determines whether to use flats or sharps for the scale.
-//     */
-//    private func getNote(from currentNote: String, for tonality: String) -> String {
-//        let index = numIntroBeats(tempo: Int(musicNotes.tempo), fileReader: fileReaderAndWriter)
-//        let noteArr = currentNote.replacingOccurrences(of: "/", with: "|").components(separatedBy: "|")
-//        let startingNote = musicNotes.scaleNotes[index].components(separatedBy: "-")[2].uppercased()
-//
-//        if (noteArr.count == 1) {
-//            return noteArr[0]
-//        } else {
-//            switch musicNotes.noteDisplay {
-//            case 1:
-//                return noteArr[0]
-//            case 2:
-//                switch tonality.lowercased() {
-//                case "minor", "aeolian":
-//                    let selection = ["D", "G", "C", "F", "A#|BB"]
-//                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
-//                case "major", "ionian":
-//                    let selection =  ["F", "A#|BB", "D#|EB", "G#|AB", "C#|DB"]
-//                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
-//                case "dorian":
-//                    let selection =  ["G", "C", "F", "A#|BB", "D#|EB"]
-//                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
-//                case "phrygian":
-//                    let selection =  ["A", "D", "G", "C", "F"]
-//                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
-//                case "lydian":
-//                    let selection =  ["A#|BB", "D#|EB", "G#|AB", "D#|EB", "F#|GB"]
-//                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
-//                case "mixolydian":
-//                    let selection =  ["C", "F", "A#|BB", "F#|GB", "B"]
-//                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
-//                case "locrian":
-//                    let selection =  ["E", "A", "D", "A#|BB", "E"]
-//                    return noteArr[sharpOrFlat(for: startingNote, on: selection)]
-//                case "tetrad", "others":
-//                    return noteArr[forTypesSharpOrFlat(for: startingNote)]
-//                default:
-//                    return noteArr[0]
-//                }
-//            case 3:
-//                return noteArr[1]
-//            default:
-//                return noteArr[0]
-//            }
-//        }
-//    }
     
     /**
      Chooses sharps or flats option. 0 sharps, 1 flats
@@ -247,21 +179,9 @@ struct PlayingView: View {
     }
     
     /**
-     Returns the amount of introduction beats to be played
-     */
-    private func numIntroBeats(tempo: Int, fileReader: FileReaderAndWriter) -> Int {
-        let tempoBeatsArr = fileReader.readIntroBeats().components(separatedBy: "-")
-        if tempo < 70 {
-            return Int(tempoBeatsArr[0])!
-        } else {
-            return Int(tempoBeatsArr[1])!
-        }
-    }
-    
-    /**
      Repeats every element in the array
      */
-    private func repeateAllNotes(in soundFileArray: [String]) -> [String] {
+    private func repeatAllNotes(in soundFileArray: [String]) -> [String] {
         assert(soundFileArray.count > 0, "count must be greater than 0")
         
         var newSoundFIle = soundFileArray
@@ -278,23 +198,6 @@ struct PlayingView: View {
 
         return newSoundFIle
     }
-    
-//    /**
-//     Chooses sharps or flats for ambiguous tonalities
-//     */
-//    private func forTypesSharpOrFlat(for note: String) -> Int {
-//        var selection : [String]
-//        switch musicNotes.type.lowercased() {
-//        case "major-pentatonic-scale", "major-seventh", "dominant-seventh":
-//            selection = ["F", "A#|BB", "D#|EB", "G#|AB", "C#|DB"]
-//            return sharpOrFlat(for: note, on: selection)
-//        case "minor-seventh", "diminished-seventh", "minor-pentatonic-scale", "blues-scale":
-//            selection = ["D", "G", "C", "F", "A#|BB"]
-//            return sharpOrFlat(for: note, on: selection)
-//        default:
-//            return 0
-//        }
-//    }
     
     /**
      Returns the number of seconds a note lasts for

@@ -20,9 +20,10 @@ class MusicNotes: ObservableObject {
     @Published var octaves = 1
     
     // tonicMode cases: 1 being never, 2: always, 3: always except for the first note
-    @Published var tonicMode = 1
+    @Published var tonicMode = TonicOption.noRepeatedTonic
     // An enum containing either scale or arpeggio followed by the tonality, e.g. Case.scale(.major)
     @Published var tonality : Case?
+    @Published var intervalOption = Interval.none
     @Published var backDisplay = ScreenType.homepage
     @Published var otherSpecificScaleTypes : OtherScaleTypes?
     @Published var scaleNotes = [""]
@@ -32,7 +33,6 @@ class MusicNotes: ObservableObject {
     @Published var playScaleNotes = true
     @Published var playDrone = true
     @Published var startingOctave = 1
-    @Published var isFavouriteScale = false // SHOULD BE ABLE TO REMOVE THIS SOON
     @Published var transposition = "C"
     @Published var noteDisplay = 2
     @Published var metronome = true

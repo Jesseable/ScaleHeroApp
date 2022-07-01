@@ -39,38 +39,6 @@ struct SoundView : View {
                 // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
                 Button {
                     self.screenType = musicNotes.backDisplay
-                    
-//                    if (musicNotes.isFavouriteScale) {
-//                        self.screenType = .favouritesview
-//                        musicNotes.isFavouriteScale.toggle()
-//                    } else {
-//                        switch musicNotes.tonality { // TO BE CHANGED LATER
-//                        case .scale(let scaleTonality):
-//                            self.screenType = .scale
-//                        case .arpeggio(let arpeggioTonality):
-//                            self.screenType = .arpeggio
-//                        case .none:
-//                            print("ERROR, screen type was null")
-//                            self.screenType = .homepage
-//                        }
-//                    }
-//                        switch musicNotes.type.lowercased() {
-//                        case "mode":
-//                            musicNotes.type = "Major Scale Modes"
-//                            self.screenType = "otherview"
-//                        case "chromatic-scale", "whole-tone-scale", "major-pentatonic-scale", "minor-pentatonic-scale", "blues-scale":
-//                            musicNotes.type = "special"
-//                            self.screenType = "otherview"
-//                        case "harmonic","melodic":
-//                            self.screenType = "scale"
-//                        case "dominant-seventh", "major-seventh", "minor-seventh", "diminished-seventh":
-//                            musicNotes.type = "Tetrads"
-//                            self.screenType = "otherview"
-//                        case "pentatonic", "":
-//                            self.screenType = "abstractview"
-//                        default:
-//                            self.screenType = musicNotes.type
-//                        }
                 } label: {
                     MainUIButton(buttonText: "Back", type: 9, height: bottumButtonHeight)
                 }
@@ -192,31 +160,32 @@ struct SoundView : View {
                             MainUIButton(buttonText: "", type: 7, height: buttonHeight)
                             Section {
                                 Picker("Tonic selection", selection: $musicNotes.tonicMode) {
-                                    Text("Never").tag(1)
-                                    Text("All").tag(2)
-                                    Text("Not Initial").tag(3)
+                                    Text("Never").tag(TonicOption.noRepeatedTonic)
+                                    Text("All").tag(TonicOption.repeatedTonicAll)
+                                    Text("Not Initial").tag(TonicOption.repeatedTonic)
                                 }
                                 .formatted()
                             }
                         }
                     }
                     
-//                    Divider().background(Color.white)
-//
-//                    Group { /// TO BE DELETED
-//                        MainUIButton(buttonText: "Note Display", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
-//                        ZStack {
-//                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-//                            Section {
-//                                Picker("Sharps or Flats", selection: $musicNotes.noteDisplay) {
-//                                    Image("Sharp").tag(1)
-//                                    Text("Automatic").tag(2)
-//                                    Image("Flat").tag(3)
-//                                }
-//                                .formatted()
-//                            }
-//                        }
-//                    }
+                    Divider().background(Color.white)
+                    
+                    Group {
+                        MainUIButton(buttonText: "Interval Options", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                            Section {
+                                Picker("Interval Selections", selection: $musicNotes.intervalOption) {
+                                    Text("None").tag(Interval.none)
+                                    Text("Thirds").tag(Interval.thirds)
+                                    Text("Fourths").tag(Interval.fourths)
+                                    Text("Fifths").tag(Interval.fifths)
+                                }
+                                .formatted()
+                            }
+                        }
+                    }
                     
                     Divider().background(Color.white)
                     
@@ -233,27 +202,36 @@ struct SoundView : View {
 
                     let writeScale = WriteScales(scaleOptions: scaleOptions)
                     
-                    let notesArray = writeScale.returnScaleNotesArray(for: musicNotes.tonality!, startingAt: startingNote)
-                    
-                    if (notesArray.isEmpty) {
+                    // MAYBE PUT ALL OF THIS TOGETHER
+                    let baseScale = writeScale.returnScaleNotesArray(for: musicNotes.tonality!, startingAt: startingNote)
+                    if (baseScale.isEmpty) {
                         print("failed due to not being able to read base scale notes from the json file")
                         fatalError()
                     }
+                    var notesArray : [String]
+                    switch musicNotes.tonality {
+                    case .scale(tonality: let tonality):
+                        notesArray = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
+                                                                    tonicOption: musicNotes.tonicMode, scaleType: tonality)
+                    default:
+                        notesArray = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
+                                                                        tonicOption: musicNotes.tonicMode)
+                    }
                     
-                    writeScale.getJsonScale(stringArr: notesArray)
-                    let scaleInfo = ["1:A", "1:B", "1:C#/Db", "1:D", "1:E", "1:F#/Gb", "1:G#/Ab", "2:A", "2:B", "2:C#/Db", "2:D", "2:E", "2:F#/Gb", "2:G#/Ab", "3:A", "2:G#/Ab", "2:F#/Gb", "2:E", "2:D", "2:C#/Db", "2:B", "2:A", "1:G#/Ab", "1:F#/Gb", "1:E", "1:D", "1:C#/Db", "1:B", "1:A"]
-                    /*
-                    let scaleInfo = scale.ScaleNotes(startingNote: startingNote,
-                                                     octave: musicNotes.octaves,
-                                                     tonality: tonality,
-                                                     tonicOption: musicNotes.tonicMode,
-                                                     startingOctave: musicNotes.startingOctave)
-                     */
-                    let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: scaleInfo, tempo: Int(musicNotes.tempo))
+                    var soundFileNotesArray = writeScale.createScaleInfoArray(scaleArray: notesArray, initialOctave: musicNotes.startingOctave)
+                    
+                    /// SOME COMMAND TO DO SCALE IN THIRDS ETC HERE
+                    if (musicNotes.intervalOption != .none) { /// NEED TO DO IT FOR THE NOTES ARRAY AS WELL!!!
+                        soundFileNotesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption, with: .allUp, for: soundFileNotesArray)
+                    }
+                    
+                    let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: soundFileNotesArray, tempo: Int(musicNotes.tempo))
                     let delay = CGFloat(60/musicNotes.tempo)
                     musicNotes.scaleNotes = scaleSoundFiles
-                    musicNotes.scaleNoteNames = playScale.convertToSoundFile(scaleInfoArray: ["A", "B"], tempo: Int(musicNotes.tempo))
-                    
+                    let metronomeBeats = playScale.addMetronomeCountIn(tempo: Int(musicNotes.tempo), scaleNotesArray: notesArray)
+                    notesArray.insert(contentsOf: metronomeBeats, at: 0) // MAGIC NUMBER
+                    musicNotes.scaleNoteNames = notesArray
+
                     // Could add in quavers?
                     switch fileReaderAndWriter.readMetronomePulse().lowercased() {
                     case "simple":
@@ -271,7 +249,7 @@ struct SoundView : View {
                         musicNotes.metronomePulse = 1
                     }
                     musicNotes.timer = Timer.publish(every: delay/CGFloat(musicNotes.metronomePulse), on: .main, in: .common).autoconnect()
-                    musicNotes.noteName = startingNote
+                    musicNotes.noteName = startingNote // IS REDUNDANT????
                 
                     isPlaying = true
                     

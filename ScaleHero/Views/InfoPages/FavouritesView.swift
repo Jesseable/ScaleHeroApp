@@ -39,7 +39,6 @@ struct FavouritesView: View {
                                     deletionMode.toggle()
                                 }
                             } else {
-                                musicNotes.isFavouriteScale = true
                                 musicNotes.tonality = scale.tonality
                                 musicNotes.tempo = CGFloat(scale.tempo)
                                 musicNotes.startingOctave = scale.startingOctave

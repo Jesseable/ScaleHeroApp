@@ -137,6 +137,33 @@ struct PlaySounds {
     }
     
     /**
+     Creates an array of the metronome sound files to be added to the sound files array
+     */
+    func addMetronomeCountIn(tempo: Int, scaleNotesArray: [String]) -> [String] {
+        let countingArr = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"]
+        var metronomeFileArr: [String] = []
+        let introBeatsArr = fileReaderAndWriter.readIntroBeats().components(separatedBy: "-")
+        let slowTempoIntro = Int(introBeatsArr[0])
+        let fastTempoIntro = Int(introBeatsArr[1])
+        var i : Int
+        if (tempo < 70) {
+            i = slowTempoIntro ?? 0
+            slowTempoIntro?.times { // USE A FILEREADER TO CHANGE THESE OPTIONS IN SETTINGS Possibly also the 70bpm
+                metronomeFileArr.append(countingArr[i-1])
+                i -= 1
+            }
+        } else {
+            i = fastTempoIntro ?? 0
+            fastTempoIntro?.times {
+                metronomeFileArr.append(countingArr[i-1])
+                i -= 1
+            }
+        }
+        
+        return metronomeFileArr
+    }
+    
+    /**
      Plays the off beat metronome sound
      */
     mutating func playOffbeatMetronome() throws {

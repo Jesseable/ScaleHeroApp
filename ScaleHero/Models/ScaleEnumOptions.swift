@@ -7,13 +7,6 @@
 
 import Foundation
 
-// TO BE DELETED
-enum ScaleType {
-    case majorMode(mode: MajorScaleMode)
-    case pentatonicMode(mode: PentatonicScaleMode)
-    case wholetone
-}
-
 enum ScreenType {
     case homepage
     case arpeggio
@@ -26,7 +19,7 @@ enum ScreenType {
     case aboutview
 }
 
-enum TonicOption {
+enum TonicOption : Equatable, Codable {
     case noRepeatedTonic
     case repeatedTonicAll
     case repeatedTonic
@@ -41,15 +34,6 @@ enum MajorScaleMode : Int, CaseIterable, Equatable, Codable {
     case mixolydian = 4
     case aeolian = 5
     case locrian = 6
-}
-
-// The int is the rotations in the major pentatonic scale it must undertake
-enum PentatonicScaleMode : Int, CaseIterable, Equatable, Codable {
-    case mode1_major = 0
-    case mode2_egyptian = 1
-    case mode3_manGong = 2
-    case mode4_ritusen = 3
-    case mode5_minor = 4
 }
 
 enum Case : Codable {
@@ -68,6 +52,16 @@ extension Case : Equatable {
             return false
         }
     }
+}
+
+
+// The int is the rotations in the major pentatonic scale it must undertake
+enum PentatonicScaleMode : Int, CaseIterable, Equatable, Codable {
+    case mode1_major = 0
+    case mode2_egyptian = 1
+    case mode3_manGong = 2
+    case mode4_ritusen = 3
+    case mode5_minor = 4
 }
 
 enum ArpeggioTonality : String, CaseIterable, Equatable, Codable{
@@ -96,6 +90,7 @@ enum ScaleTonality : Equatable, Codable {
 }
 
 enum Interval : Int {
+    case none = 0
     case thirds = 3
     case fourths = 4
     case fifths = 5

@@ -17,7 +17,7 @@ struct ScaleCharacteristics: Identifiable, Equatable, Codable {
     let tempo: Int
     let startingOctave: Int
     let numOctave: Int
-    let tonicSelection: Int
+    let tonicSelection: TonicOption
     let scaleNotes: Bool
     let drone: Bool
     let scaleDescription: String
