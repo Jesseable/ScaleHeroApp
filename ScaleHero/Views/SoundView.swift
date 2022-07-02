@@ -181,68 +181,7 @@ struct SoundView : View {
                     
                     Spacer()
                 }
-                Button {
-                    let startingNote = musicNotes.noteName
-
-                    let writeScale = WriteScales(scaleOptions: scaleOptions)
-                    
-                    // MAYBE PUT ALL OF THIS TOGETHER
-                    let baseScale = writeScale.returnScaleNotesArray(for: musicNotes.tonality!, startingAt: startingNote)
-                    if (baseScale.isEmpty) {
-                        print("failed due to not being able to read base scale notes from the json file")
-                        fatalError()
-                    }
-                    var notesArray : [String]
-                    switch musicNotes.tonality {
-                    case .scale(tonality: let tonality):
-                        notesArray = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
-                                                                    tonicOption: musicNotes.tonicMode, scaleType: tonality)
-                    default:
-                        notesArray = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
-                                                                        tonicOption: musicNotes.tonicMode)
-                    }
-                    
-                    var soundFileNotesArray = writeScale.createScaleInfoArray(scaleArray: notesArray, initialOctave: musicNotes.startingOctave)
-                    
-                    if (musicNotes.intervalOption != .none) {
-                        soundFileNotesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption, with: musicNotes.intervalType, for: soundFileNotesArray)
-                        notesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption, with: musicNotes.intervalType, for: notesArray, withoutOctave: true)
-                    }
-                    
-                    let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: soundFileNotesArray, tempo: Int(musicNotes.tempo))
-                    let delay = CGFloat(60/musicNotes.tempo)
-                    musicNotes.scaleNotes = scaleSoundFiles
-                    let metronomeBeats = playScale.addMetronomeCountIn(tempo: Int(musicNotes.tempo), scaleNotesArray: notesArray)
-                    notesArray.insert(contentsOf: metronomeBeats, at: 0) // MAGIC NUMBER
-                    musicNotes.scaleNoteNames = notesArray
-
-                    // Could add in quavers?
-                    switch fileReaderAndWriter.readMetronomePulse().lowercased() {
-                    case "simple":
-                        musicNotes.metronomePulse = 4
-                    case "compound":
-                        musicNotes.metronomePulse = 3
-                    case "off":
-                        musicNotes.metronomePulse = 1
-                    default:
-                        musicNotes.metronomePulse = 1
-                    }
-
-                    // This line of code sets at what tempo when the metronome off beat pulses will not play
-                    if (musicNotes.tempo >= 70 || !musicNotes.metronome) {
-                        musicNotes.metronomePulse = 1
-                    }
-                    musicNotes.timer = Timer.publish(every: delay/CGFloat(musicNotes.metronomePulse), on: .main, in: .common).autoconnect()
-                    musicNotes.noteName = startingNote // IS REDUNDANT????
-                
-                    isPlaying = true
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
-                        musicNotes.dismissable = true
-                    }
-                } label: {
-                    MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 3, height: buttonHeight*2)
-                }
+                playButton(buttonHeight: buttonHeight)
             }
             .alert(isPresented: $presentAlert) {
                 Alert(
@@ -282,6 +221,71 @@ struct SoundView : View {
                         currentNote: musicNotes.noteName,
                         repeatNotes: musicNotes.repeatNotes,
                         repeatingEndlessly: musicNotes.endlessLoop)
+        }
+    }
+    
+    @ViewBuilder func playButton(buttonHeight: CGFloat) -> some View { // MOVE MOST OF THIS CODE TO AN INIT FUNCTION FOR THIS SCREEN
+        Button {
+            let startingNote = musicNotes.noteName
+
+            let writeScale = WriteScales(scaleOptions: scaleOptions)
+            
+            // MAYBE PUT ALL OF THIS TOGETHER
+            let baseScale = writeScale.returnScaleNotesArray(for: musicNotes.tonality!, startingAt: startingNote)
+            if (baseScale.isEmpty) {
+                print("failed due to not being able to read base scale notes from the json file")
+                fatalError()
+            }
+            var notesArray : [String]
+            switch musicNotes.tonality {
+            case .scale(tonality: let tonality):
+                notesArray = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
+                                                            tonicOption: musicNotes.tonicMode, scaleType: tonality)
+            default:
+                notesArray = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
+                                                                tonicOption: musicNotes.tonicMode)
+            }
+            
+            var soundFileNotesArray = writeScale.createScaleInfoArray(scaleArray: notesArray, initialOctave: musicNotes.startingOctave)
+            
+            if (musicNotes.intervalOption != .none) {
+                soundFileNotesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption, with: musicNotes.intervalType, for: soundFileNotesArray)
+                notesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption, with: musicNotes.intervalType, for: notesArray, withoutOctave: true)
+            }
+            
+            let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: soundFileNotesArray, tempo: Int(musicNotes.tempo))
+            let delay = CGFloat(60/musicNotes.tempo)
+            musicNotes.scaleNotes = scaleSoundFiles
+            let metronomeBeats = playScale.addMetronomeCountIn(tempo: Int(musicNotes.tempo), scaleNotesArray: notesArray)
+            notesArray.insert(contentsOf: metronomeBeats, at: 0) // MAGIC NUMBER
+            musicNotes.scaleNoteNames = notesArray
+
+            // Could add in quavers?
+            switch fileReaderAndWriter.readMetronomePulse().lowercased() {
+            case "simple":
+                musicNotes.metronomePulse = 4
+            case "compound":
+                musicNotes.metronomePulse = 3
+            case "off":
+                musicNotes.metronomePulse = 1
+            default:
+                musicNotes.metronomePulse = 1
+            }
+
+            // This line of code sets at what tempo when the metronome off beat pulses will not play
+            if (musicNotes.tempo >= 70 || !musicNotes.metronome) {
+                musicNotes.metronomePulse = 1
+            }
+            musicNotes.timer = Timer.publish(every: delay/CGFloat(musicNotes.metronomePulse), on: .main, in: .common).autoconnect()
+            musicNotes.noteName = startingNote // IS REDUNDANT????
+        
+            isPlaying = true
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+                musicNotes.dismissable = true
+            }
+        } label: {
+            MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 3, height: buttonHeight*2)
         }
     }
     

@@ -243,9 +243,9 @@ struct ImageAnimation: View {
             .animation(Animation.easeInOut(duration: duration).repeatForever(autoreverses: false), value: offset)
     }
 }
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        AppContentView()
-    }
-}
+//
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AppContentView()
+//    }
+//}

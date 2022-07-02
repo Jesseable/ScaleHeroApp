@@ -7,6 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C50626902870437500DB933E /* Cello-Drone-A.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C50626842870437400DB933E /* Cello-Drone-A.mp3 */; };
+		C50626912870437500DB933E /* Cello-Drone-B.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C50626852870437400DB933E /* Cello-Drone-B.mp3 */; };
+		C50626922870437500DB933E /* Cello-Drone-C.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C50626862870437400DB933E /* Cello-Drone-C.mp3 */; };
+		C50626932870437500DB933E /* Cello-Drone-F#|Gb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C50626872870437400DB933E /* Cello-Drone-F#|Gb.mp3 */; };
+		C50626942870437500DB933E /* Cello-Drone-G#|Ab.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C50626882870437400DB933E /* Cello-Drone-G#|Ab.mp3 */; };
+		C50626952870437500DB933E /* Cello-Drone-C#|Db.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C50626892870437400DB933E /* Cello-Drone-C#|Db.mp3 */; };
+		C50626962870437500DB933E /* Cello-Drone-D#|Eb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C506268A2870437500DB933E /* Cello-Drone-D#|Eb.mp3 */; };
+		C50626972870437500DB933E /* Cello-Drone-F.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C506268B2870437500DB933E /* Cello-Drone-F.mp3 */; };
+		C50626982870437500DB933E /* Cello-Drone-G.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C506268C2870437500DB933E /* Cello-Drone-G.mp3 */; };
+		C50626992870437500DB933E /* Cello-Drone-A#|Bb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C506268D2870437500DB933E /* Cello-Drone-A#|Bb.mp3 */; };
+		C506269A2870437500DB933E /* Cello-Drone-D.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C506268E2870437500DB933E /* Cello-Drone-D.mp3 */; };
+		C506269B2870437500DB933E /* Cello-Drone-E.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C506268F2870437500DB933E /* Cello-Drone-E.mp3 */; };
+		C50626A928704FA700DB933E /* SoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626A328704FA700DB933E /* SoundView.swift */; };
+		C50626AD28704FA700DB933E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626A728704FA700DB933E /* ContentView.swift */; };
+		C50626BB28706B6100DB933E /* OtherScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626B728706B6100DB933E /* OtherScalesView.swift */; };
+		C50626BC28706B6100DB933E /* ScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626B828706B6100DB933E /* ScalesView.swift */; };
+		C50626BD28706B6100DB933E /* ArpeggioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626B928706B6100DB933E /* ArpeggioView.swift */; };
+		C50626BE28706B6100DB933E /* DroneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626BA28706B6100DB933E /* DroneView.swift */; };
+		C50626C028706BB900DB933E /* NoteSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626BF28706BB900DB933E /* NoteSelectionView.swift */; };
 		C51F8D532866AF2B00D5AED2 /* AlterNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51F8D522866AF2B00D5AED2 /* AlterNotes.swift */; };
 		C51F8D552866AFBA00D5AED2 /* AlterNotesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51F8D542866AFBA00D5AED2 /* AlterNotesTests.swift */; };
 		C51F8D572866FF8700D5AED2 /* ArpeggioArrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51F8D562866FF8700D5AED2 /* ArpeggioArrays.swift */; };
@@ -16,7 +35,6 @@
 		C5321F0327A92BF700A63085 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0227A92BF600A63085 /* AboutView.swift */; };
 		C5321F0527A92D5400A63085 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0427A92D5400A63085 /* TutorialView.swift */; };
 		C5321F0727A933A200A63085 /* AboutDeveloperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0627A933A200A63085 /* AboutDeveloperView.swift */; };
-		C5443227279B9F2C0068A239 /* DroneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5443226279B9F2B0068A239 /* DroneView.swift */; };
 		C5443229279BAB710068A239 /* FavouritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5443228279BAB710068A239 /* FavouritesView.swift */; };
 		C544322B279BAD700068A239 /* FavouritesInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544322A279BAD700068A239 /* FavouritesInfoView.swift */; };
 		C54531D227756F180041702C /* PlaySounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54531D127756F180041702C /* PlaySounds.swift */; };
@@ -188,17 +206,12 @@
 		C555641627C3A8CB009AC00C /* Metronome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C555641527C3A8CB009AC00C /* Metronome.mp3 */; };
 		C555641827C3A8D0009AC00C /* Metronome1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C555641727C3A8D0009AC00C /* Metronome1.mp3 */; };
 		C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */; };
-		C574FE78276886B700ADD3B3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE77276886B700ADD3B3 /* ContentView.swift */; };
 		C574FE7A276886BC00ADD3B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C574FE79276886BC00ADD3B3 /* Assets.xcassets */; };
 		C574FE7D276886BC00ADD3B3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C574FE7C276886BC00ADD3B3 /* Preview Assets.xcassets */; };
 		C574FE87276886BD00ADD3B3 /* ScaleHeroTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE86276886BD00ADD3B3 /* ScaleHeroTests.swift */; };
 		C574FE91276886BD00ADD3B3 /* ScaleHeroUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE90276886BD00ADD3B3 /* ScaleHeroUITests.swift */; };
 		C574FE93276886BD00ADD3B3 /* ScaleHeroUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE92276886BD00ADD3B3 /* ScaleHeroUITestsLaunchTests.swift */; };
-		C574FEA02769BFE700ADD3B3 /* ScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE9F2769BFE700ADD3B3 /* ScalesView.swift */; };
-		C574FEA92769CFDF00ADD3B3 /* ArpeggioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FEA82769CFDF00ADD3B3 /* ArpeggioView.swift */; };
-		C574FEE1276B0AE000ADD3B3 /* SoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FEE0276B0AE000ADD3B3 /* SoundView.swift */; };
 		C574FF3B2773F48F00ADD3B3 /* WriteScales.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FF3A2773F48F00ADD3B3 /* WriteScales.swift */; };
-		C58FE9F3278292B900075A4C /* OtherScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58FE9F2278292B900075A4C /* OtherScalesView.swift */; };
 		C5A826A127BC866B002F2F66 /* NoteSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A826A027BC866B002F2F66 /* NoteSelectionButton.swift */; };
 		C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B03BDC278416EB00643E7C /* PlayingView.swift */; };
 		C5DBD5C1278078FF00DF5183 /* MainUIButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */; };
@@ -224,6 +237,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C50626842870437400DB933E /* Cello-Drone-A.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-A.mp3"; sourceTree = "<group>"; };
+		C50626852870437400DB933E /* Cello-Drone-B.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-B.mp3"; sourceTree = "<group>"; };
+		C50626862870437400DB933E /* Cello-Drone-C.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-C.mp3"; sourceTree = "<group>"; };
+		C50626872870437400DB933E /* Cello-Drone-F#|Gb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-F#|Gb.mp3"; sourceTree = "<group>"; };
+		C50626882870437400DB933E /* Cello-Drone-G#|Ab.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-G#|Ab.mp3"; sourceTree = "<group>"; };
+		C50626892870437400DB933E /* Cello-Drone-C#|Db.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-C#|Db.mp3"; sourceTree = "<group>"; };
+		C506268A2870437500DB933E /* Cello-Drone-D#|Eb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-D#|Eb.mp3"; sourceTree = "<group>"; };
+		C506268B2870437500DB933E /* Cello-Drone-F.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-F.mp3"; sourceTree = "<group>"; };
+		C506268C2870437500DB933E /* Cello-Drone-G.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-G.mp3"; sourceTree = "<group>"; };
+		C506268D2870437500DB933E /* Cello-Drone-A#|Bb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-A#|Bb.mp3"; sourceTree = "<group>"; };
+		C506268E2870437500DB933E /* Cello-Drone-D.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-D.mp3"; sourceTree = "<group>"; };
+		C506268F2870437500DB933E /* Cello-Drone-E.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-E.mp3"; sourceTree = "<group>"; };
+		C50626A328704FA700DB933E /* SoundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SoundView.swift; path = ScaleHero/Views/SoundView.swift; sourceTree = SOURCE_ROOT; };
+		C50626A728704FA700DB933E /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = ScaleHero/Views/ContentView.swift; sourceTree = SOURCE_ROOT; };
+		C50626B728706B6100DB933E /* OtherScalesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherScalesView.swift; sourceTree = "<group>"; };
+		C50626B828706B6100DB933E /* ScalesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScalesView.swift; sourceTree = "<group>"; };
+		C50626B928706B6100DB933E /* ArpeggioView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArpeggioView.swift; sourceTree = "<group>"; };
+		C50626BA28706B6100DB933E /* DroneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DroneView.swift; sourceTree = "<group>"; };
+		C50626BF28706BB900DB933E /* NoteSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSelectionView.swift; sourceTree = "<group>"; };
 		C51BFE87279A8BF3001BF9A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C51F8D522866AF2B00D5AED2 /* AlterNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterNotes.swift; sourceTree = "<group>"; };
 		C51F8D542866AFBA00D5AED2 /* AlterNotesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterNotesTests.swift; sourceTree = "<group>"; };
@@ -234,7 +266,6 @@
 		C5321F0227A92BF600A63085 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		C5321F0427A92D5400A63085 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		C5321F0627A933A200A63085 /* AboutDeveloperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDeveloperView.swift; sourceTree = "<group>"; };
-		C5443226279B9F2B0068A239 /* DroneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroneView.swift; sourceTree = "<group>"; };
 		C5443228279BAB710068A239 /* FavouritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesView.swift; sourceTree = "<group>"; };
 		C544322A279BAD700068A239 /* FavouritesInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritesInfoView.swift; sourceTree = "<group>"; };
 		C54531D127756F180041702C /* PlaySounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySounds.swift; sourceTree = "<group>"; };
@@ -407,7 +438,6 @@
 		C555641727C3A8D0009AC00C /* Metronome1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome1.mp3; path = ../../ScaleHeroAppResources/Metronome1.mp3; sourceTree = "<group>"; };
 		C574FE72276886B700ADD3B3 /* ScaleHero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScaleHero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleHeroApp.swift; sourceTree = "<group>"; };
-		C574FE77276886B700ADD3B3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C574FE79276886BC00ADD3B3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C574FE7C276886BC00ADD3B3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C574FE82276886BC00ADD3B3 /* ScaleHeroTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScaleHeroTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -415,11 +445,7 @@
 		C574FE8C276886BD00ADD3B3 /* ScaleHeroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScaleHeroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C574FE90276886BD00ADD3B3 /* ScaleHeroUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleHeroUITests.swift; sourceTree = "<group>"; };
 		C574FE92276886BD00ADD3B3 /* ScaleHeroUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleHeroUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		C574FE9F2769BFE700ADD3B3 /* ScalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalesView.swift; sourceTree = "<group>"; };
-		C574FEA82769CFDF00ADD3B3 /* ArpeggioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArpeggioView.swift; sourceTree = "<group>"; };
-		C574FEE0276B0AE000ADD3B3 /* SoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundView.swift; sourceTree = "<group>"; };
 		C574FF3A2773F48F00ADD3B3 /* WriteScales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteScales.swift; sourceTree = "<group>"; };
-		C58FE9F2278292B900075A4C /* OtherScalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherScalesView.swift; sourceTree = "<group>"; };
 		C5A826A027BC866B002F2F66 /* NoteSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSelectionButton.swift; sourceTree = "<group>"; };
 		C5B03BDC278416EB00643E7C /* PlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingView.swift; sourceTree = "<group>"; };
 		C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUIButtonView.swift; sourceTree = "<group>"; };
@@ -452,6 +478,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C50626A228704F9900DB933E /* ScaleViews */ = {
+			isa = PBXGroup;
+			children = (
+				C50626B928706B6100DB933E /* ArpeggioView.swift */,
+				C50626BA28706B6100DB933E /* DroneView.swift */,
+				C50626B728706B6100DB933E /* OtherScalesView.swift */,
+				C50626B828706B6100DB933E /* ScalesView.swift */,
+			);
+			path = ScaleViews;
+			sourceTree = "<group>";
+		};
 		C5321F0827ACEE3E00A63085 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -561,14 +598,15 @@
 		C574FEA72769CF9F00ADD3B3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C5A826A327BC8A53002F2F66 /* ScaleViews */,
+				C50626A228704F9900DB933E /* ScaleViews */,
 				C5A826A227BC8A21002F2F66 /* InfoPages */,
 				C5A8269F27BC8650002F2F66 /* Buttons */,
-				C574FE77276886B700ADD3B3 /* ContentView.swift */,
-				C574FEE0276B0AE000ADD3B3 /* SoundView.swift */,
 				C54532F02779B73D0041702C /* SettingsView.swift */,
+				C50626A728704FA700DB933E /* ContentView.swift */,
+				C50626A328704FA700DB933E /* SoundView.swift */,
 				C5B03BDC278416EB00643E7C /* PlayingView.swift */,
 				C5321F0227A92BF600A63085 /* AboutView.swift */,
+				C50626BF28706BB900DB933E /* NoteSelectionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -720,6 +758,18 @@
 		C58AFF8227A7AC6000C6A497 /* Cello */ = {
 			isa = PBXGroup;
 			children = (
+				C50626842870437400DB933E /* Cello-Drone-A.mp3 */,
+				C506268D2870437500DB933E /* Cello-Drone-A#|Bb.mp3 */,
+				C50626852870437400DB933E /* Cello-Drone-B.mp3 */,
+				C50626862870437400DB933E /* Cello-Drone-C.mp3 */,
+				C50626892870437400DB933E /* Cello-Drone-C#|Db.mp3 */,
+				C506268E2870437500DB933E /* Cello-Drone-D.mp3 */,
+				C506268A2870437500DB933E /* Cello-Drone-D#|Eb.mp3 */,
+				C506268F2870437500DB933E /* Cello-Drone-E.mp3 */,
+				C506268B2870437500DB933E /* Cello-Drone-F.mp3 */,
+				C50626872870437400DB933E /* Cello-Drone-F#|Gb.mp3 */,
+				C506268C2870437500DB933E /* Cello-Drone-G.mp3 */,
+				C50626882870437400DB933E /* Cello-Drone-G#|Ab.mp3 */,
 			);
 			path = Cello;
 			sourceTree = "<group>";
@@ -798,17 +848,6 @@
 				C5443228279BAB710068A239 /* FavouritesView.swift */,
 			);
 			path = InfoPages;
-			sourceTree = "<group>";
-		};
-		C5A826A327BC8A53002F2F66 /* ScaleViews */ = {
-			isa = PBXGroup;
-			children = (
-				C5443226279B9F2B0068A239 /* DroneView.swift */,
-				C58FE9F2278292B900075A4C /* OtherScalesView.swift */,
-				C574FEA82769CFDF00ADD3B3 /* ArpeggioView.swift */,
-				C574FE9F2769BFE700ADD3B3 /* ScalesView.swift */,
-			);
-			path = ScaleViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -927,6 +966,7 @@
 				C546836F280A913D00DA9BC8 /* Organ-3-E.mp3 in Resources */,
 				C5468410280A937F00DA9BC8 /* TuningFork1-Drone-D#|Eb.mp3 in Resources */,
 				C54683B9280A917500DA9BC8 /* Piano-3-G.mp3 in Resources */,
+				C50626952870437500DB933E /* Cello-Drone-C#|Db.mp3 in Resources */,
 				C54682E9280A90DE00DA9BC8 /* Strings-3-C#|Db.mp3 in Resources */,
 				C546834E280A913D00DA9BC8 /* Organ-4-B.mp3 in Resources */,
 				C54683AE280A917500DA9BC8 /* Piano-2-E.mp3 in Resources */,
@@ -956,6 +996,7 @@
 				C546840C280A937F00DA9BC8 /* TuningFork1-Drone-G.mp3 in Resources */,
 				C54683CF280A917500DA9BC8 /* Piano-4-G.mp3 in Resources */,
 				C5468360280A913D00DA9BC8 /* Organ-1-F#|Gb.mp3 in Resources */,
+				C50626962870437500DB933E /* Cello-Drone-D#|Eb.mp3 in Resources */,
 				C5468357280A913D00DA9BC8 /* Organ-2-B.mp3 in Resources */,
 				C5468315280A90DE00DA9BC8 /* Strings-1-G#|Ab.mp3 in Resources */,
 				C5468314280A90DE00DA9BC8 /* Strings-3-F.mp3 in Resources */,
@@ -966,6 +1007,7 @@
 				C546840A280A937F00DA9BC8 /* TuningFork1-Drone-A#|Bb.mp3 in Resources */,
 				C54683AC280A917500DA9BC8 /* Piano-2-G.mp3 in Resources */,
 				C54683B3280A917500DA9BC8 /* Piano-1-F#|Gb.mp3 in Resources */,
+				C50626902870437500DB933E /* Cello-Drone-A.mp3 in Resources */,
 				C54682FA280A90DE00DA9BC8 /* Strings-2-C#|Db.mp3 in Resources */,
 				C5468351280A913D00DA9BC8 /* Organ-3-A.mp3 in Resources */,
 				C5468348280A913D00DA9BC8 /* Organ-1-F.mp3 in Resources */,
@@ -981,6 +1023,7 @@
 				C5468306280A90DE00DA9BC8 /* Strings-3-B.mp3 in Resources */,
 				C546840E280A937F00DA9BC8 /* TuningFork1-Drone-C#|Db.mp3 in Resources */,
 				C546830E280A90DE00DA9BC8 /* Strings-3-E.mp3 in Resources */,
+				C50626922870437500DB933E /* Cello-Drone-C.mp3 in Resources */,
 				C54683A8280A917500DA9BC8 /* Piano-3-G#|Ab.mp3 in Resources */,
 				C546835C280A913D00DA9BC8 /* Organ-4-C.mp3 in Resources */,
 				C5468368280A913D00DA9BC8 /* Organ-1-D.mp3 in Resources */,
@@ -1015,6 +1058,7 @@
 				C5468309280A90DE00DA9BC8 /* Strings-2-D.mp3 in Resources */,
 				C546836E280A913D00DA9BC8 /* Organ-2-A#|Bb.mp3 in Resources */,
 				C54683D1280A917500DA9BC8 /* Piano-2-G#|Ab.mp3 in Resources */,
+				C506269A2870437500DB933E /* Cello-Drone-D.mp3 in Resources */,
 				C54682F9280A90DE00DA9BC8 /* Strings-2-B.mp3 in Resources */,
 				C54682EA280A90DE00DA9BC8 /* Strings-2-G#|Ab.mp3 in Resources */,
 				C5468365280A913D00DA9BC8 /* Organ-1-G#|Ab.mp3 in Resources */,
@@ -1028,6 +1072,7 @@
 				C5468305280A90DE00DA9BC8 /* Strings-2-D#|Eb.mp3 in Resources */,
 				C54683CB280A917500DA9BC8 /* Piano-3-D.mp3 in Resources */,
 				C54683D5280A917500DA9BC8 /* Piano-2-F#|Gb.mp3 in Resources */,
+				C50626942870437500DB933E /* Cello-Drone-G#|Ab.mp3 in Resources */,
 				C54682EC280A90DE00DA9BC8 /* Strings-1-E.mp3 in Resources */,
 				C5468376280A913D00DA9BC8 /* Organ-1-C#|Db.mp3 in Resources */,
 				C5468371280A913D00DA9BC8 /* Organ-2-G.mp3 in Resources */,
@@ -1035,6 +1080,7 @@
 				C546835E280A913D00DA9BC8 /* Organ-4-F.mp3 in Resources */,
 				C54683B5280A917500DA9BC8 /* Piano-2-F.mp3 in Resources */,
 				C5468308280A90DE00DA9BC8 /* Strings-3-C.mp3 in Resources */,
+				C50626992870437500DB933E /* Cello-Drone-A#|Bb.mp3 in Resources */,
 				C546835D280A913D00DA9BC8 /* Organ-4-D.mp3 in Resources */,
 				C54683AD280A917500DA9BC8 /* Piano-1-G.mp3 in Resources */,
 				C54683B2280A917500DA9BC8 /* Piano-4-A#|Bb.mp3 in Resources */,
@@ -1045,6 +1091,7 @@
 				C546830D280A90DE00DA9BC8 /* Strings-1-F.mp3 in Resources */,
 				C5468353280A913D00DA9BC8 /* Organ-1-C.mp3 in Resources */,
 				C54682F4280A90DE00DA9BC8 /* Strings-2-C.mp3 in Resources */,
+				C50626982870437500DB933E /* Cello-Drone-G.mp3 in Resources */,
 				C54683B1280A917500DA9BC8 /* Piano-3-A.mp3 in Resources */,
 				C5468411280A937F00DA9BC8 /* TuningFork1-Drone-E.mp3 in Resources */,
 				C54683B4280A917500DA9BC8 /* Piano-3-C.mp3 in Resources */,
@@ -1063,12 +1110,16 @@
 				C54683A7280A917500DA9BC8 /* Piano-2-D#|Eb.mp3 in Resources */,
 				C54682EF280A90DE00DA9BC8 /* Strings-2-F.mp3 in Resources */,
 				C5468372280A913D00DA9BC8 /* Organ-1-B.mp3 in Resources */,
+				C50626932870437500DB933E /* Cello-Drone-F#|Gb.mp3 in Resources */,
+				C506269B2870437500DB933E /* Cello-Drone-E.mp3 in Resources */,
 				C5468362280A913D00DA9BC8 /* Organ-2-C#|Db.mp3 in Resources */,
 				C54683BB280A917500DA9BC8 /* Piano-2-C#|Db.mp3 in Resources */,
 				C546834F280A913D00DA9BC8 /* Organ-1-E.mp3 in Resources */,
 				C546830A280A90DE00DA9BC8 /* Strings-1-F#|Gb.mp3 in Resources */,
 				C54683AF280A917500DA9BC8 /* Piano-3-D#|Eb.mp3 in Resources */,
+				C50626972870437500DB933E /* Cello-Drone-F.mp3 in Resources */,
 				C54682FC280A90DE00DA9BC8 /* Strings-4-A.mp3 in Resources */,
+				C50626912870437500DB933E /* Cello-Drone-B.mp3 in Resources */,
 				C5468409280A937F00DA9BC8 /* TuningFork1-Drone-F.mp3 in Resources */,
 				C54683B6280A917500DA9BC8 /* Piano-4-F.mp3 in Resources */,
 				C5468364280A913D00DA9BC8 /* Organ-4-G#|Ab.mp3 in Resources */,
@@ -1107,33 +1158,34 @@
 				C574FF3B2773F48F00ADD3B3 /* WriteScales.swift in Sources */,
 				C5DBD5F227812A9E00DF5183 /* FileManager-DocumentsDirectory.swift in Sources */,
 				C5443229279BAB710068A239 /* FavouritesView.swift in Sources */,
-				C5443227279B9F2C0068A239 /* DroneView.swift in Sources */,
 				C5321F0327A92BF700A63085 /* AboutView.swift in Sources */,
 				C51F8D572866FF8700D5AED2 /* ArpeggioArrays.swift in Sources */,
+				C50626A928704FA700DB933E /* SoundView.swift in Sources */,
 				C5321EFF27A8CC0C00A63085 /* SoundError.swift in Sources */,
 				C54532F12779B73D0041702C /* SettingsView.swift in Sources */,
 				C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */,
 				C51F8D532866AF2B00D5AED2 /* AlterNotes.swift in Sources */,
 				C5321F0527A92D5400A63085 /* TutorialView.swift in Sources */,
-				C574FEE1276B0AE000ADD3B3 /* SoundView.swift in Sources */,
-				C574FE78276886B700ADD3B3 /* ContentView.swift in Sources */,
 				C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */,
+				C50626C028706BB900DB933E /* NoteSelectionView.swift in Sources */,
 				C5DBD5C1278078FF00DF5183 /* MainUIButtonView.swift in Sources */,
 				C544322B279BAD700068A239 /* FavouritesInfoView.swift in Sources */,
-				C574FEA92769CFDF00ADD3B3 /* ArpeggioView.swift in Sources */,
 				C545330F277E866C0041702C /* FileReaderAndWriter.swift in Sources */,
 				C51F8D592867FBFC00D5AED2 /* ScaleEnumOptions.swift in Sources */,
-				C574FEA02769BFE700ADD3B3 /* ScalesView.swift in Sources */,
 				C5468423280CE34100DA9BC8 /* ScaleOptions.swift in Sources */,
+				C50626BC28706B6100DB933E /* ScalesView.swift in Sources */,
 				C5DBD5F427812B6100DF5183 /* ScaleCharacteristics.swift in Sources */,
+				C50626BE28706B6100DB933E /* DroneView.swift in Sources */,
+				C50626BD28706B6100DB933E /* ArpeggioView.swift in Sources */,
 				C5468425280CE5C800DA9BC8 /* Scales.swift in Sources */,
 				C5A826A127BC866B002F2F66 /* NoteSelectionButton.swift in Sources */,
 				C5321F0127A8E14F00A63085 /* AcknowledgementsView.swift in Sources */,
 				C546842F280CF62500DA9BC8 /* Arpeggios.swift in Sources */,
+				C50626BB28706B6100DB933E /* OtherScalesView.swift in Sources */,
 				C5468427280CE6A200DA9BC8 /* ScaleArrays.swift in Sources */,
+				C50626AD28704FA700DB933E /* ContentView.swift in Sources */,
 				C5321F0727A933A200A63085 /* AboutDeveloperView.swift in Sources */,
 				C54531D227756F180041702C /* PlaySounds.swift in Sources */,
-				C58FE9F3278292B900075A4C /* OtherScalesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
