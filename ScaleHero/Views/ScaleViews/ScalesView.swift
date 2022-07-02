@@ -24,6 +24,7 @@ class MusicNotes: ObservableObject {
     // An enum containing either scale or arpeggio followed by the tonality, e.g. Case.scale(.major)
     @Published var tonality : Case?
     @Published var intervalOption = Interval.none
+    @Published var intervalType = IntervalOption.allUp
     @Published var backDisplay = ScreenType.homepage
     @Published var otherSpecificScaleTypes : OtherScaleTypes?
     @Published var scaleNotes = [""]

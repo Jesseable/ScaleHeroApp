@@ -23,8 +23,8 @@ class WriteScalesTests: XCTestCase {
     func testJsonFileReturnsScale() {
         let scaleArray1 : [String]
         let scaleArray2 : [String]
-        scaleArray1 = writeScale.returnScaleNotesArray(for: Case.scale(tonality: .major), startingAt: "C")
-        scaleArray2 = writeScale.returnScaleNotesArray(for: Case.scale(tonality: .major), startingAt: "A")
+        scaleArray1 = writeScale.returnScaleNotesArray(for: Case.scale(tonality: .major(mode: .ionian)), startingAt: "C")
+        scaleArray2 = writeScale.returnScaleNotesArray(for: Case.scale(tonality: .major(mode: .ionian)), startingAt: "A")
         
         let expectedScaleArray1 = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
         let expectedScaleArray2 = ["A", "B", "C#", "D", "E", "F#", "G#", "A", "G#", "F#", "E", "D", "C#", "B", "A"]
@@ -212,68 +212,88 @@ class WriteScalesTests: XCTestCase {
     func testConvertToIntervalsAllUp() {
         let baseScale = ["2:C", "2:D", "2:E", "3:F", "2:G", "3:A", "3:B", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D", "2:C"]
         let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
+        let phrygian = ["C", "Db", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "Db", "C"]
 
         let allUpThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.allUp, for: baseScale)
         let allUpFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.allUp, for: baseScale2)
         let allUpFifths = writeScale.convertToIntervals(of: Interval.fifths, with: IntervalOption.allUp, for: baseScale)
+        let allUpThirdsWithoutOctave = writeScale.convertToIntervals(of: Interval.thirds,
+                                                                     with: IntervalOption.allUp, for: phrygian, withoutOctave: true)
         
         let allUpThirdsExpected = ["2:C", "2:E", "2:D", "3:F", "2:E", "2:G", "3:F", "3:A", "2:G", "3:B", "3:A", "3:C", "3:B", "3:D", "3:C", "3:A", "3:B", "2:G", "3:A", "3:F", "2:G", "2:E", "3:F", "2:D", "2:E", "2:C", "2:D", "2:B", "2:C"]
         let allUpFourthsExpected = ["2:C", "2:G", "2:D", "3:A", "2:E", "3:C", "2:G", "3:D", "3:A", "3:E", "3:C", "2:E", "3:A", "2:D", "2:G", "2:C", "2:E", "2:A", "2:D", "1:G", "2:C"]
         let allUpFifthsExpected = ["2:C", "2:G", "2:D", "3:A", "2:E", "3:B", "3:F", "3:C", "2:G", "3:D", "3:A", "3:E", "3:B", "4:F", "3:C", "3:F", "3:B", "2:E", "3:A", "2:D", "2:G", "2:C", "3:F", "2:B", "2:E", "2:A", "2:D", "1:G", "2:C"]
+        let allUpThirdsWithoutOctaveExpected = ["C", "Eb", "Db", "F", "Eb", "G", "F", "Ab", "G", "Bb", "Ab", "C", "Bb", "Db", "C", "Ab", "Bb", "G", "Ab", "F", "G", "Eb", "F", "Db", "Eb", "C", "Db", "Bb", "C"]
         
         XCTAssertEqual(allUpThirds, allUpThirdsExpected, "allupthirds is incorrect")
         XCTAssertEqual(allUpFourths, allUpFourthsExpected, "allupthirdsPentatonic is incorrect")
         XCTAssertEqual(allUpFifths, allUpFifthsExpected, "allupfifths is incorrect")
+        XCTAssertEqual(allUpThirdsWithoutOctave, allUpThirdsWithoutOctaveExpected, "allupthirdswithoutoctave is incorrect")
     }
     
     func testConvertToIntervalsAllDowm() {
         let baseScale = ["2:C", "2:D", "2:E", "3:F", "2:G", "3:A", "3:B", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D", "2:C"]
         let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
+        let phrygian = ["C", "Db", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "Db", "C"]
 
         let allDownThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.allDown, for: baseScale)
         let allDownFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.allDown, for: baseScale2)
         let allDownFifths = writeScale.convertToIntervals(of: Interval.fifths, with: IntervalOption.allDown, for: baseScale)
+        let alldownThirdsWithoutOctave = writeScale.convertToIntervals(of: Interval.thirds,
+                                                                     with: IntervalOption.allDown, for: phrygian, withoutOctave: true)
         
         let allDownThirdsExpected = ["2:E", "2:C", "3:F", "2:D", "2:G", "2:E", "3:A", "3:F", "3:B", "2:G", "3:C", "3:A", "3:D", "3:B", "3:C", "3:E", "3:B", "3:D", "3:A", "3:C", "2:G", "3:B", "3:F", "3:A", "2:E", "2:G", "2:D", "3:F", "2:C"]
         let allDownFourthsExpected = ["2:G", "2:C", "3:A", "2:D", "3:C", "2:E", "3:D", "2:G", "3:E", "3:A", "3:C", "3:G", "3:A", "3:E", "2:G", "3:D", "2:E", "3:C", "2:D", "3:A", "2:C"]
         let allDownFifthsExpected = ["2:G", "2:C", "3:A", "2:D", "3:B", "2:E", "3:C", "3:F", "3:D", "2:G", "3:E", "3:A", "4:F", "3:B", "3:C", "3:G", "3:B", "4:F", "3:A", "3:E", "2:G", "3:D", "3:F", "3:C", "2:E", "3:B", "2:D", "3:A", "2:C"]
+        let alldownThirdsWithoutOctaveExpected = ["Eb", "C", "F", "Db", "G", "Eb", "Ab", "F", "Bb", "G", "C", "Ab", "Db", "Bb", "C", "Eb", "Bb", "Db", "Ab", "C", "G", "Bb", "F", "Ab", "Eb", "G", "Db", "F", "C"]
         
         XCTAssertEqual(allDownThirds, allDownThirdsExpected, "alldownthirds is incorrect")
         XCTAssertEqual(allDownFourths, allDownFourthsExpected, "alldownthirdsPentatonic is incorrect")
         XCTAssertEqual(allDownFifths, allDownFifthsExpected, "alldownfifths is incorrect")
+        XCTAssertEqual(alldownThirdsWithoutOctave, alldownThirdsWithoutOctaveExpected, "alldownthirdswithoutoctave is incorrect")
     }
     
     func testConvertToIntervalsOneUpOneDowm() {
         let baseScale = ["2:D", "2:E", "2:F", "2:G", "3:A", "3:B", "3:C", "3:D", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D"]
         let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
+        let phrygian = ["C", "Db", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "Db", "C"]
 
-        let allDownThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.oneUpOneDown, for: baseScale)
-        let allDownFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.oneUpOneDown, for: baseScale2)
-        let allDownFifths = writeScale.convertToIntervals(of: Interval.fifths, with: IntervalOption.oneUpOneDown, for: baseScale)
+        let oneUpOneDownThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.oneUpOneDown, for: baseScale)
+        let oneUpOneDownFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.oneUpOneDown, for: baseScale2)
+        let oneUpOneDownFifths = writeScale.convertToIntervals(of: Interval.fifths, with: IntervalOption.oneUpOneDown, for: baseScale)
+        let oneUpOneDownThirdsWithoutOctave = writeScale.convertToIntervals(of: Interval.thirds,
+                                                                     with: IntervalOption.oneUpOneDown, for: phrygian, withoutOctave: true)
         
-        let allDownThirdsExpected = ["2:D", "2:F", "2:G", "2:E", "2:F", "3:A", "3:B", "2:G", "3:A", "3:C", "3:D", "3:B", "3:C", "3:E", "3:D", "3:F", "3:E", "3:C", "3:B", "3:D", "3:C", "3:A", "2:G", "3:B", "3:A", "2:F", "2:E", "2:G", "2:F", "2:D"]
-        let allDownFourthsExpected = ["2:C", "2:G", "3:A", "2:D", "2:E", "3:C", "3:D", "2:G", "3:A", "3:E", "3:C", "3:G", "3:E", "3:A", "2:G", "3:D", "3:C", "2:E", "2:D", "3:A", "2:G", "2:C"]
-        let allDownFifthsExpected = ["2:D", "3:A", "3:B", "2:E", "2:F", "3:C", "3:D", "2:G", "3:A", "3:E", "3:F", "3:B", "3:C", "3:G", "3:D", "4:A", "3:G", "3:C", "3:B", "3:F", "3:E", "3:A", "2:G", "3:D", "3:C", "2:F", "2:E", "3:B", "3:A", "2:D"]
+        let oneUpOneDownThirdsExpected = ["2:D", "2:F", "2:G", "2:E", "2:F", "3:A", "3:B", "2:G", "3:A", "3:C", "3:D", "3:B", "3:C", "3:E", "3:D", "3:F", "3:E", "3:C", "3:B", "3:D", "3:C", "3:A", "2:G", "3:B", "3:A", "2:F", "2:E", "2:G", "2:F", "2:D"]
+        let oneUpOneDownFourthsExpected = ["2:C", "2:G", "3:A", "2:D", "2:E", "3:C", "3:D", "2:G", "3:A", "3:E", "3:C", "3:G", "3:E", "3:A", "2:G", "3:D", "3:C", "2:E", "2:D", "3:A", "2:G", "2:C"]
+        let oneUpOneDownFifthsExpected = ["2:D", "3:A", "3:B", "2:E", "2:F", "3:C", "3:D", "2:G", "3:A", "3:E", "3:F", "3:B", "3:C", "3:G", "3:D", "4:A", "3:G", "3:C", "3:B", "3:F", "3:E", "3:A", "2:G", "3:D", "3:C", "2:F", "2:E", "3:B", "3:A", "2:D"]
+        let oneUpOneDownThirdsWithoutOctaveExpected = ["C", "Eb", "F", "Db", "Eb", "G", "Ab", "F", "G", "Bb", "C", "Ab", "Bb", "Db", "C", "Eb", "Db", "Bb", "Ab", "C", "Bb", "G", "F", "Ab", "G", "Eb", "Db", "F", "Eb", "C"]
         
-        XCTAssertEqual(allDownThirds, allDownThirdsExpected, "alldownthirds is incorrect")
-        XCTAssertEqual(allDownFourths, allDownFourthsExpected, "alldownthirdsPentatonic is incorrect")
-        XCTAssertEqual(allDownFifths, allDownFifthsExpected, "alldownfifths is incorrect")
+        XCTAssertEqual(oneUpOneDownThirds, oneUpOneDownThirdsExpected, "oneUpOneDownthirds is incorrect")
+        XCTAssertEqual(oneUpOneDownFourths, oneUpOneDownFourthsExpected, "oneUpOneDownthirdsPentatonic is incorrect")
+        XCTAssertEqual(oneUpOneDownFifths, oneUpOneDownFifthsExpected, "oneUpOneDownfifths is incorrect")
+        XCTAssertEqual(oneUpOneDownThirdsWithoutOctave, oneUpOneDownThirdsWithoutOctaveExpected, "oneUpOneDownthirdswithoutoctave is incorrect")
     }
     
     func testConvertToIntervalsOneDownOneUp() {
         let baseScale = ["2:D", "2:E", "2:F", "2:G", "3:A", "3:B", "3:C", "3:D", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D"]
         let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
+        let phrygian = ["C", "Db", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "Db", "C"]
 
-        let allDownThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.oneDownOneUp, for: baseScale)
-        let allDownFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.oneDownOneUp, for: baseScale2)
-        let allDownFifths = writeScale.convertToIntervals(of: Interval.fifths, with: IntervalOption.oneDownOneUp, for: baseScale)
+        let oneDownOneUpThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.oneDownOneUp, for: baseScale)
+        let oneDownOneUpFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.oneDownOneUp, for: baseScale2)
+        let oneDownOneUpFifths = writeScale.convertToIntervals(of: Interval.fifths, with: IntervalOption.oneDownOneUp, for: baseScale)
+        let oneDownOneUpThirdsWithoutOctave = writeScale.convertToIntervals(of: Interval.thirds,
+                                                                     with: IntervalOption.oneDownOneUp, for: phrygian, withoutOctave: true)
         
-        let allDownThirdsExpected = ["2:F", "2:D", "2:E", "2:G", "3:A", "2:F", "2:G", "3:B", "3:C", "3:A", "3:B", "3:D", "3:E", "3:C", "3:D", "3:F", "3:G", "3:E", "3:D", "3:B", "3:A", "3:C", "3:B", "2:G", "2:F", "3:A", "2:G", "2:E", "2:D"]
-        let allDownFourthsExpected = ["2:G", "2:C", "2:D", "3:A", "3:C", "2:E", "2:G", "3:D", "3:E", "3:A", "3:C", "3:G", "4:A", "3:D", "3:C", "2:E", "2:D", "3:A", "2:G", "2:C"]
-        let allDownFifthsExpected = ["3:A", "2:D", "2:E", "3:B", "3:C", "2:F", "2:G", "3:D", "3:E", "3:A", "3:B", "3:F", "3:G", "3:C", "3:D", "4:A", "4:B", "3:E", "3:D", "2:G", "2:F", "3:C", "3:B", "2:E", "2:D", "3:A", "2:G", "2:C", "2:B", "2:F", "2:E", "2:A", "1:G", "2:D"]
+        let oneDownOneUpThirdsExpected = ["2:F", "2:D", "2:E", "2:G", "3:A", "2:F", "2:G", "3:B", "3:C", "3:A", "3:B", "3:D", "3:E", "3:C", "3:D", "3:F", "3:G", "3:E", "3:D", "3:B", "3:A", "3:C", "3:B", "2:G", "2:F", "3:A", "2:G", "2:E", "2:D"]
+        let oneDownOneUpFourthsExpected = ["2:G", "2:C", "2:D", "3:A", "3:C", "2:E", "2:G", "3:D", "3:E", "3:A", "3:C", "3:G", "4:A", "3:D", "3:C", "2:E", "2:D", "3:A", "2:G", "2:C"]
+        let oneDownOneUpFifthsExpected = ["3:A", "2:D", "2:E", "3:B", "3:C", "2:F", "2:G", "3:D", "3:E", "3:A", "3:B", "3:F", "3:G", "3:C", "3:D", "4:A", "4:B", "3:E", "3:D", "2:G", "2:F", "3:C", "3:B", "2:E", "2:D", "3:A", "2:G", "2:C", "2:B", "2:F", "2:E", "2:A", "1:G", "2:D"]
+        let oneDownOneUpThirdsWithoutOctaveExpected = ["Eb", "C", "Db", "F", "G", "Eb", "F", "Ab", "Bb", "G", "Ab", "C", "Db", "Bb", "C", "Eb", "F", "Db", "C", "Ab", "G", "Bb", "Ab", "F", "Eb", "G", "F", "Db", "C"]
         
-        XCTAssertEqual(allDownThirds, allDownThirdsExpected, "alldownthirds is incorrect")
-        XCTAssertEqual(allDownFourths, allDownFourthsExpected, "alldownthirdsPentatonic is incorrect")
-        XCTAssertEqual(allDownFifths, allDownFifthsExpected, "alldownfifths is incorrect")
+        XCTAssertEqual(oneDownOneUpThirds, oneDownOneUpThirdsExpected, "oneDownOneUpthirds is incorrect")
+        XCTAssertEqual(oneDownOneUpFourths, oneDownOneUpFourthsExpected, "oneDownOneUpthirdsPentatonic is incorrect")
+        XCTAssertEqual(oneDownOneUpFifths, oneDownOneUpFifthsExpected, "oneDownOneUpfifths is incorrect")
+        XCTAssertEqual(oneDownOneUpThirdsWithoutOctave, oneDownOneUpThirdsWithoutOctaveExpected, "oneDownOneUpthirdswithoutoctave is incorrect")
     }
 }

@@ -511,19 +511,19 @@ struct WriteScales {
      @param scale: An array of strings that contain all notes in the scale ascending order (1 octave) and octave numbers
      Returns: A string array of the notes in the correct inerval pattern with the chosen style
      */
-    func convertToIntervals(of interval: Interval, with option: IntervalOption, for scale: [String]) -> [String] {
+    func convertToIntervals(of interval: Interval, with option: IntervalOption, for scale: [String], withoutOctave: Bool? = nil) -> [String] {
         let newArraySize = scale.count * 2 - 1
         var intervalsAddedArray : [String]
         
         switch option {
         case .allUp:
-            intervalsAddedArray = allUp(for: scale, with: interval, arraySize: newArraySize)
+            intervalsAddedArray = allUp(for: scale, with: interval, arraySize: newArraySize, withoutOctave: withoutOctave)
         case .allDown:
-            intervalsAddedArray = allDown(for: scale, with: interval, arraySize: newArraySize)
+            intervalsAddedArray = allDown(for: scale, with: interval, arraySize: newArraySize, withoutOctave: withoutOctave)
         case .oneUpOneDown:
-            intervalsAddedArray = oneUpOneDown(for: scale, with: interval, arraySize: newArraySize)
+            intervalsAddedArray = oneUpOneDown(for: scale, with: interval, arraySize: newArraySize, withoutOctave: withoutOctave)
         case .oneDownOneUp:
-            intervalsAddedArray = oneDownOneUp(for: scale, with: interval, arraySize: newArraySize)
+            intervalsAddedArray = oneDownOneUp(for: scale, with: interval, arraySize: newArraySize, withoutOctave: withoutOctave)
         }
         
         return intervalsAddedArray
@@ -537,17 +537,24 @@ struct WriteScales {
      @param topTonicPosition: The index position of the top tonic number (from 1)
      Returns: A string containing a sound file readable note
      */
-    private func getNoteElement(from scale: [String], for indexNum: Int, with topTonicPosition: Int) -> String {
+    private func getNoteElement(from scale: [String], for indexNum: Int, with topTonicPosition: Int, withoutOctave: Bool?  = nil) -> String {
+        if (!(withoutOctave ?? false)) {
+            
+        }
         let alterNotes = AlterNotes()
         var newElement : String
         
         if (indexNum > topTonicPosition) {
             newElement = scale[indexNum - topTonicPosition]
-            newElement = alterNotes.changeOctaveNumber(AlterAmount.increase, for: newElement)
+            if (!(withoutOctave ?? false)) {
+                newElement = alterNotes.changeOctaveNumber(AlterAmount.increase, for: newElement)
+            }
             
         } else if (indexNum <= 0) {
             newElement = scale[indexNum + (topTonicPosition - 2)]
-            newElement = alterNotes.changeOctaveNumber(AlterAmount.decrease, for: newElement)
+            if (!(withoutOctave ?? false)) {
+                newElement = alterNotes.changeOctaveNumber(AlterAmount.decrease, for: newElement)
+            }
             
         } else {
             newElement = scale[indexNum - 1]
@@ -557,7 +564,7 @@ struct WriteScales {
     }
     
     // Could change these all to one function taking an enum
-    private func allUp(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
+    private func allUp(for scale: [String], with interval: Interval, arraySize: Int, withoutOctave: Bool?  = nil) -> [String] {
         var newArray = Array(repeating: "", count: arraySize)
         let topTonicScaleNotePos = scale.count / 2 + 1
         var ascending = true
@@ -574,7 +581,7 @@ struct WriteScales {
                     secondTime = true
                 }
             }
-            newArray[i] = getNoteElement(from: scale, for: j, with: topTonicScaleNotePos)
+            newArray[i] = getNoteElement(from: scale, for: j, with: topTonicScaleNotePos, withoutOctave: withoutOctave)
             
             if (ascending) {
                 (i % 2 == 0) ? (j = j + interval.rawValue - 1) : (j = j - (interval.rawValue - 2))
@@ -587,7 +594,7 @@ struct WriteScales {
         return newArray
     }
     
-    private func allDown(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
+    private func allDown(for scale: [String], with interval: Interval, arraySize: Int, withoutOctave: Bool?  = nil) -> [String] {
         var newArray = Array(repeating: "", count: arraySize)
         let topTonicScaleNotePos = scale.count / 2 + 1
         var ascending = true
@@ -600,7 +607,7 @@ struct WriteScales {
                 j -= (interval.rawValue - 1)
                 ascending = false // start descending in the scale
             }
-            newArray[i] = getNoteElement(from: scale, for: j, with: topTonicScaleNotePos)
+            newArray[i] = getNoteElement(from: scale, for: j, with: topTonicScaleNotePos, withoutOctave: withoutOctave)
             
             if (ascending) {
                 (i % 2 == 1) ? (j = j + interval.rawValue) : (j = j - (interval.rawValue - 1))
@@ -613,7 +620,7 @@ struct WriteScales {
         return newArray
     }
     
-    private func oneUpOneDown(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
+    private func oneUpOneDown(for scale: [String], with interval: Interval, arraySize: Int, withoutOctave: Bool?  = nil) -> [String] {
         var newArray = Array(repeating: "", count: arraySize + 1)
         let topTonicScaleNotePos = scale.count / 2 + 1
         var ascending = true
@@ -626,7 +633,7 @@ struct WriteScales {
                 j -= (interval.rawValue - 1)
                 ascending = false // start descending in the scale
             }
-            newArray[i] = getNoteElement(from: scale, for: j, with: topTonicScaleNotePos)
+            newArray[i] = getNoteElement(from: scale, for: j, with: topTonicScaleNotePos, withoutOctave: withoutOctave)
             
             if (ascending) {
                 if (i % 2 == 0) {
@@ -646,7 +653,7 @@ struct WriteScales {
         return newArray
     }
     
-    private func oneDownOneUp(for scale: [String], with interval: Interval, arraySize: Int) -> [String] {
+    private func oneDownOneUp(for scale: [String], with interval: Interval, arraySize: Int, withoutOctave: Bool?  = nil) -> [String] {
         let numArraySize : Int
         switch interval {
         case .thirds:
@@ -674,7 +681,7 @@ struct WriteScales {
                     secondTime = true
                 }
             }
-            newArray[i] = getNoteElement(from: scale, for: j, with: topTonicScaleNotePos)
+            newArray[i] = getNoteElement(from: scale, for: j, with: topTonicScaleNotePos, withoutOctave: withoutOctave)
             
             if (ascending) {
                 if (i % 2 == 0) {

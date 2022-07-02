@@ -169,23 +169,7 @@ struct SoundView : View {
                         }
                     }
                     
-                    Divider().background(Color.white)
-                    
-                    Group {
-                        MainUIButton(buttonText: "Interval Options", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
-                        ZStack {
-                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                            Section {
-                                Picker("Interval Selections", selection: $musicNotes.intervalOption) {
-                                    Text("None").tag(Interval.none)
-                                    Text("Thirds").tag(Interval.thirds)
-                                    Text("Fourths").tag(Interval.fourths)
-                                    Text("Fifths").tag(Interval.fifths)
-                                }
-                                .formatted()
-                            }
-                        }
-                    }
+                    intervalOptonsButtons(buttonHeight: buttonHeight)
                     
                     Divider().background(Color.white)
                     
@@ -220,9 +204,9 @@ struct SoundView : View {
                     
                     var soundFileNotesArray = writeScale.createScaleInfoArray(scaleArray: notesArray, initialOctave: musicNotes.startingOctave)
                     
-                    /// SOME COMMAND TO DO SCALE IN THIRDS ETC HERE
-                    if (musicNotes.intervalOption != .none) { /// NEED TO DO IT FOR THE NOTES ARRAY AS WELL!!!
-                        soundFileNotesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption, with: .allUp, for: soundFileNotesArray)
+                    if (musicNotes.intervalOption != .none) {
+                        soundFileNotesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption, with: musicNotes.intervalType, for: soundFileNotesArray)
+                        notesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption, with: musicNotes.intervalType, for: notesArray, withoutOctave: true)
                     }
                     
                     let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: soundFileNotesArray, tempo: Int(musicNotes.tempo))
@@ -298,6 +282,45 @@ struct SoundView : View {
                         currentNote: musicNotes.noteName,
                         repeatNotes: musicNotes.repeatNotes,
                         repeatingEndlessly: musicNotes.endlessLoop)
+        }
+    }
+    
+    @ViewBuilder func intervalOptonsButtons(buttonHeight: CGFloat) -> some View {
+        
+        Divider().background(Color.white)
+        
+        Group {
+            MainUIButton(buttonText: "Interval Options", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
+            ZStack {
+                MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                Section {
+                    Picker("Interval Selections", selection: $musicNotes.intervalOption) {
+                        Text("None").tag(Interval.none)
+                        Text("Thirds").tag(Interval.thirds)
+                        Text("Fourths").tag(Interval.fourths)
+                        Text("Fifths").tag(Interval.fifths)
+                    }
+                    .formatted()
+                }
+            }
+        }
+        
+        Divider().background(Color.white)
+        
+        Group {
+            MainUIButton(buttonText: "Interval Type", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
+            ZStack {
+                MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                Section {
+                    Picker("Interval Selections", selection: $musicNotes.intervalType) {
+                        Text("All Up").tag(IntervalOption.allUp)
+                        Text("All Down").tag(IntervalOption.allDown)
+                        Text("One Up One Down").tag(IntervalOption.oneUpOneDown)
+                        Text("One Down One Up").tag(IntervalOption.oneDownOneUp)
+                    }
+                    .formatted()
+                }
+            }
         }
     }
 }
