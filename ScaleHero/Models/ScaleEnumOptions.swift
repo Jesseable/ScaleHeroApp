@@ -17,6 +17,7 @@ enum ScreenType {
     case droneview
     case favouritesview
     case aboutview
+    case noteSelection
 }
 
 enum TonicOption : Equatable, Codable {
@@ -113,4 +114,10 @@ enum OtherScaleTypes : String {
     case pentatonicModes = "pentatonic modes"
     case special = "special scales"
     case tetrads = "7th scales (tetrads)"
+}
+
+enum circleOfFifthsOption {
+    case outer
+    case inner
+    case centre
 }

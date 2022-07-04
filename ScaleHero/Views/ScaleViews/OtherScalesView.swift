@@ -35,7 +35,7 @@ struct OtherScalesView: View {
                 Text(displayType.rawValue).asTitle()
                 
                 ScrollView {
-                    NoteSelectionButton(buttonHeight: buttonHeight) // NEEDS TO ALSO CHANGE THE DISPLAY TO THE SOUND DISPLAY
+                    TonicNoteDisplay(buttonHeight: buttonHeight) // NEEDS TO ALSO CHANGE THE DISPLAY TO THE SOUND DISPLAY
                     getView(view: displayType, buttonHeight: buttonHeight)
                 }
                 Spacer()

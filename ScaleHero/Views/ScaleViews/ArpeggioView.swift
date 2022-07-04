@@ -30,7 +30,7 @@ struct ArpeggioView : View {
                 
                 ScrollView {
                     
-                    NoteSelectionButton(buttonHeight: buttonHeight)
+                    TonicNoteDisplay(buttonHeight: buttonHeight)
                     
                     Button {
                         musicNotes.tonality = Case.arpeggio(tonality: .major)

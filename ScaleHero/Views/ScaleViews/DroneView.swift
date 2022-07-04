@@ -37,7 +37,7 @@ struct DroneView : View {
                 
                 ScrollView {
                     
-                    NoteSelectionButton(buttonHeight: buttonHeight)
+                    TonicNoteDisplay(buttonHeight: buttonHeight)
                     
                     Button {
                         if (!isPlaying) {

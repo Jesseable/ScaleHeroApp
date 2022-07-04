@@ -32,7 +32,7 @@ struct AppContentView: View {
     Initialises the  components of the app.
      */
     init() {
-        screenType = .homepage
+        screenType = .noteSelection
         
         //SCALE INSTRUMENT
         if fileReaderAndWriter.checkFilePath(for: "scaleinstrument") {
@@ -117,8 +117,10 @@ struct AppContentView: View {
                 FavouritesView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
             case .aboutview:
                 AboutView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
-            default:
+            case .homepage:
                 HomePage(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
+            default:
+                NoteSelectionView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
             }
         }
     }
@@ -143,7 +145,6 @@ struct HomePage : View {
     
     var body: some View {
         
-        let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
         let buttonHeight = universalSize.height/10
         
         ZStack {
@@ -175,11 +176,7 @@ struct HomePage : View {
                            xPos: universalSize.width * 0.48, duration: 8.00, offset: self.$offset)
             
             VStack {
-
-                titleImage.resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: UIScreen.main.bounds.height/6)
-                    .padding()
+                TonicNoteDisplay(buttonHeight: buttonHeight)
                 
                 ScrollView {
                     
@@ -211,9 +208,9 @@ struct HomePage : View {
                 }
                     
                 Button {
-                    self.screenType = .aboutview
+                    self.screenType = .noteSelection
                 } label: {
-                    MainUIButton(buttonText: "About / Settings", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
                 }
             }
         }.onAppear() {

@@ -171,7 +171,7 @@ struct ScalesView: View {
                 
                 ScrollView {
                     
-                    NoteSelectionButton(buttonHeight: buttonHeight)
+                    TonicNoteDisplay(buttonHeight: buttonHeight)
                     
                     // Major scale
                     Button {

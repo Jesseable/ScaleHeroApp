@@ -92,7 +92,7 @@ struct FavouritesView: View {
                 Spacer()
                 
                 Button {
-                    musicNotes.backDisplay = .homepage
+                    musicNotes.backDisplay = .noteSelection
                     self.screenType = musicNotes.backDisplay
                 } label: {
                     MainUIButton(buttonText: "Home Page", type: 3, height: menuButtonHeight)

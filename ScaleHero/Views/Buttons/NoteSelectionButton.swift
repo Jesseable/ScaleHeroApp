@@ -7,17 +7,12 @@
 
 import SwiftUI
 
-struct NoteSelectionButton: View {
+struct TonicNoteDisplay: View {
     @EnvironmentObject var musicNotes: MusicNotes
     let buttonHeight : CGFloat
     
     var body: some View {
-        Menu {
-            ForEach(musicNotes.getMusicAlphabet(), id: \.self) { note in
-                Button("Note: \(note)", action: {musicNotes.noteName = note})
-            }
-        } label: {
-            MainUIButton(buttonText: "Note: \(musicNotes.noteName) SystemImage arrow.down.square", type: 9, height: buttonHeight)
-        }.padding(.top)
+        MainUIButton(buttonText: "Tonic: \(musicNotes.noteName) SystemImage music.note", type: 4, height: buttonHeight)
+                .padding(.top)
     }
 }
