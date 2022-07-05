@@ -14,6 +14,7 @@ struct NoteSelectionView: View {
     @Binding var screenType: ScreenType
     @State private var offset: CGFloat = .zero
     var backgroundImage: String
+    @State private var presentHint = false
 
     private let columns = [
         GridItem(.adaptive(minimum: 200))
@@ -22,117 +23,168 @@ struct NoteSelectionView: View {
     var body: some View {
         
         let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
-        let buttonHeight = universalSize.height/10
-        let centre = CGPoint(x: universalSize.midX, y: universalSize.maxY * 0.3)
+        let portrate = universalSize.height > universalSize.width
+        let height = universalSize.height//(portrate) ? universalSize.height : universalSize.width
+        let width = universalSize.width//(portrate) ? universalSize.width : universalSize.height
+        let buttonHeight = height/10
+        let maxSize = CGFloat(300)
+        let radius = (maxSize > width * 0.4) ? width * 0.4 : maxSize
+        let centre = CGPoint(x: universalSize.midX, y: universalSize.maxY * 0.27)
+        let hintText : Text = Text("Select a note from the circle of fifths and confirm by selecting the middle green button")
         
         ZStack {
-            Image(backgroundImage).resizable().ignoresSafeArea()
-            
             // Create all music note animations
-            ImageAnimation(imageName: "Treble-Cleff" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: universalSize.width * 0.3, duration: 7.00, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Quaver" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: -universalSize.width * 0.3, duration: 5.00, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Semiquaver" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: 0, duration: 10.00, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Crotchet" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: -universalSize.width * 0.4, duration: 6.25, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Treble-Cleff" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: -universalSize.width * 0.1, duration: 4.60, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Crotchet" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: universalSize.width * 0.35, duration: 12.00, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Quaver" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: universalSize.width * 0.07, duration: 5.48, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Semiquaver" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: universalSize.width * 0.48, duration: 8.00, offset: self.$offset)
+            animationNotes(width: width)
             
             VStack {
-                let radius = universalSize.width * 0.4
-                let colour = "BlueDark"
+                let colour = Color(fileReaderAndWriter.readBackgroundImage() + "Dark")
+                let buttonSize = radius * 0.3
+                
                 titleImage.resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(height: UIScreen.main.bounds.height/6)
-                    .padding(.top)
+                    .frame(maxWidth: width * 0.95, maxHeight: height/6)
                 
-                ZStack {
-                    VStack {
-                        HStack {
-                            Button {
-                                //screenType = .achievements
-                            } label: {
-                                ZStack {
-                                    Circle()
-                                        .fill(Color(colour))
-                                        .frame(height: universalSize.width * 0.12, alignment: .center)
-                                    Image(systemName: "checkmark.shield.fill").foregroundColor(Color.yellow)
-                                }
-                            }.frame(width: universalSize.width * 0.12,
-                                    height: universalSize.width * 0.12)
-                                .padding(.horizontal)
-                            
-                            Spacer()
-                            
-                            Button {
-                                self.screenType = .favouritesview
-                            } label: {
-                                ZStack {
-                                    Circle()
-                                        .fill(Color(colour))
-                                        .frame(height: universalSize.width * 0.12, alignment: .center)
-                                    Image(systemName: "star.fill").foregroundColor(Color.yellow)
-                                }
-                            }.frame(width: universalSize.width * 0.12,
-                                    height: universalSize.width * 0.12)
-                                .padding(.horizontal)
-                        }
-                        Spacer()
-                    }
+                ScrollView {
+                    Spacer()
+                    ZStack {
+                        topButtons(buttonSize: buttonSize, colour: colour)
+                            .aspectRatio(contentMode: .fill)
                     
-                    Circle().opacity(0.3)
-                        .position(centre)
-                        .foregroundColor(Color(colour))
-                    CircleOfFifthButtons(colour: colour, radius: radius, centre: centre, option: .outer, screenType: $screenType)
-                    CircleOfFifthButtons(colour: colour, radius: radius, centre: centre, option: .centre, screenType: $screenType)
-                    CircleOfFifthButtons(colour: colour, radius: radius * 0.65, centre: centre, option: .inner, screenType: $screenType)
-                    
-                    VStack {
-                        Spacer()
-                        HStack {
-                            Button {
-                                //screenType = .hintview
-                            } label: {
-                                ZStack {
-                                    Circle()
-                                        .fill(Color(colour))
-                                        .frame(height: universalSize.width * 0.12, alignment: .center)
-                                    Image(systemName: "questionmark.circle.fill").foregroundColor(Color.yellow)
-                                }
-                            }.frame(width: universalSize.width * 0.12,
-                                    height: universalSize.width * 0.12)
-                                .padding()
-                            
-                            Spacer()
-                        }
+                        Circle().opacity(0.3)
+                            .aspectRatio(contentMode: .fill)
+                            .foregroundColor(colour)
+                            .frame(width: (radius + buttonSize * 0.8) * 2)
+                            .position(centre)
+                        
+                        CircleOfFifthButtons(colour: colour, radius: radius, centre: centre, option: .outer, buttonSize: buttonSize, screenType: $screenType)
+                        CircleOfFifthButtons(colour: colour, radius: radius, centre: centre, option: .centre, buttonSize: buttonSize, screenType: $screenType)
+                        CircleOfFifthButtons(colour: colour, radius: radius - (buttonSize * 1.25), centre: centre, option: .inner, buttonSize: buttonSize, screenType: $screenType) // the button size
+                        
+                        bottomButtonLeft(buttonSize: buttonSize, colour: colour)
+                            .aspectRatio(contentMode: .fill)
+                        bottomButtonRight(buttonSize: buttonSize, colour: colour)
+                            .aspectRatio(contentMode: .fill)
+
                     }
+                    //.frame(width: width - radius, height: width - radius)
                 }
-               
+                .frame(width: width)
+                
                 Spacer()
                     
                 Button {
                     self.screenType = .aboutview
                 } label: {
                     MainUIButton(buttonText: "About / Settings", type: 3, height: buttonHeight)
-                }
+                }.aspectRatio(contentMode: .fill)
             }
-        }.onAppear() {
-            offset += universalSize.height * 1.2
+            .alert(isPresented: $presentHint) {
+                Alert(
+                    title: Text("Selecting Notes"),
+                    message: hintText,
+                    dismissButton: .default(Text("Got it!"))
+                );
+            }
+            .onAppear() {
+                offset += height * 1.2
+            }
+        }
+        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
+    }
+    
+    @ViewBuilder func animationNotes(width: CGFloat) -> some View {
+        ImageAnimation(imageName: "Treble-Cleff" + self.fileReaderAndWriter.readBackgroundImage(),
+                       xPos: width * 0.3, duration: 7.00, offset: self.$offset)
+
+        ImageAnimation(imageName: "Quaver" + fileReaderAndWriter.readBackgroundImage(),
+                       xPos: -width * 0.3, duration: 5.00, offset: self.$offset)
+
+        ImageAnimation(imageName: "Semiquaver" + fileReaderAndWriter.readBackgroundImage(),
+                       xPos: 0, duration: 10.00, offset: self.$offset)
+
+        ImageAnimation(imageName: "Crotchet" + fileReaderAndWriter.readBackgroundImage(),
+                       xPos: -width * 0.4, duration: 6.25, offset: self.$offset)
+
+        ImageAnimation(imageName: "Treble-Cleff" + fileReaderAndWriter.readBackgroundImage(),
+                       xPos: -width * 0.1, duration: 4.60, offset: self.$offset)
+
+        ImageAnimation(imageName: "Crotchet" + fileReaderAndWriter.readBackgroundImage(),
+                       xPos: width * 0.35, duration: 12.00, offset: self.$offset)
+
+        ImageAnimation(imageName: "Quaver" + fileReaderAndWriter.readBackgroundImage(),
+                       xPos: width * 0.07, duration: 5.48, offset: self.$offset)
+
+        ImageAnimation(imageName: "Semiquaver" + fileReaderAndWriter.readBackgroundImage(),
+                       xPos: width * 0.48, duration: 8.00, offset: self.$offset)
+    }
+    
+    @ViewBuilder func topButtons(buttonSize: CGFloat, colour: Color) -> some View {
+        VStack {
+            HStack {
+                Button {
+                    self.presentHint = true
+                } label: {
+                    ZStack {
+                        Circle()
+                            .fill(colour)
+                            .frame(height: buttonSize, alignment: .center)
+                        Image(systemName: "questionmark.circle.fill").foregroundColor(Color.yellow)
+                            .scaleEffect(2)
+                    }
+                    .frame(width: buttonSize, height: buttonSize, alignment: .center)
+                }.frame(width: buttonSize,
+                        height: buttonSize)
+                    .padding()
+                
+                Spacer()
+            }
+            Spacer()
+        }
+    }
+    
+    @ViewBuilder func bottomButtonLeft(buttonSize: CGFloat, colour: Color) -> some View {
+        VStack {
+            Spacer()
+            HStack {
+                Button {
+                    //screenType = .achievements
+                } label: {
+                    ZStack {
+                        Circle()
+                            .fill(colour)
+                            .frame(height: buttonSize, alignment: .center)
+                        Image(systemName: "checkmark.shield.fill").foregroundColor(Color.yellow)
+                            .scaleEffect(2)
+                    }
+                    .frame(width: buttonSize, height: buttonSize, alignment: .center)
+                }.frame(width: buttonSize,
+                        height: buttonSize)
+                    .padding()
+                Spacer()
+            }
+        }
+    }
+    
+    @ViewBuilder func bottomButtonRight(buttonSize: CGFloat, colour: Color) -> some View {
+        VStack {
+            Spacer()
+            HStack {
+                Spacer()
+                Button {
+                    self.screenType = .favouritesview
+                } label: {
+                    ZStack {
+                        Circle()
+                            .fill(colour)
+                            .frame(height: buttonSize, alignment: .center)
+                        Image(systemName: "star.fill").foregroundColor(Color.yellow)
+                            .scaleEffect(2)
+                    }
+                    .frame(width: buttonSize, height: buttonSize, alignment: .center)
+                }.frame(width: buttonSize,
+                        height: buttonSize)
+                    .padding()
+            }
         }
     }
 }
@@ -141,18 +193,17 @@ struct CircleOfFifthButtons: View {
     
     @EnvironmentObject var musicNotes: MusicNotes
     private let universalSize = UIScreen.main.bounds
-    let colour : String
+    let colour : Color
     let radius : CGFloat
     let centre : CGPoint
     let option : circleOfFifthsOption
+    let buttonSize : CGFloat
     @Binding var screenType: ScreenType
     
     var body: some View {
         let count = 12
         let currentAngle: CGFloat = 0
         let buttonAngle: CGFloat = (CGFloat(360 / count)) * .pi / 180
-        //let centre = CGPoint(x: universalSize.midX, y: universalSize.maxY * 0.3)
-        //let radius = universalSize.width * 0.4
 
         ZStack {
             switch option {
@@ -249,40 +300,41 @@ struct CircleOfFifthButtons: View {
                     .position(x: eighthPos.x, y: eighthPos.y)
                 
             case .centre:
-                //let pos = placePos(around: centre, radius: radius, currentAngle: 0)
+                let maxSize = radius - (radius * 0.2)
+                let size = (maxSize > universalSize.width * 0.3) ? universalSize.width * 0.3 : maxSize
                 Button {
                     screenType = .homepage
                 } label: {
                     ZStack {
                         Circle()
-                            .frame(width: universalSize.width * 0.3, height: universalSize.width * 0.3, alignment: .center)
+                            .frame(width: size, height: size, alignment: .center)
                             .foregroundColor(Color.green)
                         Text("\(musicNotes.noteName)").font(
-                            .system(size: universalSize.width * 0.2, weight: .semibold, design: .serif))
+                            .system(size: size * 0.65, weight: .semibold, design: .serif))
                             .foregroundColor(.white)
                             .frame(alignment: .center)
                     }
-                }.frame(width: universalSize.width * 0.3) // WEIRD THING HAPPENING HERE???????????????????
+                }.frame(width: size)
                     .position(centre)
             }
             
         }
     }
     
-    @ViewBuilder func NoteSelectionButtons(colour: String, note: String) -> some View {
+    @ViewBuilder func NoteSelectionButtons(colour: Color, note: String) -> some View {
         Button {
             musicNotes.noteName = note
         } label: {
             ZStack {
                 Circle()
-                    .fill(Color(colour))
-                    .frame(height: universalSize.width * 0.12, alignment: .center)
-                Text("\(note)").font(.system(size: universalSize.width * 0.07,
+                    .fill(colour)
+                    .frame(height: buttonSize, alignment: .center)
+                Text("\(note)").font(.system(size: buttonSize * 0.5,
                                              weight: .semibold, design: .rounded))
                     .foregroundColor(.white)
             }
-        }.frame(width: universalSize.width * 0.12,
-                height: universalSize.width * 0.12)
+        }.frame(width: buttonSize,
+                height: buttonSize)
     }
     
     private func placePos(around center: CGPoint, radius: CGFloat,

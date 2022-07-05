@@ -23,7 +23,7 @@ struct SoundView : View {
     var backgroundImage: String
     
     var body: some View {
-        let title = "\(musicNotes.noteName) \(musicNotes.getTonality())"
+        let title = "\(musicNotes.noteName) \(musicNotes.getTonality(from: musicNotes.tonality))"
         let buttonHeight = universalSize.height/17
         let bottumButtonHeight = universalSize.height/10
         let maxFavourites = 7

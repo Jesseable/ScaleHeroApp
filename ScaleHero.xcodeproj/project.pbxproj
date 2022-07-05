@@ -26,6 +26,7 @@
 		C50626BD28706B6100DB933E /* ArpeggioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626B928706B6100DB933E /* ArpeggioView.swift */; };
 		C50626BE28706B6100DB933E /* DroneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626BA28706B6100DB933E /* DroneView.swift */; };
 		C50626C028706BB900DB933E /* NoteSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626BF28706BB900DB933E /* NoteSelectionView.swift */; };
+		C50626C22873D04500DB933E /* TonicNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626C12873D04500DB933E /* TonicNoteView.swift */; };
 		C51F8D532866AF2B00D5AED2 /* AlterNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51F8D522866AF2B00D5AED2 /* AlterNotes.swift */; };
 		C51F8D552866AFBA00D5AED2 /* AlterNotesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51F8D542866AFBA00D5AED2 /* AlterNotesTests.swift */; };
 		C51F8D572866FF8700D5AED2 /* ArpeggioArrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51F8D562866FF8700D5AED2 /* ArpeggioArrays.swift */; };
@@ -212,7 +213,6 @@
 		C574FE91276886BD00ADD3B3 /* ScaleHeroUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE90276886BD00ADD3B3 /* ScaleHeroUITests.swift */; };
 		C574FE93276886BD00ADD3B3 /* ScaleHeroUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE92276886BD00ADD3B3 /* ScaleHeroUITestsLaunchTests.swift */; };
 		C574FF3B2773F48F00ADD3B3 /* WriteScales.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FF3A2773F48F00ADD3B3 /* WriteScales.swift */; };
-		C5A826A127BC866B002F2F66 /* NoteSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A826A027BC866B002F2F66 /* NoteSelectionButton.swift */; };
 		C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B03BDC278416EB00643E7C /* PlayingView.swift */; };
 		C5DBD5C1278078FF00DF5183 /* MainUIButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */; };
 		C5DBD5F227812A9E00DF5183 /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */; };
@@ -256,6 +256,7 @@
 		C50626B928706B6100DB933E /* ArpeggioView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArpeggioView.swift; sourceTree = "<group>"; };
 		C50626BA28706B6100DB933E /* DroneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DroneView.swift; sourceTree = "<group>"; };
 		C50626BF28706BB900DB933E /* NoteSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSelectionView.swift; sourceTree = "<group>"; };
+		C50626C12873D04500DB933E /* TonicNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TonicNoteView.swift; sourceTree = "<group>"; };
 		C51BFE87279A8BF3001BF9A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C51F8D522866AF2B00D5AED2 /* AlterNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterNotes.swift; sourceTree = "<group>"; };
 		C51F8D542866AFBA00D5AED2 /* AlterNotesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterNotesTests.swift; sourceTree = "<group>"; };
@@ -446,7 +447,6 @@
 		C574FE90276886BD00ADD3B3 /* ScaleHeroUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleHeroUITests.swift; sourceTree = "<group>"; };
 		C574FE92276886BD00ADD3B3 /* ScaleHeroUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleHeroUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		C574FF3A2773F48F00ADD3B3 /* WriteScales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteScales.swift; sourceTree = "<group>"; };
-		C5A826A027BC866B002F2F66 /* NoteSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSelectionButton.swift; sourceTree = "<group>"; };
 		C5B03BDC278416EB00643E7C /* PlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingView.swift; sourceTree = "<group>"; };
 		C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUIButtonView.swift; sourceTree = "<group>"; };
 		C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
@@ -833,7 +833,7 @@
 			isa = PBXGroup;
 			children = (
 				C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */,
-				C5A826A027BC866B002F2F66 /* NoteSelectionButton.swift */,
+				C50626C12873D04500DB933E /* TonicNoteView.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -1178,11 +1178,11 @@
 				C50626BE28706B6100DB933E /* DroneView.swift in Sources */,
 				C50626BD28706B6100DB933E /* ArpeggioView.swift in Sources */,
 				C5468425280CE5C800DA9BC8 /* Scales.swift in Sources */,
-				C5A826A127BC866B002F2F66 /* NoteSelectionButton.swift in Sources */,
 				C5321F0127A8E14F00A63085 /* AcknowledgementsView.swift in Sources */,
 				C546842F280CF62500DA9BC8 /* Arpeggios.swift in Sources */,
 				C50626BB28706B6100DB933E /* OtherScalesView.swift in Sources */,
 				C5468427280CE6A200DA9BC8 /* ScaleArrays.swift in Sources */,
+				C50626C22873D04500DB933E /* TonicNoteView.swift in Sources */,
 				C50626AD28704FA700DB933E /* ContentView.swift in Sources */,
 				C5321F0727A933A200A63085 /* AboutDeveloperView.swift in Sources */,
 				C54531D227756F180041702C /* PlaySounds.swift in Sources */,

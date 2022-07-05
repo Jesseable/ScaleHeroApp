@@ -58,7 +58,7 @@ struct FavouritesView: View {
                                 MainUIButton(buttonText: "", type: deletionMode ? 8: 1, height: buttonHeight)
                                 HStack {
                                     VStack(alignment: .leading) {
-                                        Text(scale.scaleInfo)
+                                        Text("\(scale.startingNote) \(musicNotes.getTonality(from: scale.tonality))")
                                             .font(.headline)
                                             .foregroundColor(Color.white)
 
@@ -95,7 +95,7 @@ struct FavouritesView: View {
                     musicNotes.backDisplay = .noteSelection
                     self.screenType = musicNotes.backDisplay
                 } label: {
-                    MainUIButton(buttonText: "Home Page", type: 3, height: menuButtonHeight)
+                    MainUIButton(buttonText: "Back", type: 3, height: menuButtonHeight)
                 }
             }
         }

@@ -35,29 +35,27 @@ struct DroneView : View {
                 
                 Text(title).asTitle()
                 
-                ScrollView {
                     
-                    TonicNoteDisplay(buttonHeight: buttonHeight)
-                    
-                    Button {
-                        if (!isPlaying) {
-                            let transposedNoteName = playScale.getTransposedNote(selectedNote: musicNotes.noteName)
-                            // Allows sound to play when ringer is on silent
-                            do {
-                                try AVAudioSession.sharedInstance().setCategory(.playback)
-                            } catch(let error) {
-                                print(error.localizedDescription)
-                            }
-                            playScale.playDroneSound(duration: -1, startingNote: transposedNoteName)
-
-                        isPlaying = true
-                        } else {
-                            playScale.cancelAllSounds()
-                            isPlaying = false
+                TonicNoteDisplay(buttonHeight: buttonHeight)
+                
+                Button {
+                    if (!isPlaying) {
+                        let transposedNoteName = playScale.getTransposedNote(selectedNote: musicNotes.noteName)
+                        // Allows sound to play when ringer is on silent
+                        do {
+                            try AVAudioSession.sharedInstance().setCategory(.playback)
+                        } catch(let error) {
+                            print(error.localizedDescription)
                         }
-                    } label: {
-                        MainUIButton(buttonText: isPlaying ? "Stop SystemImage speaker.slash": "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
+                        playScale.playDroneSound(duration: -1, startingNote: transposedNoteName)
+
+                    isPlaying = true
+                    } else {
+                        playScale.cancelAllSounds()
+                        isPlaying = false
                     }
+                } label: {
+                    MainUIButton(buttonText: isPlaying ? "Stop SystemImage speaker.slash": "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
                 }
                 
                 Spacer()
@@ -66,7 +64,7 @@ struct DroneView : View {
                     musicNotes.backDisplay = .homepage
                     self.screenType = musicNotes.backDisplay
                 } label: {
-                    MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
                 }
             }
         }

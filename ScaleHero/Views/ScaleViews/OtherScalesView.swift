@@ -34,8 +34,9 @@ struct OtherScalesView: View {
             VStack {
                 Text(displayType.rawValue).asTitle()
                 
+                TonicNoteDisplay(buttonHeight: buttonHeight)
+                
                 ScrollView {
-                    TonicNoteDisplay(buttonHeight: buttonHeight) // NEEDS TO ALSO CHANGE THE DISPLAY TO THE SOUND DISPLAY
                     getView(view: displayType, buttonHeight: buttonHeight)
                 }
                 Spacer()

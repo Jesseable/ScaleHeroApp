@@ -61,8 +61,8 @@ class MusicNotes: ObservableObject {
         }
     }
     
-    func getTonality() -> String {
-        switch tonality {
+    func getTonality(from tonalityGiven : Case?) -> String {
+        switch tonalityGiven {
         case .arpeggio(let tonality):
             return tonality.rawValue
         case .scale(let tonality):
@@ -169,9 +169,9 @@ struct ScalesView: View {
 
                 Text("SCALES").asTitle()
                 
+                TonicNoteDisplay(buttonHeight: buttonHeight)
+                
                 ScrollView {
-                    
-                    TonicNoteDisplay(buttonHeight: buttonHeight)
                     
                     // Major scale
                     Button {
@@ -242,7 +242,7 @@ struct ScalesView: View {
                     musicNotes.backDisplay = .homepage
                     self.screenType = musicNotes.backDisplay
                 } label: {
-                    MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
                 }
             }
         }

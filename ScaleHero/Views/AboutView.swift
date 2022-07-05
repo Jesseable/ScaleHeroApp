@@ -54,9 +54,9 @@ struct AboutView: View {
                 Spacer()
                 
                 Button {
-                    self.screenType = .homepage
+                    self.screenType = .noteSelection
                 } label: {
-                    MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
                 }
             }.padding(.top, 50)
         }

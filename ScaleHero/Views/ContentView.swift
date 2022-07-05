@@ -146,6 +146,7 @@ struct HomePage : View {
     var body: some View {
         
         let buttonHeight = universalSize.height/10
+        let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
         
         ZStack {
             Image(backgroundImage).resizable().ignoresSafeArea()
@@ -176,6 +177,11 @@ struct HomePage : View {
                            xPos: universalSize.width * 0.48, duration: 8.00, offset: self.$offset)
             
             VStack {
+                titleImage.resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: UIScreen.main.bounds.height/6)
+                    .padding(.top)
+                
                 TonicNoteDisplay(buttonHeight: buttonHeight)
                 
                 ScrollView {
@@ -195,13 +201,7 @@ struct HomePage : View {
                     Button {
                         self.screenType = .droneview
                     } label: {
-                        MainUIButton(buttonText: "Drone", type: 1, height: buttonHeight)
-                    }
-                    
-                    Button {
-                        self.screenType = .favouritesview
-                    } label: {
-                        MainUIButton(buttonText: "Favourites", type: 2, height: buttonHeight)
+                        MainUIButton(buttonText: "Drone", type: 2, height: buttonHeight)
                     }
                     
                     Spacer()
