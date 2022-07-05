@@ -149,7 +149,7 @@ struct HomePage : View {
         let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
         
         ZStack {
-            Image(backgroundImage).resizable().ignoresSafeArea()
+            //Image(backgroundImage).resizable().ignoresSafeArea()
             
             // Create all music note animations
             ImageAnimation(imageName: "Treble-Cleff" + fileReaderAndWriter.readBackgroundImage(),
@@ -178,9 +178,9 @@ struct HomePage : View {
             
             VStack {
                 titleImage.resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: UIScreen.main.bounds.height/6)
-                    .padding(.top)
+                    .scaledToFill()
+                    .frame(maxWidth: width * 0.9, maxHeight: height / 8)
+                    .clipped()
                 
                 TonicNoteDisplay(buttonHeight: buttonHeight)
                 
@@ -216,6 +216,7 @@ struct HomePage : View {
         }.onAppear() {
             offset += universalSize.height * 1.2
         }
+        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
     }
 }
 

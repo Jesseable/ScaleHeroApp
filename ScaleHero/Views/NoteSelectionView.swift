@@ -24,12 +24,14 @@ struct NoteSelectionView: View {
         
         let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
         let portrate = universalSize.height > universalSize.width
-        let height = universalSize.height//(portrate) ? universalSize.height : universalSize.width
-        let width = universalSize.width//(portrate) ? universalSize.width : universalSize.height
+        let height = universalSize.height
+        let width = universalSize.width
         let buttonHeight = height/10
-        let maxSize = CGFloat(300)
+        let maxSize = (portrate) ? CGFloat(250) : CGFloat(100)
         let radius = (maxSize > width * 0.4) ? width * 0.4 : maxSize
-        let centre = CGPoint(x: universalSize.midX, y: universalSize.maxY * 0.27)
+        let buttonSize = radius * 0.3
+        let midY = (portrate) ? universalSize.minY + radius + buttonSize : universalSize.minY + radius + buttonSize
+        let centre = CGPoint(x: universalSize.midX, y: midY)
         let hintText : Text = Text("Select a note from the circle of fifths and confirm by selecting the middle green button")
         
         ZStack {
@@ -38,20 +40,21 @@ struct NoteSelectionView: View {
             
             VStack {
                 let colour = Color(fileReaderAndWriter.readBackgroundImage() + "Dark")
-                let buttonSize = radius * 0.3
                 
                 titleImage.resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(maxWidth: width * 0.95, maxHeight: height/6)
+                    .scaledToFill()
+                    .frame(maxWidth: width * 0.9, maxHeight: height / 8)
+                    .clipped()
                 
                 ScrollView {
                     Spacer()
                     ZStack {
                         topButtons(buttonSize: buttonSize, colour: colour)
-                            .aspectRatio(contentMode: .fill)
+                            .aspectRatio(contentMode: .fit)
+                            .padding(.leading, 5)
                     
                         Circle().opacity(0.3)
-                            .aspectRatio(contentMode: .fill)
+                            .aspectRatio(contentMode: .fit)
                             .foregroundColor(colour)
                             .frame(width: (radius + buttonSize * 0.8) * 2)
                             .position(centre)
@@ -61,12 +64,14 @@ struct NoteSelectionView: View {
                         CircleOfFifthButtons(colour: colour, radius: radius - (buttonSize * 1.25), centre: centre, option: .inner, buttonSize: buttonSize, screenType: $screenType) // the button size
                         
                         bottomButtonLeft(buttonSize: buttonSize, colour: colour)
-                            .aspectRatio(contentMode: .fill)
+                            .aspectRatio(contentMode: .fit)
+                            .padding(.leading, 5)
                         bottomButtonRight(buttonSize: buttonSize, colour: colour)
-                            .aspectRatio(contentMode: .fill)
+                            .aspectRatio(contentMode: .fit)
+                            .padding(.trailing, 5)
 
                     }
-                    //.frame(width: width - radius, height: width - radius)
+                    .frame(height: (radius + buttonSize * 0.8) * 2)
                 }
                 .frame(width: width)
                 
@@ -134,8 +139,6 @@ struct NoteSelectionView: View {
                     .frame(width: buttonSize, height: buttonSize, alignment: .center)
                 }.frame(width: buttonSize,
                         height: buttonSize)
-                    .padding()
-                
                 Spacer()
             }
             Spacer()
@@ -159,7 +162,6 @@ struct NoteSelectionView: View {
                     .frame(width: buttonSize, height: buttonSize, alignment: .center)
                 }.frame(width: buttonSize,
                         height: buttonSize)
-                    .padding()
                 Spacer()
             }
         }
@@ -183,7 +185,6 @@ struct NoteSelectionView: View {
                     .frame(width: buttonSize, height: buttonSize, alignment: .center)
                 }.frame(width: buttonSize,
                         height: buttonSize)
-                    .padding()
             }
         }
     }

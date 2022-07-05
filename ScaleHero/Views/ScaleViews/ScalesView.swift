@@ -162,90 +162,87 @@ struct ScalesView: View {
     var body: some View {
         let buttonHeight = universalSize.height/10
         
-        ZStack {
-            Image(backgroundImage).resizable().ignoresSafeArea()
-        
-            VStack {
+        VStack {
 
-                Text("SCALES").asTitle()
+            Text("SCALES").asTitle()
+            
+            TonicNoteDisplay(buttonHeight: buttonHeight)
+            
+            ScrollView {
                 
-                TonicNoteDisplay(buttonHeight: buttonHeight)
-                
-                ScrollView {
-                    
-                    // Major scale
-                    Button {
-                        musicNotes.tonality = .scale(tonality: .major(mode: .ionian))
-                        musicNotes.backDisplay = .scale
-                        self.screenType = .soundview
-                    } label: {
-                        MainUIButton(buttonText: "Major", type: 1, height: buttonHeight)
-                    }
-                    
-                    // Minor scale
-                    Button {
-                        musicNotes.tonality = .scale(tonality: .naturalMinor)
-                        musicNotes.backDisplay = .scale
-                        self.screenType = ScreenType.soundview
-                    } label: {
-                        MainUIButton(buttonText: "Minor", type: 1, height: buttonHeight)
-                    }
-                    
-                    // Harmonic Minor Scale
-                    Button {
-                        musicNotes.tonality = .scale(tonality: .harmonicMinor)
-                        musicNotes.backDisplay = .scale
-                        self.screenType = ScreenType.soundview
-                    } label: {
-                        MainUIButton(buttonText: "Harmonic Minor", type: 1, height: buttonHeight)
-                    }
-                    
-                    // Melodic minor scale
-                    Button {
-                        musicNotes.tonality = .scale(tonality: .melodicMinor)
-                        musicNotes.backDisplay = .scale
-                        self.screenType = ScreenType.soundview
-                    } label: {
-                        MainUIButton(buttonText: "Melodic Minor", type: 1, height: buttonHeight)
-                    }
-                    
-                    // Major scale modes (goes to a new option screen)
-                    Button {
-                        musicNotes.otherSpecificScaleTypes = .majorModes
-                        musicNotes.backDisplay = .scale
-                        self.screenType = ScreenType.otherview
-                    } label: {
-                        MainUIButton(buttonText: "Major Modes", type: 1, height: buttonHeight)
-                    }
-                    
-                    // Major scale modes (goes to a new option screen)
-                    Button {
-                        musicNotes.otherSpecificScaleTypes = .pentatonicModes
-                        musicNotes.backDisplay = .scale
-                        self.screenType = ScreenType.otherview
-                    } label: {
-                        MainUIButton(buttonText: "Pentatonic Modes", type: 1, height: buttonHeight)
-                    }
-                    
-                    // Other Special scale options (goes to a new option screen)
-                    Button {
-                        musicNotes.otherSpecificScaleTypes = .special
-                        musicNotes.backDisplay = .scale
-                        self.screenType = ScreenType.otherview
-                    } label: {
-                        MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
-                    }
-                    
-                    Spacer()
-                }
+                // Major scale
                 Button {
-                    musicNotes.backDisplay = .homepage
-                    self.screenType = musicNotes.backDisplay
+                    musicNotes.tonality = .scale(tonality: .major(mode: .ionian))
+                    musicNotes.backDisplay = .scale
+                    self.screenType = .soundview
                 } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "Major", type: 1, height: buttonHeight)
                 }
+                
+                // Minor scale
+                Button {
+                    musicNotes.tonality = .scale(tonality: .naturalMinor)
+                    musicNotes.backDisplay = .scale
+                    self.screenType = ScreenType.soundview
+                } label: {
+                    MainUIButton(buttonText: "Minor", type: 1, height: buttonHeight)
+                }
+                
+                // Harmonic Minor Scale
+                Button {
+                    musicNotes.tonality = .scale(tonality: .harmonicMinor)
+                    musicNotes.backDisplay = .scale
+                    self.screenType = ScreenType.soundview
+                } label: {
+                    MainUIButton(buttonText: "Harmonic Minor", type: 1, height: buttonHeight)
+                }
+                
+                // Melodic minor scale
+                Button {
+                    musicNotes.tonality = .scale(tonality: .melodicMinor)
+                    musicNotes.backDisplay = .scale
+                    self.screenType = ScreenType.soundview
+                } label: {
+                    MainUIButton(buttonText: "Melodic Minor", type: 1, height: buttonHeight)
+                }
+                
+                // Major scale modes (goes to a new option screen)
+                Button {
+                    musicNotes.otherSpecificScaleTypes = .majorModes
+                    musicNotes.backDisplay = .scale
+                    self.screenType = ScreenType.otherview
+                } label: {
+                    MainUIButton(buttonText: "Major Modes", type: 1, height: buttonHeight)
+                }
+                
+                // Major scale modes (goes to a new option screen)
+                Button {
+                    musicNotes.otherSpecificScaleTypes = .pentatonicModes
+                    musicNotes.backDisplay = .scale
+                    self.screenType = ScreenType.otherview
+                } label: {
+                    MainUIButton(buttonText: "Pentatonic Modes", type: 1, height: buttonHeight)
+                }
+                
+                // Other Special scale options (goes to a new option screen)
+                Button {
+                    musicNotes.otherSpecificScaleTypes = .special
+                    musicNotes.backDisplay = .scale
+                    self.screenType = ScreenType.otherview
+                } label: {
+                    MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
+                }
+                
+                Spacer()
+            }
+            Button {
+                musicNotes.backDisplay = .homepage
+                self.screenType = musicNotes.backDisplay
+            } label: {
+                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
             }
         }
+        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
     }
 }
 
