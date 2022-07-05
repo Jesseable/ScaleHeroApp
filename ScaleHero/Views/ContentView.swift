@@ -95,34 +95,36 @@ struct AppContentView: View {
      The main switch statement to toggle between views, transfering the  parameters as required.
      */
     var body: some View {
-        let SelectedBackgroundImage = musicNotes.backgroundImage ?? self.backgroundImage
+        let selectedBackgroundImage = musicNotes.backgroundImage ?? self.backgroundImage
         
         return Group {
             
             switch screenType {
             case .scale:
-                ScalesView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
+                ScalesView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
             case .arpeggio:
-                ArpeggioView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
+                ArpeggioView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
             case .otherview:
                 // Upon failing goes to special screen
-                OtherScalesView(screenType: self.$screenType, displayType: musicNotes.otherSpecificScaleTypes ?? OtherScaleTypes.special, backgroundImage: SelectedBackgroundImage)
+                OtherScalesView(screenType: self.$screenType, displayType: musicNotes.otherSpecificScaleTypes ?? OtherScaleTypes.special, backgroundImage: selectedBackgroundImage)
             case .settings:
-                SettingsView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
+                SettingsView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
             case .soundview:
-                SoundView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
+                SoundView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
             case .droneview:
-                DroneView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
+                DroneView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
             case .favouritesview:
-                FavouritesView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
+                FavouritesView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
             case .aboutview:
-                AboutView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
+                AboutView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
             case .homepage:
-                HomePage(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
+                HomePage(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
             case .achievements:
-                AchievementsView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
+                AchievementsView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+            case .soundOptionsView:
+                SoundOptionsView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
             default:
-                NoteSelectionView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
+                NoteSelectionView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
             }
         }
     }
@@ -149,6 +151,7 @@ struct HomePage : View {
         
         let buttonHeight = universalSize.height/10
         let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
+        let portrate = universalSize.height > universalSize.width
         
         ZStack {
             //Image(backgroundImage).resizable().ignoresSafeArea()
@@ -179,10 +182,17 @@ struct HomePage : View {
                            xPos: universalSize.width * 0.48, duration: 8.00, offset: self.$offset)
             
             VStack {
-                titleImage.resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: universalSize.width * 0.9, maxHeight: universalSize.height / 8)
-                    .clipped()
+                
+                if (portrate) {
+                    titleImage.resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: universalSize.width * 0.9, maxHeight: universalSize.height / 6)
+                        .clipped()
+                } else {
+                    titleImage.resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: universalSize.width * 0.9, maxHeight: universalSize.height / 6)
+                }
                 
                 TonicNoteDisplay(buttonHeight: buttonHeight)
                 

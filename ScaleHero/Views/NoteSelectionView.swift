@@ -41,10 +41,16 @@ struct NoteSelectionView: View {
             VStack {
                 let colour = Color(fileReaderAndWriter.readBackgroundImage() + "Dark")
                 
-                titleImage.resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: width * 0.9, maxHeight: height / 8)
-                    .clipped()
+                if (portrate) {
+                    titleImage.resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: width * 0.9, maxHeight: height / 6)
+                        .clipped()
+                } else {
+                    titleImage.resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: width * 0.9, maxHeight: height / 6)
+                }
                 
                 ScrollView {
                     Spacer()

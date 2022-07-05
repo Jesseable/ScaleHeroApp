@@ -296,4 +296,19 @@ class WriteScalesTests: XCTestCase {
         XCTAssertEqual(oneDownOneUpFifths, oneDownOneUpFifthsExpected, "oneDownOneUpfifths is incorrect")
         XCTAssertEqual(oneDownOneUpThirdsWithoutOctave, oneDownOneUpThirdsWithoutOctaveExpected, "oneDownOneUpthirdswithoutoctave is incorrect")
     }
+    
+    func testRepeatEveryNote() {
+        let baseScale = ["2:D", "2:E", "2:F", "2:G", "3:A", "3:B", "3:C", "3:D", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D"]
+        let baseScale2 = ["C", "Db", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "Db", "C"]
+
+        let baseScaleDoubled = writeScale.repeatAllNotes(in: baseScale)
+        let baseScale2Doubled = writeScale.repeatAllNotes(in: baseScale2)
+        
+        let baseScaleDoubledExpected = ["2:D", "2:D", "2:E", "2:E", "2:F", "2:F", "2:G", "2:G", "3:A", "3:A", "3:B", "3:B", "3:C", "3:C", "3:D", "3:D", "3:C", "3:C", "3:B", "3:B", "3:A", "3:A", "2:G", "2:G", "2:F", "2:F", "2:E", "2:E", "2:D", "2:D"]
+        let baseScale2DoubledExpected = ["C", "C", "Db", "Db", "Eb", "Eb", "F", "F", "G", "G", "Ab", "Ab", "Bb", "Bb", "C", "C", "Bb", "Bb", "Ab", "Ab", "G", "G", "F", "F", "Eb", "Eb", "Db", "Db", "C", "C"]
+
+        
+        XCTAssertEqual(baseScaleDoubled, baseScaleDoubledExpected, "base scale doubled is incorrect")
+        XCTAssertEqual(baseScale2Doubled, baseScale2DoubledExpected, "base scale 2 doubled is incorrect")
+    }
 }

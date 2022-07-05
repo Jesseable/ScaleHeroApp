@@ -15,7 +15,8 @@ struct SoundView : View {
     @EnvironmentObject var scaleOptions: ScaleOptions
     @State private var isPlaying = false
     @State private var presentAlert = false
-    @State private var disableOctaveSelection = false
+    //@State private var disableOctaveSelection = false
+    //@State private var disableOctaveWithIntervals = false
     @State var playScale = PlaySounds()
     @EnvironmentObject var musicNotes: MusicNotes
     var fileReaderAndWriter = FileReaderAndWriter()
@@ -24,193 +25,197 @@ struct SoundView : View {
     
     var body: some View {
         let title = "\(musicNotes.noteName) \(musicNotes.getTonality(from: musicNotes.tonality))"
-        let buttonHeight = universalSize.height/17
+        let buttonHeight = universalSize.height/19
         let bottumButtonHeight = universalSize.height/10
         let maxFavourites = 7
         var disableOctaveSelection = (musicNotes.octaves < 2) ? false : true
 
-        ZStack {
-            Image(backgroundImage).resizable().ignoresSafeArea()
 
-            VStack {
+        VStack {
+            
+            Text(title).asTitle()
+            
+            Button {
+                self.screenType = musicNotes.backDisplay
+            } label: {
+                MainUIButton(buttonText: "Back", type: 9, height: bottumButtonHeight)
+            }
+            ScrollView {
+
+                Divider().background(Color.white)
                 
-                Text(title).asTitle()
-                
-                // You will have to add a stop sound function here as well to stop the scale when going out of the scale view
+                Group {
+                    MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight)
+                    ZStack {
+                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                        Section {
+                            Picker("Octave selection", selection: $musicNotes.octaves) {
+                                Text("1").tag(1)
+                                Text("2").tag(2)
+                                Text("3").font(.title).tag(3)
+                            }
+                            .formatted()
+                        }
+                    }.onChange(of: musicNotes.octaves) { octave in
+                        if (octave == 1) {
+                            disableOctaveSelection = false
+                        }
+                    }
+                    
+                    Divider().background(Color.white)
+                    
+                    MainUIButton(buttonText: "Starting Octaves:", type: 4, height: buttonHeight)
+                    ZStack {
+                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                        Section {
+                            Picker("Octave:", selection: $musicNotes.startingOctave) {
+                                Text("1").tag(1)
+                                Text("2").tag(2)
+                                Text("3").tag(3)
+                            }
+                            .formatted()
+                            .disabled(disableOctaveSelection)
+                        }
+                    }.onChange(of: musicNotes.octaves) { octave in
+                        if (octave > 1) {
+                            musicNotes.startingOctave = 1
+                            disableOctaveSelection = true
+                        }
+                    }
+                    
+                    Divider().background(Color.white)
+            
+                    MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight)
+                    ZStack {
+                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                        Slider(value: $musicNotes.tempo, in: 20...180, step: 1.0)
+                            .padding(.horizontal)
+                    }
+                    
+                    Divider().background(Color.white)
+                    
+                }
+//
+//                HStack {
+//
+//                    Button {
+//                        musicNotes.playDrone.toggle()
+//                    } label: {
+//                        if (musicNotes.playDrone) {
+//                            MainUIButton(buttonText: "Drone SystemImage checkmark.square", type: 6, height: buttonHeight)
+//                        } else {
+//                            MainUIButton(buttonText: "Drone SystemImage square", type: 6, height: buttonHeight)
+//                        }
+//                    }
+//                    
+//                    Button {
+//                        musicNotes.playScaleNotes.toggle()
+//                    } label: {
+//                        if (musicNotes.playScaleNotes) {
+//                            MainUIButton(buttonText: "Play Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
+//                        } else {
+//                            MainUIButton(buttonText: "Play Notes SystemImage square", type: 5, height: buttonHeight)
+//                        }
+//                    }
+//                }
+//                
+//                Group {
+//                    HStack {
+//                        Button {
+//                            musicNotes.metronome.toggle()
+//                        } label: {
+//                            if (musicNotes.metronome) {
+//                                MainUIButton(buttonText: "Metronome SystemImage checkmark.square", type: 6, height: buttonHeight)
+//                            } else {
+//                                MainUIButton(buttonText: "Metronome SystemImage square", type: 6, height: buttonHeight)
+//                            }
+//                        }
+//                        
+//                        Button {
+//                            musicNotes.repeatNotes.toggle()
+//                        } label: {
+//                            if (musicNotes.repeatNotes) {
+//                                MainUIButton(buttonText: "Repeat Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
+//                            } else {
+//                                MainUIButton(buttonText: "Repeat Notes SystemImage square", type: 5, height: buttonHeight)
+//                            }
+//                        }
+//                    }
+//                    Button {
+//                        musicNotes.endlessLoop.toggle()
+//                    } label: {
+//                        if (musicNotes.endlessLoop) {
+//                            MainUIButton(buttonText: "Endless Loop SystemImage checkmark.square", type: 1, height: buttonHeight)
+//                        } else {
+//                            MainUIButton(buttonText: "Endless Loop SystemImage square", type: 1, height: buttonHeight)
+//                        }
+//                    }
+//                }
+//                
+//                Divider().background(Color.white)
+//                
+//                Group {
+//                    MainUIButton(buttonText: "Repeat Tonics", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
+//                    ZStack {
+//                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+//                        Section {
+//                            Picker("Tonic selection", selection: $musicNotes.tonicMode) {
+//                                Text("Never").tag(TonicOption.noRepeatedTonic)
+//                                Text("All").tag(TonicOption.repeatedTonicAll)
+//                                Text("Not Initial").tag(TonicOption.repeatedTonic)
+//                            }
+//                            .formatted()
+//                        }
+//                    }
+//                }
+//                
+//                intervalOptonsButtons(buttonHeight: buttonHeight)
                 Button {
-                    self.screenType = musicNotes.backDisplay
+                    screenType = .soundOptionsView
                 } label: {
-                    MainUIButton(buttonText: "Back", type: 9, height: bottumButtonHeight)
+                    MainUIButton(buttonText: "Further Options", type: 1, height: buttonHeight)
                 }
-                ScrollView {
-
-                    Divider().background(Color.white)
-                    
-                    Group {
-                        MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight)
-                        ZStack {
-                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                            Section {
-                                Picker("Octave selection", selection: $musicNotes.octaves) {
-                                    Text("1").tag(1)
-                                    Text("2").tag(2)
-                                    Text("3").font(.title).tag(3)
-                                }
-                                .formatted()
-                            }
-                        }.onChange(of: musicNotes.octaves) { octave in
-                            if (octave == 1) {
-                                disableOctaveSelection = false
-                            }
-                        }
-                        
-                        Divider().background(Color.white)
-                        
-                        MainUIButton(buttonText: "Starting Octaves:", type: 4, height: buttonHeight)
-                        ZStack {
-                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                            Section {
-                                Picker("Octave:", selection: $musicNotes.startingOctave) {
-                                    Text("1").tag(1)
-                                    Text("2").tag(2)
-                                    Text("3").tag(3)
-                                }
-                                .formatted()
-                                .disabled(disableOctaveSelection)
-                            }
-                        }.onChange(of: musicNotes.octaves) { octave in
-                            if (octave > 1) {
-                                musicNotes.startingOctave = 1
-                                disableOctaveSelection = true
-                            }
-                        }
-                        
-                        Divider().background(Color.white)
                 
-                        MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight)
-                        ZStack {
-                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                            Slider(value: $musicNotes.tempo, in: 20...180, step: 1.0)
-                                .padding(.horizontal)
-                        }
-                        
-                        Divider().background(Color.white)
-
-                        HStack {
-
-                            Button {
-                                musicNotes.playDrone.toggle()
-                            } label: {
-                                if (musicNotes.playDrone) {
-                                    MainUIButton(buttonText: "Drone SystemImage checkmark.square", type: 6, height: buttonHeight)
-                                } else {
-                                    MainUIButton(buttonText: "Drone SystemImage square", type: 6, height: buttonHeight)
-                                }
-                            }
-                            
-                            Button {
-                                musicNotes.playScaleNotes.toggle()
-                            } label: {
-                                if (musicNotes.playScaleNotes) {
-                                    MainUIButton(buttonText: "Play Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
-                                } else {
-                                    MainUIButton(buttonText: "Play Notes SystemImage square", type: 5, height: buttonHeight)
-                                }
-                            }
-                        }
-                    }
-                    Group {
-                        HStack {
-                            Button {
-                                musicNotes.metronome.toggle()
-                            } label: {
-                                if (musicNotes.metronome) {
-                                    MainUIButton(buttonText: "Metronome SystemImage checkmark.square", type: 6, height: buttonHeight)
-                                } else {
-                                    MainUIButton(buttonText: "Metronome SystemImage square", type: 6, height: buttonHeight)
-                                }
-                            }
-                            
-                            Button {
-                                musicNotes.repeatNotes.toggle()
-                            } label: {
-                                if (musicNotes.repeatNotes) {
-                                    MainUIButton(buttonText: "Repeat Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
-                                } else {
-                                    MainUIButton(buttonText: "Repeat Notes SystemImage square", type: 5, height: buttonHeight)
-                                }
-                            }
-                        }
-                        Button {
-                            musicNotes.endlessLoop.toggle()
-                        } label: {
-                            if (musicNotes.endlessLoop) {
-                                MainUIButton(buttonText: "Endless Loop SystemImage checkmark.square", type: 1, height: buttonHeight)
-                            } else {
-                                MainUIButton(buttonText: "Endless Loop SystemImage square", type: 1, height: buttonHeight)
-                            }
-                        }
-                    }
-                    
-                    Divider().background(Color.white)
-                    
-                    Group {
-                        MainUIButton(buttonText: "Repeat Tonics", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
-                        ZStack {
-                            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                            Section {
-                                Picker("Tonic selection", selection: $musicNotes.tonicMode) {
-                                    Text("Never").tag(TonicOption.noRepeatedTonic)
-                                    Text("All").tag(TonicOption.repeatedTonicAll)
-                                    Text("Not Initial").tag(TonicOption.repeatedTonic)
-                                }
-                                .formatted()
-                            }
-                        }
-                    }
-                    
-                    intervalOptonsButtons(buttonHeight: buttonHeight)
-                    
-                    Divider().background(Color.white)
-                    
-                    Button {
-                        presentAlert = true
-                    } label: {
-                        MainUIButton(buttonText: "Save", type: 1, height: buttonHeight)
-                    }
-                    
-                    Spacer()
+                Divider().background(Color.white)
+                
+                Button {
+                    presentAlert = true
+                } label: {
+                    MainUIButton(buttonText: "Save", type: 1, height: buttonHeight)
                 }
-                playButton(buttonHeight: buttonHeight)
+                
+                Spacer()
             }
-            .alert(isPresented: $presentAlert) {
-                Alert(
-                    title: Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save To Favourites": " You have too many favourites. Delete One First"),
-                    message: Text(title),
-                    primaryButton: .default(Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save": "Go to favourites Page"), action: {
-                        
-                        if (fileReaderAndWriter.scales.count < maxFavourites) {
-                            
-                            fileReaderAndWriter.add(scaleInfo: "IS THIS NEEDED: POSSIBLY DELETE",
-                                                    tonality: musicNotes.tonality!,
-                                                    tempo: Int(musicNotes.tempo),
-                                                    startingOctave: musicNotes.startingOctave,
-                                                    numOctave: musicNotes.octaves,
-                                                    tonicSelection: musicNotes.tonicMode,
-                                                    scaleNotes: musicNotes.playScaleNotes,
-                                                    drone: musicNotes.playDrone,
-                                                    startingNote: musicNotes.noteName,
-                                                    noteDisplay: musicNotes.noteDisplay,
-                                                    endlessLoop: musicNotes.endlessLoop)
-                        
-                        }
-                        // Goes to the favourites screen
-                        self.screenType = .favouritesview
-                    }),
-                    secondaryButton: .cancel(Text("Cancel"), action: { /*Do Nothing*/ })
-                )
-            }
+            playButton(buttonHeight: buttonHeight)
         }
+        .alert(isPresented: $presentAlert) {
+            Alert(
+                title: Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save To Favourites": " You have too many favourites. Delete One First"),
+                message: Text(title),
+                primaryButton: .default(Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save": "Go to favourites Page"), action: {
+                    
+                    if (fileReaderAndWriter.scales.count < maxFavourites) {
+                        
+                        fileReaderAndWriter.add(scaleInfo: "IS THIS NEEDED: POSSIBLY DELETE",
+                                                tonality: musicNotes.tonality!,
+                                                tempo: Int(musicNotes.tempo),
+                                                startingOctave: musicNotes.startingOctave,
+                                                numOctave: musicNotes.octaves,
+                                                tonicSelection: musicNotes.tonicMode,
+                                                scaleNotes: musicNotes.playScaleNotes,
+                                                drone: musicNotes.playDrone,
+                                                startingNote: musicNotes.noteName,
+                                                noteDisplay: musicNotes.noteDisplay,
+                                                endlessLoop: musicNotes.endlessLoop)
+                    
+                    }
+                    // Goes to the favourites screen
+                    self.screenType = .favouritesview
+                }),
+                secondaryButton: .cancel(Text("Cancel"), action: { /*Do Nothing*/ })
+            )
+        }
+        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
         .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
         .fullScreenCover(isPresented: $isPlaying) {
             PlayingView(backgroundImage: backgroundImage,
@@ -290,45 +295,6 @@ struct SoundView : View {
             }
         } label: {
             MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 3, height: buttonHeight*2)
-        }
-    }
-    
-    @ViewBuilder func intervalOptonsButtons(buttonHeight: CGFloat) -> some View {
-        
-        Divider().background(Color.white)
-        
-        Group {
-            MainUIButton(buttonText: "Interval Options", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
-            ZStack {
-                MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                Section {
-                    Picker("Interval Selections", selection: $musicNotes.intervalOption) {
-                        Text("None").tag(Interval.none)
-                        Text("Thirds").tag(Interval.thirds)
-                        Text("Fourths").tag(Interval.fourths)
-                        Text("Fifths").tag(Interval.fifths)
-                    }
-                    .formatted()
-                }
-            }
-        }
-        
-        Divider().background(Color.white)
-        
-        Group {
-            MainUIButton(buttonText: "Interval Type", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
-            ZStack {
-                MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                Section {
-                    Picker("Interval Selections", selection: $musicNotes.intervalType) {
-                        Text("All Up").tag(IntervalOption.allUp)
-                        Text("All Down").tag(IntervalOption.allDown)
-                        Text("One Up One Down").tag(IntervalOption.oneUpOneDown)
-                        Text("One Down One Up").tag(IntervalOption.oneDownOneUp)
-                    }
-                    .formatted()
-                }
-            }
         }
     }
 }

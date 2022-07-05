@@ -29,9 +29,3 @@ struct AchievementsView: View {
         .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
     }
 }
-//
-//struct AchievementsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AchievementsView()
-//    }
-//}

@@ -31,35 +31,81 @@ struct PlayingView: View { /// LOOK INTO HOW TO DELAY CODE TO COMPLETE FUNCTIONS
     var body: some View {
         let buttonHeight = universalSize.height/10
 
-        ZStack {
-            Image(backgroundImage).resizable().ignoresSafeArea()
+        VStack {
+            Text(title) // TO BE CHANGED SOMEWHERE
+                .font(.largeTitle.bold())
+                .accessibilityAddTraits(.isHeader)
+                .foregroundColor(Color.white)
+                .multilineTextAlignment(.center)
             
-            VStack {
-                Text(title) // TO BE CHANGED SOMEWHERE
-                    .font(.largeTitle.bold())
-                    .accessibilityAddTraits(.isHeader)
-                    .foregroundColor(Color.white)
-                    .multilineTextAlignment(.center)
+            Spacer()
+            // TO ALL BE CHANGED
+            Image(currentNote).resizable()
+            
+            Spacer()
+            
+            Button {
+                playSounds.cancelAllSounds()
+                musicNotes.timer.upstream.connect().cancel()
+                presentationMode.wrappedValue.dismiss()
+                musicNotes.dismissable = false
+                UIApplication.shared.isIdleTimerDisabled = false
+            } label: {
+                MainUIButton(buttonText: "Stop", type: 3, height: buttonHeight)
+            }
+        }
+        .onAppear(perform: {
+            // So the screen will never turn off when on this setting
+            UIApplication.shared.isIdleTimerDisabled = true
+            
+            // Allows sound to play when ringer is on silent
+            do {
+                try AVAudioSession.sharedInstance().setCategory(.playback)
+            } catch(let error) {
+                print(error.localizedDescription)
+            }
+            
+            if (playDrone) {
+                let extraDuration : Int
+                if musicNotes.tempo >= 80 {
+                    extraDuration = 2
+                } else {
+                    extraDuration = 1
+                }
                 
-                Spacer()
-                // TO ALL BE CHANGED
-                Image(currentNote).resizable()
+                let duration = (tempoToSeconds(tempo: self.musicNotes.tempo)
+                                * CGFloat(self.musicNotes.scaleNotes.count + extraDuration))
                 
-                Spacer()
+                let transposedNoteName = playSounds.getTransposedNote(selectedNote: musicNotes.noteName)
                 
-                Button {
-                    playSounds.cancelAllSounds()
-                    musicNotes.timer.upstream.connect().cancel()
-                    presentationMode.wrappedValue.dismiss()
-                    musicNotes.dismissable = false
-                    UIApplication.shared.isIdleTimerDisabled = false
-                } label: {
-                    MainUIButton(buttonText: "Stop", type: 3, height: buttonHeight)
+                if (!repeatingEndlessly) {
+                    playSounds.playDroneSound(duration: duration,
+                                          startingNote: transposedNoteName)
+                } else {
+                    playSounds.playDroneSound(duration: -1,
+                                          startingNote: transposedNoteName)
                 }
             }
-            .onAppear(perform: {
-                // So the screen will never turn off when on this setting
-                UIApplication.shared.isIdleTimerDisabled = true
+        })
+        .onReceive(musicNotes.timer) { time in
+            if (num % musicNotes.metronomePulse != 0 && musicNotes.metronome) {
+                do {
+                    try playSounds.playOffbeatMetronome()
+                } catch {
+                    print("File Error When reading off beat metronome")
+                }
+            
+            } else {
+                
+                // Metronome sound
+                if musicNotes.metronome {
+                    do {
+                        try playSounds.playMetronome()
+                    } catch {
+                        print("File Error When reading metronome")
+                    }
+                }
+                currentNote = musicNotes.scaleNoteNames[self.index]
                 
                 // Allows sound to play when ringer is on silent
                 do {
@@ -68,84 +114,35 @@ struct PlayingView: View { /// LOOK INTO HOW TO DELAY CODE TO COMPLETE FUNCTIONS
                     print(error.localizedDescription)
                 }
                 
-                if (playDrone) {
-                    let extraDuration : Int
-                    if musicNotes.tempo >= 80 {
-                        extraDuration = 2
-                    } else {
-                        extraDuration = 1
-                    }
-                    
-                    let duration = (tempoToSeconds(tempo: self.musicNotes.tempo)
-                                    * CGFloat(self.musicNotes.scaleNotes.count + extraDuration))
-                    
-                    let transposedNoteName = playSounds.getTransposedNote(selectedNote: musicNotes.noteName)
-                    
-                    if !repeatingEndlessly {
-                        playSounds.playDroneSound(duration: duration,
-                                              startingNote: transposedNoteName)
-                    } else {
-                        playSounds.playDroneSound(duration: -1,
-                                              startingNote: transposedNoteName)
-                    }
-                }
-            })
-            .onReceive(musicNotes.timer) { time in
-                if (num % musicNotes.metronomePulse != 0 && musicNotes.metronome) {
-                    do {
-                        try playSounds.playOffbeatMetronome()
-                    } catch {
-                        print("File Error When reading off beat metronome")
-                    }
-                
-                } else {
-                    
-                    // Metronome sound
-                    if musicNotes.metronome {
+                // plays the next note
+                if (playScaleNotes) {
+                    if !musicNotes.scaleNotes[index].contains("Metronome") {
                         do {
-                            try playSounds.playMetronome()
-                        } catch {
-                            print("File Error When reading metronome")
-                        }
-                    }
-                    currentNote = musicNotes.scaleNoteNames[self.index]
-                    
-                    // Allows sound to play when ringer is on silent
-                    do {
-                        try AVAudioSession.sharedInstance().setCategory(.playback)
-                    } catch(let error) {
-                        print(error.localizedDescription)
-                    }
-                    
-                    // plays the next note
-                    if (playScaleNotes) {
-                        if !musicNotes.scaleNotes[index].contains("Metronome") {
-                            do {
-                                let finalNote : Bool
-                                if (index == musicNotes.scaleNotes.count - 1) {
-                                    finalNote = true
-                                } else {
-                                    finalNote = false
-                                }
-                                try playSounds.playScaleNote(scaleFileName: musicNotes.scaleNotes[index], duration: tempoToSeconds(tempo: self.musicNotes.tempo), finalNote: finalNote)
-                            } catch {
-                                print("File Error When attempting to play scale Notes")
+                            let finalNote : Bool
+                            if (index == musicNotes.scaleNotes.count - 1) {
+                                finalNote = true
+                            } else {
+                                finalNote = false
                             }
+                            try playSounds.playScaleNote(scaleFileName: musicNotes.scaleNotes[index], duration: tempoToSeconds(tempo: self.musicNotes.tempo), finalNote: finalNote)
+                        } catch {
+                            print("File Error When attempting to play scale Notes")
                         }
                     }
-                    
-                    if (index == musicNotes.scaleNotes.count - 1) {
-                        if !self.repeatingEndlessly {
-                            terminateScale()
-                        } else {
-                            self.index = -1 // Since it will have one added in a second
-                        }
-                    }
-                    self.index += 1
                 }
-                num += 1
+                
+                if (index == musicNotes.scaleNotes.count - 1) {
+                    if !self.repeatingEndlessly {
+                        terminateScale()
+                    } else {
+                        self.index = -1 // Since it will have one added in a second
+                    }
+                }
+                self.index += 1
             }
+            num += 1
         }
+        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
     }
     
     /**

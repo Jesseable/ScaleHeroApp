@@ -19,6 +19,7 @@ enum ScreenType {
     case aboutview
     case noteSelection
     case achievements
+    case soundOptionsView
 }
 
 enum TonicOption : Equatable, Codable {
