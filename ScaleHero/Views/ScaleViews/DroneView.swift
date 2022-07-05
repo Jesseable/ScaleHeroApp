@@ -28,46 +28,42 @@ struct DroneView : View {
         let title = musicNotes.noteName + " Drone"
         let buttonHeight = universalSize.height/10
 
-        ZStack {
-            Image(backgroundImage).resizable().ignoresSafeArea()
-
-            VStack {
+        VStack {
+            
+            Text(title).asTitle()
+            
                 
-                Text(title).asTitle()
-                
-                    
-                TonicNoteDisplay(buttonHeight: buttonHeight)
-                
-                Button {
-                    if (!isPlaying) {
-                        let transposedNoteName = playScale.getTransposedNote(selectedNote: musicNotes.noteName)
-                        // Allows sound to play when ringer is on silent
-                        do {
-                            try AVAudioSession.sharedInstance().setCategory(.playback)
-                        } catch(let error) {
-                            print(error.localizedDescription)
-                        }
-                        playScale.playDroneSound(duration: -1, startingNote: transposedNoteName)
-
-                    isPlaying = true
-                    } else {
-                        playScale.cancelAllSounds()
-                        isPlaying = false
+            TonicNoteDisplay(buttonHeight: buttonHeight)
+            
+            Button {
+                if (!isPlaying) {
+                    let transposedNoteName = playScale.getTransposedNote(selectedNote: musicNotes.noteName)
+                    // Allows sound to play when ringer is on silent
+                    do {
+                        try AVAudioSession.sharedInstance().setCategory(.playback)
+                    } catch(let error) {
+                        print(error.localizedDescription)
                     }
-                } label: {
-                    MainUIButton(buttonText: isPlaying ? "Stop SystemImage speaker.slash": "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
+                    playScale.playDroneSound(duration: -1, startingNote: transposedNoteName)
+
+                isPlaying = true
+                } else {
+                    playScale.cancelAllSounds()
+                    isPlaying = false
                 }
-                
-                Spacer()
-                
-                Button {
-                    musicNotes.backDisplay = .homepage
-                    self.screenType = musicNotes.backDisplay
-                } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
-                }
+            } label: {
+                MainUIButton(buttonText: isPlaying ? "Stop SystemImage speaker.slash": "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
+            }
+            
+            Spacer()
+            
+            Button {
+                musicNotes.backDisplay = .homepage
+                self.screenType = musicNotes.backDisplay
+            } label: {
+                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
             }
         }
-        .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
+        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
     }
 }

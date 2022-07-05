@@ -700,6 +700,27 @@ struct WriteScales {
         }
         return newArray
     }
+    
+    /**
+     Repeats every element in the array
+     */
+    func repeatAllNotes(in soundFileArray: [String]) -> [String] {
+        assert(soundFileArray.count > 0, "count must be greater than 0")
+        
+        var newSoundFIle = soundFileArray
+        var index = 0
+        
+        for soundFile in newSoundFIle {
+            if !newSoundFIle[index].contains("Metronome") {
+                newSoundFIle.insert(soundFile, at: index)
+                index += 2
+            } else {
+                index += 1
+            }
+        }
+
+        return newSoundFIle
+    }
 }
 
 /**

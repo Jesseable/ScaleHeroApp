@@ -150,7 +150,7 @@ struct NoteSelectionView: View {
             Spacer()
             HStack {
                 Button {
-                    //screenType = .achievements
+                    screenType = .achievements
                 } label: {
                     ZStack {
                         Circle()

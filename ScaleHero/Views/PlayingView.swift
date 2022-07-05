@@ -23,7 +23,6 @@ struct PlayingView: View { /// LOOK INTO HOW TO DELAY CODE TO COMPLETE FUNCTIONS
     @State var isPlaying = false
     @State var firstTime = true
     @State var delay : CGFloat?
-    @State var repeatNotes : Bool
     private let universalSize = UIScreen.main.bounds
     @State var firstNoteDisplay = true
     @State var num = 0
@@ -61,11 +60,6 @@ struct PlayingView: View { /// LOOK INTO HOW TO DELAY CODE TO COMPLETE FUNCTIONS
             .onAppear(perform: {
                 // So the screen will never turn off when on this setting
                 UIApplication.shared.isIdleTimerDisabled = true
-                
-                if (repeatNotes) {
-                    musicNotes.scaleNotes = repeatAllNotes(in: musicNotes.scaleNotes)
-                    musicNotes.scaleNoteNames = repeatAllNotes(in: musicNotes.scaleNoteNames)
-                }
                 
                 // Allows sound to play when ringer is on silent
                 do {
@@ -176,27 +170,6 @@ struct PlayingView: View { /// LOOK INTO HOW TO DELAY CODE TO COMPLETE FUNCTIONS
             return 1
         }
         return 0
-    }
-    
-    /**
-     Repeats every element in the array
-     */
-    private func repeatAllNotes(in soundFileArray: [String]) -> [String] {
-        assert(soundFileArray.count > 0, "count must be greater than 0")
-        
-        var newSoundFIle = soundFileArray
-        var index = 0
-        
-        for soundFile in newSoundFIle {
-            if !newSoundFIle[index].contains("Metronome") {
-                newSoundFIle.insert(soundFile, at: index)
-                index += 2
-            } else {
-                index += 1
-            }
-        }
-
-        return newSoundFIle
     }
     
     /**

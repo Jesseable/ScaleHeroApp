@@ -27,31 +27,28 @@ struct OtherScalesView: View {
     
     var body: some View {
         let buttonHeight = universalSize.height/10
-        
-        ZStack {
-            Image(backgroundImage).resizable().ignoresSafeArea()
-        
-            VStack {
-                Text(displayType.rawValue).asTitle()
-                
-                TonicNoteDisplay(buttonHeight: buttonHeight)
-                
-                ScrollView {
-                    getView(view: displayType, buttonHeight: buttonHeight)
+    
+        VStack {
+            Text(displayType.rawValue).asTitle()
+            
+            TonicNoteDisplay(buttonHeight: buttonHeight)
+            
+            ScrollView {
+                getView(view: displayType, buttonHeight: buttonHeight)
+            }
+            Spacer()
+            
+            Button {
+                if (displayType == .tetrads) {
+                    self.screenType = .arpeggio
+                } else {
+                    self.screenType = .scale
                 }
-                Spacer()
-                
-                Button {
-                    if (displayType == .tetrads) {
-                        self.screenType = .arpeggio
-                    } else {
-                        self.screenType = .scale
-                    }
-                } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
-                }
+            } label: {
+                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
             }
         }
+        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
     }
     
     @ViewBuilder func getView(view: OtherScaleTypes, buttonHeight: CGFloat) -> some View {

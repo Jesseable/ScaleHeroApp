@@ -219,12 +219,11 @@ struct SoundView : View {
                         playSounds: playScale,
                         title: title,
                         currentNote: musicNotes.noteName,
-                        repeatNotes: musicNotes.repeatNotes,
                         repeatingEndlessly: musicNotes.endlessLoop)
         }
     }
     
-    @ViewBuilder func playButton(buttonHeight: CGFloat) -> some View { // MOVE MOST OF THIS CODE TO AN INIT FUNCTION FOR THIS SCREEN
+    @ViewBuilder func playButton(buttonHeight: CGFloat) -> some View { // MAYBE A DELAY WHILE DOING THIS CODE BEFORE PLAYING THE SCALES
         Button {
             let startingNote = musicNotes.noteName
 
@@ -256,6 +255,12 @@ struct SoundView : View {
             let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: soundFileNotesArray, tempo: Int(musicNotes.tempo))
             let delay = CGFloat(60/musicNotes.tempo)
             musicNotes.scaleNotes = scaleSoundFiles
+            
+            if (musicNotes.repeatNotes) {
+                musicNotes.scaleNotes = writeScale.repeatAllNotes(in: musicNotes.scaleNotes)
+                musicNotes.scaleNoteNames = writeScale.repeatAllNotes(in: musicNotes.scaleNoteNames)
+            }
+            
             let metronomeBeats = playScale.addMetronomeCountIn(tempo: Int(musicNotes.tempo), scaleNotesArray: notesArray)
             notesArray.insert(contentsOf: metronomeBeats, at: 0) // MAGIC NUMBER
             musicNotes.scaleNoteNames = notesArray
@@ -277,7 +282,6 @@ struct SoundView : View {
                 musicNotes.metronomePulse = 1
             }
             musicNotes.timer = Timer.publish(every: delay/CGFloat(musicNotes.metronomePulse), on: .main, in: .common).autoconnect()
-            musicNotes.noteName = startingNote // IS REDUNDANT????
         
             isPlaying = true
             

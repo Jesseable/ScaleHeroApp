@@ -129,23 +129,6 @@ class MusicNotes: ObservableObject {
             return "mode 5: minor pentatonic"
         }
     }
-    ///Possibly do something similar capitalising every fist  letter of a word
-//    func getMusicTitile(from title: String) -> String {
-//
-//        var newtitle =  title.replacingOccurrences(of: "-", with: " ")
-//                .uppercased()
-//                .replacingOccurrences(of: "TETRAD ", with: "")
-//                .replacingOccurrences(of: "SEVENTH", with: "7th")
-//                .replacingOccurrences(of: "OTHERS ", with: "")
-//
-//        if noteName.count > 1 {
-//            let start = title.index(title.startIndex, offsetBy: 4) // Makes the BB appeare as Bb instead
-//            let end = title.index(title.startIndex, offsetBy: 6)
-//            let range = start..<end
-//            newtitle = newtitle.replacingOccurrences(of: "B", with: "b", options: .literal, range: range)
-//        }
-//        return newtitle
-//    }
 }
 
 /**

@@ -119,6 +119,8 @@ struct AppContentView: View {
                 AboutView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
             case .homepage:
                 HomePage(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
+            case .achievements:
+                AchievementsView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
             default:
                 NoteSelectionView(screenType: self.$screenType, backgroundImage: SelectedBackgroundImage)
             }
@@ -179,7 +181,7 @@ struct HomePage : View {
             VStack {
                 titleImage.resizable()
                     .scaledToFill()
-                    .frame(maxWidth: width * 0.9, maxHeight: height / 8)
+                    .frame(maxWidth: universalSize.width * 0.9, maxHeight: universalSize.height / 8)
                     .clipped()
                 
                 TonicNoteDisplay(buttonHeight: buttonHeight)
