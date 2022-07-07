@@ -10,6 +10,7 @@ import SwiftUI
 struct AchievementsView: View {
     @Binding var screenType: ScreenType
     var backgroundImage: String
+    
     var fileReaderAndWriter = FileReaderAndWriter()
     @EnvironmentObject var musicNotes: MusicNotes
     private let universalSize = UIScreen.main.bounds

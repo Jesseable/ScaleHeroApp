@@ -15,38 +15,34 @@ struct AboutDeveloperView: View {
     var fileReaderAndWriter : FileReaderAndWriter
     
     var body: some View {
-
-        ZStack {
-            Color(fileReaderAndWriter.readBackgroundImage())
-                .ignoresSafeArea()
-
-            VStack {
-                    ScrollView {
-                        Text("Developer: Jesse Graf").asTitle()
-                                    .padding()
-                        
-                        Divider().background(Color.white)
-                        
-                        Text("**About the developer:**")
-                            .font(.title2)
-                            .foregroundColor(Color.white)
-                            .padding(5)
-                        
-                        Text(advantagesText())
-                            .font(.title3)
-                            .foregroundColor(Color.white)
-                            .padding(.horizontal)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                Spacer()
-                
-                Button {
-                    presentationMode.wrappedValue.dismiss()
-                } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: UIScreen.main.bounds.height/10)
+        
+        VStack {
+                ScrollView {
+                    Text("Developer: Jesse Graf").asTitle()
+                                .padding()
+                    
+                    Divider().background(Color.white)
+                    
+                    Text("**About the developer:**")
+                        .font(.title2)
+                        .foregroundColor(Color.white)
+                        .padding(5)
+                    
+                    Text(advantagesText())
+                        .font(.title3)
+                        .foregroundColor(Color.white)
+                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
+            Spacer()
+            
+            Button {
+                presentationMode.wrappedValue.dismiss()
+            } label: {
+                MainUIButton(buttonText: "Back", type: 3, height: UIScreen.main.bounds.height/10)
             }
         }
+        .background(alignment: .center) { Color(fileReaderAndWriter.readBackgroundImage()).ignoresSafeArea() }
     }
 
     func advantagesText() -> String {
