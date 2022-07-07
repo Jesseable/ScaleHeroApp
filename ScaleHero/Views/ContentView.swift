@@ -27,6 +27,7 @@ struct AppContentView: View {
     private var selectedDrone : String
     private var introBeats : String
     private var introBeatsArr : [String]
+    private var scaleAchievements : String
 
     /**
     Initialises the  components of the app.
@@ -89,6 +90,29 @@ struct AppContentView: View {
             fileReaderAndWriter.writeIntroBeats(beats: introBeats)
         }
         introBeatsArr = introBeats.components(separatedBy: "-")
+        
+        
+        // Create Date
+        let date = Date()
+
+        // Create Date Formatter
+        let dateFormatter = DateFormatter()
+
+        // Set Date Format
+        dateFormatter.dateFormat = "YY/MM/dd"
+
+        // Convert Date to String
+        let formattedDate = dateFormatter.string(from: date)
+        
+        //ACHIEVEMENTS
+        if fileReaderAndWriter.checkFilePath(for: "ScaleAchievementsData") {
+            scaleAchievements = fileReaderAndWriter.readScaleAchievements()
+            // Changes it if a week/month/year has passed
+            scaleAchievements = testDate(datenow: formattedDate, scaleAchievements: scaleAchievements)
+        } else {
+            scaleAchievements = "0:0:0:0:\(formattedDate)"
+            fileReaderAndWriter.writeScaleAchievements(newData: scaleAchievements)
+        }
     }
     
     /**
@@ -127,6 +151,28 @@ struct AppContentView: View {
                 NoteSelectionView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
             }
         }
+    }
+    
+    private func testDate(datenow: String, scaleAchievements: String) -> String {
+        let scaleAchievementArr = scaleAchievements.components(separatedBy: ":")
+        let previousDate = scaleAchievementArr[4]
+        let year1 = previousDate.components(separatedBy: "/")[0]
+        let year2 = datenow.components(separatedBy: "/")[0]
+        if (year1 != year2) {
+            return "0:0:0:\(scaleAchievementArr[3]):\(datenow)"
+        }
+        let month1 = previousDate.components(separatedBy: "/")[1]
+        let month2 = datenow.components(separatedBy: "/")[1]
+        if (month1 != month2) {
+            return "0:0:\(scaleAchievementArr[2]):\(scaleAchievementArr[3]):\(datenow)"
+        }
+        let previousday = Int(previousDate.components(separatedBy: "/")[2]) ?? 0
+        let presentday = Int(datenow.components(separatedBy: "/")[2]) ?? 0
+        if (previousday >= (presentday - 7)) {
+            return "0:\(scaleAchievementArr[1]):\(scaleAchievementArr[2]):\(scaleAchievementArr[3]):\(datenow)"
+        }
+        
+        return scaleAchievements
     }
 }
 
@@ -253,6 +299,7 @@ struct ImageAnimation: View {
             .animation(Animation.easeInOut(duration: duration).repeatForever(autoreverses: false), value: offset)
     }
 }
+
 //
 //struct ContentView_Previews: PreviewProvider {
 //    static var previews: some View {

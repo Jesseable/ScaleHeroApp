@@ -21,8 +21,10 @@ class FileReaderAndWriter: ObservableObject {
     let metronomePulsePath = FileManager.documentsDirectory.appendingPathComponent("metronomePulse")
     let droneInstrumentPath = FileManager.documentsDirectory.appendingPathComponent("DroneInstrument")
     let countInBeatsPath = FileManager.documentsDirectory.appendingPathComponent("CountInBeats")
+    let scaleAchievementsPath = FileManager.documentsDirectory.appendingPathComponent("ScaleAchievementsData")
     
     init() {
+        
         do {
             let data = try Data(contentsOf: filePath)
             scales = try JSONDecoder().decode([ScaleCharacteristics].self, from: data)
@@ -186,6 +188,29 @@ class FileReaderAndWriter: ObservableObject {
         catch {
             Swift.print(error)
             return "Error caught when reading the drone file"
+        }
+    }
+    
+    func writeScaleAchievements(newData: String) {
+        //writing
+        do {
+            //print(scaleAchievementsPath)
+            try newData.write(to: scaleAchievementsPath, atomically: true, encoding: String.Encoding.utf8)
+        }
+        catch {
+            Swift.print(error)
+            print("Error has occured when writing to the Drone file")
+        }
+    }
+    
+    func readScaleAchievements() -> String {
+        //reading
+        do {
+            return try String(contentsOf: scaleAchievementsPath, encoding: .utf8)
+        }
+        catch {
+            Swift.print(error)
+            return "Error caught when reading the Scale Achievements Data"
         }
     }
     

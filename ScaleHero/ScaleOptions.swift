@@ -10,8 +10,6 @@ import Foundation
 class ScaleOptions: ObservableObject, Codable {
     let scales: [Scales]
     let arpeggios: [Arpeggios]
-    var achievementsCount: [AchievementsCount]
-    var scaleRankings: [ScaleRankings]
 
     init() {
         do {
@@ -24,8 +22,6 @@ class ScaleOptions: ObservableObject, Codable {
 
             scales = scaleOptionsData.scales
             arpeggios = scaleOptionsData.arpeggios
-            achievementsCount = scaleOptionsData.achievementsCount
-            scaleRankings = scaleOptionsData.scaleRankings
         } catch {
             print(String(describing: error))
             fatalError("scaleOptions.json is missing or corrupt.")

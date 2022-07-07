@@ -82,7 +82,8 @@ struct NoteSelectionView: View {
                 .frame(width: width)
                 
                 Spacer()
-                    
+                 
+                // If removed the above calculation will have to change
                 Button {
                     self.screenType = .aboutview
                 } label: {
