@@ -7,6 +7,16 @@
 
 import Foundation
 
+enum FilePath {
+    case countInBeats
+    case droneInst
+    case scaleInst
+    case background
+    case transposition
+    case metronome
+    case achievements
+}
+
 enum ScreenType {
     case homepage
     case arpeggio

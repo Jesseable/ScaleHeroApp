@@ -194,12 +194,13 @@ class FileReaderAndWriter: ObservableObject {
     func writeScaleAchievements(newData: String) {
         //writing
         do {
-            //print(scaleAchievementsPath)
+//            print(scaleAchievementsPath)
+//            print(newData)
             try newData.write(to: scaleAchievementsPath, atomically: true, encoding: String.Encoding.utf8)
         }
         catch {
             Swift.print(error)
-            print("Error has occured when writing to the Drone file")
+            print("Error has occured when writing to the Achievements file")
         }
     }
     
@@ -239,26 +240,25 @@ class FileReaderAndWriter: ObservableObject {
     /**
      Checks if the file exists
      */
-    func checkFilePath(for fileDescription: String) -> Bool {
+    func checkFilePath(for filePath: FilePath) -> Bool {
         var path : String
-        switch fileDescription.lowercased() {
-        case "intropulse":
+        switch filePath {
+        case .countInBeats:
             path = countInBeatsPath.path
-        case "droneinstrument":
+        case .droneInst:
             path = droneInstrumentPath.path
-        case "scaleinstrument":
+        case .scaleInst:
             path = scaleInstrumentPath.path
-        case "background":
+        case .background:
             path = backgroundColourPath.path
-        case "transposition":
+        case .transposition:
             path = transpositionPath.path
-        case "metronome":
+        case .metronome:
             path = metronomePulsePath.path
-        default:
-            // Error message displayed
-            print("Not a valid file descirption when searching for the file")
-            path = "No File Could Be Found"
+        case .achievements:
+            path = scaleAchievementsPath.path
         }
+
         if FileManager.default.fileExists(atPath: path) {
             return true
         }

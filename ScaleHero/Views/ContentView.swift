@@ -36,7 +36,7 @@ struct AppContentView: View {
         screenType = .noteSelection
         
         //SCALE INSTRUMENT
-        if fileReaderAndWriter.checkFilePath(for: "scaleinstrument") {
+        if fileReaderAndWriter.checkFilePath(for: .scaleInst) {
             selectedInstrument = fileReaderAndWriter.readScaleInstrument()
         } else {
             selectedInstrument = "Piano"
@@ -44,7 +44,7 @@ struct AppContentView: View {
         }
         
         //BACKGROUND
-        if fileReaderAndWriter.checkFilePath(for: "background") {
+        if fileReaderAndWriter.checkFilePath(for: .background) {
             selectedBackground = fileReaderAndWriter.readBackgroundImage()
         } else {
             selectedBackground = "Purple"
@@ -53,7 +53,7 @@ struct AppContentView: View {
         backgroundImage = "Background" + selectedBackground
         
         //TRANSPOSITION
-        if fileReaderAndWriter.checkFilePath(for: "transposition") {
+        if fileReaderAndWriter.checkFilePath(for: .transposition) {
             transposition = fileReaderAndWriter.readTransposition()
         } else {
             transposition = "C"
@@ -67,7 +67,7 @@ struct AppContentView: View {
         }
         
         //METRONOME
-        if fileReaderAndWriter.checkFilePath(for: "metronome") {
+        if fileReaderAndWriter.checkFilePath(for: .metronome) {
             metronomeOffBeatPulse = fileReaderAndWriter.readMetronomePulse()
         } else {
             metronomeOffBeatPulse = "Off"
@@ -75,7 +75,7 @@ struct AppContentView: View {
         }
         
         //DRONE
-        if fileReaderAndWriter.checkFilePath(for: "droneinstrument") {
+        if fileReaderAndWriter.checkFilePath(for: .droneInst) {
             selectedDrone = fileReaderAndWriter.readDroneInstrument()
         } else {
             selectedDrone = "Cello"
@@ -83,7 +83,7 @@ struct AppContentView: View {
         }
         
         //INTRO BEATS
-        if fileReaderAndWriter.checkFilePath(for: "intropulse") {
+        if fileReaderAndWriter.checkFilePath(for: .countInBeats) {
             introBeats = fileReaderAndWriter.readIntroBeats()
         } else {
             introBeats = "2-4"
@@ -105,7 +105,7 @@ struct AppContentView: View {
         let formattedDate = dateFormatter.string(from: date)
         
         //ACHIEVEMENTS
-        if fileReaderAndWriter.checkFilePath(for: "ScaleAchievementsData") {
+        if fileReaderAndWriter.checkFilePath(for: .achievements) {
             scaleAchievements = fileReaderAndWriter.readScaleAchievements()
             // Changes it if a week/month/year has passed
             scaleAchievements = testDate(datenow: formattedDate, scaleAchievements: scaleAchievements)
@@ -154,25 +154,28 @@ struct AppContentView: View {
     }
     
     private func testDate(datenow: String, scaleAchievements: String) -> String {
-        let scaleAchievementArr = scaleAchievements.components(separatedBy: ":")
+        var scaleAchievementArr = scaleAchievements.components(separatedBy: ":")
         let previousDate = scaleAchievementArr[4]
+        
+        let previousday = Int(previousDate.components(separatedBy: "/")[2]) ?? -1
+        let presentday = Int(datenow.components(separatedBy: "/")[2]) ?? -1
+        if (previousday >= (presentday - 7)) {
+            scaleAchievementArr[0] = "0"
+        }
+        
         let year1 = previousDate.components(separatedBy: "/")[0]
         let year2 = datenow.components(separatedBy: "/")[0]
         if (year1 != year2) {
-            return "0:0:0:\(scaleAchievementArr[3]):\(datenow)"
+            return "\(scaleAchievementArr[0]):0:0:\(scaleAchievementArr[3]):\(datenow)"
         }
+        
         let month1 = previousDate.components(separatedBy: "/")[1]
         let month2 = datenow.components(separatedBy: "/")[1]
         if (month1 != month2) {
-            return "0:0:\(scaleAchievementArr[2]):\(scaleAchievementArr[3]):\(datenow)"
-        }
-        let previousday = Int(previousDate.components(separatedBy: "/")[2]) ?? 0
-        let presentday = Int(datenow.components(separatedBy: "/")[2]) ?? 0
-        if (previousday >= (presentday - 7)) {
-            return "0:\(scaleAchievementArr[1]):\(scaleAchievementArr[2]):\(scaleAchievementArr[3]):\(datenow)"
+            return "\(scaleAchievementArr[0]):0:\(scaleAchievementArr[2]):\(scaleAchievementArr[3]):\(datenow)"
         }
         
-        return scaleAchievements
+        return "\(scaleAchievementArr[0]):\(scaleAchievementArr[1]):\(scaleAchievementArr[2]):\(scaleAchievementArr[3]):\(datenow)"
     }
 }
 

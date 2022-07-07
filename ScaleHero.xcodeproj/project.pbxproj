@@ -216,10 +216,6 @@
 		C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B03BDC278416EB00643E7C /* PlayingView.swift */; };
 		C5BC9DC7287431DD0069DADE /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC9DC6287431DD0069DADE /* AchievementsView.swift */; };
 		C5BC9DC928744A040069DADE /* SoundOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC9DC828744A040069DADE /* SoundOptionsView.swift */; };
-		C5BC9DCB28753B300069DADE /* AchievementsCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC9DCA28753B300069DADE /* AchievementsCount.swift */; };
-		C5BC9DCF28766A660069DADE /* CalcScalesCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC9DCE28766A660069DADE /* CalcScalesCount.swift */; };
-		C5BC9DD128766FD50069DADE /* CalcScalesCountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC9DD028766FD50069DADE /* CalcScalesCountTests.swift */; };
-		C5BC9DD3287685730069DADE /* ScaleRankings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC9DD2287685730069DADE /* ScaleRankings.swift */; };
 		C5DBD5C1278078FF00DF5183 /* MainUIButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */; };
 		C5DBD5F227812A9E00DF5183 /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */; };
 		C5DBD5F427812B6100DF5183 /* ScaleCharacteristics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F327812B6100DF5183 /* ScaleCharacteristics.swift */; };
@@ -456,10 +452,6 @@
 		C5B03BDC278416EB00643E7C /* PlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingView.swift; sourceTree = "<group>"; };
 		C5BC9DC6287431DD0069DADE /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
 		C5BC9DC828744A040069DADE /* SoundOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundOptionsView.swift; sourceTree = "<group>"; };
-		C5BC9DCA28753B300069DADE /* AchievementsCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsCount.swift; sourceTree = "<group>"; };
-		C5BC9DCE28766A660069DADE /* CalcScalesCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScalesCount.swift; sourceTree = "<group>"; };
-		C5BC9DD028766FD50069DADE /* CalcScalesCountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcScalesCountTests.swift; sourceTree = "<group>"; };
-		C5BC9DD2287685730069DADE /* ScaleRankings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleRankings.swift; sourceTree = "<group>"; };
 		C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUIButtonView.swift; sourceTree = "<group>"; };
 		C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
 		C5DBD5F327812B6100DF5183 /* ScaleCharacteristics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleCharacteristics.swift; sourceTree = "<group>"; };
@@ -561,8 +553,6 @@
 				C574FF392773F47A00ADD3B3 /* Models */,
 				C574FE79276886BC00ADD3B3 /* Assets.xcassets */,
 				C5468422280CE34100DA9BC8 /* ScaleOptions.swift */,
-				C5BC9DCA28753B300069DADE /* AchievementsCount.swift */,
-				C5BC9DD2287685730069DADE /* ScaleRankings.swift */,
 				C5468424280CE5C800DA9BC8 /* Scales.swift */,
 				C546842E280CF62500DA9BC8 /* Arpeggios.swift */,
 				C5468426280CE6A200DA9BC8 /* ScaleArrays.swift */,
@@ -587,7 +577,6 @@
 				C546841B280BDC7600DA9BC8 /* PlaySoundsTests.swift */,
 				C546842A280CE98800DA9BC8 /* WriteScalesTests.swift */,
 				C51F8D542866AFBA00D5AED2 /* AlterNotesTests.swift */,
-				C5BC9DD028766FD50069DADE /* CalcScalesCountTests.swift */,
 			);
 			path = ScaleHeroTests;
 			sourceTree = "<group>";
@@ -638,7 +627,6 @@
 				C5321EFE27A8CC0C00A63085 /* SoundError.swift */,
 				C51F8D522866AF2B00D5AED2 /* AlterNotes.swift */,
 				C51F8D582867FBFC00D5AED2 /* ScaleEnumOptions.swift */,
-				C5BC9DCE28766A660069DADE /* CalcScalesCount.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1184,7 +1172,6 @@
 				C5BC9DC7287431DD0069DADE /* AchievementsView.swift in Sources */,
 				C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */,
 				C51F8D532866AF2B00D5AED2 /* AlterNotes.swift in Sources */,
-				C5BC9DCB28753B300069DADE /* AchievementsCount.swift in Sources */,
 				C5321F0527A92D5400A63085 /* TutorialView.swift in Sources */,
 				C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */,
 				C50626C028706BB900DB933E /* NoteSelectionView.swift in Sources */,
@@ -1192,13 +1179,11 @@
 				C544322B279BAD700068A239 /* FavouritesInfoView.swift in Sources */,
 				C545330F277E866C0041702C /* FileReaderAndWriter.swift in Sources */,
 				C51F8D592867FBFC00D5AED2 /* ScaleEnumOptions.swift in Sources */,
-				C5BC9DCF28766A660069DADE /* CalcScalesCount.swift in Sources */,
 				C5468423280CE34100DA9BC8 /* ScaleOptions.swift in Sources */,
 				C50626BC28706B6100DB933E /* ScalesView.swift in Sources */,
 				C5DBD5F427812B6100DF5183 /* ScaleCharacteristics.swift in Sources */,
 				C50626BE28706B6100DB933E /* DroneView.swift in Sources */,
 				C50626BD28706B6100DB933E /* ArpeggioView.swift in Sources */,
-				C5BC9DD3287685730069DADE /* ScaleRankings.swift in Sources */,
 				C5468425280CE5C800DA9BC8 /* Scales.swift in Sources */,
 				C5321F0127A8E14F00A63085 /* AcknowledgementsView.swift in Sources */,
 				C546842F280CF62500DA9BC8 /* Arpeggios.swift in Sources */,
@@ -1218,7 +1203,6 @@
 			files = (
 				C51F8D552866AFBA00D5AED2 /* AlterNotesTests.swift in Sources */,
 				C574FE87276886BD00ADD3B3 /* ScaleHeroTests.swift in Sources */,
-				C5BC9DD128766FD50069DADE /* CalcScalesCountTests.swift in Sources */,
 				C546842B280CE98800DA9BC8 /* WriteScalesTests.swift in Sources */,
 				C546841C280BDC7600DA9BC8 /* PlaySoundsTests.swift in Sources */,
 			);

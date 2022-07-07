@@ -17,10 +17,10 @@ struct AchievementsView: View {
     
     var body: some View {
         let achievementValues = fileReaderAndWriter.readScaleAchievements().components(separatedBy: ":")
-        let value1 = achievementValues[0]
-        let value2 = achievementValues[1]
-        let value3 = achievementValues[2]
-        let value4 = achievementValues[3]
+        let numThisWeek = achievementValues[0]
+        let numThisMonth = achievementValues[1]
+        let numThisYear = achievementValues[2]
+        let numAllTime = achievementValues[3]
         
         VStack {
         
@@ -33,7 +33,7 @@ struct AchievementsView: View {
                     Text("Total Scales Played This Week:")
                         .headingFormat(width: universalSize.width)
                     
-                    Text(String(value1))
+                    Text(String(numThisWeek))
                         .valueFormat(width: universalSize.width)
                     
                     Divider().background(Color.white)
@@ -41,7 +41,7 @@ struct AchievementsView: View {
                     Text("Total Scales Played This Month:")
                         .headingFormat(width: universalSize.width)
                     
-                    Text(String(value2))
+                    Text(String(numThisMonth))
                         .valueFormat(width: universalSize.width)
                 }
                 
@@ -51,7 +51,7 @@ struct AchievementsView: View {
                     Text("Total Scales Played This Year:")
                         .headingFormat(width: universalSize.width)
                     
-                    Text(String(value3))
+                    Text(String(numThisYear))
                         .valueFormat(width: universalSize.width)
                     
                     Divider().background(Color.white)
@@ -59,7 +59,7 @@ struct AchievementsView: View {
                     Text("Total Scales Played All Time:")
                         .headingFormat(width: universalSize.width)
                     
-                    Text(String(value4))
+                    Text(String(numAllTime))
                         .valueFormat(width: universalSize.width)
                 }
             }
