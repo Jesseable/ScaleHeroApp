@@ -483,19 +483,38 @@ struct WriteScales {
     }
     
     /*
-     Returns the sound file identifiable note from a signle note
+     Returns the sound file identifiable note from a signle note. Converts
+         notes that are equivalent to another such as Cb to B and D## to E
      */
     private func getFullNote(singularNote: String) -> String{
+        
+        
         switch singularNote {
-        case "F#", "Gb":
+            // Equivalent note name cases
+        case "A##", "Cb":
+            return "B"
+        case "B#", "Dbb":
+            return "C"
+        case "C##", "Ebb":
+            return "D"
+        case "D##", "Fb":
+            return "E"
+        case "E#", "Gbb":
+            return "F"
+        case "F##", "Abb":
+            return "G"
+        case "G##", "Bbb":
+            return "A"
+            // Sharp/flat cases
+        case "F#", "Gb", "E##":
             return "F#|Gb"
-        case "C#", "Db":
+        case "C#", "Db", "B##":
             return "C#|Db"
         case "G#", "Ab":
             return "G#|Ab"
-        case "D#", "Eb":
+        case "D#", "Eb", "Fbb":
             return "D#|Eb"
-        case "A#", "Bb":
+        case "A#", "Bb", "Cbb":
             return "A#|Bb"
         default:
             return singularNote
