@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct AboutView: View {
     private let universalSize = UIScreen.main.bounds
@@ -15,7 +16,9 @@ struct AboutView: View {
     @State private var isPresented1 = false
     @State private var isPresented2 = false
     @State private var isPresented3 = false
+    @State private var isSharePresented = false
     var fileReaderAndWriter = FileReaderAndWriter()
+    private let productURL = URL(string: "https://itunes.apple.com/app/id958625272")! // DOUBLE CHECK THIS!!!!!!!!!!!!!!!!!!!!!!!
     
     var body: some View {
         let buttonHeight = universalSize.height/10
@@ -50,6 +53,18 @@ struct AboutView: View {
                     } label: {
                         MainUIButton(buttonText: "About", type: 1, height: buttonHeight)
                     }
+                    
+                    Button {
+                        self.isSharePresented = true
+                    } label: {
+                        MainUIButton(buttonText: "Share App", type: 1, height: buttonHeight)
+                    }
+                    
+                    Button {
+                        writeReview()
+                    } label: {
+                        MainUIButton(buttonText: "Write Review", type: 1, height: buttonHeight)
+                    }
                 }
                 Spacer()
                 
@@ -70,5 +85,38 @@ struct AboutView: View {
         .fullScreenCover(isPresented: $isPresented3) {
             AboutDeveloperView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }
+        .sheet(isPresented: $isSharePresented) {
+            ActivityViewController(activityItems: [URL(string: "https://itunes.apple.com/app/id958625272")!])
+        }
     }
+    
+    // MARK: - Actions
+
+    // DOES THIS WORK??????????????????????????????
+    private func writeReview() {
+        var components = URLComponents(url: productURL, resolvingAgainstBaseURL: false)
+        components?.queryItems = [
+        URLQueryItem(name: "action", value: "write-review")
+        ]
+
+        guard let writeReviewURL = components?.url else {
+        return
+        }
+
+        UIApplication.shared.open(writeReviewURL)
+    }
+}
+
+struct ActivityViewController: UIViewControllerRepresentable {
+
+    var activityItems: [Any]
+    var applicationActivities: [UIActivity]? = nil
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
+        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
+        return controller
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityViewController>) {}
+
 }

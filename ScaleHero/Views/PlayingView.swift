@@ -163,6 +163,7 @@ struct PlayingView: View { /// LOOK INTO HOW TO DELAY CODE TO COMPLETE FUNCTIONS
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             if musicNotes.dismissable {
                 presentationMode.wrappedValue.dismiss()
+                AppStoreReviewManager.requestReviewIfAppropriate()
             }
         }
     }

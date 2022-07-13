@@ -216,6 +216,7 @@
 		C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B03BDC278416EB00643E7C /* PlayingView.swift */; };
 		C5BC9DC7287431DD0069DADE /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC9DC6287431DD0069DADE /* AchievementsView.swift */; };
 		C5BC9DC928744A040069DADE /* SoundOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC9DC828744A040069DADE /* SoundOptionsView.swift */; };
+		C5BC9DD9287EBC860069DADE /* AppStoreReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5BC9DD8287EBC860069DADE /* AppStoreReviewManager.swift */; };
 		C5DBD5C1278078FF00DF5183 /* MainUIButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */; };
 		C5DBD5F227812A9E00DF5183 /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */; };
 		C5DBD5F427812B6100DF5183 /* ScaleCharacteristics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F327812B6100DF5183 /* ScaleCharacteristics.swift */; };
@@ -452,6 +453,7 @@
 		C5B03BDC278416EB00643E7C /* PlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingView.swift; sourceTree = "<group>"; };
 		C5BC9DC6287431DD0069DADE /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
 		C5BC9DC828744A040069DADE /* SoundOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundOptionsView.swift; sourceTree = "<group>"; };
+		C5BC9DD8287EBC860069DADE /* AppStoreReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreReviewManager.swift; sourceTree = "<group>"; };
 		C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUIButtonView.swift; sourceTree = "<group>"; };
 		C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
 		C5DBD5F327812B6100DF5183 /* ScaleCharacteristics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleCharacteristics.swift; sourceTree = "<group>"; };
@@ -627,6 +629,7 @@
 				C5321EFE27A8CC0C00A63085 /* SoundError.swift */,
 				C51F8D522866AF2B00D5AED2 /* AlterNotes.swift */,
 				C51F8D582867FBFC00D5AED2 /* ScaleEnumOptions.swift */,
+				C5BC9DD8287EBC860069DADE /* AppStoreReviewManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1178,6 +1181,7 @@
 				C5DBD5C1278078FF00DF5183 /* MainUIButtonView.swift in Sources */,
 				C544322B279BAD700068A239 /* FavouritesInfoView.swift in Sources */,
 				C545330F277E866C0041702C /* FileReaderAndWriter.swift in Sources */,
+				C5BC9DD9287EBC860069DADE /* AppStoreReviewManager.swift in Sources */,
 				C51F8D592867FBFC00D5AED2 /* ScaleEnumOptions.swift in Sources */,
 				C5468423280CE34100DA9BC8 /* ScaleOptions.swift in Sources */,
 				C50626BC28706B6100DB933E /* ScalesView.swift in Sources */,
