@@ -176,7 +176,16 @@ struct SoundView : View {
                                                                 tonicOption: musicNotes.tonicMode)
             }
             
-            var soundFileNotesArray = writeScale.createScaleInfoArray(scaleArray: notesArray, initialOctave: musicNotes.startingOctave)
+            var transposedNotes = notesArray
+            // add transposition here if needed
+            var itr = 0
+            for scaleNote in transposedNotes {
+                let transposedNoteName = playScale.getTransposedNote(selectedNote: scaleNote)
+                transposedNotes[itr] = transposedNoteName
+                itr += 1
+            }
+            
+            var soundFileNotesArray = writeScale.createScaleInfoArray(scaleArray: transposedNotes, initialOctave: musicNotes.startingOctave)
             
             if (musicNotes.intervalOption != .none) {
                 soundFileNotesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption, with: musicNotes.intervalType, for: soundFileNotesArray)
@@ -185,8 +194,9 @@ struct SoundView : View {
             
             let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: soundFileNotesArray, tempo: Int(musicNotes.tempo))
             let delay = CGFloat(60/musicNotes.tempo)
+
             musicNotes.scaleNotes = scaleSoundFiles
-            
+
             if (musicNotes.repeatNotes) {
                 musicNotes.scaleNotes = writeScale.repeatAllNotes(in: musicNotes.scaleNotes)
                 musicNotes.scaleNoteNames = writeScale.repeatAllNotes(in: musicNotes.scaleNoteNames)

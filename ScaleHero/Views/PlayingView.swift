@@ -64,7 +64,7 @@ struct PlayingView: View { /// LOOK INTO HOW TO DELAY CODE TO COMPLETE FUNCTIONS
             } catch(let error) {
                 print(error.localizedDescription)
             }
-            
+            // maybe move all of this into SoundView to free up space at the start
             if (playDrone) {
                 let extraDuration : Int
                 if musicNotes.tempo >= 80 {
@@ -75,7 +75,7 @@ struct PlayingView: View { /// LOOK INTO HOW TO DELAY CODE TO COMPLETE FUNCTIONS
                 
                 let duration = (tempoToSeconds(tempo: self.musicNotes.tempo)
                                 * CGFloat(self.musicNotes.scaleNotes.count + extraDuration))
-                
+                // Transposes just the drone note
                 let transposedNoteName = playSounds.getTransposedNote(selectedNote: musicNotes.noteName)
                 
                 if (!repeatingEndlessly) {
