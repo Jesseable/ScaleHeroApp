@@ -18,7 +18,7 @@ struct AboutView: View {
     @State private var isPresented3 = false
     @State private var isSharePresented = false
     var fileReaderAndWriter = FileReaderAndWriter()
-    private let productURL = URL(string: "https://itunes.apple.com/app/id958625272")! // DOUBLE CHECK THIS!!!!!!!!!!!!!!!!!!!!!!!
+    private let productURL = URL(string: "https://apps.apple.com/app/id1608260694")!
     
     var body: some View {
         let buttonHeight = universalSize.height/10
@@ -86,7 +86,7 @@ struct AboutView: View {
             AboutDeveloperView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }
         .sheet(isPresented: $isSharePresented) {
-            ActivityViewController(activityItems: [URL(string: "https://itunes.apple.com/app/id958625272")!])
+            ActivityViewController(activityItems: [productURL])
         }
     }
     

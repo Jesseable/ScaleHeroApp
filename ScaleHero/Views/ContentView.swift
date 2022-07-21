@@ -91,28 +91,19 @@ struct AppContentView: View {
         }
         introBeatsArr = introBeats.components(separatedBy: "-")
         
-        
-        // Create Date
-        let date = Date()
-
-        // Create Date Formatter
-        let dateFormatter = DateFormatter()
-
-        // Set Date Format
-        dateFormatter.dateFormat = "YY/MM/dd"
-
-        // Convert Date to String
-        let formattedDate = dateFormatter.string(from: date)
-        
         //ACHIEVEMENTS
         if fileReaderAndWriter.checkFilePath(for: .achievements) {
             scaleAchievements = fileReaderAndWriter.readScaleAchievements()
-            // Changes it if a week/month/year has passed
-            scaleAchievements = testDate(datenow: formattedDate, scaleAchievements: scaleAchievements)
         } else {
-            scaleAchievements = "0:0:0:0:\(formattedDate)"
-            fileReaderAndWriter.writeScaleAchievements(newData: scaleAchievements)
+            // The number of scales played is set to 0 here initially
+            // weekCount : MonthCount : YearCount : AlltimeCount : prev Week : prev Month : prev year
+            scaleAchievements = "0:0:0:0:0:0:0"
         }
+        var dateTime = DateTime(scaleAchievements: scaleAchievements)
+        dateTime.alterCount()
+        scaleAchievements = "\(dateTime.weekCount):\(dateTime.monthCount):\(dateTime.yearCount):\(dateTime.allTimeCount)"
+                          + ":\(dateTime.week):\(dateTime.month):\(dateTime.year)"
+        fileReaderAndWriter.writeScaleAchievements(newData: scaleAchievements)
     }
     
     /**
@@ -153,30 +144,37 @@ struct AppContentView: View {
         }
     }
     
-    private func testDate(datenow: String, scaleAchievements: String) -> String {
-        var scaleAchievementArr = scaleAchievements.components(separatedBy: ":")
-        let previousDate = scaleAchievementArr[4]
-        
-        let previousday = Int(previousDate.components(separatedBy: "/")[2]) ?? -1
-        let presentday = Int(datenow.components(separatedBy: "/")[2]) ?? -1
-        if (previousday >= (presentday - 7)) {
-            scaleAchievementArr[0] = "0"
-        }
-        
-        let year1 = previousDate.components(separatedBy: "/")[0]
-        let year2 = datenow.components(separatedBy: "/")[0]
-        if (year1 != year2) {
-            return "\(scaleAchievementArr[0]):0:0:\(scaleAchievementArr[3]):\(datenow)"
-        }
-        
-        let month1 = previousDate.components(separatedBy: "/")[1]
-        let month2 = datenow.components(separatedBy: "/")[1]
-        if (month1 != month2) {
-            return "\(scaleAchievementArr[0]):0:\(scaleAchievementArr[2]):\(scaleAchievementArr[3]):\(datenow)"
-        }
-        
-        return "\(scaleAchievementArr[0]):\(scaleAchievementArr[1]):\(scaleAchievementArr[2]):\(scaleAchievementArr[3]):\(datenow)"
-    }
+//    private func testDate(curDate: DateTime, scaleAchievements: String) -> String {
+//        // SHOULD ALWAYS RESET TODAY NOW
+//        if curDate.day = 4 {
+//            return
+//        }
+//        let previousDateArr = scaleAchievements.components(separatedBy: ":")
+//        // must be three
+//        if previousDateArr.count != 3 {
+//            print("Error: The scale Achievements page in content view was not 3")
+//        }
+//
+//        let previousday = Int(previousDateArr[0]) ?? 0
+//        // First day is monday [0] // Maybe make it so it can be changed later on
+//        if (previousday == (presentday - 7)) {
+//            scaleAchievementArr[0] = "0"
+//        }
+//
+//        let year1 = previousDateArr.components(separatedBy: "/")[0]
+//        let year2 = curDate.components(separatedBy: "/")[0]
+//        if (year1 != year2) {
+//            return "\(scaleAchievementArr[0]):0:0:\(scaleAchievementArr[3]):\(curDate)"
+//        }
+//
+//        let month1 = previousDateArr.components(separatedBy: "/")[1]
+//        let month2 = curDate.components(separatedBy: "/")[1]
+//        if (month1 != month2) {
+//            return "\(scaleAchievementArr[0]):0:\(scaleAchievementArr[2]):\(scaleAchievementArr[3]):\(curDate)"
+//        }
+//
+//        return "\(scaleAchievementArr[0]):\(scaleAchievementArr[1]):\(scaleAchievementArr[2]):\(scaleAchievementArr[3]):\(curDate)"
+//    }
 }
 
 /**

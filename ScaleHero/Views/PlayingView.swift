@@ -121,14 +121,17 @@ struct PlayingView: View { /// LOOK INTO HOW TO DELAY CODE TO COMPLETE FUNCTIONS
                             let finalNote : Bool
                             if (index == musicNotes.scaleNotes.count - 1) {
                                 finalNote = true
+                                /// MUST CLEAN LATER
                                 var achievementsData = fileReaderAndWriter.readScaleAchievements()
                                 var acheivementsArr = achievementsData.components(separatedBy: ":")
                                 acheivementsArr[0] = "\((Int(acheivementsArr[0]) ?? -2) + 1)"
                                 acheivementsArr[1] = "\((Int(acheivementsArr[1]) ?? -2) + 1)"
                                 acheivementsArr[2] = "\((Int(acheivementsArr[2]) ?? -2) + 1)"
                                 acheivementsArr[3] = "\((Int(acheivementsArr[3]) ?? -2) + 1)"
-                                achievementsData = "\(acheivementsArr[0]):\(acheivementsArr[1]):\(acheivementsArr[2]):\(acheivementsArr[3]):\(acheivementsArr[4])"
+                                achievementsData = "\(acheivementsArr[0]):\(acheivementsArr[1]):\(acheivementsArr[2]):\(acheivementsArr[3])"
+                                                 + ":\(acheivementsArr[4]):\(acheivementsArr[5]):\(acheivementsArr[6])"
                                 fileReaderAndWriter.writeScaleAchievements(newData: achievementsData)
+                                /// TO BE CLEANED ABOVE
                             } else {
                                 finalNote = false
                             }

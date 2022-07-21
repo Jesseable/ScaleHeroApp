@@ -99,7 +99,7 @@ class MusicNotes: ObservableObject {
     func getMajorModeName(mode: MajorScaleMode) -> String {
         switch mode {
         case .ionian:
-            return "major"
+            return "major (ionian)"
         case .dorian:
             return "dorian mode"
         case .phrygian:

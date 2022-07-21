@@ -78,8 +78,8 @@ enum PentatonicScaleMode : Int, CaseIterable, Equatable, Codable {
 }
 
 enum ArpeggioTonality : String, CaseIterable, Equatable, Codable{
-    case major = "major"
-    case minor = "minor"
+    case major = "major arpeggio"
+    case minor = "minor arpeggio"
     case dominant7th = "dominant 7th"
     case diminished7th = "diminished 7th"
     case major7th = "major 7th"
