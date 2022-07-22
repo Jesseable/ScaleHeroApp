@@ -122,8 +122,7 @@ struct SoundView : View {
                     
                     if (fileReaderAndWriter.scales.count < maxFavourites) {
                         
-                        fileReaderAndWriter.add(scaleInfo: "IS THIS NEEDED: POSSIBLY DELETE",
-                                                tonality: musicNotes.tonality!,
+                        fileReaderAndWriter.add(tonality: musicNotes.tonality!,
                                                 tempo: Int(musicNotes.tempo),
                                                 startingOctave: musicNotes.startingOctave,
                                                 numOctave: musicNotes.octaves,
@@ -132,7 +131,9 @@ struct SoundView : View {
                                                 drone: musicNotes.playDrone,
                                                 startingNote: musicNotes.noteName,
                                                 noteDisplay: musicNotes.noteDisplay,
-                                                endlessLoop: musicNotes.endlessLoop)
+                                                endlessLoop: musicNotes.endlessLoop,
+                                                intervalType: musicNotes.intervalType,
+                                                intervalOption: musicNotes.intervalOption)
                     
                     }
                     // Goes to the favourites screen

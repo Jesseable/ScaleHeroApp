@@ -69,10 +69,10 @@ struct TutorialView: View {
             1.  Instrument selection (piano, organ, strings)
             2.  Drone Selection (cello, tuning fork)
             3.  Transposition option for all keys
-            4.  Scale selection (All recognized scales, including Major, Natural minor, Harmonic minor, Melodic minor, Modes, Arpeggios, Pentatonics, Blues, etc.)
+            4.  Scale selection (All recognized scales, including Major, Natural minor, Harmonic minor, Melodic minor, Major and Pentatonic Modes, Arpeggios, Pentatonics, Blues, etc.)
             5.  Adjustment of tempo, time signature, starting note, starting octave, number of octaves, repetition of tonic note, metronome (simple or compound time), number of intro beats
             6.  Selection/addition of drone
-            7.  Displayed Notes can be shown either as sharps or flats
+            7.  Variety of interval Selection possibilities
             8.  Repeating note option to enable real time listen and play of each note
             9.  The 'Endless Loop' button plays the scale on repeat endlessly. As soon as the scale ends it loops directly back into the metronome count in
         

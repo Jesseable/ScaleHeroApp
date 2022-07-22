@@ -23,59 +23,56 @@ struct AboutView: View {
     var body: some View {
         let buttonHeight = universalSize.height/10
 
-        ZStack {
-            Image(backgroundImage).resizable().ignoresSafeArea()
-
-            VStack {
-                
-                ScrollView {
-                    
-                    Button {
-                        self.screenType = .settings
-                    } label: {
-                        MainUIButton(buttonText: "Settings", type: 1, height: buttonHeight)
-                    }
-
-                    Button {
-                        isPresented1 = true
-                    } label: {
-                        MainUIButton(buttonText: "Acknowledgments", type: 1, height: buttonHeight)
-                    }
-                    
-                    Button {
-                        isPresented2 = true
-                    } label: {
-                        MainUIButton(buttonText: "Tutorial", type: 1, height: buttonHeight)
-                    }
-                    
-                    Button {
-                        isPresented3 = true
-                    } label: {
-                        MainUIButton(buttonText: "About", type: 1, height: buttonHeight)
-                    }
-                    
-                    Button {
-                        self.isSharePresented = true
-                    } label: {
-                        MainUIButton(buttonText: "Share App", type: 1, height: buttonHeight)
-                    }
-                    
-                    Button {
-                        writeReview()
-                    } label: {
-                        MainUIButton(buttonText: "Write Review", type: 1, height: buttonHeight)
-                    }
-                }
-                Spacer()
+        VStack {
+            
+            ScrollView {
                 
                 Button {
-                    self.screenType = .noteSelection
+                    self.screenType = .settings
                 } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "Settings", type: 1, height: buttonHeight)
                 }
-            }.padding(.top, 50)
-        }
-        .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
+
+                Button {
+                    isPresented1 = true
+                } label: {
+                    MainUIButton(buttonText: "Acknowledgments", type: 1, height: buttonHeight)
+                }
+                
+                Button {
+                    isPresented2 = true
+                } label: {
+                    MainUIButton(buttonText: "Tutorial", type: 1, height: buttonHeight)
+                }
+                
+                Button {
+                    isPresented3 = true
+                } label: {
+                    MainUIButton(buttonText: "About", type: 1, height: buttonHeight)
+                }
+                
+                Button {
+                    self.isSharePresented = true
+                } label: {
+                    MainUIButton(buttonText: "Share App", type: 1, height: buttonHeight)
+                }
+                
+                Button {
+                    writeReview()
+                } label: {
+                    MainUIButton(buttonText: "Write Review", type: 1, height: buttonHeight)
+                }
+            }
+            Spacer()
+            
+            Button {
+                self.screenType = .noteSelection
+            } label: {
+                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
+            }
+        }.padding(.top, 50)
+            .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
+        //.frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
         .fullScreenCover(isPresented: $isPresented1) {
             AcknowledgementsView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }

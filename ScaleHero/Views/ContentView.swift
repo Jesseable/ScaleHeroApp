@@ -143,38 +143,6 @@ struct AppContentView: View {
             }
         }
     }
-    
-//    private func testDate(curDate: DateTime, scaleAchievements: String) -> String {
-//        // SHOULD ALWAYS RESET TODAY NOW
-//        if curDate.day = 4 {
-//            return
-//        }
-//        let previousDateArr = scaleAchievements.components(separatedBy: ":")
-//        // must be three
-//        if previousDateArr.count != 3 {
-//            print("Error: The scale Achievements page in content view was not 3")
-//        }
-//
-//        let previousday = Int(previousDateArr[0]) ?? 0
-//        // First day is monday [0] // Maybe make it so it can be changed later on
-//        if (previousday == (presentday - 7)) {
-//            scaleAchievementArr[0] = "0"
-//        }
-//
-//        let year1 = previousDateArr.components(separatedBy: "/")[0]
-//        let year2 = curDate.components(separatedBy: "/")[0]
-//        if (year1 != year2) {
-//            return "\(scaleAchievementArr[0]):0:0:\(scaleAchievementArr[3]):\(curDate)"
-//        }
-//
-//        let month1 = previousDateArr.components(separatedBy: "/")[1]
-//        let month2 = curDate.components(separatedBy: "/")[1]
-//        if (month1 != month2) {
-//            return "\(scaleAchievementArr[0]):0:\(scaleAchievementArr[2]):\(scaleAchievementArr[3]):\(curDate)"
-//        }
-//
-//        return "\(scaleAchievementArr[0]):\(scaleAchievementArr[1]):\(scaleAchievementArr[2]):\(scaleAchievementArr[3]):\(curDate)"
-//    }
 }
 
 /**

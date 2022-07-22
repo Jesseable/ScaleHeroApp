@@ -123,7 +123,11 @@ struct SoundOptionsView: View {
             Alert(
                 title: Text("Selecting Interval Option"),
                 message: advice,
-                dismissButton: .default(Text("Got it!"))
+                primaryButton: .default(Text("Okay"), action: {
+                    
+                    self.screenType = .favouritesview
+                }),
+                secondaryButton: .cancel(Text("Cancel"), action: { musicNotes.intervalOption = .none })
             );
         }
     }
@@ -148,7 +152,6 @@ struct SoundOptionsView: View {
                 }
                 .onChange(of: musicNotes.intervalOption) { intOpt in
                     if (musicNotes.octaves != 1 || musicNotes.startingOctave != 2) {
-                        musicNotes.intervalOption = .none
                         presentHint = true
                     }
                     if (intOpt != .none) {

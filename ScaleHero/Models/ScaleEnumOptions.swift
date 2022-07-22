@@ -102,14 +102,14 @@ enum ScaleTonality : Equatable, Codable {
     case blues
 }
 
-enum Interval : Int {
+enum Interval : Int, Codable {
     case none = 0
     case thirds = 3
     case fourths = 4
     case fifths = 5
 }
 
-enum IntervalOption {
+enum IntervalOption : Codable {
     case allUp
     case allDown
     case oneUpOneDown

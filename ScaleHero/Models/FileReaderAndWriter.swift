@@ -46,8 +46,7 @@ class FileReaderAndWriter: ObservableObject {
         }
     }
 
-    func add(scaleInfo: String,
-             tonality: Case,
+    func add(tonality: Case,
              tempo: Int,
              startingOctave: Int,
              numOctave: Int,
@@ -56,10 +55,11 @@ class FileReaderAndWriter: ObservableObject {
              drone: Bool,
              startingNote: String,
              noteDisplay: Int,
-             endlessLoop: Bool) {
+             endlessLoop: Bool,
+             intervalType: IntervalOption,
+             intervalOption: Interval) {
 
         let scale = ScaleCharacteristics(id: UUID(),
-                          scaleInfo: scaleInfo,
                           tonality: tonality,
                           tempo: tempo,
                           startingOctave: startingOctave,
@@ -70,7 +70,9 @@ class FileReaderAndWriter: ObservableObject {
                           scaleDescription: "Octaves: \(numOctave), Drone: \(drone ? "on": "off")",
                           startingNote: startingNote,
                           noteDisplay: noteDisplay,
-                          endlessLoop: endlessLoop)
+                          endlessLoop: endlessLoop,
+                          intervalType: intervalType,
+                          intervalOption: intervalOption)
         scales.insert(scale, at: 0)
         save()
     }

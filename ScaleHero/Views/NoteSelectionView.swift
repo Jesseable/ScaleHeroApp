@@ -15,6 +15,7 @@ struct NoteSelectionView: View {
     @State private var offset: CGFloat = .zero
     var backgroundImage: String
     @State private var presentHint = false
+    private let circleImageScale = 0.6
 
     private let columns = [
         GridItem(.adaptive(minimum: 200))
@@ -140,8 +141,9 @@ struct NoteSelectionView: View {
                         Circle()
                             .fill(colour)
                             .frame(height: buttonSize, alignment: .center)
-                        Image(systemName: "questionmark.circle.fill").foregroundColor(Color.yellow)
-                            .scaleEffect(2)
+                        Image(systemName: "questionmark.circle.fill").resizable().aspectRatio(contentMode: .fill)
+                            .frame(width: buttonSize * circleImageScale, height: buttonSize * circleImageScale, alignment: .center)
+                            .foregroundColor(Color.yellow)
                     }
                     .frame(width: buttonSize, height: buttonSize, alignment: .center)
                 }.frame(width: buttonSize,
@@ -163,8 +165,9 @@ struct NoteSelectionView: View {
                         Circle()
                             .fill(colour)
                             .frame(height: buttonSize, alignment: .center)
-                        Image(systemName: "checkmark.shield.fill").foregroundColor(Color.yellow)
-                            .scaleEffect(2)
+                        Image(systemName: "checkmark.shield.fill").resizable().aspectRatio(contentMode: .fill)
+                            .frame(width: buttonSize * circleImageScale, height: buttonSize * circleImageScale, alignment: .center)
+                            .foregroundColor(Color.yellow)
                     }
                     .frame(width: buttonSize, height: buttonSize, alignment: .center)
                 }.frame(width: buttonSize,
@@ -186,8 +189,9 @@ struct NoteSelectionView: View {
                         Circle()
                             .fill(colour)
                             .frame(height: buttonSize, alignment: .center)
-                        Image(systemName: "star.fill").foregroundColor(Color.yellow)
-                            .scaleEffect(2)
+                        Image(systemName: "star.fill").resizable().aspectRatio(contentMode: .fill)
+                            .frame(width: buttonSize * circleImageScale, height: buttonSize * circleImageScale, alignment: .center)
+                            .foregroundColor(Color.yellow)
                     }
                     .frame(width: buttonSize, height: buttonSize, alignment: .center)
                 }.frame(width: buttonSize,
