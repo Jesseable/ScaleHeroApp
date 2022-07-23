@@ -11,11 +11,10 @@ import SwiftUI
  Observable object class that stays in the environment. Saves and publishes data that will be used in multiple classes
  */
 class MusicNotes: ObservableObject {
-
-    private let musicAlphabet = ["C", "C#", "Db", "D", "D#", "E", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B"]
-    private let instrumentSelection = ["Bassoon in C", "Clarinet in Bb", "Clarinet in Eb", "Euphonium in C", "Horn in F", "Oboe in C", "Recorder in C", "Recorder in F", "Flute in C", "Saxophone in Bb", "Saxophone in Eb", "Strings in C", "Trombone in C", "Trumpet in Bb", "Tuba in F"]
     
-    @Published var noteName = "C"
+    var scaleNotes = [""]
+    var scaleNoteNames = [""]
+    @Published var tonicNote = "C"
     @Published var tempo = 60.0
     @Published var octaves = 1
     
@@ -27,8 +26,6 @@ class MusicNotes: ObservableObject {
     @Published var intervalType = IntervalOption.allUp
     @Published var backDisplay = ScreenType.homepage
     @Published var otherSpecificScaleTypes : OtherScaleTypes?
-    @Published var scaleNotes = [""]
-    @Published var scaleNoteNames = [""]
     @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @Published var backgroundImage : String?
     @Published var playScaleNotes = true
@@ -41,14 +38,6 @@ class MusicNotes: ObservableObject {
     @Published var repeatNotes = false
     @Published var metronomePulse = 1
     @Published var endlessLoop = false
-    
-    func getMusicAlphabet() -> [String] {
-        return musicAlphabet
-    }
-    
-    func getInstrumentSelection() -> [String] {
-        return instrumentSelection
-    }
     
     func getType() -> String {
         switch tonality {

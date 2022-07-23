@@ -321,7 +321,7 @@ struct CircleOfFifthButtons: View {
                         Circle()
                             .frame(width: size, height: size, alignment: .center)
                             .foregroundColor(Color.green)
-                        Text("\(musicNotes.noteName)").font(
+                        Text("\(musicNotes.tonicNote)").font(
                             .system(size: size * 0.65, weight: .semibold, design: .serif))
                             .foregroundColor(.white)
                             .frame(alignment: .center)
@@ -335,7 +335,7 @@ struct CircleOfFifthButtons: View {
     
     @ViewBuilder func NoteSelectionButtons(colour: Color, note: String) -> some View {
         Button {
-            musicNotes.noteName = note
+            musicNotes.tonicNote = note
         } label: {
             ZStack {
                 Circle()

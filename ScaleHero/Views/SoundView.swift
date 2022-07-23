@@ -24,12 +24,11 @@ struct SoundView : View {
     var backgroundImage: String
     
     var body: some View {
-        let title = "\(musicNotes.noteName) \(musicNotes.getTonality(from: musicNotes.tonality))"
+        let title = "\(musicNotes.tonicNote) \(musicNotes.getTonality(from: musicNotes.tonality))"
         let buttonHeight = universalSize.height/19
         let bottumButtonHeight = universalSize.height/10
         let maxFavourites = 7
         var disableOctaveSelection = (musicNotes.octaves < 2) ? false : true
-
 
         VStack {
             
@@ -59,6 +58,13 @@ struct SoundView : View {
                     }.onChange(of: musicNotes.octaves) { octave in
                         if (octave == 1) {
                             disableOctaveSelection = false
+                        } else {
+                            musicNotes.intervalType = .allUp
+                            musicNotes.intervalOption = .none
+                        }
+                        if (octave > 1) {
+                            musicNotes.startingOctave = 1
+                            disableOctaveSelection = true
                         }
                     }
                     
@@ -76,10 +82,10 @@ struct SoundView : View {
                             .formatted()
                             .disabled(disableOctaveSelection)
                         }
-                    }.onChange(of: musicNotes.octaves) { octave in
-                        if (octave > 1) {
-                            musicNotes.startingOctave = 1
-                            disableOctaveSelection = true
+                    }.onChange(of: musicNotes.startingOctave) { strOct in
+                        if (strOct != 2) {
+                            musicNotes.intervalType = .allUp
+                            musicNotes.intervalOption = .none
                         }
                     }
                     
@@ -129,7 +135,7 @@ struct SoundView : View {
                                                 tonicSelection: musicNotes.tonicMode,
                                                 scaleNotes: musicNotes.playScaleNotes,
                                                 drone: musicNotes.playDrone,
-                                                startingNote: musicNotes.noteName,
+                                                startingNote: musicNotes.tonicNote,
                                                 noteDisplay: musicNotes.noteDisplay,
                                                 endlessLoop: musicNotes.endlessLoop,
                                                 intervalType: musicNotes.intervalType,
@@ -150,63 +156,16 @@ struct SoundView : View {
                         playDrone: musicNotes.playDrone,
                         playSounds: playScale,
                         title: title,
-                        currentNote: musicNotes.noteName,
+                        currentNote: musicNotes.tonicNote,
                         repeatingEndlessly: musicNotes.endlessLoop)
         }
     }
     
-    @ViewBuilder func playButton(buttonHeight: CGFloat) -> some View { // MAYBE A DELAY WHILE DOING THIS CODE BEFORE PLAYING THE SCALES
+    @ViewBuilder func playButton(buttonHeight: CGFloat) -> some View {
         Button {
-            let startingNote = musicNotes.noteName
 
-            let writeScale = WriteScales(scaleOptions: scaleOptions)
+            fetchScaleNotesArrayData()
             
-            // MAYBE PUT ALL OF THIS TOGETHER
-            let baseScale = writeScale.returnScaleNotesArray(for: musicNotes.tonality!, startingAt: startingNote)
-            if (baseScale.isEmpty) {
-                print("failed due to not being able to read base scale notes from the json file")
-                fatalError()
-            }
-            var notesArray : [String]
-            switch musicNotes.tonality {
-            case .scale(tonality: let tonality):
-                notesArray = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
-                                                            tonicOption: musicNotes.tonicMode, scaleType: tonality)
-            default:
-                notesArray = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
-                                                                tonicOption: musicNotes.tonicMode)
-            }
-            
-            var transposedNotes = notesArray
-            // add transposition here if needed
-            var itr = 0
-            for scaleNote in transposedNotes {
-                let transposedNoteName = playScale.getTransposedNote(selectedNote: scaleNote)
-                transposedNotes[itr] = transposedNoteName
-                itr += 1
-            }
-            
-            var soundFileNotesArray = writeScale.createScaleInfoArray(scaleArray: transposedNotes, initialOctave: musicNotes.startingOctave)
-            
-            if (musicNotes.intervalOption != .none) {
-                soundFileNotesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption, with: musicNotes.intervalType, for: soundFileNotesArray)
-                notesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption, with: musicNotes.intervalType, for: notesArray, withoutOctave: true)
-            }
-            
-            let scaleSoundFiles = playScale.convertToSoundFile(scaleInfoArray: soundFileNotesArray, tempo: Int(musicNotes.tempo))
-            let delay = CGFloat(60/musicNotes.tempo)
-
-            musicNotes.scaleNotes = scaleSoundFiles
-
-            if (musicNotes.repeatNotes) {
-                musicNotes.scaleNotes = writeScale.repeatAllNotes(in: musicNotes.scaleNotes)
-                musicNotes.scaleNoteNames = writeScale.repeatAllNotes(in: musicNotes.scaleNoteNames)
-            }
-            
-            let metronomeBeats = playScale.addMetronomeCountIn(tempo: Int(musicNotes.tempo), scaleNotesArray: notesArray)
-            notesArray.insert(contentsOf: metronomeBeats, at: 0) // MAGIC NUMBER
-            musicNotes.scaleNoteNames = notesArray
-
             // Could add in quavers?
             switch fileReaderAndWriter.readMetronomePulse().lowercased() {
             case "simple":
@@ -223,8 +182,9 @@ struct SoundView : View {
             if (musicNotes.tempo >= 70 || !musicNotes.metronome) {
                 musicNotes.metronomePulse = 1
             }
+            let delay = CGFloat(60/musicNotes.tempo)
             musicNotes.timer = Timer.publish(every: delay/CGFloat(musicNotes.metronomePulse), on: .main, in: .common).autoconnect()
-        
+
             isPlaying = true
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
@@ -233,5 +193,73 @@ struct SoundView : View {
         } label: {
             MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 3, height: buttonHeight*2)
         }
+    }
+    
+    /*
+     Retrieves the scale note data
+     ----------------
+     @param type:
+     Returns: a string array containing the notes of the scale to be outputted as sound files
+     */
+    private func fetchScaleNotesArrayData() {
+        DispatchQueue.global(qos: .utility).async {
+            var noteNamesArray : [String]
+            var soundFileArray : [String]
+            let start = 0
+            
+            let writeScale = WriteScales(scaleOptions: scaleOptions)
+            let baseScale = writeScale.returnScaleNotesArray(for: musicNotes.tonality!, startingAt: musicNotes.tonicNote)
+            
+            switch musicNotes.tonality {
+            case .scale(tonality: let tonality):
+                noteNamesArray = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
+                                                            tonicOption: musicNotes.tonicMode, scaleType: tonality)
+            default:
+                noteNamesArray = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
+                                                                tonicOption: musicNotes.tonicMode)
+            }
+            // transpose if needed
+            soundFileArray = transposeNotes(for: noteNamesArray)
+            
+            soundFileArray = writeScale.createScaleInfoArray(scaleArray: soundFileArray,
+                                                         initialOctave: musicNotes.startingOctave)
+            
+            if (musicNotes.intervalOption != .none) {
+                soundFileArray = writeScale.convertToIntervals(of: musicNotes.intervalOption,
+                                                           with: musicNotes.intervalType,
+                                                           for: soundFileArray)
+                noteNamesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption,
+                                                           with: musicNotes.intervalType,
+                                                           for: noteNamesArray, withoutOctave: true)
+            }
+            
+            soundFileArray = playScale.convertToSoundFile(scaleInfoArray: soundFileArray, tempo: Int(musicNotes.tempo))
+            
+            if (musicNotes.repeatNotes) {
+                soundFileArray = writeScale.repeatAllNotes(in: soundFileArray)
+                noteNamesArray = writeScale.repeatAllNotes(in: noteNamesArray)
+            }
+            
+            let metronomeBeats = playScale.addMetronomeCountIn(tempo: Int(musicNotes.tempo), scaleNotesArray: noteNamesArray)
+            noteNamesArray.insert(contentsOf: metronomeBeats, at: start)
+            
+            DispatchQueue.main.async {
+                musicNotes.scaleNotes = soundFileArray
+                musicNotes.scaleNoteNames = noteNamesArray
+            }
+        }
+    }
+    
+    
+    private func transposeNotes(for notesArray: [String]) -> [String] {
+        var transposedNotes = notesArray
+        // add transposition here if needed
+        var itr = 0
+        for scaleNote in transposedNotes {
+            let transposedNoteName = playScale.getTransposedNote(selectedNote: scaleNote)
+            transposedNotes[itr] = transposedNoteName
+            itr += 1
+        }
+        return transposedNotes
     }
 }

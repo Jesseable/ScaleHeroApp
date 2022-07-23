@@ -212,11 +212,15 @@ struct PlaySounds {
     
     func getTransposedNote(selectedNote: String) -> String {
         var transpositionNote = fileReaderAndWriter.readTransposition()
+        // Has to be done in case the old string value from previous version is still active
+        transpositionNote = transpositionNote.replacingOccurrences(of: "/", with: "|")
+        let selectedNoteAltered = selectedNote.replacingOccurrences(of: "/", with: "|")
+        
         if (transpositionNote.components(separatedBy: " ").count > 1) {
             transpositionNote = transpositionNote.components(separatedBy: " ")[2]
         }
         transpositionNote = getFullNote(singularNote: transpositionNote)
-        let selectedNoteReadable = getFullNote(singularNote: selectedNote)
+        let selectedNoteReadable = getFullNote(singularNote: selectedNoteAltered)
         switch transpositionNote {
         case "C":
             return findNote(transposedNote: "C", selectedNote: selectedNoteReadable)

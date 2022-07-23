@@ -43,7 +43,7 @@ struct AppContentView: View {
             fileReaderAndWriter.writeScaleInstrument(newInstrument: selectedInstrument)
         }
         
-        //BACKGROUND
+        // BACKGROUND
         if fileReaderAndWriter.checkFilePath(for: .background) {
             selectedBackground = fileReaderAndWriter.readBackgroundImage()
         } else {
@@ -52,7 +52,7 @@ struct AppContentView: View {
         }
         backgroundImage = "Background" + selectedBackground
         
-        //TRANSPOSITION
+        // TRANSPOSITION
         if fileReaderAndWriter.checkFilePath(for: .transposition) {
             transposition = fileReaderAndWriter.readTransposition()
         } else {
@@ -66,7 +66,7 @@ struct AppContentView: View {
             transpositionMode = "Notes"
         }
         
-        //METRONOME
+        // METRONOME
         if fileReaderAndWriter.checkFilePath(for: .metronome) {
             metronomeOffBeatPulse = fileReaderAndWriter.readMetronomePulse()
         } else {

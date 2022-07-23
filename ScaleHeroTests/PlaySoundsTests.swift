@@ -81,17 +81,17 @@ class PlaySoundsTests: XCTestCase {
     func testGetTransposedNote() {
         let noteToTranspose1 = "C";
         let noteToTranspose2 = "G";
-        let noteToTranspose3 = "A#/Bb";
-        let noteToTranspose4 = "D#/Eb";
+        let noteToTranspose3 = "A#|Bb";
+        let noteToTranspose4 = "D#/Eb"; // Tests the old versions method
         let transposedNote1 = playSounds.getTransposedNote(selectedNote: noteToTranspose1)
         let transposedNote2 = playSounds.getTransposedNote(selectedNote: noteToTranspose2)
         let transposedNote3 = playSounds.getTransposedNote(selectedNote: noteToTranspose3)
         let transposedNote4 = playSounds.getTransposedNote(selectedNote: noteToTranspose4)
         
-        let expectedTransposedNote1 = "D#/Eb"
-        let expectedTransposedNote2 = "A#/Bb"
-        let expectedTransposedNote3 = "C#/Db"
-        let expectedTransposedNote4 = "F#/Gb"
+        let expectedTransposedNote1 = "D#|Eb"
+        let expectedTransposedNote2 = "A#|Bb"
+        let expectedTransposedNote3 = "C#|Db"
+        let expectedTransposedNote4 = "F#|Gb"
         
         XCTAssertEqual(transposedNote1, expectedTransposedNote1, "transposition of C failed")
         XCTAssertEqual(transposedNote2, expectedTransposedNote2, "transposition of G failed")

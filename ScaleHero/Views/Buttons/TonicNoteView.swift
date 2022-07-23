@@ -12,6 +12,6 @@ struct TonicNoteDisplay: View {
     let buttonHeight : CGFloat
     
     var body: some View {
-        MainUIButton(buttonText: "Tonic: \(musicNotes.noteName) SystemImage music.note", type: 4, height: buttonHeight * 0.75)
+        MainUIButton(buttonText: "Tonic: \(musicNotes.tonicNote) SystemImage music.note", type: 4, height: buttonHeight * 0.75)
     }
 }

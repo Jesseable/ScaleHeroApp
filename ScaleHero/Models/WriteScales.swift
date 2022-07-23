@@ -68,14 +68,14 @@ struct WriteScales {
                           47: "4:G",
                           48: "4:G#|Ab"]
     
-    /*
-     Just a tester to be deleted
-     */
-    func getJsonScale(stringArr: [String]) {
-        for string in stringArr {
-            print("\(string)")
-        }
-    }
+//    /*
+//     Just a tester to be deleted
+//     */
+//    func getJsonScale(stringArr: [String]) {
+//        for string in stringArr {
+//            print("\(string)")
+//        }
+//    }
     
     /*
      Queries the json file scale-data to get the scale data for the starting note
@@ -179,12 +179,22 @@ struct WriteScales {
      Returns: a string array containing the notes to be outputted (1 octave with no repeating tonics)
      */
     func returnScaleNotesArray(for type: Case, startingAt firstNote: String) -> [String] {
+        
+        var scaleArr : [String]
+        
         switch type {
         case .arpeggio(let tonality):
-            return getArpeggio(startingNote: firstNote, tonality: tonality)
+            scaleArr = getArpeggio(startingNote: firstNote, tonality: tonality)
         case .scale(let tonality):
-            return getScale(startingNote: firstNote, tonality: tonality)
+            scaleArr = getScale(startingNote: firstNote, tonality: tonality)
         }
+        
+        if (scaleArr.isEmpty) {
+            print("failed due to not being able to read base scale notes from the json file")
+            fatalError()
+        }
+        
+        return scaleArr
     }
     
     /*

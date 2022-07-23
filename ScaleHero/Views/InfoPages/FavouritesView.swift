@@ -43,7 +43,7 @@ struct FavouritesView: View {
                             musicNotes.tonicMode = scale.tonicSelection
                             musicNotes.playDrone = scale.drone
                             musicNotes.playScaleNotes = scale.scaleNotes
-                            musicNotes.noteName = scale.startingNote
+                            musicNotes.tonicNote = scale.startingNote
                             musicNotes.noteDisplay = scale.noteDisplay
                             musicNotes.endlessLoop = scale.endlessLoop
 

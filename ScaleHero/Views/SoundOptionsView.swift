@@ -18,12 +18,13 @@ struct SoundOptionsView: View {
     @State var playScale = PlaySounds()
     @EnvironmentObject var musicNotes: MusicNotes
     var fileReaderAndWriter = FileReaderAndWriter()
-    @State private var presentHint = false
+    @State private var presentIntervalHint = false
+    @State private var intervalDisabled = false
     
     var backgroundImage: String
     
     var body: some View {
-        let title = "\(musicNotes.noteName) \(musicNotes.getTonality(from: musicNotes.tonality))"
+        let title = "\(musicNotes.tonicNote) \(musicNotes.getTonality(from: musicNotes.tonality))"
         let buttonHeight = universalSize.height/19
         let bottumButtonHeight = universalSize.height/10
         let advice = Text("The Number of Octaves must be One and the Starting Octave must be Two to perform a scale with intervals")
@@ -119,15 +120,19 @@ struct SoundOptionsView: View {
             }
         }
         .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
-        .alert(isPresented: $presentHint) {
+        .alert(isPresented: $presentIntervalHint) {
             Alert(
                 title: Text("Selecting Interval Option"),
                 message: advice,
-                primaryButton: .default(Text("Okay"), action: {
+                primaryButton: .default(Text("Set"), action: {
                     
-                    self.screenType = .favouritesview
+                    musicNotes.octaves = 1
+                    musicNotes.startingOctave = 2
                 }),
-                secondaryButton: .cancel(Text("Cancel"), action: { musicNotes.intervalOption = .none })
+                secondaryButton: .cancel(Text("Cancel"), action: {
+                    musicNotes.intervalOption = .none
+                    intervalDisabled = true
+                })
             );
         }
     }
@@ -149,10 +154,11 @@ struct SoundOptionsView: View {
                         Text("Fifths").tag(Interval.fifths)
                     }
                     .formatted()
+                    .disabled(intervalDisabled)
                 }
                 .onChange(of: musicNotes.intervalOption) { intOpt in
                     if (musicNotes.octaves != 1 || musicNotes.startingOctave != 2) {
-                        presentHint = true
+                        presentIntervalHint = true
                     }
                     if (intOpt != .none) {
                         intervalsVerify = false
