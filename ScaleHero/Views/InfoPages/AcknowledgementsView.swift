@@ -16,61 +16,57 @@ struct AcknowledgementsView: View {
     
     var body: some View {
 
-        ZStack {
-            Color(fileReaderAndWriter.readBackgroundImage())
-                .ignoresSafeArea()
-
-            VStack {
-                    ScrollView {
-                        Text("Acknowledgements")
-                                    .font(.largeTitle.bold())
-                                    .accessibilityAddTraits(.isHeader)
-                                    .foregroundColor(Color.white)
-                                    .padding()
-                        
-                        Divider().background(Color.white)
-                        
-                        Group {
-                            Text("**Cello Drone Sound Files:**")
-                                .font(.title2)
+        VStack {
+                ScrollView {
+                    Text("Acknowledgements")
+                                .font(.largeTitle.bold())
+                                .accessibilityAddTraits(.isHeader)
                                 .foregroundColor(Color.white)
-                                .padding(5)
-                            
-                            Text(musician47Info())
-                                .font(.title3)
-                                .foregroundColor(Color.white)
-                                .padding(.horizontal)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            Button {
-                                youtubeLink()
-                            } label: {
-                                MainUIButton(buttonText: "Musician 47 Link", type: 9, height: UIScreen.main.bounds.height/20)
-                            }
-                        }
-                        
-                        Divider().background(Color.white)
-                        
-                        Text("**Graphic Designer:**")
+                                .padding()
+                    
+                    Divider().background(Color.white)
+                    
+                    Group {
+                        Text("**Cello Drone Sound Files:**")
                             .font(.title2)
                             .foregroundColor(Color.white)
                             .padding(5)
                         
-                        Text(designerInfoText())
+                        Text(musician47Info())
                             .font(.title3)
                             .foregroundColor(Color.white)
                             .padding(.horizontal)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Button {
+                            youtubeLink()
+                        } label: {
+                            MainUIButton(buttonText: "Musician 47 Link", type: 9, height: UIScreen.main.bounds.height/20)
+                        }
                     }
-                Spacer()
-                
-                Button {
-                    presentationMode.wrappedValue.dismiss()
-                } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: UIScreen.main.bounds.height/10)
+                    
+                    Divider().background(Color.white)
+                    
+                    Text("**Graphic Designer:**")
+                        .font(.title2)
+                        .foregroundColor(Color.white)
+                        .padding(5)
+                    
+                    Text(designerInfoText())
+                        .font(.title3)
+                        .foregroundColor(Color.white)
+                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
+            Spacer()
+            
+            Button {
+                presentationMode.wrappedValue.dismiss()
+            } label: {
+                MainUIButton(buttonText: "Back", type: 3, height: UIScreen.main.bounds.height/10)
             }
         }
+        .background(alignment: .center) { Color(fileReaderAndWriter.readBackgroundImage()).ignoresSafeArea() }
     }
     
     func musician47Info() -> String {

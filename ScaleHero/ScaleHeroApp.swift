@@ -10,11 +10,13 @@ import SwiftUI
 @main
 struct ScaleHeroApp: App {
     @StateObject var musicNotes = MusicNotes()
+    @StateObject var scaleOptions = ScaleOptions()
     
     var body: some Scene {
         WindowGroup {
             AppContentView()
                 .environmentObject(musicNotes)
+                .environmentObject(scaleOptions)
         }
     }
 }

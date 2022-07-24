@@ -12,8 +12,8 @@ import SwiftUI
  */
 struct OtherScalesView: View {
     
-    @Binding var screenType: String
-    @State var specialTitle: String
+    @Binding var screenType: ScreenType
+    @State var displayType: OtherScaleTypes
     @EnvironmentObject var musicNotes: MusicNotes
     
     private let universalSize = UIScreen.main.bounds
@@ -27,63 +27,84 @@ struct OtherScalesView: View {
     
     var body: some View {
         let buttonHeight = universalSize.height/10
-        
-        ZStack {
-            Image(backgroundImage).resizable().ignoresSafeArea()
-        
-            VStack {
-                Text(specialTitle).asTitle()
-                
-                ScrollView {
-                    
-                    NoteSelectionButton(buttonHeight: buttonHeight)
-                
-                    switch specialTitle.lowercased() {
-                    case "major scale modes":
-                        ForEach(modes, id: \.self) { mode in
-                            Button {
-                                musicNotes.tonality = mode
-                                musicNotes.type = "mode"
-                                screenType = "soundview"
-                            } label: {
-                                MainUIButton(buttonText: mode, type: 1, height: buttonHeight)
-                            }
-                        }
-                    case "special":
-                        ForEach(specialTypes, id: \.self) { type in
-                            Button {
-                                musicNotes.tonality = "others"
-                                musicNotes.type = type + "-Scale"
-                                screenType = "soundview"
-                            } label: {
-                                MainUIButton(buttonText: type.replacingOccurrences(of: "-", with: " "), type: 1, height: buttonHeight)
-                            }
-                        }
-                    case "tetrads":
-                        ForEach(tetrads, id: \.self) { type in
-                            Button {
-                                musicNotes.tonality = "tetrad"
-                                musicNotes.type = type
-                                screenType = "soundview"
-                            } label: {
-                                MainUIButton(buttonText: type.components(separatedBy: "-")[0] + " 7th", type: 1, height: buttonHeight)
-                            }
-                        }
-                    default:
-                        // make a clearer error message in the form of an UI button
-                        MainUIButton(buttonText: "FAID TO LOAD", type: 1, height: buttonHeight)
-                    }
+    
+        VStack {
+            Text(displayType.rawValue.uppercased()).asTitle()
+            
+            TonicNoteDisplay(buttonHeight: buttonHeight)
+            
+            ScrollView {
+                getView(view: displayType, buttonHeight: buttonHeight)
+            }
+            Spacer()
+            
+            Button {
+                if (displayType == .tetrads) {
+                    self.screenType = .arpeggio
+                } else {
+                    self.screenType = .scale
                 }
-                Spacer()
-                
+            } label: {
+                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
+            }
+        }
+        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
+    }
+    
+    @ViewBuilder func getView(view: OtherScaleTypes, buttonHeight: CGFloat) -> some View {
+        switch view {
+        case .majorModes: // All Major Modes
+            ForEach (MajorScaleMode.allCases, id: \.self) { mode in
                 Button {
-                    if (musicNotes.type == "Tetrads") {
-                        self.screenType = "arpeggio"
-                    } else {
-                        self.screenType = "scale"
-                    }
+                    musicNotes.tonality = .scale(tonality: .major(mode: mode))
+                    musicNotes.backDisplay = .otherview
+                    self.screenType = .soundview
                 } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
+                    let name = musicNotes.getMajorModeName(mode: mode)
+                    MainUIButton(buttonText: name, type: 1, height: buttonHeight)
+                }
+            }
+        case .pentatonicModes: // All pentatonic modes
+            ForEach (PentatonicScaleMode.allCases, id: \.self) { mode in
+                Button {
+                    musicNotes.tonality = .scale(tonality: .pentatonic(mode: mode))
+                    musicNotes.backDisplay = .otherview
+                    self.screenType = .soundview
+                } label: {
+                    let name = musicNotes.getPentatonicModeName(mode: mode)
+                    MainUIButton(buttonText: name, type: 1, height: buttonHeight)
+                }
+            }
+        case .special: // Can go to pentatonic modes screen and contains all chromatic scale alterations and blues scale
+            ForEach (ChromaticAlteration.allCases, id: \.self) { mode in
+                Button {
+                    musicNotes.tonality = .scale(tonality: .chromatic(alteration: mode))
+                    musicNotes.backDisplay = .otherview
+                    self.screenType = .soundview
+                } label: {
+                    let name = musicNotes.getChromaticAlteration(for: mode)
+                    MainUIButton(buttonText: name, type: 1, height: buttonHeight)
+                }
+            }
+            Button {
+                musicNotes.tonality = .scale(tonality: .blues)
+                musicNotes.backDisplay = .otherview
+                self.screenType = .soundview
+            } label: {
+                let name = "blues"
+                MainUIButton(buttonText: name, type: 1, height: buttonHeight)
+            }
+        case .tetrads: // Lists all of the 7th scales
+            ForEach (ArpeggioTonality.allCases, id: \.self) { mode in
+                if (mode != .major || mode != .minor) {
+                    Button {
+                        musicNotes.tonality = .arpeggio(tonality: mode)
+                        musicNotes.backDisplay = .otherview
+                        self.screenType = .soundview
+                    } label: {
+                        let name = mode.rawValue
+                        MainUIButton(buttonText: name, type: 1, height: buttonHeight)
+                    }
                 }
             }
         }

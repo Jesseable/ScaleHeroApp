@@ -15,7 +15,7 @@ import SwiftUI
 struct AppContentView: View {
     
     @EnvironmentObject var musicNotes: MusicNotes
-    @State private var screenType = "HomePage"
+    @State private var screenType : ScreenType
     @State private var backgroundImage : String
     private var fileReaderAndWriter = FileReaderAndWriter()
     
@@ -27,21 +27,25 @@ struct AppContentView: View {
     private var selectedDrone : String
     private var introBeats : String
     private var introBeatsArr : [String]
+    private var scaleAchievements : String
+    private var initialHint : String
 
     /**
     Initialises the  components of the app.
      */
     init() {
+        screenType = .noteSelection /// DO ALL OF THIS IN ONE TEXT FILE AND THEN HAVE ALL VALUES SAVED STRAIGHT INTO THE MUSICNOTES CLASS
+        
         //SCALE INSTRUMENT
-        if fileReaderAndWriter.checkFilePath(for: "scaleinstrument") {
+        if fileReaderAndWriter.checkFilePath(for: .scaleInst) {
             selectedInstrument = fileReaderAndWriter.readScaleInstrument()
         } else {
             selectedInstrument = "Piano"
             fileReaderAndWriter.writeScaleInstrument(newInstrument: selectedInstrument)
         }
         
-        //BACKGROUND
-        if fileReaderAndWriter.checkFilePath(for: "background") {
+        // BACKGROUND
+        if fileReaderAndWriter.checkFilePath(for: .background) {
             selectedBackground = fileReaderAndWriter.readBackgroundImage()
         } else {
             selectedBackground = "Purple"
@@ -49,8 +53,8 @@ struct AppContentView: View {
         }
         backgroundImage = "Background" + selectedBackground
         
-        //TRANSPOSITION
-        if fileReaderAndWriter.checkFilePath(for: "transposition") {
+        // TRANSPOSITION
+        if fileReaderAndWriter.checkFilePath(for: .transposition) {
             transposition = fileReaderAndWriter.readTransposition()
         } else {
             transposition = "C"
@@ -63,8 +67,8 @@ struct AppContentView: View {
             transpositionMode = "Notes"
         }
         
-        //METRONOME
-        if fileReaderAndWriter.checkFilePath(for: "metronome") {
+        // METRONOME
+        if fileReaderAndWriter.checkFilePath(for: .metronome) {
             metronomeOffBeatPulse = fileReaderAndWriter.readMetronomePulse()
         } else {
             metronomeOffBeatPulse = "Off"
@@ -72,49 +76,79 @@ struct AppContentView: View {
         }
         
         //DRONE
-        if fileReaderAndWriter.checkFilePath(for: "droneinstrument") {
+        if fileReaderAndWriter.checkFilePath(for: .droneInst) {
             selectedDrone = fileReaderAndWriter.readDroneInstrument()
         } else {
             selectedDrone = "Cello"
             fileReaderAndWriter.writeDroneInstrument(newDrone: selectedDrone)
         }
         
-        //INTRO BEATS
-        if fileReaderAndWriter.checkFilePath(for: "intropulse") {
+        // INTRO BEATS
+        if fileReaderAndWriter.checkFilePath(for: .countInBeats) {
             introBeats = fileReaderAndWriter.readIntroBeats()
         } else {
             introBeats = "2-4"
             fileReaderAndWriter.writeIntroBeats(beats: introBeats)
         }
         introBeatsArr = introBeats.components(separatedBy: "-")
+        
+        // ACHIEVEMENTS
+        if fileReaderAndWriter.checkFilePath(for: .achievements) {
+            scaleAchievements = fileReaderAndWriter.readScaleAchievements()
+        } else {
+            // The number of scales played is set to 0 here initially
+            // weekCount : MonthCount : YearCount : AlltimeCount : prev Week : prev Month : prev year
+            scaleAchievements = "0:0:0:0:0:0:0" /// THINK ABOUT DOING THIS BETTER HERE
+        }
+        var dateTime = DateTime(scaleAchievements: scaleAchievements)
+        dateTime.alterCount()
+        scaleAchievements = "\(dateTime.weekCount):\(dateTime.monthCount):\(dateTime.yearCount):\(dateTime.allTimeCount)"
+                          + ":\(dateTime.week):\(dateTime.month):\(dateTime.year)"
+        fileReaderAndWriter.writeScaleAchievements(newData: scaleAchievements)
+        
+        // INITIAL HINT
+        if fileReaderAndWriter.checkFilePath(for: .initialHint) {
+            initialHint = fileReaderAndWriter.readInitialHint()
+        } else {
+            initialHint = "1"
+            fileReaderAndWriter.writeInitialHint(value: initialHint)
+        }
     }
     
     /**
-     Toggles between views, transfering the needed parameters.
+     The main switch statement to toggle between views, transfering the  parameters as required.
      */
     var body: some View {
+        let selectedBackgroundImage = musicNotes.backgroundImage ?? self.backgroundImage
         
         return Group {
+            
             switch screenType {
-            case "scale":
-                ScalesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "arpeggio":
-                ArpeggioView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "otherview":
-                OtherScalesView(screenType: self.$screenType, specialTitle: musicNotes.type, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "settings":
-                SettingsView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
-            case "soundview":
-                let scaleType = musicNotes.noteName + " " + musicNotes.tonality + " " + musicNotes.type
-                SoundView(screenType: self.$screenType, scaleType: scaleType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "droneview":
-                DroneView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "favouritesview":
-                FavouritesView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
-            case "aboutview":
-                AboutView(screenType: self.$screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+            case .scale:
+                ScalesView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+            case .arpeggio:
+                ArpeggioView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+            case .otherview:
+                // Upon failing goes to special screen
+                OtherScalesView(screenType: self.$screenType, displayType: musicNotes.otherSpecificScaleTypes ?? OtherScaleTypes.special, backgroundImage: selectedBackgroundImage)
+            case .settings:
+                SettingsView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
+            case .soundview:
+                SoundView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+            case .droneview:
+                DroneView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+            case .favouritesview:
+                FavouritesView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+            case .aboutview:
+                AboutView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+            case .homepage:
+                HomePage(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+            case .achievements:
+                AchievementsView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+            case .soundOptionsView:
+                SoundOptionsView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
             default:
-                HomePage(screenType: $screenType, backgroundImage: musicNotes.backgroundImage ?? self.backgroundImage)
+                NoteSelectionView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
             }
         }
     }
@@ -129,7 +163,7 @@ struct HomePage : View {
     
     private let universalSize = UIScreen.main.bounds
     var fileReaderAndWriter = FileReaderAndWriter()
-    @Binding var screenType: String
+    @Binding var screenType: ScreenType
     @State private var offset: CGFloat = .zero
     var backgroundImage: String
 
@@ -139,11 +173,12 @@ struct HomePage : View {
     
     var body: some View {
         
-        let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
         let buttonHeight = universalSize.height/10
+        let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
+        let portrate = universalSize.height > universalSize.width
         
         ZStack {
-            Image(backgroundImage).resizable().ignoresSafeArea()
+            //Image(backgroundImage).resizable().ignoresSafeArea()
             
             // Create all music note animations
             ImageAnimation(imageName: "Treble-Cleff" + fileReaderAndWriter.readBackgroundImage(),
@@ -171,50 +206,53 @@ struct HomePage : View {
                            xPos: universalSize.width * 0.48, duration: 8.00, offset: self.$offset)
             
             VStack {
-
-                titleImage.resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: UIScreen.main.bounds.height/6)
-                    .padding()
+                
+                if (portrate) {
+                    titleImage.resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: universalSize.width * 0.9, maxHeight: universalSize.height / 6)
+                        .clipped()
+                } else {
+                    titleImage.resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: universalSize.width * 0.9, maxHeight: universalSize.height / 6)
+                }
+                
+                TonicNoteDisplay(buttonHeight: buttonHeight)
                 
                 ScrollView {
                     
                     Button {
-                        self.screenType = "scale"
+                        self.screenType = .scale
                     } label: {
                         MainUIButton(buttonText: "Scales", type: 1, height: buttonHeight)
                     }
 
                     Button {
-                        self.screenType = "arpeggio"
+                        self.screenType = .arpeggio
                     } label: {
                         MainUIButton(buttonText: "Arpeggio", type: 1, height: buttonHeight)
                     }
                     
                     Button {
-                        self.screenType = "droneview"
+                        self.screenType = .droneview
                     } label: {
-                        MainUIButton(buttonText: "Drone", type: 1, height: buttonHeight)
-                    }
-                    
-                    Button {
-                        self.screenType = "favouritesview"
-                    } label: {
-                        MainUIButton(buttonText: "Favourites", type: 2, height: buttonHeight)
+                        MainUIButton(buttonText: "Drone", type: 2, height: buttonHeight)
                     }
                     
                     Spacer()
                 }
                     
                 Button {
-                    self.screenType = "aboutview"
+                    self.screenType = .noteSelection
                 } label: {
-                    MainUIButton(buttonText: "About / Settings", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
                 }
             }
         }.onAppear() {
             offset += universalSize.height * 1.2
         }
+        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
     }
 }
 
@@ -240,8 +278,9 @@ struct ImageAnimation: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        AppContentView()
-    }
-}
+//
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AppContentView()
+//    }
+//}

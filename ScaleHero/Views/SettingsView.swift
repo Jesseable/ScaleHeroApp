@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     
     @EnvironmentObject var musicNotes: MusicNotes
-    @Binding var screenType: String
+    @Binding var screenType: ScreenType
     
     private let universalSize = UIScreen.main.bounds
     var backgroundImage: String
@@ -23,6 +23,8 @@ struct SettingsView: View {
     // These are also on contentView
     private let backgrounds = ["Blue", "Green", "Purple", "Red", "Yellow"]
     private let introPulseOptions = ["1", "2", "3", "4", "5", "6", "7", "8"]
+    private let musicNotesAlphabet = ["C", "G", "D", "A", "E", "B", "F#|Gb", "C#|Db", "G#|Ab", "D#|Eb", "A#|Bb", "F"]
+    private let instrumentSelection = ["Bassoon in C", "Clarinet in Bb", "Clarinet in Eb", "Euphonium in C", "Horn in F", "Oboe in C", "Recorder in C", "Recorder in F", "Flute in C", "Saxophone in Bb", "Saxophone in Eb", "Strings in C", "Trombone in C", "Trumpet in Bb", "Tuba in F"]
     @State private var presentAlert = false
     @State var instrumentSelected : String
     @State var backgroundColour : String
@@ -85,7 +87,7 @@ struct SettingsView: View {
                         }
                         
                         Menu {
-                            ForEach((transpositionMode == "Notes") ? musicNotes.getMusicAlphabet() :musicNotes.getInstrumentSelection() , id: \.self) { note in
+                            ForEach((transpositionMode == "Notes") ? musicNotesAlphabet : instrumentSelection, id: \.self) { note in
                                 Button("Note: \(note)", action: {transposition = note})
                             }
                         } label: {
@@ -212,7 +214,7 @@ struct SettingsView: View {
                              fastBeats: fastIntroBeatsSelected,
                              slowBeats: slowIntroBeatsSelected)
                     
-                    self.screenType = "aboutview"
+                    self.screenType = .aboutview
                 } label: {
                     MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight)
                 }

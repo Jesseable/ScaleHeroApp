@@ -20,7 +20,7 @@ struct MainUIButton: View {
         
         ZStack {
             let buttonColor = fileReaderAndWriter.readBackgroundImage()
-            switch type {
+            switch type { /// CHNAGE TO AN ENUM
             case 2:
                 CroppedBelowButton()
                     .fill(style: FillStyle(eoFill: true))
@@ -59,6 +59,16 @@ struct MainUIButton: View {
                 RectangularButton()
                     .fill(Color(buttonColor + "Dark"))
                     .formatted(height: height, width: buttonWidth)
+            case 10:
+                RectangularButton()
+                    .fill(Color(buttonColor + "Dark"))
+                    .padding(.horizontal, 10)
+                    .frame(width: buttonWidth, height: height)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.black, lineWidth: 2)
+                            .padding(.horizontal, 10)
+                    )
             default:
                 RectangularButton()
                     .fill(Color(buttonColor))

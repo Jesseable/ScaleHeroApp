@@ -6,61 +6,73 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct AboutView: View {
     private let universalSize = UIScreen.main.bounds
     
-    @Binding var screenType: String
+    @Binding var screenType: ScreenType
     var backgroundImage: String
     @State private var isPresented1 = false
     @State private var isPresented2 = false
     @State private var isPresented3 = false
+    @State private var isSharePresented = false
     var fileReaderAndWriter = FileReaderAndWriter()
+    private let productURL = URL(string: "https://apps.apple.com/app/id1608260694")!
     
     var body: some View {
         let buttonHeight = universalSize.height/10
 
-        ZStack {
-            Image(backgroundImage).resizable().ignoresSafeArea()
-
-            VStack {
-                
-                ScrollView {
-                    
-                    Button {
-                        self.screenType = "settings"
-                    } label: {
-                        MainUIButton(buttonText: "Settings", type: 1, height: buttonHeight)
-                    }
-
-                    Button {
-                        isPresented1 = true
-                    } label: {
-                        MainUIButton(buttonText: "Acknowledgments", type: 1, height: buttonHeight)
-                    }
-                    
-                    Button {
-                        isPresented2 = true
-                    } label: {
-                        MainUIButton(buttonText: "Tutorial", type: 1, height: buttonHeight)
-                    }
-                    
-                    Button {
-                        isPresented3 = true
-                    } label: {
-                        MainUIButton(buttonText: "About", type: 1, height: buttonHeight)
-                    }
-                }
-                Spacer()
+        VStack {
+            
+            ScrollView {
                 
                 Button {
-                    self.screenType = "homepage"
+                    self.screenType = .settings
                 } label: {
-                    MainUIButton(buttonText: "Home Page", type: 3, height: buttonHeight)
+                    MainUIButton(buttonText: "Settings", type: 1, height: buttonHeight)
                 }
-            }.padding(.top, 50)
-        }
-        .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
+
+                Button {
+                    isPresented1 = true
+                } label: {
+                    MainUIButton(buttonText: "Acknowledgments", type: 1, height: buttonHeight)
+                }
+                
+                Button {
+                    isPresented2 = true
+                } label: {
+                    MainUIButton(buttonText: "Tutorial", type: 1, height: buttonHeight)
+                }
+                
+                Button {
+                    isPresented3 = true
+                } label: {
+                    MainUIButton(buttonText: "About", type: 1, height: buttonHeight)
+                }
+                
+                Button {
+                    self.isSharePresented = true
+                } label: {
+                    MainUIButton(buttonText: "Share App", type: 1, height: buttonHeight)
+                }
+                
+                Button {
+                    writeReview()
+                } label: {
+                    MainUIButton(buttonText: "Write Review", type: 1, height: buttonHeight)
+                }
+            }
+            Spacer()
+            
+            Button {
+                self.screenType = .noteSelection
+            } label: {
+                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
+            }
+        }.padding(.top, 50)
+            .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
+        //.frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
         .fullScreenCover(isPresented: $isPresented1) {
             AcknowledgementsView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }
@@ -70,5 +82,38 @@ struct AboutView: View {
         .fullScreenCover(isPresented: $isPresented3) {
             AboutDeveloperView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }
+        .sheet(isPresented: $isSharePresented) {
+            ActivityViewController(activityItems: [productURL])
+        }
     }
+    
+    // MARK: - Actions
+
+    // DOES THIS WORK??????????????????????????????
+    private func writeReview() {
+        var components = URLComponents(url: productURL, resolvingAgainstBaseURL: false)
+        components?.queryItems = [
+        URLQueryItem(name: "action", value: "write-review")
+        ]
+
+        guard let writeReviewURL = components?.url else {
+        return
+        }
+
+        UIApplication.shared.open(writeReviewURL)
+    }
+}
+
+struct ActivityViewController: UIViewControllerRepresentable {
+
+    var activityItems: [Any]
+    var applicationActivities: [UIActivity]? = nil
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
+        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
+        return controller
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityViewController>) {}
+
 }

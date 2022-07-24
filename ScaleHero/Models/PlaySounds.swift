@@ -137,6 +137,33 @@ struct PlaySounds {
     }
     
     /**
+     Creates an array of the metronome sound files to be added to the sound files array
+     */
+    func addMetronomeCountIn(tempo: Int, scaleNotesArray: [String]) -> [String] {
+        let countingArr = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"]
+        var metronomeFileArr: [String] = []
+        let introBeatsArr = fileReaderAndWriter.readIntroBeats().components(separatedBy: "-")
+        let slowTempoIntro = Int(introBeatsArr[0])
+        let fastTempoIntro = Int(introBeatsArr[1])
+        var i : Int
+        if (tempo < 70) {
+            i = slowTempoIntro ?? 0
+            slowTempoIntro?.times { // USE A FILEREADER TO CHANGE THESE OPTIONS IN SETTINGS Possibly also the 70bpm
+                metronomeFileArr.append(countingArr[i-1])
+                i -= 1
+            }
+        } else {
+            i = fastTempoIntro ?? 0
+            fastTempoIntro?.times {
+                metronomeFileArr.append(countingArr[i-1])
+                i -= 1
+            }
+        }
+        
+        return metronomeFileArr
+    }
+    
+    /**
      Plays the off beat metronome sound
      */
     mutating func playOffbeatMetronome() throws {
@@ -185,42 +212,48 @@ struct PlaySounds {
     
     func getTransposedNote(selectedNote: String) -> String {
         var transpositionNote = fileReaderAndWriter.readTransposition()
+        // Has to be done in case the old string value from previous version is still active
+        transpositionNote = transpositionNote.replacingOccurrences(of: "/", with: "|")
+        let selectedNoteAltered = selectedNote.replacingOccurrences(of: "/", with: "|")
+        
         if (transpositionNote.components(separatedBy: " ").count > 1) {
             transpositionNote = transpositionNote.components(separatedBy: " ")[2]
-            transpositionNote = getFullNote(singularNote: transpositionNote)
         }
+        transpositionNote = getFullNote(singularNote: transpositionNote)
+        let selectedNoteReadable = getFullNote(singularNote: selectedNoteAltered)
         switch transpositionNote {
         case "C":
-            return findNote(transposedNote: "C", selectedNote: selectedNote)
+            return findNote(transposedNote: "C", selectedNote: selectedNoteReadable)
         case "G":
-            return findNote(transposedNote: "G", selectedNote: selectedNote)
+            return findNote(transposedNote: "G", selectedNote: selectedNoteReadable)
         case "D":
-            return findNote(transposedNote: "D", selectedNote: selectedNote)
+            return findNote(transposedNote: "D", selectedNote: selectedNoteReadable)
         case "A":
-            return findNote(transposedNote: "A", selectedNote: selectedNote)
+            return findNote(transposedNote: "A", selectedNote: selectedNoteReadable)
         case "E":
-            return findNote(transposedNote: "E", selectedNote: selectedNote)
+            return findNote(transposedNote: "E", selectedNote: selectedNoteReadable)
         case "B":
-            return findNote(transposedNote: "B", selectedNote: selectedNote)
-        case "F#/Gb":
-            return findNote(transposedNote: "F#/Gb", selectedNote: selectedNote)
-        case "C#/Db":
-            return findNote(transposedNote: "C#/Db", selectedNote: selectedNote)
-        case "G#/Ab":
-            return findNote(transposedNote: "G#/Ab", selectedNote: selectedNote)
-        case "D#/Eb":
-            return findNote(transposedNote: "D#/Eb", selectedNote: selectedNote)
-        case "A#/Bb":
-            return findNote(transposedNote: "A#/Bb", selectedNote: selectedNote)
+            return findNote(transposedNote: "B", selectedNote: selectedNoteReadable)
+        case "F#|Gb":
+            return findNote(transposedNote: "F#|Gb", selectedNote: selectedNoteReadable)
+        case "C#|Db":
+            return findNote(transposedNote: "C#|Db", selectedNote: selectedNoteReadable)
+        case "G#|Ab":
+            return findNote(transposedNote: "G#|Ab", selectedNote: selectedNoteReadable)
+        case "D#|Eb":
+            return findNote(transposedNote: "D#|Eb", selectedNote: selectedNoteReadable)
+        case "A#|Bb":
+            return findNote(transposedNote: "A#|Bb", selectedNote: selectedNoteReadable)
         case "F":
-            return findNote(transposedNote: "F", selectedNote: selectedNote)
+            return findNote(transposedNote: "F", selectedNote: selectedNoteReadable)
         default:
+            print("Error: Transition note was not found")
             return "not Found"
         }
     }
     
     private func findNote(transposedNote: String, selectedNote: String) -> String {
-        let orderedAlphabet = ["A","A#/Bb","B","C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab","A","A#/Bb","B","C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab"]
+        let orderedAlphabet = ["A","A#|Bb","B","C","C#|Db","D","D#|Eb","E","F","F#|Gb","G","G#|Ab","A","A#|Bb","B","C","C#|Db","D","D#|Eb","E","F","F#|Gb","G","G#|Ab"]
         // Twice as long too allow only going forwards
         let transposedIndex = orderedAlphabet.firstIndex(of: transposedNote) ?? 0
         let indexOfNoteC = orderedAlphabet.firstIndex(of: "C") ?? 0
@@ -233,16 +266,32 @@ struct PlaySounds {
     /// ALSO IN WRITE SCALES
     private func getFullNote(singularNote: String) -> String{
         switch singularNote {
-        case "F#", "Gb":
-            return "F#/Gb"
-        case "C#", "Db":
-            return "C#/Db"
+            // Equivalent note name cases
+        case "A##", "Cb":
+            return "B"
+        case "B#", "Dbb":
+            return "C"
+        case "C##", "Ebb":
+            return "D"
+        case "D##", "Fb":
+            return "E"
+        case "E#", "Gbb":
+            return "F"
+        case "F##", "Abb":
+            return "G"
+        case "G##", "Bbb":
+            return "A"
+            // Sharp/flat cases
+        case "F#", "Gb", "E##":
+            return "F#|Gb"
+        case "C#", "Db", "B##":
+            return "C#|Db"
         case "G#", "Ab":
-            return "G#/Ab"
-        case "D#", "Eb":
-            return "D#/Eb"
-        case "A#", "Bb":
-            return "A#/Bb"
+            return "G#|Ab"
+        case "D#", "Eb", "Fbb":
+            return "D#|Eb"
+        case "A#", "Bb", "Cbb":
+            return "A#|Bb"
         default:
             return singularNote
         }

@@ -10,9 +10,9 @@ import Foundation
 /**
  Handles any reading and writing of files for the app
  */
-class FileReaderAndWriter: ObservableObject {
+class FileReaderAndWriter: ObservableObject { /// MOVE ALL OF THIS INTO ONE BIG TEXT FILE TO SAVE MEMORY
     
-    @Published var scales: [Scale]
+    @Published var scales: [ScaleCharacteristics]
     
     let filePath = FileManager.documentsDirectory.appendingPathComponent("FavouriteScales")
     let scaleInstrumentPath = FileManager.documentsDirectory.appendingPathComponent("ScaleInstrument")
@@ -21,11 +21,14 @@ class FileReaderAndWriter: ObservableObject {
     let metronomePulsePath = FileManager.documentsDirectory.appendingPathComponent("metronomePulse")
     let droneInstrumentPath = FileManager.documentsDirectory.appendingPathComponent("DroneInstrument")
     let countInBeatsPath = FileManager.documentsDirectory.appendingPathComponent("CountInBeats")
+    let scaleAchievementsPath = FileManager.documentsDirectory.appendingPathComponent("ScaleAchievementsData")
+    let initialHintPath = FileManager.documentsDirectory.appendingPathComponent("InitialHintData")
     
     init() {
+        
         do {
             let data = try Data(contentsOf: filePath)
-            scales = try JSONDecoder().decode([Scale].self, from: data)
+            scales = try JSONDecoder().decode([ScaleCharacteristics].self, from: data)
         } catch {
             scales = []
         }
@@ -44,23 +47,21 @@ class FileReaderAndWriter: ObservableObject {
         }
     }
 
-    func add(scaleInfo: String,
-             tonality: String,
-             type: String,
+    func add(tonality: Case,
              tempo: Int,
              startingOctave: Int,
              numOctave: Int,
-             tonicSelection: Int,
+             tonicSelection: TonicOption,
              scaleNotes: Bool,
              drone: Bool,
              startingNote: String,
              noteDisplay: Int,
-             endlessLoop: Bool) {
+             endlessLoop: Bool,
+             intervalType: IntervalOption,
+             intervalOption: Interval) {
 
-        let scale = Scale(id: UUID(),
-                          scaleInfo: scaleInfo,
+        let scale = ScaleCharacteristics(id: UUID(),
                           tonality: tonality,
-                          type: type,
                           tempo: tempo,
                           startingOctave: startingOctave,
                           numOctave: numOctave,
@@ -70,12 +71,14 @@ class FileReaderAndWriter: ObservableObject {
                           scaleDescription: "Octaves: \(numOctave), Drone: \(drone ? "on": "off")",
                           startingNote: startingNote,
                           noteDisplay: noteDisplay,
-                          endlessLoop: endlessLoop)
+                          endlessLoop: endlessLoop,
+                          intervalType: intervalType,
+                          intervalOption: intervalOption)
         scales.insert(scale, at: 0)
         save()
     }
     
-    func delete(_ scale: Scale) {
+    func delete(_ scale: ScaleCharacteristics) {
         if let index = scales.firstIndex(of: scale) {
             scales.remove(at: index)
             save()
@@ -191,6 +194,30 @@ class FileReaderAndWriter: ObservableObject {
         }
     }
     
+    func writeScaleAchievements(newData: String) {
+        //writing
+        do {
+//            print(scaleAchievementsPath)
+//            print(newData)
+            try newData.write(to: scaleAchievementsPath, atomically: true, encoding: String.Encoding.utf8)
+        }
+        catch {
+            Swift.print(error)
+            print("Error has occured when writing to the Achievements file")
+        }
+    }
+    
+    func readScaleAchievements() -> String {
+        //reading
+        do {
+            return try String(contentsOf: scaleAchievementsPath, encoding: .utf8)
+        }
+        catch {
+            Swift.print(error)
+            return "Error caught when reading the Scale Achievements Data"
+        }
+    }
+    
     func writeIntroBeats(beats: String) {
         //writing
         do {
@@ -213,29 +240,52 @@ class FileReaderAndWriter: ObservableObject {
         }
     }
     
+    func writeInitialHint(value: String) {
+        //writing
+        do {
+            try value.write(to: initialHintPath, atomically: true, encoding: String.Encoding.utf8)
+        }
+        catch {
+            Swift.print(error)
+            print("error has occured when writing to the initialHint file")
+        }
+    }
+    
+    func readInitialHint() -> String {
+        //reading
+        do {
+            return try String(contentsOf: initialHintPath, encoding: .utf8)
+        }
+        catch {
+            Swift.print(error)
+            return "Error caught when reading the initialHint file"
+        }
+    }
+    
     /**
      Checks if the file exists
      */
-    func checkFilePath(for fileDescription: String) -> Bool {
+    func checkFilePath(for filePath: FilePath) -> Bool {
         var path : String
-        switch fileDescription.lowercased() {
-        case "intropulse":
+        switch filePath {
+        case .countInBeats:
             path = countInBeatsPath.path
-        case "droneinstrument":
+        case .droneInst:
             path = droneInstrumentPath.path
-        case "scaleinstrument":
+        case .scaleInst:
             path = scaleInstrumentPath.path
-        case "background":
+        case .background:
             path = backgroundColourPath.path
-        case "transposition":
+        case .transposition:
             path = transpositionPath.path
-        case "metronome":
+        case .metronome:
             path = metronomePulsePath.path
-        default:
-            // Error message displayed
-            print("Not a valid file descirption when searching for the file")
-            path = "No File Could Be Found"
+        case .achievements:
+            path = scaleAchievementsPath.path
+        case .initialHint:
+            path = initialHintPath.path
         }
+
         if FileManager.default.fileExists(atPath: path) {
             return true
         }
