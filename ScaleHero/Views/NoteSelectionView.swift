@@ -15,6 +15,7 @@ struct NoteSelectionView: View {
     @State private var offset: CGFloat = .zero
     var backgroundImage: String
     @State private var presentHint = false
+    @State private var presentInitialHint = false
     private let circleImageScale = 0.6
 
     private let columns = [
@@ -59,12 +60,35 @@ struct NoteSelectionView: View {
                         topButtons(buttonSize: buttonSize, colour: colour)
                             .aspectRatio(contentMode: .fit)
                             .padding(.leading, 5)
+                            .alert(isPresented: $presentHint) {
+                                Alert(
+                                    title: Text("Selecting Notes"),
+                                    message: hintText,
+                                    dismissButton: .default(Text("Got it!"))
+                                );
+                            } // Alert for hints
                     
                         Circle().opacity(0.3)
                             .aspectRatio(contentMode: .fit)
                             .foregroundColor(colour)
                             .frame(width: (radius + buttonSize * 0.8) * 2)
                             .position(centre)
+                            .onAppear {
+                                let showHint = (fileReaderAndWriter.readInitialHint() == "1") // if not 1, false
+                                if (showHint) {
+                                    presentInitialHint = true
+                                }
+                            }
+                            .alert(isPresented: $presentInitialHint) {
+                                Alert(
+                                    title: Text("Selecting Notes"),
+                                    message: hintText,
+                                    primaryButton: .default(Text("Got It!")),
+                                    secondaryButton: .default(Text("Don't ask me again")) {
+                                        fileReaderAndWriter.writeInitialHint(value: "0")
+                                    }
+                                );
+                            }
                         
                         CircleOfFifthButtons(colour: colour, radius: radius, centre: centre, option: .outer, buttonSize: buttonSize, screenType: $screenType)
                         CircleOfFifthButtons(colour: colour, radius: radius, centre: centre, option: .centre, buttonSize: buttonSize, screenType: $screenType)
@@ -90,13 +114,6 @@ struct NoteSelectionView: View {
                 } label: {
                     MainUIButton(buttonText: "About / Settings", type: 3, height: buttonHeight)
                 }.aspectRatio(contentMode: .fill)
-            }
-            .alert(isPresented: $presentHint) {
-                Alert(
-                    title: Text("Selecting Notes"),
-                    message: hintText,
-                    dismissButton: .default(Text("Got it!"))
-                );
             }
             .onAppear() {
                 offset += height * 1.2

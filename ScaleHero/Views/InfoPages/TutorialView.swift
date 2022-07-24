@@ -72,7 +72,7 @@ struct TutorialView: View {
             4.  Scale selection (All recognized scales, including Major, Natural minor, Harmonic minor, Melodic minor, Major and Pentatonic Modes, Arpeggios, Pentatonics, Blues, etc.)
             5.  Adjustment of tempo, time signature, starting note, starting octave, number of octaves, repetition of tonic note, metronome (simple or compound time), number of intro beats
             6.  Selection/addition of drone
-            7.  Variety of interval Selection possibilities
+            7.  Variety of interval selection possibilities
             8.  Repeating note option to enable real time listen and play of each note
             9.  The 'Endless Loop' button plays the scale on repeat endlessly. As soon as the scale ends it loops directly back into the metronome count in
         
@@ -100,8 +100,9 @@ struct TutorialView: View {
                 g. Repeat Notes: Repeat Notes: When activated, every note in the scale selected is repeated. This can be beneficial when the user listens to each note and then plays only when the note is repeated, allowing more time for adjustment in between notes
                 h. Endless Loop: Sets the selected scale to repeat endlessly. This allows the user to practice a scale multiple times without having to press play multiple times
                 i. Repeat Tonics: The tonic is the first note of a scale. Repeat Tonics means repeating this note throughout the scale. The options avaliable are to repeat 'all' tonics, meaning the first and last note are doubled in addition to all of the other tonic notes in the scale. The 'not initial' option repeats all of the tonics in the scale except the first and last tonic notes. When this is on with repeat notes then all of the tonic notes will be repeated four times
-                j. Note Display: This allows the user to select whether they want the displayed notes to appear as sharps or flats, if applicable. Automatic mode will select the computer generated option chosen
-                k. Save: This button allows you to save the present scale characteristics to the favourites page. Selecting a scale in the favourites page will automatically restore all of the saved characteristics for that scale
+                j. Interval Options: This allows the user to play scales in with specific intervals applied (Thirds, Fourths, or Fifths). Note: The Number of Octaves must be set to One and the Starting Octave must be Two to perform a scale with intervals
+                k. Interval Type: When an interval option is set, this allows the user to chose how they want to intervals to be performed. All up (1 3 2 4 ...), All down (3, 1, 4, 2 ...), One Up One Down (1 3 4 2 ...) and One Down One Up (3 1 2 4 ...)
+                l. Save: This button allows you to save the present scale characteristics to the favourites page. Selecting a scale in the favourites page will automatically restore all of the saved characteristics for that scale
         
         Settings:
             Buttons:
@@ -110,8 +111,9 @@ struct TutorialView: View {
                 c. Scale Instrument: Select the scale instrument
                 d. Drone: Select the drone sound
                 e. Metronome: This option allows you to add off-beat metronome clicks into the scales. The two options are simple (three off beat notes) or compound (two off beat notes). Note that this option is only avaliable for scales with a tempo under 70bpm
-                f. Apply: This option applies the changes you have made to the app. Note that pressing the back button also applies the changes directly to the app
-                g. Intro Beats: These buttons will adjust the number of count in beats. There are two options, '<=70bpm' and '>70bpm'. This will ajust the count in beats for two different scenarios: when the tempo is either less than or eaqual to 70 beats per minute or, when the tempo is greater than 70 beats per minute
+                f. Intro Beats: These buttons will adjust the number of count in beats. There are two options, '<=70bpm' and '>70bpm'. This will ajust the count in beats for two different scenarios: when the tempo is either less than or eaqual to 70 beats per minute or, when the tempo is greater than 70 beats per minute
+                g. Apply: This option applies the changes you have made to the app. Note that pressing the back button also applies the changes directly to the app
+                h. Reset to Default: This will reset the value of all above buttons to their initial state
         """
         return text
     }

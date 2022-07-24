@@ -8,7 +8,10 @@
 import SwiftUI
 import AVFoundation
 
-struct PlayingView: View { /// LOOK INTO HOW TO DELAY CODE TO COMPLETE FUNCTIONS BEFORE CONTINUEING
+/*
+ The view to show the note names when the scale is playing. Also contains functionality to play the scale
+ */
+struct PlayingView: View {
     @EnvironmentObject var musicNotes: MusicNotes
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var fileReaderAndWriter = FileReaderAndWriter()

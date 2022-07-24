@@ -15,6 +15,7 @@ enum FilePath {
     case transposition
     case metronome
     case achievements
+    case initialHint
 }
 
 enum ScreenType {

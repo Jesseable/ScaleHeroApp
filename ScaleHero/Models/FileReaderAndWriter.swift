@@ -22,6 +22,7 @@ class FileReaderAndWriter: ObservableObject {
     let droneInstrumentPath = FileManager.documentsDirectory.appendingPathComponent("DroneInstrument")
     let countInBeatsPath = FileManager.documentsDirectory.appendingPathComponent("CountInBeats")
     let scaleAchievementsPath = FileManager.documentsDirectory.appendingPathComponent("ScaleAchievementsData")
+    let initialHintPath = FileManager.documentsDirectory.appendingPathComponent("InitialHintData")
     
     init() {
         
@@ -239,6 +240,28 @@ class FileReaderAndWriter: ObservableObject {
         }
     }
     
+    func writeInitialHint(value: String) {
+        //writing
+        do {
+            try value.write(to: initialHintPath, atomically: true, encoding: String.Encoding.utf8)
+        }
+        catch {
+            Swift.print(error)
+            print("error has occured when writing to the initialHint file")
+        }
+    }
+    
+    func readInitialHint() -> String {
+        //reading
+        do {
+            return try String(contentsOf: initialHintPath, encoding: .utf8)
+        }
+        catch {
+            Swift.print(error)
+            return "Error caught when reading the initialHint file"
+        }
+    }
+    
     /**
      Checks if the file exists
      */
@@ -259,6 +282,8 @@ class FileReaderAndWriter: ObservableObject {
             path = metronomePulsePath.path
         case .achievements:
             path = scaleAchievementsPath.path
+        case .initialHint:
+            path = initialHintPath.path
         }
 
         if FileManager.default.fileExists(atPath: path) {

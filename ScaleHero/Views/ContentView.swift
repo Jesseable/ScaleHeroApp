@@ -28,12 +28,13 @@ struct AppContentView: View {
     private var introBeats : String
     private var introBeatsArr : [String]
     private var scaleAchievements : String
+    private var initialHint : String
 
     /**
     Initialises the  components of the app.
      */
     init() {
-        screenType = .noteSelection
+        screenType = .noteSelection /// DO ALL OF THIS IN ONE TEXT FILE AND THEN HAVE ALL VALUES SAVED STRAIGHT INTO THE MUSICNOTES CLASS
         
         //SCALE INSTRUMENT
         if fileReaderAndWriter.checkFilePath(for: .scaleInst) {
@@ -82,7 +83,7 @@ struct AppContentView: View {
             fileReaderAndWriter.writeDroneInstrument(newDrone: selectedDrone)
         }
         
-        //INTRO BEATS
+        // INTRO BEATS
         if fileReaderAndWriter.checkFilePath(for: .countInBeats) {
             introBeats = fileReaderAndWriter.readIntroBeats()
         } else {
@@ -91,7 +92,7 @@ struct AppContentView: View {
         }
         introBeatsArr = introBeats.components(separatedBy: "-")
         
-        //ACHIEVEMENTS
+        // ACHIEVEMENTS
         if fileReaderAndWriter.checkFilePath(for: .achievements) {
             scaleAchievements = fileReaderAndWriter.readScaleAchievements()
         } else {
@@ -104,6 +105,14 @@ struct AppContentView: View {
         scaleAchievements = "\(dateTime.weekCount):\(dateTime.monthCount):\(dateTime.yearCount):\(dateTime.allTimeCount)"
                           + ":\(dateTime.week):\(dateTime.month):\(dateTime.year)"
         fileReaderAndWriter.writeScaleAchievements(newData: scaleAchievements)
+        
+        // INITIAL HINT
+        if fileReaderAndWriter.checkFilePath(for: .initialHint) {
+            initialHint = fileReaderAndWriter.readInitialHint()
+        } else {
+            initialHint = "1"
+            fileReaderAndWriter.writeInitialHint(value: initialHint)
+        }
     }
     
     /**

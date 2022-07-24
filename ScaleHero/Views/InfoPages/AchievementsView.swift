@@ -85,7 +85,7 @@ extension Text {
     }
     
     func valueFormat(width: CGFloat) -> some View {
-        frame(maxWidth: 50, alignment: .center)
+        frame(maxWidth: width * 0.25, alignment: .center)
         .font(.system(size: 36, weight: .black, design: .serif))
         .background(AngularGradient(colors: [.red, .green, .blue, .purple, .pink],
                                      center: .center,

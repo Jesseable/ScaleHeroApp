@@ -84,10 +84,10 @@
 				{
 					"id": "ffd60347-5964-4a32-b97d-7ca85f2049aa",
 					"note": "F",
-					"major": ["F", "D", "A", "Bb", "C", "D", "E", "F", "E", "D", "C", "Bb", "A", "D", "F"],
-					"naturalMinor": ["F", "D", "Ab", "Bb", "C", "Db", "Eb", "F", "Eb", "Db", "C", "Bb", "Ab", "D", "F"],
-					"harmonicMinor": ["F", "D", "Ab", "Bb", "C", "Db", "E", "F", "E", "Db", "C", "Bb", "Ab", "D", "F"],
-					"melodicMinor": ["F", "D", "Ab", "Bb", "C", "D", "E", "F", "Eb", "Db", "C", "Bb", "Ab", "D", "F"],
+					"major": ["F", "G", "A", "Bb", "C", "D", "E", "F", "E", "D", "C", "Bb", "A", "G", "F"],
+					"naturalMinor": ["F", "G", "Ab", "Bb", "C", "Db", "Eb", "F", "Eb", "Db", "C", "Bb", "Ab", "G", "F"],
+					"harmonicMinor": ["F", "G", "Ab", "Bb", "C", "Db", "E", "F", "E", "Db", "C", "Bb", "Ab", "G", "F"],
+					"melodicMinor": ["F", "G", "Ab", "Bb", "C", "D", "E", "F", "Eb", "Db", "C", "Bb", "Ab", "G", "F"],
 					"chromatic": ["F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "E", "Eb", "D", "Db", "C", "B", "Bb", "A", "Ab", "G", "Gb", "F"],
 					"pentatonic": ["F", "G", "A", "C", "D", "F", "D", "C", "A", "G", "F"],
 					"blues": ["F", "Ab", "Bb", "B", "C", "Eb", "F", "Eb", "C", "B", "Bb", "Ab", "F"]
@@ -95,10 +95,10 @@
 				{
 					"id": "c772d30b-5fdd-4ce3-bdfa-adf7a3ff8ec6",
 					"note": "F#",
-					"major": ["F#", "D#", "A#", "B", "C#", "D#", "E#", "F#", "E#", "D#", "C#", "B", "A#", "D#", "F#"],
-					"naturalMinor": ["F#", "D#", "A", "B", "C#", "D", "E", "F#", "E", "D", "C#", "B", "A", "D#", "F#"],
-					"harmonicMinor": ["F#", "D#", "A", "B", "C#", "D", "E#", "F#", "E#", "D", "C#", "B", "A", "D#", "F#"],
-					"melodicMinor": ["F#", "D#", "A", "B", "C#", "D#", "E#", "F#", "E", "D", "C#", "B", "A", "D#", "F#"],
+					"major": ["F#", "G#", "A#", "B", "C#", "D#", "E#", "F#", "E#", "D#", "C#", "B", "A#", "G#", "F#"],
+					"naturalMinor": ["F#", "G#", "A", "B", "C#", "D", "E", "F#", "E", "D", "C#", "B", "A", "G#", "F#"],
+					"harmonicMinor": ["F#", "G#", "A", "B", "C#", "D", "E#", "F#", "E#", "D", "C#", "B", "A", "G#", "F#"],
+					"melodicMinor": ["F#", "G#", "A", "B", "C#", "D#", "E#", "F#", "E", "D", "C#", "B", "A", "G#", "F#"],
 					"chromatic": ["F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "F", "E", "Eb", "D", "Db", "C", "B", "Bb", "A", "Ab", "G", "Gb"],
 					"pentatonic": ["F#", "G#", "A#", "C#", "D#", "F#", "D#", "C#", "A#", "G#", "F#"],
 					"blues": ["F#", "A", "B", "C", "C#", "E", "F#", "E", "C#", "C", "B", "A", "F#"]

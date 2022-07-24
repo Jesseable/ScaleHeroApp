@@ -29,7 +29,7 @@ struct OtherScalesView: View {
         let buttonHeight = universalSize.height/10
     
         VStack {
-            Text(displayType.rawValue).asTitle()
+            Text(displayType.rawValue.uppercased()).asTitle()
             
             TonicNoteDisplay(buttonHeight: buttonHeight)
             
