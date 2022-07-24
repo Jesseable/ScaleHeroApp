@@ -9,7 +9,6 @@ import Foundation
 
 struct DateTime {
     
-    var day : Int
     var weekCount : Int
     var week : Int
     var month : Int
@@ -41,9 +40,9 @@ struct DateTime {
         self.allTimeCount = Int(scaleAchievementsArr[3]) ?? 0
         
         // set previous dates
-        self.prevWeek = Int(scaleAchievementsArr[4]) ?? 0
-        self.prevMonth = Int(scaleAchievementsArr[5]) ?? 0
-        self.prevYear = Int(scaleAchievementsArr[6]) ?? 0
+        self.prevWeek = Int(scaleAchievementsArr[4]) ?? -1
+        self.prevMonth = Int(scaleAchievementsArr[5]) ?? -1
+        self.prevYear = Int(scaleAchievementsArr[6]) ?? -1
         
         // set the time
         let date = Date()
@@ -52,19 +51,17 @@ struct DateTime {
             let dateFormatter = DateFormatter()
             dateFormatter.locale = .current
             dateFormatter.calendar = .current
-            // c - Stand-Alone local day of week - Use one letter for the local numeric value
             // W - Week of Year
             // LL - Stand-Alone Month - Use one or two for the numerical month
             // yy - Year. Normally the length specifies the padding, but for two letters it also specifies the maximum length
-            dateFormatter.dateFormat = "c:w:LL:yy"
+            dateFormatter.dateFormat = "w:LL:yy"
             return dateFormatter
         }()
         
         let curDate = dayNameFormatter.string(from: date)
         let dateArr = curDate.components(separatedBy: ":")
 
-        if dateArr.count != 4 {
-            day = 0
+        if dateArr.count != 3 {
             week = 0
             month = 0
             year = 0
@@ -72,27 +69,33 @@ struct DateTime {
             return
         }
         
-        day = Int(dateArr[0]) ?? 0
-        week = Int(dateArr[1]) ?? 0
-        month = Int(dateArr[2]) ?? 0
-        year = Int(dateArr[3]) ?? 0
+        week = Int(dateArr[0]) ?? 0
+        month = Int(dateArr[1]) ?? 0
+        year = Int(dateArr[2]) ?? 0
+        
+        if (prevWeek == 0) {
+            prevWeek = week
+        }
+        if (prevMonth == 0) {
+            prevMonth = month
+        }
+        if (prevYear == 0) {
+            prevYear = year
+        }
     }
     
     mutating func alterCount() {
         // check the year
-        if prevYear < year {
-            self.weekCount = 0
-            self.monthCount = 0
+        if (prevYear < year && prevYear != -1) {
             self.yearCount = 0
-            return
         }
         
         // check month
-        if prevMonth < month {
+        if (prevMonth < month && prevMonth != -1) {
             self.monthCount = 0
         }
         
-        if prevWeek < week {
+        if (prevWeek < week && prevWeek != -1) {
             self.weekCount = 0
         }
     }

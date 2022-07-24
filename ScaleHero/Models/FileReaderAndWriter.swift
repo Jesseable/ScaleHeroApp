@@ -10,7 +10,7 @@ import Foundation
 /**
  Handles any reading and writing of files for the app
  */
-class FileReaderAndWriter: ObservableObject {
+class FileReaderAndWriter: ObservableObject { /// MOVE ALL OF THIS INTO ONE BIG TEXT FILE TO SAVE MEMORY
     
     @Published var scales: [ScaleCharacteristics]
     

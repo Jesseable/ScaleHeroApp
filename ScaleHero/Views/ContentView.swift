@@ -98,7 +98,7 @@ struct AppContentView: View {
         } else {
             // The number of scales played is set to 0 here initially
             // weekCount : MonthCount : YearCount : AlltimeCount : prev Week : prev Month : prev year
-            scaleAchievements = "0:0:0:0:0:0:0"
+            scaleAchievements = "0:0:0:0:0:0:0" /// THINK ABOUT DOING THIS BETTER HERE
         }
         var dateTime = DateTime(scaleAchievements: scaleAchievements)
         dateTime.alterCount()

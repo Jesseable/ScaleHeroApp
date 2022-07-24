@@ -34,14 +34,7 @@ struct SoundView : View {
             
             Text(title).asTitle()
             
-            Button {
-                self.screenType = musicNotes.backDisplay
-            } label: {
-                MainUIButton(buttonText: "Back", type: 9, height: bottumButtonHeight)
-            }
             ScrollView {
-
-                Divider().background(Color.white)
                 
                 Group {
                     MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight)
@@ -118,7 +111,13 @@ struct SoundView : View {
                 
                 Spacer()
             }
-            playButton(buttonHeight: buttonHeight)
+            playButton(buttonHeight: buttonHeight).padding(.bottom, 10)
+            
+            Button {
+                self.screenType = musicNotes.backDisplay
+            } label: {
+                MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight)
+            }
         }
         .alert(isPresented: $presentAlert) {
             Alert(
@@ -191,7 +190,7 @@ struct SoundView : View {
                 musicNotes.dismissable = true
             }
         } label: {
-            MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 3, height: buttonHeight*2)
+            MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 10, height: buttonHeight*2)
         }
     }
     
@@ -242,7 +241,7 @@ struct SoundView : View {
             
             let metronomeBeats = playScale.addMetronomeCountIn(tempo: Int(musicNotes.tempo), scaleNotesArray: noteNamesArray)
             noteNamesArray.insert(contentsOf: metronomeBeats, at: start)
-            
+
             DispatchQueue.main.async {
                 musicNotes.scaleNotes = soundFileArray
                 musicNotes.scaleNoteNames = noteNamesArray
