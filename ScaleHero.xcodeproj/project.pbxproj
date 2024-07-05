@@ -204,8 +204,6 @@
 		C546842B280CE98800DA9BC8 /* WriteScalesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C546842A280CE98800DA9BC8 /* WriteScalesTests.swift */; };
 		C546842F280CF62500DA9BC8 /* Arpeggios.swift in Sources */ = {isa = PBXBuildFile; fileRef = C546842E280CF62500DA9BC8 /* Arpeggios.swift */; };
 		C5468432280CFACF00DA9BC8 /* scale-data.json in Resources */ = {isa = PBXBuildFile; fileRef = C5468431280CFACF00DA9BC8 /* scale-data.json */; };
-		C555641627C3A8CB009AC00C /* Metronome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C555641527C3A8CB009AC00C /* Metronome.mp3 */; };
-		C555641827C3A8D0009AC00C /* Metronome1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C555641727C3A8D0009AC00C /* Metronome1.mp3 */; };
 		C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */; };
 		C574FE7A276886BC00ADD3B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C574FE79276886BC00ADD3B3 /* Assets.xcassets */; };
 		C574FE7D276886BC00ADD3B3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C574FE7C276886BC00ADD3B3 /* Preview Assets.xcassets */; };
@@ -439,8 +437,6 @@
 		C546842A280CE98800DA9BC8 /* WriteScalesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteScalesTests.swift; sourceTree = "<group>"; };
 		C546842E280CF62500DA9BC8 /* Arpeggios.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arpeggios.swift; sourceTree = "<group>"; };
 		C5468431280CFACF00DA9BC8 /* scale-data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "scale-data.json"; sourceTree = "<group>"; };
-		C555641527C3A8CB009AC00C /* Metronome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome.mp3; path = ../../ScaleHeroAppResources/Metronome.mp3; sourceTree = "<group>"; };
-		C555641727C3A8D0009AC00C /* Metronome1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome1.mp3; path = ../../ScaleHeroAppResources/Metronome1.mp3; sourceTree = "<group>"; };
 		C574FE72276886B700ADD3B3 /* ScaleHero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScaleHero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleHeroApp.swift; sourceTree = "<group>"; };
 		C574FE79276886BC00ADD3B3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -514,19 +510,9 @@
 			path = "Scale Note Sounds";
 			sourceTree = "<group>";
 		};
-		C5443230279E54440068A239 /* Metronomes */ = {
-			isa = PBXGroup;
-			children = (
-				C555641727C3A8D0009AC00C /* Metronome1.mp3 */,
-				C555641527C3A8CB009AC00C /* Metronome.mp3 */,
-			);
-			path = Metronomes;
-			sourceTree = "<group>";
-		};
 		C574FE69276886B700ADD3B3 = {
 			isa = PBXGroup;
 			children = (
-				C5443230279E54440068A239 /* Metronomes */,
 				C544322F279D794F0068A239 /* Scale Note Sounds */,
 				C574FEA42769C05E00ADD3B3 /* Drone Sounds */,
 				C574FE74276886B700ADD3B3 /* ScaleHero */,
@@ -995,7 +981,6 @@
 				C546830C280A90DE00DA9BC8 /* Strings-2-E.mp3 in Resources */,
 				C54683D2280A917500DA9BC8 /* Piano-3-A#|Bb.mp3 in Resources */,
 				C54683AA280A917500DA9BC8 /* Piano-1-D.mp3 in Resources */,
-				C555641827C3A8D0009AC00C /* Metronome1.mp3 in Resources */,
 				C54682F3280A90DE00DA9BC8 /* Strings-3-D#|Eb.mp3 in Resources */,
 				C54682F8280A90DE00DA9BC8 /* Strings-1-C#|Db.mp3 in Resources */,
 				C5468312280A90DE00DA9BC8 /* Strings-3-F#|Gb.mp3 in Resources */,
@@ -1058,7 +1043,6 @@
 				C54682E8280A90DE00DA9BC8 /* Strings-4-D.mp3 in Resources */,
 				C54683CA280A917500DA9BC8 /* Piano-2-A.mp3 in Resources */,
 				C54682FD280A90DE00DA9BC8 /* Strings-1-B.mp3 in Resources */,
-				C555641627C3A8CB009AC00C /* Metronome.mp3 in Resources */,
 				C54683B8280A917500DA9BC8 /* Piano-1-A.mp3 in Resources */,
 				C5468373280A913D00DA9BC8 /* Organ-2-D#|Eb.mp3 in Resources */,
 				C5468367280A913D00DA9BC8 /* Organ-3-C.mp3 in Resources */,
