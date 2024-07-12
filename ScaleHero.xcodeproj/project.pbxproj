@@ -219,6 +219,8 @@
 		C5DBD5C1278078FF00DF5183 /* MainUIButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */; };
 		C5DBD5F227812A9E00DF5183 /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */; };
 		C5DBD5F427812B6100DF5183 /* ScaleCharacteristics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F327812B6100DF5183 /* ScaleCharacteristics.swift */; };
+		C5DE479F2C40B78F00F300BB /* Metronome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5DE479E2C40B78F00F300BB /* Metronome.mp3 */; };
+		C5DE47A12C40B8AF00F300BB /* Metronome1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5DE47A02C40B8AF00F300BB /* Metronome1.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -455,6 +457,8 @@
 		C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUIButtonView.swift; sourceTree = "<group>"; };
 		C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
 		C5DBD5F327812B6100DF5183 /* ScaleCharacteristics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleCharacteristics.swift; sourceTree = "<group>"; };
+		C5DE479E2C40B78F00F300BB /* Metronome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome.mp3; path = ../../../Desktop/ScaleHeroAppResources/Metronome.mp3; sourceTree = "<group>"; };
+		C5DE47A02C40B8AF00F300BB /* Metronome1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome1.mp3; path = ../../../Desktop/ScaleHeroAppResources/Metronome1.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -513,6 +517,7 @@
 		C574FE69276886B700ADD3B3 = {
 			isa = PBXGroup;
 			children = (
+				C5DE479D2C40B75900F300BB /* Metronome */,
 				C544322F279D794F0068A239 /* Scale Note Sounds */,
 				C574FEA42769C05E00ADD3B3 /* Drone Sounds */,
 				C574FE74276886B700ADD3B3 /* ScaleHero */,
@@ -848,6 +853,15 @@
 			path = InfoPages;
 			sourceTree = "<group>";
 		};
+		C5DE479D2C40B75900F300BB /* Metronome */ = {
+			isa = PBXGroup;
+			children = (
+				C5DE47A02C40B8AF00F300BB /* Metronome1.mp3 */,
+				C5DE479E2C40B78F00F300BB /* Metronome.mp3 */,
+			);
+			path = Metronome;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -988,6 +1002,7 @@
 				C5468304280A90DE00DA9BC8 /* Strings-1-G.mp3 in Resources */,
 				C5468347280A913D00DA9BC8 /* Organ-3-D.mp3 in Resources */,
 				C54682F1280A90DE00DA9BC8 /* Strings-1-D.mp3 in Resources */,
+				C5DE47A12C40B8AF00F300BB /* Metronome1.mp3 in Resources */,
 				C5468358280A913D00DA9BC8 /* Organ-4-C#|Db.mp3 in Resources */,
 				C574FE7D276886BC00ADD3B3 /* Preview Assets.xcassets in Resources */,
 				C546840C280A937F00DA9BC8 /* TuningFork1-Drone-G.mp3 in Resources */,
@@ -997,6 +1012,7 @@
 				C5468357280A913D00DA9BC8 /* Organ-2-B.mp3 in Resources */,
 				C5468315280A90DE00DA9BC8 /* Strings-1-G#|Ab.mp3 in Resources */,
 				C5468314280A90DE00DA9BC8 /* Strings-3-F.mp3 in Resources */,
+				C5DE479F2C40B78F00F300BB /* Metronome.mp3 in Resources */,
 				C54683C2280A917500DA9BC8 /* Piano-2-B.mp3 in Resources */,
 				C5468310280A90DE00DA9BC8 /* Strings-3-A.mp3 in Resources */,
 				C54683D0280A917500DA9BC8 /* Piano-1-G#|Ab.mp3 in Resources */,

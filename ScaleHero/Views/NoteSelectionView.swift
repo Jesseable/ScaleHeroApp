@@ -57,7 +57,7 @@ struct NoteSelectionView: View {
                 ScrollView {
                     Spacer()
                     ZStack {
-                        topButtons(buttonSize: buttonSize, colour: colour)
+                        topButtonLeft(buttonSize: buttonSize, colour: colour)
                             .aspectRatio(contentMode: .fit)
                             .padding(.leading, 5)
                             .alert(isPresented: $presentHint) {
@@ -67,6 +67,10 @@ struct NoteSelectionView: View {
                                     dismissButton: .default(Text("Got it!"))
                                 );
                             } // Alert for hints
+                        
+                        topButtonRight(buttonSize: buttonSize, colour: colour)
+                            .aspectRatio(contentMode: .fit)
+                            .padding(.trailing, 5)
                     
                         Circle().opacity(0.3)
                             .aspectRatio(contentMode: .fit)
@@ -107,13 +111,6 @@ struct NoteSelectionView: View {
                 .frame(width: width)
                 
                 Spacer()
-                 
-                // If removed the above calculation will have to change
-                Button {
-                    self.screenType = .aboutview
-                } label: {
-                    MainUIButton(buttonText: "About / Settings", type: 3, height: buttonHeight)
-                }.aspectRatio(contentMode: .fill)
             }
             .onAppear() {
                 offset += height * 1.2
@@ -148,7 +145,7 @@ struct NoteSelectionView: View {
                        xPos: width * 0.48, duration: 8.00, offset: self.$offset)
     }
     
-    @ViewBuilder func topButtons(buttonSize: CGFloat, colour: Color) -> some View {
+    @ViewBuilder func topButtonLeft(buttonSize: CGFloat, colour: Color) -> some View {
         VStack {
             HStack {
                 Button {
@@ -171,24 +168,21 @@ struct NoteSelectionView: View {
         }
     }
     
+    @ViewBuilder func topButtonRight(buttonSize: CGFloat, colour: Color) -> some View {
+        VStack {
+            HStack {
+                Spacer()
+                createIconButton(buttonSize: buttonSize, colour: colour, icon: "gearshape.fill", returnScreen: .aboutview)
+            }
+            Spacer()
+        }
+    }
+    
     @ViewBuilder func bottomButtonLeft(buttonSize: CGFloat, colour: Color) -> some View {
         VStack {
             Spacer()
             HStack {
-                Button {
-                    screenType = .achievements
-                } label: {
-                    ZStack {
-                        Circle()
-                            .fill(colour)
-                            .frame(height: buttonSize, alignment: .center)
-                        Image(systemName: "checkmark.shield.fill").resizable().aspectRatio(contentMode: .fill)
-                            .frame(width: buttonSize * circleImageScale, height: buttonSize * circleImageScale, alignment: .center)
-                            .foregroundColor(Color.yellow)
-                    }
-                    .frame(width: buttonSize, height: buttonSize, alignment: .center)
-                }.frame(width: buttonSize,
-                        height: buttonSize)
+                createIconButton(buttonSize: buttonSize, colour: colour, icon: "checkmark.shield.fill", returnScreen: .achievements)
                 Spacer()
             }
         }
@@ -199,22 +193,26 @@ struct NoteSelectionView: View {
             Spacer()
             HStack {
                 Spacer()
-                Button {
-                    self.screenType = .favouritesview
-                } label: {
-                    ZStack {
-                        Circle()
-                            .fill(colour)
-                            .frame(height: buttonSize, alignment: .center)
-                        Image(systemName: "star.fill").resizable().aspectRatio(contentMode: .fill)
-                            .frame(width: buttonSize * circleImageScale, height: buttonSize * circleImageScale, alignment: .center)
-                            .foregroundColor(Color.yellow)
-                    }
-                    .frame(width: buttonSize, height: buttonSize, alignment: .center)
-                }.frame(width: buttonSize,
-                        height: buttonSize)
+                createIconButton(buttonSize: buttonSize, colour: colour, icon: "star.fill", returnScreen: .favouritesview)
             }
         }
+    }
+    
+    private func createIconButton(buttonSize: CGFloat, colour: Color, icon: String, returnScreen: ScreenType) -> some View {
+        Button {
+            self.screenType = returnScreen
+        } label: {
+            ZStack {
+                Circle()
+                    .fill(colour)
+                    .frame(height: buttonSize, alignment: .center)
+                Image(systemName: icon).resizable().aspectRatio(contentMode: .fill)
+                    .frame(width: buttonSize * circleImageScale, height: buttonSize * circleImageScale, alignment: .center)
+                    .foregroundColor(Color.yellow)
+            }
+            .frame(width: buttonSize, height: buttonSize, alignment: .center)
+        }.frame(width: buttonSize,
+                height: buttonSize)
     }
 }
 
@@ -375,10 +373,3 @@ struct CircleOfFifthButtons: View {
         return (xPos, yPos)
     }
 }
-
-//struct NoteSelectionView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        //CircleOfFifthButtons()
-//        NoteSelectionView(backgroundImage: "BackgroundBlue")
-//    }
-//}
