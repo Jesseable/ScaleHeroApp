@@ -68,7 +68,6 @@ extension Case : Equatable {
     }
 }
 
-
 // The int is the rotations in the major pentatonic scale it must undertake
 enum PentatonicScaleMode : Int, CaseIterable, Equatable, Codable {
     case mode1_major = 0

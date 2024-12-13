@@ -21,17 +21,17 @@ class AlterNotesTests: XCTestCase {
         let cIonian = alterNotes.getMajorIonianStartingNote(from: "C", in: .ionian)
         let cMixolydian = alterNotes.getMajorIonianStartingNote(from: "C", in: .mixolydian)
         let dLocrian = alterNotes.getMajorIonianStartingNote(from: "D", in: .locrian)
-        let bbphrygian = alterNotes.getMajorIonianStartingNote(from: "Bb", in: .phrygian)
-        let aSharpAeolian = alterNotes.getMajorIonianStartingNote(from: "A#", in: .aeolian)
-        let fSharpLydian = alterNotes.getMajorIonianStartingNote(from: "F#", in: .lydian)
-        let gFlatDorian = alterNotes.getMajorIonianStartingNote(from: "Gb", in: .dorian)
+        let bbphrygian = alterNotes.getMajorIonianStartingNote(from: "B-flat", in: .phrygian)
+        let aSharpAeolian = alterNotes.getMajorIonianStartingNote(from: "A-sharp", in: .aeolian)
+        let fSharpLydian = alterNotes.getMajorIonianStartingNote(from: "F-sharp", in: .lydian)
+        let gFlatDorian = alterNotes.getMajorIonianStartingNote(from: "G-flat", in: .dorian)
         
         let expected_cIonian = "C"
         let expected_cMixolydian = "F"
-        let expected_dLocrian = "Eb"
-        let expected_bbphrygian = "Gb"
-        let expected_aSharpAeolian = "C#"
-        let expected_fSharpLydian = "C#"
+        let expected_dLocrian = "E-flat"
+        let expected_bbphrygian = "G-flat"
+        let expected_aSharpAeolian = "C-sharp"
+        let expected_fSharpLydian = "C-sharp"
         let expected_gFlatDorian = "E" // NOT Fb THINK ABOUT THIS LATER
         
         XCTAssertEqual(cIonian, expected_cIonian, "expected cIonian is incorrect")
@@ -49,14 +49,14 @@ class AlterNotesTests: XCTestCase {
     func testGetMajorTonicPentatonicScaleModes() {
         
         let cMode1 = alterNotes.getMajorPentatonicStartingNote(from: "C", in: .mode1_major)
-        let bbMode2 = alterNotes.getMajorPentatonicStartingNote(from: "Bb", in: .mode2_egyptian)
-        let aSharpMode3 = alterNotes.getMajorPentatonicStartingNote(from: "A#", in: .mode3_manGong)
-        let gbMode4 = alterNotes.getMajorPentatonicStartingNote(from: "Gb", in: .mode4_ritusen)
-        let fSharpMode5 = alterNotes.getMajorPentatonicStartingNote(from: "F#", in: .mode5_minor)
+        let bbMode2 = alterNotes.getMajorPentatonicStartingNote(from: "B-flat", in: .mode2_egyptian)
+        let aSharpMode3 = alterNotes.getMajorPentatonicStartingNote(from: "A-sharp", in: .mode3_manGong)
+        let gbMode4 = alterNotes.getMajorPentatonicStartingNote(from: "G-flat", in: .mode4_ritusen)
+        let fSharpMode5 = alterNotes.getMajorPentatonicStartingNote(from: "F-sharp", in: .mode5_minor)
         
         let expected_cMode1 = "C"
-        let expected_bbMode2 = "G#"
-        let expected_aSharpMode3 = "F#"
+        let expected_bbMode2 = "A-flat"
+        let expected_aSharpMode3 = "F-sharp"
         let expected_gbMode4 = "B"
         let expected_SharpMode5 = "A"
         

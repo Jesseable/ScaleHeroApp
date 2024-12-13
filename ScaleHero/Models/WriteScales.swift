@@ -88,7 +88,7 @@ struct WriteScales {
         
         for scale in scales {
             if (scale.name.elementsEqual("notes")) {
-                for scaleArray in scale.scaleArrays {
+                for scaleArray in scale.scaleArrays { // Maybe make the letters also a heading? Then do all the scales in that letter? Saves time???
                     if (scaleArray.note.elementsEqual(startingNote)) {
                         let baseScaleNotes = retrieveScaleRawNotes(for: scaleArray, with: tonality)
                         return baseScaleNotes
@@ -96,7 +96,7 @@ struct WriteScales {
                 }
             }
         }
-        fatalError("failed due to not being able to read base scale notes from the json file")
+        fatalError("failed due to not being able to read base scale notes from the json file with starting note: '" + startingNote + "'")
     }
     
     /*
@@ -496,10 +496,10 @@ struct WriteScales {
      Returns the sound file identifiable note from a signle note. Converts
          notes that are equivalent to another such as Cb to B and D## to E
      */
-    private func getFullNote(singularNote: String) -> String{
+    private func getFullNote(singularNote: String) -> String{ // I should rename this method instead of having a comment
         
-        
-        switch singularNote {
+        let sanitisedNote = sanitiseNoteName(note: singularNote)
+        switch sanitisedNote {
             // Equivalent note name cases
         case "A##", "Cb":
             return "B"
@@ -527,8 +527,22 @@ struct WriteScales {
         case "A#", "Bb", "Cbb":
             return "A#|Bb"
         default:
-            return singularNote
+            return sanitisedNote
         }
+    }
+    
+    private func sanitiseNoteName(note: String) -> String {
+        var sanitizedNote = note
+        
+        if (note.contains("sharp")) {
+            sanitizedNote = sanitizedNote.replacingOccurrences(of: "-double-sharp", with: "##")
+            sanitizedNote = sanitizedNote.replacingOccurrences(of: "-sharp", with: "#")
+        }
+        if (note.contains("flat")) {
+            sanitizedNote = sanitizedNote.replacingOccurrences(of: "-double-flat", with: "bb")
+            sanitizedNote = sanitizedNote.replacingOccurrences(of: "-flat", with: "b")
+        }
+        return sanitizedNote
     }
     
     /*

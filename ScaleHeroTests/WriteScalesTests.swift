@@ -27,7 +27,7 @@ class WriteScalesTests: XCTestCase {
         scaleArray2 = writeScale.returnScaleNotesArray(for: Case.scale(tonality: .major(mode: .ionian)), startingAt: "A")
         
         let expectedScaleArray1 = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
-        let expectedScaleArray2 = ["A", "B", "C#", "D", "E", "F#", "G#", "A", "G#", "F#", "E", "D", "C#", "B", "A"]
+        let expectedScaleArray2 = ["A", "B", "C-sharp", "D", "E", "F-sharp", "G-sharp", "A", "G-sharp", "F-sharp", "E", "D", "C-sharp", "B", "A"]
         
         XCTAssertEqual(scaleArray1, expectedScaleArray1, "jsonFile reading for C major scale failed")
         XCTAssertEqual(scaleArray2, expectedScaleArray2, "jsonFile reading for A major scale failed")
@@ -40,7 +40,7 @@ class WriteScalesTests: XCTestCase {
         arpeggioArray2 = writeScale.returnScaleNotesArray(for: Case.arpeggio(tonality: .diminished7th), startingAt: "A")
         
         let expectedArpeggioArray1 = ["C", "E", "G", "C", "G", "E", "C"]
-        let expectedArpeggioArray2 = ["A", "C", "Eb", "Gb", "A", "Gb", "Eb", "C", "A"]
+        let expectedArpeggioArray2 = ["A", "C", "E-flat", "G-flat", "A", "G-flat", "E-flat", "C", "A"]
         
         XCTAssertEqual(arpeggioArray1, expectedArpeggioArray1, "jsonFile reading for C major arpeggio failed")
         XCTAssertEqual(arpeggioArray2, expectedArpeggioArray2, "jsonFile reading for A diminished7th arpeggio failed")
@@ -65,8 +65,8 @@ class WriteScalesTests: XCTestCase {
      */
     func testConvertToScaleArrayOctaves() {
         let baseScale = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
-        let baseScale2 = ["D", "E", "F#", "A", "B", "D", "B", "A", "F#", "E", "D"]
-        let baseScale3 = ["A", "C#", "E", "A", "E", "C#", "A"]
+        let baseScale2 = ["D", "E", "F-sharp", "A", "B", "D", "B", "A", "F-sharp", "E", "D"]
+        let baseScale3 = ["A", "C-sharp", "E", "A", "E", "C-sharp", "A"]
         var octavesToPlay = 2
         
         let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale,
@@ -78,8 +78,8 @@ class WriteScalesTests: XCTestCase {
                                                          octavesToPlay: octavesToPlay, tonicOption: TonicOption.noRepeatedTonic)
         
         let expectedNotesArray1 = ["C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C", "B", "A", "G", "F", "E", "D", "C"]
-        let expectedNotesArray2 = ["D", "E", "F#", "A", "B", "D", "E", "F#", "A", "B", "D", "E", "F#", "A", "B", "D", "B", "A", "F#", "E", "D", "B", "A", "F#", "E", "D", "B", "A", "F#", "E", "D"]
-        let expectedNotesArray3 = ["A", "C#", "E", "A", "C#", "E", "A", "C#", "E", "A", "E", "C#", "A", "E", "C#", "A", "E", "C#", "A"]
+        let expectedNotesArray2 = ["D", "E", "F-sharp", "A", "B", "D", "E", "F-sharp", "A", "B", "D", "E", "F-sharp", "A", "B", "D", "B", "A", "F-sharp", "E", "D", "B", "A", "F-sharp", "E", "D", "B", "A", "F-sharp", "E", "D"]
+        let expectedNotesArray3 = ["A", "C-sharp", "E", "A", "C-sharp", "E", "A", "C-sharp", "E", "A", "E", "C-sharp", "A", "E", "C-sharp", "A", "E", "C-sharp", "A"]
         
         XCTAssertEqual(notesArray1, expectedNotesArray1, "expected array1 is incorrect with octave 2")
         XCTAssertEqual(notesArray2, expectedNotesArray2, "expected array2 is incorrect with ocatve 3")
@@ -91,7 +91,7 @@ class WriteScalesTests: XCTestCase {
      */
     func testConvertToScaleArrayTonics() {
         let baseScale = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
-        let baseScale2 = ["D", "E", "F#", "A", "B", "D", "B", "A", "F#", "E", "D"]
+        let baseScale2 = ["D", "E", "F-sharp", "A", "B", "D", "B", "A", "F-sharp", "E", "D"]
         var octavesToPlay = 2
         
         let notesArray1 = writeScale.convertToScaleArray(baseScale: baseScale,
@@ -101,7 +101,7 @@ class WriteScalesTests: XCTestCase {
                                                          octavesToPlay: octavesToPlay, tonicOption: TonicOption.repeatedTonic)
         
         let expectedNotesArray1 = ["C", "C", "D", "E", "F", "G", "A", "B", "C", "C", "D", "E", "F", "G", "A", "B", "C", "C", "B", "A", "G", "F", "E", "D", "C", "C", "B", "A", "G", "F", "E", "D", "C", "C"]
-        let expectedNotesArray2 = ["D", "E", "F#", "A", "B", "D", "D", "E", "F#", "A", "B", "D", "D", "E", "F#", "A", "B", "D", "D", "B", "A", "F#", "E", "D", "D", "B", "A", "F#", "E", "D", "D", "B", "A", "F#", "E", "D"]
+        let expectedNotesArray2 = ["D", "E", "F-sharp", "A", "B", "D", "D", "E", "F-sharp", "A", "B", "D", "D", "E", "F-sharp", "A", "B", "D", "D", "B", "A", "F-sharp", "E", "D", "D", "B", "A", "F-sharp", "E", "D", "D", "B", "A", "F-sharp", "E", "D"]
         
         XCTAssertEqual(notesArray1, expectedNotesArray1, "expected array1 is incorrect with tonicOption 2")
         XCTAssertEqual(notesArray2, expectedNotesArray2, "expected array2 is incorrect with tonicOption 3")
@@ -111,7 +111,7 @@ class WriteScalesTests: XCTestCase {
      Tests theInfoScales method
      */
     func testCreateScaleInfoArrayBasic() {
-        let basicScale1 = ["D", "E", "F#", "A", "B", "D", "B", "A", "F#", "E", "D"]
+        let basicScale1 = ["D", "E", "F-sharp", "A", "B", "D", "B", "A", "F-sharp", "E", "D"]
         let basicScale2 = ["C", "C", "D", "E", "F", "G", "A", "B", "C", "C", "D", "E", "F", "G", "A", "B", "C", "C", "B", "A", "G", "F", "E", "D", "C", "C", "B", "A", "G", "F", "E", "D", "C", "C"]
         let initialOctave = 1
         
@@ -129,14 +129,14 @@ class WriteScalesTests: XCTestCase {
      Tests the whole tone scale works
      */
     func testWholeToneScale() {
-        let chromaticC = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db", "C"]
-        let chromaticD = ["D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "Db", "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D"]
+        let chromaticC = ["C", "C-sharp", "D", "D-sharp", "E", "F", "F-sharp", "G", "G-sharp", "A", "A-sharp", "B", "C", "B", "B-flat", "A", "A-flat", "G", "G-flat", "F", "E", "E-flat", "D", "D-flat", "C"]
+        let chromaticD = ["D", "D-sharp", "E", "F", "F-sharp", "G", "G-sharp", "A", "A-sharp", "B", "C", "C-sharp", "D", "D-flat", "C", "B", "B-flat", "A", "A-flat", "G", "G-flat", "F", "E", "E-flat", "D"]
         
         let wholeToneCScale = writeScale.convertToWholeToneScale(scaleArray: chromaticC)
         let wholeToneDScale = writeScale.convertToWholeToneScale(scaleArray: chromaticD)
         
-        let expectedChromaticC = ["C", "D", "E", "F#", "G#", "A#", "C", "Bb", "Ab","Gb", "E", "D", "C"]
-        let expectedChromaticD = ["D", "E", "F#","G#", "A#", "C", "D", "C", "Bb", "Ab", "Gb", "E", "D"]
+        let expectedChromaticC = ["C", "D", "E", "F-sharp", "G-sharp", "A-sharp", "C", "B-flat", "A-flat","G-flat", "E", "D", "C"]
+        let expectedChromaticD = ["D", "E", "F-sharp","G-sharp", "A-sharp", "C", "D", "C", "B-flat", "A-flat", "G-flat", "E", "D"]
         
         XCTAssertEqual(wholeToneCScale, expectedChromaticC, "expected chromaticC is incorrect")
         XCTAssertEqual(wholeToneDScale, expectedChromaticD, "expected chromaticD is incorrect")
@@ -146,8 +146,8 @@ class WriteScalesTests: XCTestCase {
      Tests the whole tone scale adequetly exits when not given a chromatic array
      */
     func testWholeToneScaleError() {
-        let chromaticC = ["C", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "B", "Bb", "A", "Ab", "G", "Gb", "F", "E", "Eb", "D", "Db", "C"]
-        let chromaticD = ["D", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "Db", "C", "B", "Bb", "A", "Ab", "G", "Gb", "D"]
+        let chromaticC = ["C", "D", "D-sharp", "E", "F", "F-sharp", "G", "G-sharp", "A", "A-sharp", "B", "C", "B", "B-flat", "A", "A-flat", "G", "G-flat", "F", "E", "E-flat", "D", "D-flat", "C"]
+        let chromaticD = ["D", "F-sharp", "G", "G-sharp", "A", "A-sharp", "B", "C", "C-sharp", "D", "D-flat", "C", "B", "B-flat", "A", "A-flat", "G", "G-flat", "D"]
         
         let wholeToneCScale = writeScale.convertToWholeToneScale(scaleArray: chromaticC)
         let wholeToneDScale = writeScale.convertToWholeToneScale(scaleArray: chromaticD)
@@ -171,12 +171,12 @@ class WriteScalesTests: XCTestCase {
         let locrian = writeScale.convertToScaleMode(scaleArray: baseScale, mode: MajorScaleMode.locrian)
         
         let ionianExpected = ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"]
-        let dorianExpected = ["C", "D", "Eb", "F", "G", "A", "Bb", "C", "Bb", "A", "G", "F", "Eb", "D", "C"]
-        let phrygianExpected = ["C", "Db", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "Db", "C"]
-        let lydianExpected = ["C", "D", "E", "F#", "G", "A", "B", "C", "B", "A", "G", "F#", "E", "D", "C"]
-        let mixolydianExpected = ["C", "D", "E", "F", "D", "A", "Bb", "C", "Bb", "A", "D", "F", "E", "D", "C"]
-        let aeolianExpected = ["C", "D", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "D", "C"]
-        let locrianExpected = ["C", "Db", "Eb", "F", "Gb", "Ab", "Bb", "C", "Bb", "Ab", "Gb", "F", "Eb", "Db", "C"]
+        let dorianExpected = ["C", "D", "E-flat", "F", "G", "A", "B-flat", "C", "B-flat", "A", "G", "F", "E-flat", "D", "C"]
+        let phrygianExpected = ["C", "D-flat", "E-flat", "F", "G", "A-flat", "B-flat", "C", "B-flat", "A-flat", "G", "F", "E-flat", "D-flat", "C"]
+        let lydianExpected = ["C", "D", "E", "F-sharp", "G", "A", "B", "C", "B", "A", "G", "F-sharp", "E", "D", "C"]
+        let mixolydianExpected = ["C", "D", "E", "F", "G", "A", "B-flat", "C", "B-flat", "A", "G", "F", "E", "D", "C"]
+        let aeolianExpected = ["C", "D", "E-flat", "F", "G", "A-flat", "B-flat", "C", "B-flat", "A-flat", "G", "F", "E-flat", "D", "C"]
+        let locrianExpected = ["C", "D-flat", "E-flat", "F", "G-flat", "A-flat", "B-flat", "C", "B-flat", "A-flat", "G-flat", "F", "E-flat", "D-flat", "C"]
         
         XCTAssertEqual(ionian, ionianExpected, "ionian is incorrect")
         XCTAssertEqual(dorian, dorianExpected, "dorian is incorrect")
@@ -186,6 +186,8 @@ class WriteScalesTests: XCTestCase {
         XCTAssertEqual(aeolian, aeolianExpected, "aeolian is incorrect")
         XCTAssertEqual(locrian, locrianExpected, "locrian is incorrect")
     }
+    
+    // test one with doubel flats incldued
     
     func testModePentatonic() {
         let baseScale = ["C", "D", "E", "G", "A", "C", "A", "G", "E", "D", "C"]
@@ -197,10 +199,10 @@ class WriteScalesTests: XCTestCase {
         let mode5 = writeScale.convertToPentatonicMode(scaleArray: baseScale, mode: PentatonicScaleMode.mode5_minor)
         
         let mode1Expected = ["C", "D", "E", "G", "A", "C", "A", "G", "E", "D", "C"]
-        let mode2Expected = ["C", "D", "F", "G", "Bb", "C", "Bb", "G", "F", "D", "C"]
-        let mode3Expected = ["C", "Eb", "F", "Ab", "Bb", "C", "Bb", "Ab", "F", "Eb", "C"]
+        let mode2Expected = ["C", "D", "F", "G", "B-flat", "C", "B-flat", "G", "F", "D", "C"]
+        let mode3Expected = ["C", "E-flat", "F", "A-flat", "B-flat", "C", "B-flat", "A-flat", "F", "E-flat", "C"]
         let mode4Expected = ["C", "D", "F", "G", "A", "C", "A", "G", "F", "D", "C"]
-        let mode5Expected = ["C", "Eb", "F", "G", "Bb", "C", "Bb", "G", "F", "Eb", "C"]
+        let mode5Expected = ["C", "E-flat", "F", "G", "B-flat", "C", "B-flat", "G", "F", "E-flat", "C"]
         
         XCTAssertEqual(mode1, mode1Expected, "ionian is incorrect")
         XCTAssertEqual(mode2, mode2Expected, "dorian is incorrect")
@@ -212,7 +214,7 @@ class WriteScalesTests: XCTestCase {
     func testConvertToIntervalsAllUp() {
         let baseScale = ["2:C", "2:D", "2:E", "3:F", "2:G", "3:A", "3:B", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D", "2:C"]
         let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
-        let phrygian = ["C", "Db", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "Db", "C"]
+        let phrygian = ["C", "D-flat", "E-flat", "F", "G", "A-flat", "B-flat", "C", "B-flat", "A-flat", "G", "F", "E-flat", "D-flat", "C"]
 
         let allUpThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.allUp, for: baseScale)
         let allUpFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.allUp, for: baseScale2)
@@ -223,7 +225,7 @@ class WriteScalesTests: XCTestCase {
         let allUpThirdsExpected = ["2:C", "2:E", "2:D", "3:F", "2:E", "2:G", "3:F", "3:A", "2:G", "3:B", "3:A", "3:C", "3:B", "3:D", "3:C", "3:A", "3:B", "2:G", "3:A", "3:F", "2:G", "2:E", "3:F", "2:D", "2:E", "2:C", "2:D", "2:B", "2:C"]
         let allUpFourthsExpected = ["2:C", "2:G", "2:D", "3:A", "2:E", "3:C", "2:G", "3:D", "3:A", "3:E", "3:C", "2:E", "3:A", "2:D", "2:G", "2:C", "2:E", "2:A", "2:D", "1:G", "2:C"]
         let allUpFifthsExpected = ["2:C", "2:G", "2:D", "3:A", "2:E", "3:B", "3:F", "3:C", "2:G", "3:D", "3:A", "3:E", "3:B", "4:F", "3:C", "3:F", "3:B", "2:E", "3:A", "2:D", "2:G", "2:C", "3:F", "2:B", "2:E", "2:A", "2:D", "1:G", "2:C"]
-        let allUpThirdsWithoutOctaveExpected = ["C", "Eb", "Db", "F", "Eb", "G", "F", "Ab", "G", "Bb", "Ab", "C", "Bb", "Db", "C", "Ab", "Bb", "G", "Ab", "F", "G", "Eb", "F", "Db", "Eb", "C", "Db", "Bb", "C"]
+        let allUpThirdsWithoutOctaveExpected = ["C", "E-flat", "D-flat", "F", "E-flat", "G", "F", "A-flat", "G", "B-flat", "A-flat", "C", "B-flat", "D-flat", "C", "A-flat", "B-flat", "G", "A-flat", "F", "G", "E-flat", "F", "D-flat", "E-flat", "C", "D-flat", "B-flat", "C"]
         
         XCTAssertEqual(allUpThirds, allUpThirdsExpected, "allupthirds is incorrect")
         XCTAssertEqual(allUpFourths, allUpFourthsExpected, "allupthirdsPentatonic is incorrect")
@@ -234,7 +236,7 @@ class WriteScalesTests: XCTestCase {
     func testConvertToIntervalsAllDowm() {
         let baseScale = ["2:C", "2:D", "2:E", "3:F", "2:G", "3:A", "3:B", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D", "2:C"]
         let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
-        let phrygian = ["C", "Db", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "Db", "C"]
+        let phrygian = ["C", "D-flat", "E-flat", "F", "G", "A-flat", "B-flat", "C", "B-flat", "A-flat", "G", "F", "E-flat", "D-flat", "C"]
 
         let allDownThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.allDown, for: baseScale)
         let allDownFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.allDown, for: baseScale2)
@@ -245,7 +247,7 @@ class WriteScalesTests: XCTestCase {
         let allDownThirdsExpected = ["2:E", "2:C", "3:F", "2:D", "2:G", "2:E", "3:A", "3:F", "3:B", "2:G", "3:C", "3:A", "3:D", "3:B", "3:C", "3:E", "3:B", "3:D", "3:A", "3:C", "2:G", "3:B", "3:F", "3:A", "2:E", "2:G", "2:D", "3:F", "2:C"]
         let allDownFourthsExpected = ["2:G", "2:C", "3:A", "2:D", "3:C", "2:E", "3:D", "2:G", "3:E", "3:A", "3:C", "3:G", "3:A", "3:E", "2:G", "3:D", "2:E", "3:C", "2:D", "3:A", "2:C"]
         let allDownFifthsExpected = ["2:G", "2:C", "3:A", "2:D", "3:B", "2:E", "3:C", "3:F", "3:D", "2:G", "3:E", "3:A", "4:F", "3:B", "3:C", "3:G", "3:B", "4:F", "3:A", "3:E", "2:G", "3:D", "3:F", "3:C", "2:E", "3:B", "2:D", "3:A", "2:C"]
-        let alldownThirdsWithoutOctaveExpected = ["Eb", "C", "F", "Db", "G", "Eb", "Ab", "F", "Bb", "G", "C", "Ab", "Db", "Bb", "C", "Eb", "Bb", "Db", "Ab", "C", "G", "Bb", "F", "Ab", "Eb", "G", "Db", "F", "C"]
+        let alldownThirdsWithoutOctaveExpected = ["E-flat", "C", "F", "D-flat", "G", "E-flat", "A-flat", "F", "B-flat", "G", "C", "A-flat", "D-flat", "B-flat", "C", "E-flat", "B-flat", "D-flat", "A-flat", "C", "G", "B-flat", "F", "A-flat", "E-flat", "G", "D-flat", "F", "C"]
         
         XCTAssertEqual(allDownThirds, allDownThirdsExpected, "alldownthirds is incorrect")
         XCTAssertEqual(allDownFourths, allDownFourthsExpected, "alldownthirdsPentatonic is incorrect")
@@ -256,7 +258,7 @@ class WriteScalesTests: XCTestCase {
     func testConvertToIntervalsOneUpOneDowm() {
         let baseScale = ["2:D", "2:E", "2:F", "2:G", "3:A", "3:B", "3:C", "3:D", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D"]
         let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
-        let phrygian = ["C", "Db", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "Db", "C"]
+        let phrygian = ["C", "D-flat", "E-flat", "F", "G", "A-flat", "B-flat", "C", "B-flat", "A-flat", "G", "F", "E-flat", "D-flat", "C"]
 
         let oneUpOneDownThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.oneUpOneDown, for: baseScale)
         let oneUpOneDownFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.oneUpOneDown, for: baseScale2)
@@ -267,7 +269,7 @@ class WriteScalesTests: XCTestCase {
         let oneUpOneDownThirdsExpected = ["2:D", "2:F", "2:G", "2:E", "2:F", "3:A", "3:B", "2:G", "3:A", "3:C", "3:D", "3:B", "3:C", "3:E", "3:D", "3:F", "3:E", "3:C", "3:B", "3:D", "3:C", "3:A", "2:G", "3:B", "3:A", "2:F", "2:E", "2:G", "2:F", "2:D"]
         let oneUpOneDownFourthsExpected = ["2:C", "2:G", "3:A", "2:D", "2:E", "3:C", "3:D", "2:G", "3:A", "3:E", "3:C", "3:G", "3:E", "3:A", "2:G", "3:D", "3:C", "2:E", "2:D", "3:A", "2:G", "2:C"]
         let oneUpOneDownFifthsExpected = ["2:D", "3:A", "3:B", "2:E", "2:F", "3:C", "3:D", "2:G", "3:A", "3:E", "3:F", "3:B", "3:C", "3:G", "3:D", "4:A", "3:G", "3:C", "3:B", "3:F", "3:E", "3:A", "2:G", "3:D", "3:C", "2:F", "2:E", "3:B", "3:A", "2:D"]
-        let oneUpOneDownThirdsWithoutOctaveExpected = ["C", "Eb", "F", "Db", "Eb", "G", "Ab", "F", "G", "Bb", "C", "Ab", "Bb", "Db", "C", "Eb", "Db", "Bb", "Ab", "C", "Bb", "G", "F", "Ab", "G", "Eb", "Db", "F", "Eb", "C"]
+        let oneUpOneDownThirdsWithoutOctaveExpected = ["C", "E-flat", "F", "D-flat", "E-flat", "G", "A-flat", "F", "G", "B-flat", "C", "A-flat", "B-flat", "D-flat", "C", "E-flat", "D-flat", "B-flat", "A-flat", "C", "B-flat", "G", "F", "A-flat", "G", "E-flat", "D-flat", "F", "E-flat", "C"]
         
         XCTAssertEqual(oneUpOneDownThirds, oneUpOneDownThirdsExpected, "oneUpOneDownthirds is incorrect")
         XCTAssertEqual(oneUpOneDownFourths, oneUpOneDownFourthsExpected, "oneUpOneDownthirdsPentatonic is incorrect")
@@ -278,7 +280,7 @@ class WriteScalesTests: XCTestCase {
     func testConvertToIntervalsOneDownOneUp() {
         let baseScale = ["2:D", "2:E", "2:F", "2:G", "3:A", "3:B", "3:C", "3:D", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D"]
         let baseScale2 = ["2:C", "2:D", "2:E", "2:G", "3:A", "3:C", "3:A", "2:G", "2:E", "2:D", "2:C"]
-        let phrygian = ["C", "Db", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "Db", "C"]
+        let phrygian = ["C", "D-flat", "E-flat", "F", "G", "A-flat", "B-flat", "C", "B-flat", "A-flat", "G", "F", "E-flat", "D-flat", "C"]
 
         let oneDownOneUpThirds = writeScale.convertToIntervals(of: Interval.thirds, with: IntervalOption.oneDownOneUp, for: baseScale)
         let oneDownOneUpFourths = writeScale.convertToIntervals(of: Interval.fourths, with: IntervalOption.oneDownOneUp, for: baseScale2)
@@ -289,7 +291,7 @@ class WriteScalesTests: XCTestCase {
         let oneDownOneUpThirdsExpected = ["2:F", "2:D", "2:E", "2:G", "3:A", "2:F", "2:G", "3:B", "3:C", "3:A", "3:B", "3:D", "3:E", "3:C", "3:D", "3:F", "3:G", "3:E", "3:D", "3:B", "3:A", "3:C", "3:B", "2:G", "2:F", "3:A", "2:G", "2:E", "2:D"]
         let oneDownOneUpFourthsExpected = ["2:G", "2:C", "2:D", "3:A", "3:C", "2:E", "2:G", "3:D", "3:E", "3:A", "3:C", "3:G", "4:A", "3:D", "3:C", "2:E", "2:D", "3:A", "2:G", "2:C"]
         let oneDownOneUpFifthsExpected = ["3:A", "2:D", "2:E", "3:B", "3:C", "2:F", "2:G", "3:D", "3:E", "3:A", "3:B", "3:F", "3:G", "3:C", "3:D", "4:A", "4:B", "3:E", "3:D", "2:G", "2:F", "3:C", "3:B", "2:E", "2:D", "3:A", "2:G", "2:C", "2:B", "2:F", "2:E", "2:A", "1:G", "2:D"]
-        let oneDownOneUpThirdsWithoutOctaveExpected = ["Eb", "C", "Db", "F", "G", "Eb", "F", "Ab", "Bb", "G", "Ab", "C", "Db", "Bb", "C", "Eb", "F", "Db", "C", "Ab", "G", "Bb", "Ab", "F", "Eb", "G", "F", "Db", "C"]
+        let oneDownOneUpThirdsWithoutOctaveExpected = ["E-flat", "C", "D-flat", "F", "G", "E-flat", "F", "A-flat", "B-flat", "G", "A-flat", "C", "D-flat", "B-flat", "C", "E-flat", "F", "D-flat", "C", "A-flat", "G", "B-flat", "A-flat", "F", "E-flat", "G", "F", "D-flat", "C"]
         
         XCTAssertEqual(oneDownOneUpThirds, oneDownOneUpThirdsExpected, "oneDownOneUpthirds is incorrect")
         XCTAssertEqual(oneDownOneUpFourths, oneDownOneUpFourthsExpected, "oneDownOneUpthirdsPentatonic is incorrect")
@@ -299,13 +301,13 @@ class WriteScalesTests: XCTestCase {
     
     func testRepeatEveryNote() {
         let baseScale = ["2:D", "2:E", "2:F", "2:G", "3:A", "3:B", "3:C", "3:D", "3:C", "3:B", "3:A", "2:G", "2:F", "2:E", "2:D"]
-        let baseScale2 = ["C", "Db", "Eb", "F", "G", "Ab", "Bb", "C", "Bb", "Ab", "G", "F", "Eb", "Db", "C"]
+        let baseScale2 = ["C", "D-flat", "E-flat", "F", "G", "A-flat", "B-flat", "C", "B-flat", "A-flat", "G", "F", "E-flat", "D-flat", "C"]
 
         let baseScaleDoubled = writeScale.repeatAllNotes(in: baseScale)
         let baseScale2Doubled = writeScale.repeatAllNotes(in: baseScale2)
         
         let baseScaleDoubledExpected = ["2:D", "2:D", "2:E", "2:E", "2:F", "2:F", "2:G", "2:G", "3:A", "3:A", "3:B", "3:B", "3:C", "3:C", "3:D", "3:D", "3:C", "3:C", "3:B", "3:B", "3:A", "3:A", "2:G", "2:G", "2:F", "2:F", "2:E", "2:E", "2:D", "2:D"]
-        let baseScale2DoubledExpected = ["C", "C", "Db", "Db", "Eb", "Eb", "F", "F", "G", "G", "Ab", "Ab", "Bb", "Bb", "C", "C", "Bb", "Bb", "Ab", "Ab", "G", "G", "F", "F", "Eb", "Eb", "Db", "Db", "C", "C"]
+        let baseScale2DoubledExpected = ["C", "C", "D-flat", "D-flat", "E-flat", "E-flat", "F", "F", "G", "G", "A-flat", "A-flat", "B-flat", "B-flat", "C", "C", "B-flat", "B-flat", "A-flat", "A-flat", "G", "G", "F", "F", "E-flat", "E-flat", "D-flat", "D-flat", "C", "C"]
 
         
         XCTAssertEqual(baseScaleDoubled, baseScaleDoubledExpected, "base scale doubled is incorrect")

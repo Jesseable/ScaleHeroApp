@@ -45,7 +45,7 @@ struct AlterNotes {
         
         if var majorTonicNote = ascendingNotes[majorTonicIndex] {
             majorTonicNote = checkSharpFlat(for: majorTonicNote, oldTonicNote: tonicNote)
-            
+            majorTonicNote = sanitiseNoteName(note: majorTonicNote)
             return majorTonicNote
         } else {
             return "FAILED to find IonianTonicNote in AlterNotes"
@@ -68,7 +68,7 @@ struct AlterNotes {
         
         if var ionianTonicNote = ascendingNotes[ionianTonicIndex] {
             ionianTonicNote = checkSharpFlat(for: ionianTonicNote, oldTonicNote: tonicNote)
-            
+            ionianTonicNote = sanitiseNoteName(note: ionianTonicNote)
             return ionianTonicNote
         } else {
             return "FAILED to find IonianTonicNote in AlterNotes"
@@ -81,15 +81,28 @@ struct AlterNotes {
         
         if (hasSharpOrFlat) {
             let notesArr = newTonicNote.components(separatedBy: "|")
-            let isSharp = oldTonicNote.contains("#")
-            if (isSharp) {
+            let isSharp = oldTonicNote.contains("sharp")
+            if (isSharp) { // Will need to sanitise the opposite way here
                 newTonicNote = notesArr[0] // return sharp
             } else {
                 newTonicNote = notesArr[1] // return flat
             }
         }
-        
         return newTonicNote
+    }
+    
+    private func sanitiseNoteName(note: String) -> String { // TODO: This could be removed when I create my better classes amd archetecture.
+        var sanitizedNote = note
+        
+        if (note.contains("#")) {
+            sanitizedNote = sanitizedNote.replacingOccurrences(of: "##", with: "-double-sharp")
+            sanitizedNote = sanitizedNote.replacingOccurrences(of: "#", with: "-sharp")
+        }
+        if (note.contains("b")) {
+            sanitizedNote = sanitizedNote.replacingOccurrences(of: "bb", with: "-double-flat")
+            sanitizedNote = sanitizedNote.replacingOccurrences(of: "b", with: "-flat")
+        }
+        return sanitizedNote
     }
     
     private func calculateMajorModeDegree(mode: MajorScaleMode) -> Int {
@@ -134,17 +147,18 @@ struct AlterNotes {
      */
     private func returnNoteIndex(for note : String) -> Int {
         let modifiedNote : String
-        if (note.contains("#") || note.contains("b")) {
+        // TODO: Add code to shift double flats to the readable sound file note as well. need to rename my classes I suppose. 
+        if (note.contains("sharp") || note.contains("flat")) { // Maybe I need to sanitise here??? What is going on here
             switch note {
-            case "A#", "Bb":
+            case "A-sharp", "B-flat":
                 modifiedNote = "A#|Bb"
-            case "C#", "Db":
+            case "C-sharp", "D-flat":
                 modifiedNote = "C#|Db"
-            case "D#", "Eb":
+            case "D-sharp", "E-flat":
                 modifiedNote = "D#|Eb"
-            case "F#", "Gb":
+            case "F-sharp", "G-flat":
                 modifiedNote = "F#|Gb"
-            case "G#", "Ab":
+            case "G-sharp", "A-flat":
                 modifiedNote = "G#|Ab"
             default:
                 return -1
