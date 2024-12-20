@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ArpeggioArrays: Identifiable, Codable {
+struct ArpeggioArray: NoteArrayBase {
     let id: UUID
     let note: String
     let major: [String]

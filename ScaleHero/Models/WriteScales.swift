@@ -17,7 +17,7 @@ struct WriteScales {
     let INVALID_KEY = 100 // since 100 is not a valid key and is greater than any previousKey
     
     //let type : String
-    var scaleOptions: ScaleOptions
+    var scaleOptions: NoteOptions
     
     private let accendingNotes = [1: "1:A",
                           2: "1:A#|Bb",
@@ -88,7 +88,7 @@ struct WriteScales {
         
         for scale in scales {
             if (scale.name.elementsEqual("notes")) {
-                for scaleArray in scale.scaleArrays { // Maybe make the letters also a heading? Then do all the scales in that letter? Saves time???
+                for scaleArray in scale.noteArray { // Maybe make the letters also a heading? Then do all the scales in that letter? Saves time???
                     if (scaleArray.note.elementsEqual(startingNote)) {
                         let baseScaleNotes = retrieveScaleRawNotes(for: scaleArray, with: tonality)
                         return baseScaleNotes
@@ -110,7 +110,7 @@ struct WriteScales {
         
         for arpeggio in arpeggios {
             if (arpeggio.name.elementsEqual("notes")) {
-                for arpeggioArray in arpeggio.arpeggioArrays {
+                for arpeggioArray in arpeggio.noteArray {
                     if (arpeggioArray.note.elementsEqual(startingNote)) {
                         let baseArpeggioNotes = retrieveArpeggioRawNotes(for: arpeggioArray, with: tonality)
                         return baseArpeggioNotes
@@ -128,7 +128,7 @@ struct WriteScales {
      @param tonality: The arpeggio type/tonality to select
      Returns: a string array containing the arpeggio notes
      */
-    private func retrieveArpeggioRawNotes(for array: ArpeggioArrays, with tonality: ArpeggioTonality) -> [String] {
+    private func retrieveArpeggioRawNotes(for array: ArpeggioArray, with tonality: ArpeggioTonality) -> [String] {
         switch tonality {
         case .major:
             return array.major
@@ -152,7 +152,7 @@ struct WriteScales {
      @param tonality: The scale type/tonality to select
      Returns: a string array containing the scale notes
      */
-    private func retrieveScaleRawNotes(for array: ScaleArrays, with tonality: ScaleTonality) -> [String] {
+    private func retrieveScaleRawNotes(for array: ScaleArray, with tonality: ScaleTonality) -> [String] {
         switch tonality {
         case .major:
             return array.major

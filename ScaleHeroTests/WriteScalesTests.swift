@@ -10,7 +10,7 @@ import XCTest
 
 class WriteScalesTests: XCTestCase {
     
-    var writeScale = WriteScales(scaleOptions: ScaleOptions())
+    var writeScale = WriteScales(scaleOptions: NoteOptions())
     
     /*
      Initialise the fileReaderAndWriter

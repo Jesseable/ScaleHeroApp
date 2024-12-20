@@ -7,9 +7,8 @@
 
 import Foundation
 
-
-class Scales: Identifiable, Codable {
+struct Scales: NotesBase {
     let id: UUID
     let name: String
-    let scaleArrays: [ScaleArrays]
+    let noteArray: [ScaleArray]
 }

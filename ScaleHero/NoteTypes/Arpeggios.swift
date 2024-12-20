@@ -7,8 +7,8 @@
 
 import Foundation
 
-class Arpeggios: Identifiable, Codable {
+struct Arpeggios: NotesBase {
     let id: UUID
     let name: String
-    let arpeggioArrays: [ArpeggioArrays]
+    let noteArray: [ArpeggioArray]
 }

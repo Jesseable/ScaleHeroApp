@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ScaleArrays: Identifiable, Codable {
+struct ScaleArray: NoteArrayBase {
     let id: UUID
     let note: String
     let major: [String]
@@ -17,8 +17,4 @@ struct ScaleArrays: Identifiable, Codable {
     let chromatic: [String]
     let pentatonic: [String]
     let blues: [String]
-//
-//    var image: String {
-//        name.lowercased().replacingOccurrences(of: " ", with: "-")
-//    }
 }

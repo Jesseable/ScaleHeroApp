@@ -12,7 +12,7 @@ struct SoundOptionsView: View {
     private let universalSize = UIScreen.main.bounds
     
     @Binding var screenType: ScreenType
-    @EnvironmentObject var scaleOptions: ScaleOptions
+    @EnvironmentObject var scaleOptions: NoteOptions
     @State private var isPlaying = false
     @State private var presentAlert = false
     @State var playScale = PlaySounds()

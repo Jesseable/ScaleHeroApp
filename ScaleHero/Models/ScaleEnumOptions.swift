@@ -77,13 +77,34 @@ enum PentatonicScaleMode : Int, CaseIterable, Equatable, Codable {
     case mode5_minor = 4
 }
 
-enum ArpeggioTonality : String, CaseIterable, Equatable, Codable{
+protocol TonalityProtocol {
+    var name: String { get }
+}
+
+enum ArpeggioTonality : String, CaseIterable, Equatable, Codable, TonalityProtocol {
     case major = "major arpeggio"
     case minor = "minor arpeggio"
     case dominant7th = "dominant 7th"
     case diminished7th = "diminished 7th"
     case major7th = "major 7th"
     case minor7th = "minor 7th"
+    
+    var name: String {
+        switch self {
+        case .major:
+            return "Major Arpeggio"
+        case .minor:
+            return "Minor Arpeggio"
+        case .dominant7th:
+            return "Dominant 7th"
+        case .diminished7th:
+            return "Diminished 7th"
+        case .major7th:
+            return "Major 7th"
+        case .minor7th:
+            return "Minor 7th"
+        }
+    }
 }
 
 enum ChromaticAlteration : CaseIterable, Equatable, Codable {
@@ -92,7 +113,7 @@ enum ChromaticAlteration : CaseIterable, Equatable, Codable {
     // possibly add third options here (up in minor thirds etc
 }
 
-enum ScaleTonality : Equatable, Codable {
+enum ScaleTonality : Equatable, Codable, TonalityProtocol {
     case major(mode: MajorScaleMode)
     case naturalMinor
     case harmonicMinor
@@ -100,6 +121,25 @@ enum ScaleTonality : Equatable, Codable {
     case chromatic(alteration: ChromaticAlteration)
     case pentatonic(mode: PentatonicScaleMode)
     case blues
+    
+    var name: String {
+        switch self {
+        case .major(mode: let mode):
+            return "Major" // TODO: Need to return the mode string here as well
+        case .naturalMinor:
+            return "Natural Minor"
+        case .harmonicMinor:
+            return "harmonic Minor"
+        case .melodicMinor:
+            return "Melodic Minor"
+        case .chromatic(alteration: let alteration):
+            return "Chromatic"
+        case .pentatonic(mode: let mode):
+            return "Pentatonic"
+        case .blues:
+            return "Blues"
+        }
+    }
 }
 
 enum Interval : Int, Codable {

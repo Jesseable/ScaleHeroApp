@@ -12,7 +12,7 @@ struct SoundView : View {
     private let universalSize = UIScreen.main.bounds
     
     @Binding var screenType: ScreenType
-    @EnvironmentObject var scaleOptions: ScaleOptions
+    @EnvironmentObject var scaleOptions: NoteOptions
     @State private var isPlaying = false
     @State private var presentAlert = false
     //@State private var disableOctaveSelection = false
@@ -206,6 +206,7 @@ struct SoundView : View {
             var soundFileArray : [String]
             let start = 0
             
+            // TODO: This should all be moved into 'CREATE_SCALE' constructor.
             let writeScale = WriteScales(scaleOptions: scaleOptions)
             let baseScale = writeScale.returnScaleNotesArray(for: musicNotes.tonality!, startingAt: musicNotes.tonicNote)
             
@@ -249,7 +250,7 @@ struct SoundView : View {
         }
     }
     
-    
+    // TODO: Move into the NoteConstructorAbstract. This isn't view behaviour
     private func transposeNotes(for notesArray: [String]) -> [String] {
         var transposedNotes = notesArray
         // add transposition here if needed
