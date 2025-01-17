@@ -9,5 +9,5 @@ import Foundation
 
 protocol NoteArrayBase: Identifiable, Codable {
     var id: UUID { get }
-    var note: String { get }
+    var note: Notes { get }
 }

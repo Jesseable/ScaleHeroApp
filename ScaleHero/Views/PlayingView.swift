@@ -29,7 +29,7 @@ struct PlayingView: View {
     private let universalSize = UIScreen.main.bounds
     @State var firstNoteDisplay = true
     @State var num = 0
-    @State var repeatingEndlessly : Bool // Chnage to a variable
+    @State var repeatingEndlessly : Bool // TODO: Change to a variable
     
     var body: some View {
         let buttonHeight = universalSize.height/10
@@ -79,6 +79,7 @@ struct PlayingView: View {
                 let duration = (tempoToSeconds(tempo: self.musicNotes.tempo)
                                 * CGFloat(self.musicNotes.scaleNotes.count + extraDuration))
                 // Transposes just the drone note
+                // TODO: create a way to get the transposed tonic note from MusicArray
                 let transposedNoteName = playSounds.getTransposedNote(selectedNote: musicNotes.tonicNote)
                 
                 if (!repeatingEndlessly) {
@@ -99,7 +100,6 @@ struct PlayingView: View {
                 }
             
             } else {
-                
                 // Metronome sound
                 if musicNotes.metronome {
                     do {
@@ -108,6 +108,7 @@ struct PlayingView: View {
                         print("File Error When reading metronome")
                     }
                 }
+                // TODO: CurrentNote should be of type note.
                 currentNote = musicNotes.scaleNoteNames[self.index]
                 
                 // Allows sound to play when ringer is on silent
@@ -122,9 +123,10 @@ struct PlayingView: View {
                     if !musicNotes.scaleNotes[index].contains("Metronome") {
                         do {
                             let finalNote : Bool
+                            // Save the achievements
                             if (index == musicNotes.scaleNotes.count - 1) {
                                 finalNote = true
-                                /// MUST CLEAN LATER
+                                // TODO: MUST CLEAN LATER
                                 DispatchQueue.global(qos: .utility).async {
                                     var achievementsData = fileReaderAndWriter.readScaleAchievements()
                                     var acheivementsArr = achievementsData.components(separatedBy: ":")
@@ -136,7 +138,7 @@ struct PlayingView: View {
                                                      + ":\(acheivementsArr[4]):\(acheivementsArr[5]):\(acheivementsArr[6])"
                                     fileReaderAndWriter.writeScaleAchievements(newData: achievementsData)
                                 }
-                                /// TO BE CLEANED ABOVE
+                                // TODO: TO BE CLEANED ABOVE
                             } else {
                                 finalNote = false
                             }

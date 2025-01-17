@@ -8,5 +8,5 @@
 import Foundation
 
 enum SoundError: Error {
-case fileNoteFound(fileName: String)
+    case fileNoteFound(fileName: String)
 }

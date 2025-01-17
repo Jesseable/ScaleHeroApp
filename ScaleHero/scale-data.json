@@ -120,7 +120,7 @@
 					"major": ["G", "A", "B", "C", "D", "E", "F-sharp", "G", "F-sharp", "E", "D", "C", "B", "A", "G"],
 					"naturalMinor": ["G", "A", "B-flat", "C", "D", "E-flat", "F", "G", "F", "E-flat", "D", "C", "B-flat", "A", "G"],
 					"harmonicMinor": ["G", "A", "B-flat", "C", "D", "E-flat", "F-sharp", "G", "F-sharp", "E-flat", "D", "C", "B-flat", "A", "G"],
-					"melodicMinor": ["G", "A", "B-flat", "C", "-flat", "E", "F-sharp", "G", "F", "E-flat", "D", "C", "B-flat", "A", "G"],
+					"melodicMinor": ["G", "A", "B-flat", "C", "D", "E", "F-sharp", "G", "F", "E-flat", "D", "C", "B-flat", "A", "G"],
 					"chromatic": ["G", "G-sharp", "A", "A-sharp", "B", "C", "C-sharp", "D", "D-sharp", "E", "F", "F-sharp", "G", "G-flat", "F", "E", "E-flat", "D", "D-flat", "C", "B", "B-flat", "A", "A-flat", "G"],
 					"pentatonic": ["G", "A", "B", "D", "E", "G", "E", "D", "B", "A", "G"],
 					"blues": ["G", "B-flat", "C", "D-flat", "D", "F", "G", "F", "D", "D-flat", "C", "B-flat", "G"]
@@ -193,34 +193,6 @@
 				}
 			]
 		},
-		{
-			"id": "28293156-D947-464E-8145-EA168681AB9E",
-			"name": "fingerings",
-			"noteArray": [
-                {
-					"id": "F420C34C-7F10-4487-ADBA-6906E56D7D0B",
-					"note": "Cello",
-					"major": ["1", "x2", "x4", "1", "x2", "x4", "1", "2", "4", "1", "2", "4", "1", "3", "4", "1", "x2", "1", "x2", "1", "x2", "3", "x2", "1", "x2", "1", "x2", "1", "4", "3", "1", "4", "2", "1", "4", "2", "1", "x4", "x2", "1", "x4", "x2", "1"],
-					"naturalMinor": [],
-					"harmonicMinor": [],
-					"melodicMinor": [],
-					"chromatic": [],
-					"pentatonic": [],
-					"blues": []
-				},
-				{
-					"id": "719FD3A1-C7C1-4C1F-BF50-D34BBBA3CC1B",
-                    "note": "Violin",
-					"major": [],
-					"naturalMinor": [],
-					"harmonicMinor": [],
-					"melodicMinor": [],
-					"chromatic": [],
-					"pentatonic": [],
-					"blues": []
-				}
-			]
-		}
 	],
 	"arpeggios": [
         {
@@ -399,31 +371,5 @@
                 }
             ]
 		},
-		{
-            "id": "2c5f8431-7536-451d-b4ad-0983666fe31d",
-            "name": "fingerings",
-            "noteArray": [
-                {
-                    "id": "59ea40b0-4651-440e-8f49-d59cbddca760",
-                    "note": "Cello",
-                    "major": [],
-                    "minor": [],
-                    "dominant7th": [],
-                    "diminished7th": [],
-                    "major7th": [],
-                    "minor7th": []
-                },
-                {
-                    "id": "779e1709-f227-4b4f-881b-cbd3a2a0f184",
-                    "note": "Violin",
-                    "major": [],
-                    "minor": [],
-                    "dominant7th": [],
-                    "diminished7th": [],
-                    "major7th": [],
-                    "minor7th": []
-                }
-            ]
-		}
 	]
 }

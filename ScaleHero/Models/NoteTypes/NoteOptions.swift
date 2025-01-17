@@ -18,7 +18,7 @@ class NoteOptions: ObservableObject, Codable {
             }
             let jsonData = try Data(contentsOf: url)
             let scaleOptionsData = try JSONDecoder().decode(NoteOptions.self, from: jsonData)
-            print(scaleOptionsData) // TO DELETE???
+            //print(scaleOptionsData) // Just for testing purposes
 
             scales = scaleOptionsData.scales
             arpeggios = scaleOptionsData.arpeggios
@@ -28,7 +28,7 @@ class NoteOptions: ObservableObject, Codable {
         }
     }
 }
-
+// TODO: Is this do be deleted???
 // Custom decoding for NotesBase
 extension Scales: Codable {
     func encode(to encoder: any Encoder) throws {

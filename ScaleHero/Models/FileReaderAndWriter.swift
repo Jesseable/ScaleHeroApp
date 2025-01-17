@@ -49,8 +49,8 @@ class FileReaderAndWriter: ObservableObject { /// MOVE ALL OF THIS INTO ONE BIG 
 
     func add(tonality: Case,
              tempo: Int,
-             startingOctave: Int,
-             numOctave: Int,
+             startingOctave: OctaveNumber,
+             numOctave: OctaveNumber,
              tonicSelection: TonicOption,
              scaleNotes: Bool,
              drone: Bool,

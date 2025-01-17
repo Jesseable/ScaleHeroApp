@@ -24,7 +24,7 @@ struct SoundOptionsView: View {
     var backgroundImage: String
     
     var body: some View {
-        let title = "\(musicNotes.tonicNote) \(musicNotes.getTonality(from: musicNotes.tonality))"
+        let title = "\(musicNotes.tonicNote) \(musicNotes.tonality.name)"
         let buttonHeight = universalSize.height/19
         let bottumButtonHeight = universalSize.height/10
         let advice = Text("The Number of Octaves must be One and the Starting Octave must be Two to perform a scale with intervals")
@@ -126,8 +126,8 @@ struct SoundOptionsView: View {
                 message: advice,
                 primaryButton: .default(Text("Set"), action: {
                     
-                    musicNotes.octaves = 1
-                    musicNotes.startingOctave = 2
+                    musicNotes.octaves = .one
+                    musicNotes.startingOctave = .two
                 }),
                 secondaryButton: .cancel(Text("Cancel"), action: {
                     musicNotes.intervalOption = .none
@@ -157,7 +157,7 @@ struct SoundOptionsView: View {
                     .disabled(intervalDisabled)
                 }
                 .onChange(of: musicNotes.intervalOption) { intOpt in
-                    if (musicNotes.octaves != 1 || musicNotes.startingOctave != 2) {
+                    if (musicNotes.octaves != .one || musicNotes.startingOctave != .two) {
                         presentIntervalHint = true
                     }
                     if (intOpt != .none) {

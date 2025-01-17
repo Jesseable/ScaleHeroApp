@@ -223,7 +223,7 @@ struct CircleOfFifthButtons: View {
     let colour : Color
     let radius : CGFloat
     let centre : CGPoint
-    let option : circleOfFifthsOption
+    let option : CircleOfFifthsOption
     let buttonSize : CGFloat
     @Binding var screenType: ScreenType
     

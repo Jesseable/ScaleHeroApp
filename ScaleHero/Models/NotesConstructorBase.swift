@@ -8,40 +8,53 @@
 // Abstract-like base class for retrieving the scale notes
 class NotesConstructorBase<T: TonalityProtocol> {
     
-    public var noteNames: [String]
-    private var noteNamesFileReadable: [String]
-    private var startingNote: String
-    private var tonality: T
+    // These two will be set in the getNotes class which is called in the subClasses
+    public var noteNames: MusicArray?
+    private var startingNote: Notes
+    public var tonality: T
     
     // TODO: I might be abvle to delete the scaleOptions and tonality from being saved as a class parameter
-    init(startingNote: String, tonality: T) {
+    required init(startingNote: Notes, tonality: T) throws { // Maybe take in the MuscNote (In ScalesView).
         self.tonality = tonality
         self.startingNote = startingNote
-        
-        self.noteNames = []
-        self.noteNamesFileReadable = []
     }
     
-    func calculateScale() {
-        // This is just an example of how to make override work for the subclasses I'll make
-        fatalError("Subclasses must implement the 'calculateScale' method.")
+    func getStartingNote () -> Notes {
+        return startingNote
     }
     
-    // This is awesome. good job
-    func getNotes ( // TODO: Tonality is an enum as well. I should be able to chnage this accordingly therefore
-        startingNote: String,
+    func setNotes (
+        jsonScaleStartingNote: Notes, // TODO: THis is a class variable atm. I should be able ot just remove it from this function parameters.
         notesSource: [any NotesBase], // This is an array of scales or arpeggios (you can adjust the type accordingly)
-        retrieveNotes: (any NoteArrayBase, T) -> [String] // Closure to retrieve notes based on tonality
-    ) -> [String] {
+        retrieveNotes: (any NoteArrayBase, T?) -> [Notes] // Closure to retrieve notes based on tonality
+    ) throws {
+        try setNotes(jsonScaleStartingNotes: [jsonScaleStartingNote], notesSource: notesSource, retrieveNotes: retrieveNotes)
+    }
+    
+    func setNotes (
+        jsonScaleStartingNotes: [Notes], // TODO: THis is a class variable atm. I should be able ot just remove it from this function parameters.
+        notesSource: [any NotesBase], // This is an array of scales or arpeggios (you can adjust the type accordingly)
+        modeStartingNote: Notes? = nil,
+        retrieveNotes: (any NoteArrayBase, T?) -> [Notes] // Closure to retrieve notes based on tonality
+    ) throws {
         for item in notesSource {
             if item.name == "notes" {
                 for array in item.noteArray { // possibly rename it noteArrays. Then I can work with that.
-                    if array.note == startingNote {
-                        return retrieveNotes(array, tonality)
+                    if jsonScaleStartingNotes.contains(array.note) {
+                        let noteArray = retrieveNotes(array, tonality)
+                        noteNames = MusicArray(notes: noteArray)
+                        
+                        guard let unwrappedModeStartingNote = modeStartingNote else { return }
+                        
+                        // check if the modeStartingNote exists in the major scale:
+                        let defaultNotes = retrieveNotes(array, nil)
+                        if (defaultNotes.contains(unwrappedModeStartingNote)) {
+                            return
+                        }
                     }
                 }
             }
         }
-        fatalError("Failed to find matching note in data source.")
+        throw IllegalNoteError.invalidValue(message: "Notes: '\(jsonScaleStartingNotes.map { $0.name }.joined(separator: ", "))' not found in \(tonality.name) json options")
     }
 }

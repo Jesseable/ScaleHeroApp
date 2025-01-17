@@ -18,8 +18,8 @@ struct ScaleCharacteristics: Identifiable, Equatable, Codable {
     var id: UUID
     let tonality: Case
     let tempo: Int
-    let startingOctave: Int
-    let numOctave: Int
+    let startingOctave: OctaveNumber
+    let numOctave: OctaveNumber
     let tonicSelection: TonicOption
     let scaleNotes: Bool
     let drone: Bool

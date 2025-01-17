@@ -57,7 +57,7 @@ struct AppContentView: View {
         if fileReaderAndWriter.checkFilePath(for: .transposition) {
             transposition = fileReaderAndWriter.readTransposition()
         } else {
-            transposition = "C"
+            transposition = Notes.C.name
             fileReaderAndWriter.writeNewTransposition(newTransposition: transposition)
         }
         let transpositionArr = transposition.components(separatedBy: " ")
@@ -120,35 +120,36 @@ struct AppContentView: View {
      */
     var body: some View {
         let selectedBackgroundImage = musicNotes.backgroundImage ?? self.backgroundImage
+        let startingNote = musicNotes.tonicNote
+        let notesCase = musicNotes.tonality
         
         return Group {
-            
             switch screenType {
             case .scale:
-                ScalesView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                ScalesView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .arpeggio:
-                ArpeggioView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                ArpeggioView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .otherview:
                 // Upon failing goes to special screen
-                OtherScalesView(screenType: self.$screenType, displayType: musicNotes.otherSpecificScaleTypes ?? OtherScaleTypes.special, backgroundImage: selectedBackgroundImage)
+                OtherScalesView(screenType: $screenType, displayType: musicNotes.otherSpecificScaleTypes ?? OtherScaleTypes.special, backgroundImage: selectedBackgroundImage)
             case .settings:
-                SettingsView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
+                SettingsView(screenType: $screenType, backgroundImage: selectedBackgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
             case .soundview:
-                SoundView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                SoundView(screenType: $screenType, backgroundImage: selectedBackgroundImage, tonicNoteString: startingNote, noteCase: notesCase) 
             case .droneview:
-                DroneView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                DroneView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .favouritesview:
-                FavouritesView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                FavouritesView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .aboutview:
-                AboutView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                AboutView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .homepage:
-                HomePage(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                HomePage(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .achievements:
-                AchievementsView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                AchievementsView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .soundOptionsView:
-                SoundOptionsView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                SoundOptionsView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             default:
-                NoteSelectionView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                NoteSelectionView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             }
         }
     }

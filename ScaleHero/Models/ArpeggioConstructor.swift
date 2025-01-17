@@ -7,16 +7,19 @@
 
 class ArpeggioConstructor : NotesConstructorBase<ArpeggioTonality> {
             
-    override init(startingNote: String, tonality: ArpeggioTonality) {
-        super.init(startingNote: startingNote, tonality: tonality)
+    required init(startingNote: Notes, tonality: ArpeggioTonality) throws {
+        try super.init(startingNote: startingNote, tonality: tonality)
         let arpeggios = NoteOptions().arpeggios
-        noteNames = getNotes(startingNote: startingNote, notesSource: arpeggios, retrieveNotes: retrieveScaleNotes)
+        try setNotes(jsonScaleStartingNote: startingNote, notesSource: arpeggios, retrieveNotes: retrieveScaleNotes)
     }
 
-    func retrieveScaleNotes(for array: any NoteArrayBase, with tonality: ArpeggioTonality) -> [String] {
+    func retrieveScaleNotes(for array: any NoteArrayBase, with tonality: ArpeggioTonality?) -> [Notes] {
         let arpeggios = verifyArpeggioArrayType(array: array)
         
-        switch tonality {
+        // A default to return
+        guard let unwrappedArpeggioTonality = tonality else { return arpeggios.major }
+        
+        switch unwrappedArpeggioTonality {
         case .major:
             return arpeggios.major
         case .minor:
