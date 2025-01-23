@@ -55,7 +55,7 @@ struct AppContentView: View {
         
         // TRANSPOSITION
         if fileReaderAndWriter.checkFilePath(for: .transposition) {
-            transposition = fileReaderAndWriter.readTransposition()
+            transposition = fileReaderAndWriter.readTranspositionFile()
         } else {
             transposition = Notes.C.name
             fileReaderAndWriter.writeNewTransposition(newTransposition: transposition)
@@ -135,7 +135,7 @@ struct AppContentView: View {
             case .settings:
                 SettingsView(screenType: $screenType, backgroundImage: selectedBackgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
             case .soundview:
-                SoundView(screenType: $screenType, backgroundImage: selectedBackgroundImage, tonicNoteString: startingNote, noteCase: notesCase) 
+                SoundView(screenType: $screenType, backgroundImage: selectedBackgroundImage, tonicNote: startingNote, noteCase: notesCase)
             case .droneview:
                 DroneView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .favouritesview:

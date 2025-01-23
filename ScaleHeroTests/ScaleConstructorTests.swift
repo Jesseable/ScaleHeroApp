@@ -27,7 +27,7 @@ class ScaleConstructorTests: XCTestCase {
             
             let expectedMajorScale: [Notes] = [.C, .D, .E, .F, .G, .A, .B, .C, .B, .A, .G, .F, .E, .D, .C]
             
-            XCTAssertEqual(expectedMajorScale, scaleConstructor.noteNames?.getNotes(), "jsonFile reading for C major scale failed")
+            XCTAssertEqual(expectedMajorScale, scaleConstructor.musicArray?.getNotes(), "jsonFile reading for C major scale failed")
             
         } catch IllegalNoteError.invalidValue(let message) {
             XCTFail(message)
@@ -46,7 +46,7 @@ class ScaleConstructorTests: XCTestCase {
                 .D_FLAT, .C, .B, .B_FLAT, .A, .A_FLAT, .G, .G_FLAT, .F, .E, .E_FLAT, .D, .D_FLAT
             ]
             
-            XCTAssertEqual(expectedDbChromatic, scaleConstructor.noteNames?.getNotes(), "jsonFile reading for C major scale failed")
+            XCTAssertEqual(expectedDbChromatic, scaleConstructor.musicArray?.getNotes(), "jsonFile reading for C major scale failed")
             
         } catch IllegalNoteError.invalidValue(let message) {
             XCTFail(message)
@@ -61,7 +61,7 @@ class ScaleConstructorTests: XCTestCase {
         for note in notes.validNoteNames {
             do {
                 let scaleConstructor = try ScaleConstructor(startingNote: note, tonality: ScaleTonality.major(mode: .ionian))
-                if (scaleConstructor.noteNames?.getNotes() == nil) {
+                if (scaleConstructor.musicArray?.getNotes() == nil) {
                     XCTFail("ScaleConstructor for '\(note)' was empty")
                 }
             } catch IllegalNoteError.invalidValue(let message) {
@@ -75,9 +75,9 @@ class ScaleConstructorTests: XCTestCase {
             do {
                 let scaleConstructor = try ScaleConstructor(startingNote: note, tonality: ScaleTonality.major(mode: .ionian))
                 // The note of the returned array should not match the actuall note name. But they will be identical file names
-                if (scaleConstructor.noteNames?.getNotes() != nil && scaleConstructor.noteNames?.getNotes().first?.name == note.name) {
+                if (scaleConstructor.musicArray?.getNotes() != nil && scaleConstructor.musicArray?.getNotes().first?.name == note.name) {
                     XCTFail("ScaleConstructor for '\(note)' was set. But this note should be illegal. \n"
-                            + "The scale returned is: '\(String(describing: scaleConstructor.noteNames?.getNotes().first?.name))'")
+                            + "The scale returned is: '\(String(describing: scaleConstructor.musicArray?.getNotes().first?.name))'")
                 }
             } catch IllegalNoteError.invalidValue(let message) {
                 XCTAssertEqual("Notes: '\(note.name)' not found in Ionian json options", message)
@@ -111,7 +111,7 @@ class ScaleConstructorTests: XCTestCase {
             
             let expectedMajorScale: [Notes] = [.F_SHARP, .G_SHARP, .A, .B, .C_SHARP, .D_SHARP, .E, .F_SHARP, .E, .D_SHARP, .C_SHARP, .B, .A, .G_SHARP, .F_SHARP]
             
-            XCTAssertEqual(expectedMajorScale, scaleConstructor.noteNames?.getNotes(), "Converting F_Sharp to Dorian Mode Scale failed")
+            XCTAssertEqual(expectedMajorScale, scaleConstructor.musicArray?.getNotes(), "Converting F_Sharp to Dorian Mode Scale failed")
             
         } catch IllegalNoteError.invalidValue(let message) {
             XCTFail(message)
@@ -127,7 +127,7 @@ class ScaleConstructorTests: XCTestCase {
             
             let expectedMajorScale: [Notes] = [.F_SHARP, .G, .A, .B, .C, .D, .E, .F_SHARP, .E, .D, .C, .B, .A, .G, .F_SHARP]
             
-            XCTAssertEqual(expectedMajorScale, scaleConstructor.noteNames?.getNotes(), "Converting F_Sharp to Locrian Mode Scale failed")
+            XCTAssertEqual(expectedMajorScale, scaleConstructor.musicArray?.getNotes(), "Converting F_Sharp to Locrian Mode Scale failed")
             
         } catch IllegalNoteError.invalidValue(let message) {
             XCTFail(message)
@@ -143,7 +143,7 @@ class ScaleConstructorTests: XCTestCase {
             
             let expectedMajorScale: [Notes] = [.B, .C_SHARP, .D_SHARP, .E_SHARP, .F_SHARP, .G_SHARP, .A_SHARP, .B, .A_SHARP, .G_SHARP, .F_SHARP, .E_SHARP, .D_SHARP, .C_SHARP, .B]
             
-            XCTAssertEqual(expectedMajorScale, scaleConstructor.noteNames?.getNotes(), "Converting B to Lydian Mode Scale failed")
+            XCTAssertEqual(expectedMajorScale, scaleConstructor.musicArray?.getNotes(), "Converting B to Lydian Mode Scale failed")
             
         } catch IllegalNoteError.invalidValue(let message) {
             XCTFail(message)
@@ -159,7 +159,7 @@ class ScaleConstructorTests: XCTestCase {
             
             let expectedMajorPentatonic: [Notes] = [.C, .D, .E, .G, .A, .C, .A, .G, .E, .D, .C]
             
-            XCTAssertEqual(expectedMajorPentatonic, scaleConstructor.noteNames?.getNotes(), "Converting C pentatonic to major Mode failed")
+            XCTAssertEqual(expectedMajorPentatonic, scaleConstructor.musicArray?.getNotes(), "Converting C pentatonic to major Mode failed")
         } catch IllegalNoteError.invalidValue(let message) {
             XCTFail(message)
         } catch {
@@ -174,7 +174,7 @@ class ScaleConstructorTests: XCTestCase {
             
             let expectedMajorPentatonic: [Notes] = [.C, .D, .F, .G, .B_FLAT, .C, .B_FLAT, .G, .F, .D, .C]
             
-            XCTAssertEqual(expectedMajorPentatonic, scaleConstructor.noteNames?.getNotes(), "Converting C pentatonic to egyptian Mode failed")
+            XCTAssertEqual(expectedMajorPentatonic, scaleConstructor.musicArray?.getNotes(), "Converting C pentatonic to egyptian Mode failed")
         } catch IllegalNoteError.invalidValue(let message) {
             XCTFail(message)
         } catch {
@@ -189,7 +189,7 @@ class ScaleConstructorTests: XCTestCase {
             
             let expectedMajorPentatonic: [Notes] = [.C, .E_FLAT, .F, .A_FLAT, .B_FLAT, .C, .B_FLAT, .A_FLAT, .F, .E_FLAT, .C]
             
-            XCTAssertEqual(expectedMajorPentatonic, scaleConstructor.noteNames?.getNotes(), "Converting C pentatonic to manGong Mode failed")
+            XCTAssertEqual(expectedMajorPentatonic, scaleConstructor.musicArray?.getNotes(), "Converting C pentatonic to manGong Mode failed")
         } catch IllegalNoteError.invalidValue(let message) {
             XCTFail(message)
         } catch {
@@ -204,7 +204,7 @@ class ScaleConstructorTests: XCTestCase {
             
             let expectedMajorPentatonic: [Notes] = [.C, .D, .F, .G, .A, .C, .A, .G, .F, .D, .C]
             
-            XCTAssertEqual(expectedMajorPentatonic, scaleConstructor.noteNames?.getNotes(), "Converting C pentatonic to ritusen Mode failed")
+            XCTAssertEqual(expectedMajorPentatonic, scaleConstructor.musicArray?.getNotes(), "Converting C pentatonic to ritusen Mode failed")
         } catch IllegalNoteError.invalidValue(let message) {
             XCTFail(message)
         } catch {
@@ -219,7 +219,7 @@ class ScaleConstructorTests: XCTestCase {
             
             let expectedMajorPentatonic: [Notes] = [.C, .E_FLAT, .F, .G, .B_FLAT, .C, .B_FLAT, .G, .F, .E_FLAT, .C]
             
-            XCTAssertEqual(expectedMajorPentatonic, scaleConstructor.noteNames?.getNotes(), "Converting C pentatonic to minor Mode failed")
+            XCTAssertEqual(expectedMajorPentatonic, scaleConstructor.musicArray?.getNotes(), "Converting C pentatonic to minor Mode failed")
         } catch IllegalNoteError.invalidValue(let message) {
             XCTFail(message)
         } catch {

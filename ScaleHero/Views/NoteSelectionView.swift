@@ -238,92 +238,92 @@ struct CircleOfFifthButtons: View {
                 Group {
                     let firstPos = placePos(around: centre, radius: radius,
                                             currentAngle: currentAngle)
-                    NoteSelectionButtons(colour: colour, note: "A")
+                    NoteSelectionButtons(colour: colour, note: Notes.A)
                         .position(x: firstPos.x, y: firstPos.y)
                     
                     let secondPos = placePos(around: centre, radius: radius,
                                              currentAngle: (currentAngle + buttonAngle * 1))
-                    NoteSelectionButtons(colour: colour, note: "E")
+                    NoteSelectionButtons(colour: colour, note: Notes.E)
                         .position(x: secondPos.x, y: secondPos.y)
                     
                     let thirdPos = placePos(around: centre, radius: radius,
                                              currentAngle: (currentAngle + buttonAngle * 2))
-                    NoteSelectionButtons(colour: colour, note: "B")
+                    NoteSelectionButtons(colour: colour, note: Notes.B)
                         .position(x: thirdPos.x, y: thirdPos.y)
                     
                     let fourthPos = placePos(around: centre, radius: radius,
                                              currentAngle: (currentAngle + buttonAngle * 3))
-                    NoteSelectionButtons(colour: colour, note: "F#")
+                    NoteSelectionButtons(colour: colour, note: Notes.F_SHARP)
                         .position(x: fourthPos.x, y: fourthPos.y)
                 }
                 
                 Group {
                     let fifthPos = placePos(around: centre, radius: radius,
                                              currentAngle: (currentAngle + buttonAngle * 4))
-                    NoteSelectionButtons(colour: colour, note: "C#")
+                    NoteSelectionButtons(colour: colour, note: Notes.C_SHARP)
                         .position(x: fifthPos.x, y: fifthPos.y)
                     
                     let sixthPos = placePos(around: centre, radius: radius,
                                              currentAngle: (currentAngle + buttonAngle * 5))
-                    NoteSelectionButtons(colour: colour, note: "G#")
+                    NoteSelectionButtons(colour: colour, note: Notes.G_SHARP)
                         .position(x: sixthPos.x, y: sixthPos.y)
                     
                     let seventhPos = placePos(around: centre, radius: radius,
                                              currentAngle: (currentAngle + buttonAngle * 6))
-                    NoteSelectionButtons(colour: colour, note: "D#")
+                    NoteSelectionButtons(colour: colour, note: Notes.D_SHARP)
                         .position(x: seventhPos.x, y: seventhPos.y)
                     
                     let eighthPos = placePos(around: centre, radius: radius,
                                              currentAngle: (currentAngle + buttonAngle * 7))
-                    NoteSelectionButtons(colour: colour, note: "A#")
+                    NoteSelectionButtons(colour: colour, note: Notes.A_SHARP)
                         .position(x: eighthPos.x, y: eighthPos.y)
                 }
                     
                 Group {
                     let ninethPos = placePos(around: centre, radius: radius,
                                              currentAngle: (currentAngle + buttonAngle * 8))
-                    NoteSelectionButtons(colour: colour, note: "F")
+                    NoteSelectionButtons(colour: colour, note: Notes.F)
                         .position(x: ninethPos.x, y: ninethPos.y)
                     
                     let tenthPos = placePos(around: centre, radius: radius,
                                              currentAngle: (currentAngle + buttonAngle * 9))
-                    NoteSelectionButtons(colour: colour, note: "C")
+                    NoteSelectionButtons(colour: colour, note: Notes.C)
                         .position(x: tenthPos.x, y: tenthPos.y)
                     
                     let eleventhPos = placePos(around: centre, radius: radius,
                                              currentAngle: (currentAngle + buttonAngle * 10))
-                    NoteSelectionButtons(colour: colour, note: "G")
+                    NoteSelectionButtons(colour: colour, note: Notes.G)
                         .position(x: eleventhPos.x, y: eleventhPos.y)
                     
                     let twelvethPos = placePos(around: centre, radius: radius,
                                              currentAngle: (currentAngle + buttonAngle * 11))
-                    NoteSelectionButtons(colour: colour, note: "D")
+                    NoteSelectionButtons(colour: colour, note: Notes.D)
                         .position(x: twelvethPos.x, y: twelvethPos.y)
                 }
             case .inner:
                 let fourthPos = placePos(around: centre, radius: radius,
                                          currentAngle: (currentAngle + buttonAngle * 3))
-                NoteSelectionButtons(colour: colour, note: "Gb")
+                NoteSelectionButtons(colour: colour, note: Notes.G_FLAT)
                     .position(x: fourthPos.x, y: fourthPos.y)
                 
                 let fifthPos = placePos(around: centre, radius: radius,
                                          currentAngle: (currentAngle + buttonAngle * 4))
-                NoteSelectionButtons(colour: colour, note: "Db")
+                NoteSelectionButtons(colour: colour, note: Notes.D_FLAT)
                     .position(x: fifthPos.x, y: fifthPos.y)
                 
                 let sixthPos = placePos(around: centre, radius: radius,
                                          currentAngle: (currentAngle + buttonAngle * 5))
-                NoteSelectionButtons(colour: colour, note: "Ab")
+                NoteSelectionButtons(colour: colour, note: Notes.A_FLAT)
                     .position(x: sixthPos.x, y: sixthPos.y)
                 
                 let seventhPos = placePos(around: centre, radius: radius,
                                          currentAngle: (currentAngle + buttonAngle * 6))
-                NoteSelectionButtons(colour: colour, note: "Eb")
+                NoteSelectionButtons(colour: colour, note: Notes.E_FLAT)
                     .position(x: seventhPos.x, y: seventhPos.y)
                 
                 let eighthPos = placePos(around: centre, radius: radius,
                                          currentAngle: (currentAngle + buttonAngle * 7))
-                NoteSelectionButtons(colour: colour, note: "Bb")
+                NoteSelectionButtons(colour: colour, note: Notes.B_FLAT)
                     .position(x: eighthPos.x, y: eighthPos.y)
                 
             case .centre:
@@ -336,7 +336,7 @@ struct CircleOfFifthButtons: View {
                         Circle()
                             .frame(width: size, height: size, alignment: .center)
                             .foregroundColor(Color.green)
-                        Text("\(musicNotes.tonicNote)").font(
+                        Text("\(musicNotes.tonicNote.readableString)").font(
                             .system(size: size * 0.65, weight: .semibold, design: .serif))
                             .foregroundColor(.white)
                             .frame(alignment: .center)
@@ -348,7 +348,7 @@ struct CircleOfFifthButtons: View {
         }
     }
     
-    @ViewBuilder func NoteSelectionButtons(colour: Color, note: String) -> some View {
+    @ViewBuilder func NoteSelectionButtons(colour: Color, note: Notes) -> some View {
         Button {
             musicNotes.tonicNote = note
         } label: {
@@ -356,7 +356,7 @@ struct CircleOfFifthButtons: View {
                 Circle()
                     .fill(colour)
                     .frame(height: buttonSize, alignment: .center)
-                Text("\(note)").font(.system(size: buttonSize * 0.5,
+                Text(note.readableString).font(.system(size: buttonSize * 0.5,
                                              weight: .semibold, design: .rounded))
                     .foregroundColor(.white)
             }

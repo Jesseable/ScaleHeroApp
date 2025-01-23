@@ -16,32 +16,32 @@ struct SoundView : View {
     @State private var presentAlert = false
     //@State private var disableOctaveSelection = false
     //@State private var disableOctaveWithIntervals = false
-    @State var playScale = PlaySounds()
+    @State var playSounds = PlaySounds()
     @EnvironmentObject var musicNotes: MusicNotes
     var fileReaderAndWriter = FileReaderAndWriter()
     var musicArray: MusicArray
     var backgroundImage: String
     
-    init(screenType: Binding<ScreenType>, backgroundImage: String, tonicNoteString: String, noteCase: Case) {
+    init(screenType: Binding<ScreenType>, backgroundImage: String, tonicNote: Notes, noteCase: Case) {
         _screenType = screenType
         self.backgroundImage = backgroundImage
         
-        let tonicNote = Notes(noteName: tonicNoteString)
+        let tonicNote = tonicNote
         do {
             switch noteCase {
             case .arpeggio(let tonality):
-                guard let arpeggioConstructor = try? ArpeggioConstructor(startingNote: tonicNote!, tonality: tonality) else {
+                guard let arpeggioConstructor = try? ArpeggioConstructor(startingNote: tonicNote, tonality: tonality) else {
                     fatalError("Failed to initialize ArpeggioConstructor")
                 }
-                guard let noteNames = arpeggioConstructor.noteNames else {
+                guard let noteNames = arpeggioConstructor.musicArray else {
                     fatalError("ArpeggioConstructor did not return valid note names")
                 }
                 self.musicArray = noteNames
             case .scale(let tonality):
-                guard let scaleConstructor = try? ScaleConstructor(startingNote: tonicNote!, tonality: tonality) else {
+                guard let scaleConstructor = try? ScaleConstructor(startingNote: tonicNote, tonality: tonality) else {
                     fatalError("Failed to initialize ScaleConstructor")
                 }
-                guard let noteNames = scaleConstructor.noteNames else {
+                guard let noteNames = scaleConstructor.musicArray else {
                     fatalError("ScaleConstructor did not return valid note names")
                 }
                 self.musicArray = noteNames
@@ -159,7 +159,7 @@ struct SoundView : View {
                                                 tonicSelection: musicNotes.tonicMode,
                                                 scaleNotes: musicNotes.playScaleNotes,
                                                 drone: musicNotes.playDrone,
-                                                startingNote: musicNotes.tonicNote,
+                                                startingNote: musicNotes.tonicNote.name,
                                                 noteDisplay: musicNotes.noteDisplay,
                                                 endlessLoop: musicNotes.endlessLoop,
                                                 intervalType: musicNotes.intervalType,
@@ -175,23 +175,28 @@ struct SoundView : View {
         .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
         .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
         .fullScreenCover(isPresented: $isPlaying) {
-            PlayingView(backgroundImage: backgroundImage,
+            self.musicArray.applyModifications(musicNotes: musicNotes)
+            let countInBeats = CountInBeats(numBeats: playSounds.retrieveMetronomeCountInLength(for: Int(musicNotes.tempo)))
+            
+            return PlayingView(backgroundImage: backgroundImage,
                         playScaleNotes: musicNotes.playScaleNotes,
                         playDrone: musicNotes.playDrone,
-                        playSounds: playScale,
+                        countInBeats: countInBeats,
                         title: title,
-                        currentNote: musicNotes.tonicNote,
-                        repeatingEndlessly: musicNotes.endlessLoop)
+                        tonicFileNote: musicArray.getTransposedStartingNote(),
+                        repeatingEndlessly: musicNotes.endlessLoop,
+                        pitches: musicArray.getPitches(),
+                        filePitches: musicArray.constructTransposedSoundFileArray())
         }
     }
     
     @ViewBuilder func playButton(buttonHeight: CGFloat) -> some View {
         Button {
-            DispatchQueue.global(qos: .utility).async {
-                musicArray.applyModifications(musicNotes: musicNotes)
-            }
+//            DispatchQueue.global(qos: .utility).async {
+//            self.musicArray.applyModifications(musicNotes: musicNotes)
+//            }
             
-            // TODO: Move this elsewhere
+            // TODO: Move this elsewhere. WHAT IS THIS EVEn DOING
             // Could add in quavers?
             switch fileReaderAndWriter.readMetronomePulse().lowercased() {
             case "simple":
@@ -203,6 +208,8 @@ struct SoundView : View {
             default:
                 musicNotes.metronomePulse = 1
             }
+            
+//            musicNotes.musicArray = musicArray
 
             // This line of code sets at what tempo when the metronome off beat pulses will not play
             if (musicNotes.tempo >= 70 || !musicNotes.metronome) {
@@ -227,7 +234,7 @@ struct SoundView : View {
      @param type:
      Returns: a string array containing the notes of the scale to be outputted as sound files
      */
-    private func fetchScaleNotesArrayData() { // TODO: Have a sound Model that takes in the musicNotes and does everything it needs with it.
+//    private func fetchScaleNotesArrayData() { // TODO: Have a sound Model that takes in the musicNotes and does everything it needs with it.
 //        DispatchQueue.global(qos: .utility).async {
 //            var noteNamesArray : [String]
 //            var soundFileArray : [String]
@@ -276,18 +283,18 @@ struct SoundView : View {
 //                musicNotes.scaleNoteNames = noteNamesArray
 //            }
 //        }
-    }
-    
-    // TODO: Move into the NoteConstructorAbstract. This isn't view behaviour
-    private func transposeNotes(for notesArray: [String]) -> [String] {
-        var transposedNotes = notesArray
-        // add transposition here if needed
-        var itr = 0
-        for scaleNote in transposedNotes {
-            let transposedNoteName = playScale.getTransposedNote(selectedNote: scaleNote)
-            transposedNotes[itr] = transposedNoteName
-            itr += 1
-        }
-        return transposedNotes
-    }
+//    }
+//    
+//    // TODO: Move into the NoteConstructorAbstract. This isn't view behaviour
+//    private func transposeNotes(for notesArray: [String]) -> [String] {
+//        var transposedNotes = notesArray
+//        // add transposition here if needed
+//        var itr = 0
+//        for scaleNote in transposedNotes {
+//            let transposedNoteName = playScale.getTransposedNote(selectedNote: scaleNote)
+//            transposedNotes[itr] = transposedNoteName
+//            itr += 1
+//        }
+//        return transposedNotes
+//    }
 }

@@ -248,6 +248,21 @@ struct SettingsView: View {
         }
     }
     
+    private func applyAll(scaleInstruments: [String],
+                          backgrounds: [String],
+                          transposition: String,
+                          metronomePulse: String,
+                          droneInstrument: String,
+                          fastBeats: String,
+                          slowBeats: String) {
+        applyTransposition(transposition: transposition)
+        applyBackground(backgrounds: backgrounds)
+        applyScaleInstrument(scaleInstruments: scaleInstruments)
+        applyMetronomePulse(for: metronomePulse)
+        applyDroneInstrument(droneInstrument: droneInstrument)
+        applyIntroBeats(fastBeats: fastBeats, slowBeats: slowBeats)
+    }
+    
     private func applyIntroBeats(fastBeats: String, slowBeats: String) {
         fileReaderAndWriter.writeIntroBeats(beats: "\(slowBeats)-\(fastBeats)")
     }
@@ -277,24 +292,10 @@ struct SettingsView: View {
         fileReaderAndWriter.writeNewMetronomePulse(newPulse: metronomePulse)
     }
     
+    // TODO: Maybe change to a FileNote to be saved later on...
     private func applyTransposition(transposition: String) {
         fileReaderAndWriter.writeNewTransposition(newTransposition: transposition)
-        musicNotes.transposition = transposition
-    }
-    
-    private func applyAll(scaleInstruments: [String],
-                          backgrounds: [String],
-                          transposition: String,
-                          metronomePulse: String,
-                          droneInstrument: String,
-                          fastBeats: String,
-                          slowBeats: String) {
-        applyTransposition(transposition: transposition)
-        applyBackground(backgrounds: backgrounds)
-        applyScaleInstrument(scaleInstruments: scaleInstruments)
-        applyMetronomePulse(for: metronomePulse)
-        applyDroneInstrument(droneInstrument: droneInstrument)
-        applyIntroBeats(fastBeats: fastBeats, slowBeats: slowBeats)
+//        musicNotes.transposition = transposition
     }
 }
 

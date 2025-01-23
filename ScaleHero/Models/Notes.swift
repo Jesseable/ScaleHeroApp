@@ -60,6 +60,24 @@ enum FileNotes: Equatable {
         case .B: return "B"
         }
     }
+    
+    static func toFileNotes(stringNote: String) -> FileNotes? {
+        switch stringNote {
+        case "C": return .C
+        case "C#|Db": return .C_SHARP_D_FLAT
+        case "D": return .D
+        case "D#|Eb": return .D_SHARP_E_FLAT
+        case "E": return .E
+        case "F": return .F
+        case "F#|Gb": return .F_SHARP_G_FLAT
+        case "G": return .G
+        case "G#|Ab": return .G_SHARP_A_FLAT
+        case "A": return .A
+        case "A#|Bb": return .A_SHARP_B_FLAT
+        case "B": return .B
+        default: return nil
+        }
+    }
 }
 
 enum Notes: Codable, CaseIterable, Equatable { // TODO: I need to do other things with this functionality as wlel. What though I do not know.
@@ -193,6 +211,15 @@ enum Notes: Codable, CaseIterable, Equatable { // TODO: I need to do other thing
         case .G_SHARP: return "G-sharp"
         case .G_DOUBLE_SHARP: return "G-double-sharp"
         }
+    }
+    
+    var readableString: String {
+        var nameString = self.name
+        nameString = nameString.replacingOccurrences(of: "-double-flat", with: "bb")
+        nameString = nameString.replacingOccurrences(of: "-double-sharp", with: "##")
+        nameString = nameString.replacingOccurrences(of: "-flat", with: "b")
+        nameString = nameString.replacingOccurrences(of: "-sharp", with: "#")
+        return nameString
     }
     
     var fileName: FileNotes {

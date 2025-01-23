@@ -9,13 +9,13 @@ import XCTest
 @testable import ScaleHero
 
 class MusicArrayTests: XCTestCase {
+    let fileReaderAndWriter = FileReaderAndWriter()
     
     /*
      Initialise the fileReaderAndWriter
      */
-    override class func setUp() {
-        let fileReaderAndWriter = FileReaderAndWriter()
-        fileReaderAndWriter.writeNewTransposition(newTransposition: Notes.C.name)
+    override func setUp() {
+        self.fileReaderAndWriter.writeNewTransposition(newTransposition: Notes.C.name)
     }
     
     func testConvertToOctaveSize_cArpeggio() {
@@ -387,7 +387,8 @@ class MusicArrayTests: XCTestCase {
     }
     
     func testTranspose_cToA() {
-        let transpositionNote = Notes.A
+        let transpositionNote = FileNotes.A
+        self.fileReaderAndWriter.writeNewTranspositionNote(fileNote: transpositionNote)
         let cIonianScale: [Notes] = [.C, .D, .E, .F, .G, .A, .B, .C, .B, .A, .G, .F, .E, .D, .C]
         
         let musicArray = MusicArray(notes: cIonianScale)
@@ -395,13 +396,15 @@ class MusicArrayTests: XCTestCase {
         
         let expectedOutput: [String] = ["A:1", "B:1", "C#|Db:1", "D:1", "E:1", "F#|Gb:1", "G#|Ab:1", "A:2", "G#|Ab:1", "F#|Gb:1", "E:1", "D:1", "C#|Db:1", "B:1", "A:1"]
         
-        let transposedNotesReadable = musicArray.transposeSoundFileNotes(to: transpositionNote).map(filePitchToReadableString)
+        let transposedNotesReadable = musicArray.constructTransposedSoundFileArray().map(filePitchToReadableString)
         
         XCTAssertEqual(expectedOutput, transposedNotesReadable, "Transposing the C major scale to A has failed")
     }
     
     func testTranspose_fSharpArpeggioToBb() {
-        let transpositionNote = Notes.B_FLAT
+        let transpositionNote = FileNotes.A_SHARP_B_FLAT
+        self.fileReaderAndWriter.writeNewTranspositionNote(fileNote: transpositionNote)
+
         let fSharpArpeggio: [Notes] = [.F_SHARP, .A, .C_SHARP, .F_SHARP, .C_SHARP, .A, .F_SHARP]
         
         let musicArray = MusicArray(notes: fSharpArpeggio)
@@ -409,13 +412,14 @@ class MusicArrayTests: XCTestCase {
         
         let expectedOutput: [String] = ["E:1", "G:1", "B:2", "E:2", "B:2", "G:1", "E:1"]
         
-        let transposedNotesReadable = musicArray.transposeSoundFileNotes(to: transpositionNote).map(filePitchToReadableString)
+        let transposedNotesReadable = musicArray.constructTransposedSoundFileArray().map(filePitchToReadableString)
         
         XCTAssertEqual(expectedOutput, transposedNotesReadable, "Transposing the F-sharp major arpeggio to B-flat has failed")
     }
     
     func testTranspose_dMajorToEb() {
-        let transpositionNote = Notes.E_FLAT
+        let transpositionNote = FileNotes.D_SHARP_E_FLAT
+        self.fileReaderAndWriter.writeNewTranspositionNote(fileNote: transpositionNote)
         let fSharpArpeggio: [Notes] = [.D, .E, .F_SHARP, .G, .A, .B, .C_SHARP, .D, .C_SHARP, .B, .A, .G, .F_SHARP, .E, .D]
         
         let musicArray = MusicArray(notes: fSharpArpeggio)
@@ -423,13 +427,14 @@ class MusicArrayTests: XCTestCase {
         
         let expectedOutput: [String] = ["F:1", "G:1", "A:2", "A#|Bb:2", "C:2", "D:2", "E:2", "F:2", "E:2", "D:2", "C:2", "A#|Bb:2", "A:2", "G:1", "F:1"]
         
-        let transposedNotesReadable = musicArray.transposeSoundFileNotes(to: transpositionNote).map(filePitchToReadableString)
+        let transposedNotesReadable = musicArray.constructTransposedSoundFileArray().map(filePitchToReadableString)
         
         XCTAssertEqual(expectedOutput, transposedNotesReadable, "Transposing the D major arpeggio to E-flat has failed")
     }
     
     func testTransposition_basicSingleNotes() {
-        let transpositionNote = Notes.D_SHARP
+        let transpositionNote = FileNotes.D_SHARP_E_FLAT
+        self.fileReaderAndWriter.writeNewTranspositionNote(fileNote: transpositionNote)
         let musicArrayC = MusicArray(notes: [.C])
         let musicArrayG = MusicArray(notes: [.G])
         let musicArrayASharp = MusicArray(notes: [.A_SHARP])
@@ -441,10 +446,10 @@ class MusicArrayTests: XCTestCase {
         let expectedTransposedNote3 = [FilePitch(fileNote: FileNotes.C_SHARP_D_FLAT, octave: NoteOctaveOption.one)]
         let expectedTransposedNote4 = [FilePitch(fileNote: FileNotes.F_SHARP_G_FLAT, octave: NoteOctaveOption.one)]
         
-        XCTAssertEqual(expectedTransposedNote1, musicArrayC.transposeSoundFileNotes(to: transpositionNote), "transposition of C failed")
-        XCTAssertEqual(expectedTransposedNote2, musicArrayG.transposeSoundFileNotes(to: transpositionNote), "transposition of G failed")
-        XCTAssertEqual(expectedTransposedNote3, musicArrayASharp.transposeSoundFileNotes(to: transpositionNote), "transposition of A#/Bb failed")
-        XCTAssertEqual(expectedTransposedNote4, musicArrayEFlat.transposeSoundFileNotes(to: transpositionNote), "transposition of D#/Eb failed")
+        XCTAssertEqual(expectedTransposedNote1, musicArrayC.constructTransposedSoundFileArray(), "transposition of C failed")
+        XCTAssertEqual(expectedTransposedNote2, musicArrayG.constructTransposedSoundFileArray(), "transposition of G failed")
+        XCTAssertEqual(expectedTransposedNote3, musicArrayASharp.constructTransposedSoundFileArray(), "transposition of A#/Bb failed")
+        XCTAssertEqual(expectedTransposedNote4, musicArrayEFlat.constructTransposedSoundFileArray(), "transposition of D#/Eb failed")
     }
     
     private func setBasicModulationForPitchArray(musicArrays: MusicArray...) {

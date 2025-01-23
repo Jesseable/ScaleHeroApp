@@ -25,26 +25,27 @@ struct DroneView : View {
     var backgroundImage: String
     
     var body: some View {
-        let title = musicNotes.tonicNote + " Drone"
+        let title = musicNotes.tonicNote.name + " Drone"
         let buttonHeight = universalSize.height/10
 
         VStack {
             
             Text(title).asTitle()
-            
+            let musicArray = MusicArray(note: musicNotes.tonicNote)
                 
             TonicNoteDisplay(buttonHeight: buttonHeight)
             
             Button {
                 if (!isPlaying) {
-                    let transposedNoteName = playScale.getTransposedNote(selectedNote: musicNotes.tonicNote)
+                    // TODO: Maybe create a method to be able to do it with just one note
+                    let transposedNote = musicArray.getTransposedStartingNote()
                     // Allows sound to play when ringer is on silent
                     do {
                         try AVAudioSession.sharedInstance().setCategory(.playback)
                     } catch(let error) {
                         print(error.localizedDescription)
                     }
-                    playScale.playDroneSound(duration: -1, startingNote: transposedNoteName)
+                    playScale.playDroneSound(duration: -1, startingNote: transposedNote.name)
 
                 isPlaying = true
                 } else {

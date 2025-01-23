@@ -8,39 +8,6 @@
 import SwiftUI
 
 /**
- Observable object class that stays in the environment. Saves and publishes data that will be used in multiple classes  TODO ------- THIS NEEDS TO HAVE ITS OWN FILE -> WHAT IS GOING ON
- */
-class MusicNotes: ObservableObject {
-    
-    var scaleNotes = [""]
-    var scaleNoteNames = [""]
-    @Published var tonicNote = "C" // TODO: Needs to be changed to Notes at some point
-    @Published var tempo = 60.0
-    @Published var octaves: OctaveNumber = .one
-    
-    // tonicMode cases: 1 being never, 2: always, 3: always except for the first note
-    @Published var tonicMode: TonicOption = .noRepeatedTonic
-    // An enum containing either scale or arpeggio followed by the tonality, e.g. Case.scale(.major)
-    @Published var tonality: Case = .unselected
-    @Published var intervalOption: Interval = .none
-    @Published var intervalType: IntervalOption = .allUp
-    @Published var backDisplay: ScreenType = .homepage
-    @Published var otherSpecificScaleTypes : OtherScaleTypes?
-    @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @Published var backgroundImage : String? // TODO: Is this used anywhere. Possibly just delete it...
-    @Published var playScaleNotes = true
-    @Published var playDrone = true
-    @Published var startingOctave: OctaveNumber = .one
-    @Published var transposition = "C" // TODO: Convert to a Notes at some point
-    @Published var noteDisplay = 2
-    @Published var metronome = true
-    @Published var dismissable = false
-    @Published var repeatNotes = false
-    @Published var metronomePulse = 1
-    @Published var endlessLoop = false
-}
-
-/**
  Creates the view to select a number of varieties of scales.
  */
 struct ScalesView: View {

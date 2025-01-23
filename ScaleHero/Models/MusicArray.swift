@@ -9,8 +9,23 @@ import Foundation
 
 class MusicArray {
     private let initialStartingNote: Notes
+    // TODO: This isn't good atm. I need to make this correct and based off of the initial startingNote. I should be able to do this.
+    private lazy var transposedStartingFileNote: FileNotes = {
+        var state = TranspositionState.firstTime
+        return transposePitch(pitch: Pitch(note: initialStartingNote, octave: NoteOctaveOption.one),
+                       to: retrieveTranspositionNote(),
+                       isAscending: true,
+                       transpositionState: &state).fileNote
+    }()
     private var notesArr: [Notes]
     private var pitchArr: [Pitch]?
+//    private var fileNotesArr: [FileNotes]?
+    private enum TranspositionState { case firstTime, hasInitialOctaveChange, hasNoInitialOctaveChange }
+
+    init(note: Notes) {
+        self.initialStartingNote = note
+        self.notesArr = [note]
+    }
 
     init(notes: [Notes]) {
         self.initialStartingNote = notes.first!
@@ -29,9 +44,22 @@ class MusicArray {
         return notes
     }
     
+    // TODO: Why am I createing and doing this
+//    func getFileNotes() -> [FileNotes] {
+//        guard fileNotesArr != nil else {
+//            return []
+//        }
+//        return 
+//    }
+    
     func getPitches() -> [Pitch] {
         // create an error to be thrown here is pitches is still null
         return pitchArr!
+    }
+    
+    func getTransposedStartingNote() -> FileNotes {
+        let frw = FileReaderAndWriter()
+        return frw.readTranspositionNote()
     }
     
     func applyModifications(musicNotes: MusicNotes) {
@@ -262,7 +290,6 @@ class MusicArray {
     
     private func convertToTonicOptions(tonicOption: TonicOption) {
         var newPitchArr : [Pitch] = []
-        var itr = 0;
         for pitch in self.pitchArr! {
             newPitchArr.append(pitch)
             if (pitch.note == initialStartingNote) {
@@ -292,60 +319,80 @@ class MusicArray {
         self.pitchArr = newPitchArr
     }
     
-    // TODO: Make this a lot cleaner
-    func transposeSoundFileNotes(to transpositionNote: Notes) -> [FilePitch] {
+    func constructTransposedSoundFileArray() -> [FilePitch] {
+        let transpositionNote = retrieveTranspositionNote()
+        var transpositionState: TranspositionState = .firstTime
+        
         var transposedResult: [FilePitch] = []
-
-        let orderedMusicAlphabet = Notes.orderedMusicAlphabet
-        if (transpositionNote == Notes.C) {
+        
+        if (transpositionNote == FileNotes.C) {
             transposedResult = self.pitchArr!.map { pitch in
                 FilePitch(fileNote: pitch.note.fileName, octave: pitch.octave)
             }
             return transposedResult
         }
-    
-        var hasInitialOctaveChange = false
-        var count = 0
+        
         for (index, pitch) in pitchArr!.enumerated() {
+            // TODO: Make this a single function that takes an individual note.
             let isAscending = index < pitchArr!.count / 2 + 1
-            var curOctave = pitch.octave
-            if let index = orderedMusicAlphabet.key(for: pitch.note.fileName) {
-                if let tnIndex = orderedMusicAlphabet.key(for: transpositionNote.fileName) {
-                    let newIndex = (index + tnIndex) % orderedMusicAlphabet.size()
-                    let fileNote = orderedMusicAlphabet.value(for: (newIndex + orderedMusicAlphabet.size()) % orderedMusicAlphabet.size())
-
-                    // TODO: I need a way to know if the octave also needs changing here...
-                    if (Notes.isOctaveStep(firstNote: pitch.note.fileName, secondNote: fileNote!, ascending: isAscending)) {
-                        if (count == 0) {
-                            hasInitialOctaveChange = true
-                        }
-                        if hasInitialOctaveChange {
-                            if !isAscending {
-                                curOctave.decrement()
-                            }
-                        } else {
-                            if isAscending {
-                                curOctave.increment()
-                            }
-                        }
-                    } else {
-                        if hasInitialOctaveChange {
-                            if isAscending {
-                                curOctave.decrement()
-                            }
-                        } else {
-                            if !isAscending {
-                                curOctave.increment()
-                            }
-                        }
-                    }
-                    transposedResult.append(FilePitch(fileNote: fileNote!, octave: curOctave))
-                }
-            }
-            count += 1
+            let transposedFilePitch: FilePitch = transposePitch(pitch: pitch, to: transpositionNote, isAscending: isAscending, transpositionState: &transpositionState)
+            transposedResult.append(transposedFilePitch)
         }
         
         return transposedResult
+    }
+    
+    private func retrieveTranspositionNote() -> FileNotes {
+        let frw = FileReaderAndWriter()
+        return frw.readTranspositionNote()
+    }
+    
+    private func transposePitch(pitch: Pitch, to transpositionNote: FileNotes, isAscending: Bool, transpositionState: inout TranspositionState) -> FilePitch {
+        let orderedMusicAlphabet = Notes.orderedMusicAlphabet
+
+        var curOctave = pitch.octave
+        if let index = orderedMusicAlphabet.key(for: pitch.note.fileName) {
+            if let tnIndex = orderedMusicAlphabet.key(for: transpositionNote) {
+                let newIndex = (index + tnIndex) % orderedMusicAlphabet.size()
+                let fileNote = orderedMusicAlphabet.value(for: (newIndex + orderedMusicAlphabet.size()) % orderedMusicAlphabet.size())
+
+                if (Notes.isOctaveStep(firstNote: pitch.note.fileName, secondNote: fileNote!, ascending: isAscending)) {
+                    switch transpositionState {
+                    case .firstTime:
+                        // TODO: Ensure that the first oine is still changed
+                        transpositionState = .hasInitialOctaveChange
+                        
+                    case .hasInitialOctaveChange:
+                        if !isAscending {
+                            curOctave.decrement()
+                        }
+                    case .hasNoInitialOctaveChange:
+                        if isAscending {
+                            curOctave.increment()
+                        }
+                    }
+                } else {
+                    switch transpositionState {
+                    case .firstTime:
+                        // TODO: Ensure this still works for the first one...
+                        transpositionState = .hasNoInitialOctaveChange
+
+                    case .hasInitialOctaveChange:
+                        if isAscending {
+                            curOctave.decrement()
+                        }
+                    case .hasNoInitialOctaveChange:
+                        if !isAscending {
+                            curOctave.increment()
+                        }
+                    }
+                }
+                return FilePitch(fileNote: fileNote!, octave: curOctave)
+            }
+            // TODO: These need to throw errors instead
+            fatalError("The transpisition note was not in the music alphabet")
+        }
+        fatalError("The pitch was not in the music alphabet")
     }
     
     // TODO: Maybe move this into scaleConstructor...

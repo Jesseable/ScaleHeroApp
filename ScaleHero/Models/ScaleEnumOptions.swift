@@ -49,9 +49,9 @@ enum Case : Codable, TonalityProtocol {
     var name: String {
         switch self {
         case .arpeggio(tonality: let arpeggio):
-            return "Arpeggio"
+            return arpeggio.name
         case .scale(tonality: let scale):
-            return "Scale"
+            return scale.name
         case .unselected:
             return "No tonality is selected yet"
         }

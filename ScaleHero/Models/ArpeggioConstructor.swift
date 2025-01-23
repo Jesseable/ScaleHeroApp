@@ -9,8 +9,18 @@ class ArpeggioConstructor : NotesConstructorBase<ArpeggioTonality> {
             
     required init(startingNote: Notes, tonality: ArpeggioTonality) throws {
         try super.init(startingNote: startingNote, tonality: tonality)
+        try setApreggioArray()
+    }
+    
+    private func setApreggioArray() throws {
         let arpeggios = NoteOptions().arpeggios
-        try setNotes(jsonScaleStartingNote: startingNote, notesSource: arpeggios, retrieveNotes: retrieveScaleNotes)
+        
+        let startingNote = self.getStartingNote()
+        let modeProtocol : (any ModeProtocol)?
+
+        // TODO: Allow modes in arpeggios as well
+        
+        try setNotes(jsonScaleStartingNote: startingNote, notesSource: arpeggios, retrieveNotes: self.retrieveScaleNotes)
     }
 
     func retrieveScaleNotes(for array: any NoteArrayBase, with tonality: ArpeggioTonality?) -> [Notes] {

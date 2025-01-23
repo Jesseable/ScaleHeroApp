@@ -8,6 +8,33 @@
 import SwiftUI
 import AVFoundation
 
+// TODO: Decided whether it deserves its own file or not???
+struct CountInBeats {
+    private var currentCount: Int
+    private let maxCount: Int = 8
+    
+    init(numBeats: Int) {
+        self.currentCount = numBeats
+    }
+    
+    mutating func nextBeat() -> String? {
+        guard currentCount > 0 else {
+            return nil
+        }
+        let beat = self.currentCount
+        self.currentCount -= 1
+        return toString(beat: beat)
+    }
+    
+    private func toString(beat: Int) -> String {
+        let englishNames = [
+            1: "One", 2: "Two", 3: "Three", 4: "Four",
+            5: "Five", 6: "Six", 7: "Seven", 8: "Eight"
+        ]
+        return englishNames[beat] ?? "\(beat)"
+    }
+}
+
 /*
  The view to show the note names when the scale is playing. Also contains functionality to play the scale
  */
@@ -19,10 +46,11 @@ struct PlayingView: View {
     var backgroundImage : String
     let playScaleNotes : Bool
     let playDrone : Bool
-    @State var playSounds : PlaySounds
+    @State var playSounds = PlaySounds()
+    @State var countInBeats : CountInBeats
     let title: String
-    @State var currentNote: String
-    @State var index = 0
+    let tonicFileNote: FileNotes 
+    @State var index = 0 // TODO: Does this really need to be a state???
     @State var isPlaying = false
     @State var firstTime = true
     @State var delay : CGFloat?
@@ -30,143 +58,174 @@ struct PlayingView: View {
     @State var firstNoteDisplay = true
     @State var num = 0
     @State var repeatingEndlessly : Bool // TODO: Change to a variable
+    let pitches: [Pitch]
+    let filePitches: [FilePitch]
+    @State var mainImageName: String?
     
     var body: some View {
-        let buttonHeight = universalSize.height/10
-
         VStack {
-            Text(title) // TO BE CHANGED SOMEWHERE
-                .font(.largeTitle.bold())
-                .accessibilityAddTraits(.isHeader)
-                .foregroundColor(Color.white)
-                .multilineTextAlignment(.center)
-            
+            headerView
             Spacer()
-
-            Image(currentNote).resizable()
-            
+            imageView
             Spacer()
-            
-            Button {
-                playSounds.cancelAllSounds()
-                musicNotes.timer.upstream.connect().cancel()
-                presentationMode.wrappedValue.dismiss()
-                musicNotes.dismissable = false
-                UIApplication.shared.isIdleTimerDisabled = false
-            } label: {
-                MainUIButton(buttonText: "Stop", type: 3, height: buttonHeight)
-            }
+            stopButton
         }
         .onAppear(perform: {
-            // So the screen will never turn off when on this setting
-            UIApplication.shared.isIdleTimerDisabled = true
-            
-            // Allows sound to play when ringer is on silent
-            do {
-                try AVAudioSession.sharedInstance().setCategory(.playback)
-            } catch(let error) {
-                print(error.localizedDescription)
-            }
-            // maybe move all of this into SoundView to free up space at the start
-            if (playDrone) {
-                let extraDuration : Int
-                if musicNotes.tempo >= 80 {
-                    extraDuration = 2
-                } else {
-                    extraDuration = 1
-                }
-                
-                let duration = (tempoToSeconds(tempo: self.musicNotes.tempo)
-                                * CGFloat(self.musicNotes.scaleNotes.count + extraDuration))
-                // Transposes just the drone note
-                // TODO: create a way to get the transposed tonic note from MusicArray
-                let transposedNoteName = playSounds.getTransposedNote(selectedNote: musicNotes.tonicNote)
-                
-                if (!repeatingEndlessly) {
-                    playSounds.playDroneSound(duration: duration,
-                                          startingNote: transposedNoteName)
-                } else {
-                    playSounds.playDroneSound(duration: -1,
-                                          startingNote: transposedNoteName)
-                }
-            }
+            UIApplication.shared.isIdleTimerDisabled = true // Disable screen turn off due to inactivity while playing notes
+            setUpAudioSession()
+            playDroneIfNeeded()
         })
         .onReceive(musicNotes.timer) { time in
-            if (num % musicNotes.metronomePulse != 0 && musicNotes.metronome) {
-                do {
-                    try playSounds.playOffbeatMetronome()
-                } catch {
-                    print("File Error When reading off beat metronome")
-                }
-            
-            } else {
-                // Metronome sound
-                if musicNotes.metronome {
-                    do {
-                        try playSounds.playMetronome()
-                    } catch {
-                        print("File Error When reading metronome")
-                    }
-                }
-                // TODO: CurrentNote should be of type note.
-                currentNote = musicNotes.scaleNoteNames[self.index]
-                
-                // Allows sound to play when ringer is on silent
-                do {
-                    try AVAudioSession.sharedInstance().setCategory(.playback)
-                } catch(let error) {
-                    print(error.localizedDescription)
-                }
-                
-                // plays the next note
-                if (playScaleNotes) {
-                    if !musicNotes.scaleNotes[index].contains("Metronome") {
-                        do {
-                            let finalNote : Bool
-                            // Save the achievements
-                            if (index == musicNotes.scaleNotes.count - 1) {
-                                finalNote = true
-                                // TODO: MUST CLEAN LATER
-                                DispatchQueue.global(qos: .utility).async {
-                                    var achievementsData = fileReaderAndWriter.readScaleAchievements()
-                                    var acheivementsArr = achievementsData.components(separatedBy: ":")
-                                    acheivementsArr[0] = "\((Int(acheivementsArr[0]) ?? -2) + 1)"
-                                    acheivementsArr[1] = "\((Int(acheivementsArr[1]) ?? -2) + 1)"
-                                    acheivementsArr[2] = "\((Int(acheivementsArr[2]) ?? -2) + 1)"
-                                    acheivementsArr[3] = "\((Int(acheivementsArr[3]) ?? -2) + 1)"
-                                    achievementsData = "\(acheivementsArr[0]):\(acheivementsArr[1]):\(acheivementsArr[2]):\(acheivementsArr[3])"
-                                                     + ":\(acheivementsArr[4]):\(acheivementsArr[5]):\(acheivementsArr[6])"
-                                    fileReaderAndWriter.writeScaleAchievements(newData: achievementsData)
-                                }
-                                // TODO: TO BE CLEANED ABOVE
-                            } else {
-                                finalNote = false
-                            }
-                            try playSounds.playScaleNote(scaleFileName: musicNotes.scaleNotes[index], duration: tempoToSeconds(tempo: self.musicNotes.tempo), finalNote: finalNote)
-                        } catch {
-                            print("File Error When attempting to play scale Notes")
-                        }
-                    }
-                }
-                
-                if (index == musicNotes.scaleNotes.count - 1) {
-                    if !self.repeatingEndlessly {
-                        terminateScale()
-                    } else {
-                        self.index = -1 // Since it will have one added in a second
-                    }
-                }
-                self.index += 1
-            }
-            num += 1
+            handleMetronomeAndNotes()
         }
         .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
     }
     
-    /**
-     Repeats the scale
-     */
-    private func terminateScale() {
+    private var headerView: some View {
+        Text(title) // TODO: Create the title in here instead possibly...
+            .font(.largeTitle.bold())
+            .accessibilityAddTraits(.isHeader)
+            .foregroundColor(Color.white)
+            .multilineTextAlignment(.center)
+    }
+    
+    private var imageView: some View {
+        if let imageName = mainImageName {
+            return AnyView(
+                Image(imageName).resizable()
+            )
+        } else {
+            return AnyView(EmptyView())
+        }
+    }
+    
+    private var stopButton: some View {
+        Button {
+            stopAllSoundsAndDismiss()
+        } label: {
+            let buttonHeight = universalSize.height / 10
+            MainUIButton(buttonText: "Stop", type: 3, height: buttonHeight)
+        }
+    }
+    
+    private func stopAllSoundsAndDismiss() {
+        playSounds.cancelAllSounds()
+        musicNotes.timer.upstream.connect().cancel()
+        presentationMode.wrappedValue.dismiss()
+        musicNotes.dismissable = false
+        UIApplication.shared.isIdleTimerDisabled = false // reenable screen turning off due to inactivity
+    }
+    
+    private func setUpAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback)
+        } catch(let error) {
+            print(error.localizedDescription)
+        }
+    }
+    
+    private func playDroneIfNeeded() {
+        guard playDrone else { return }
+    
+        let extraDuration: Int = musicNotes.tempo >= 80 ? 2 : 1
+        let duration = (tempoToSeconds(tempo: self.musicNotes.tempo) * CGFloat(self.pitches.count + extraDuration))
+        // Transposes just the drone note
+        // TODO: create a way to get the transposed tonic note from MusicArray
+        let transposedNoteName = playSounds.getTransposedNote(selectedNote: musicNotes.tonicNote.name)
+        
+        if (!repeatingEndlessly) {
+            playSounds.playDroneSound(duration: duration,
+                                  startingNote: transposedNoteName)
+        } else {
+            playSounds.playDroneSound(duration: -1,
+                                  startingNote: transposedNoteName)
+        }
+    }
+    
+    private func handleMetronomeAndNotes() {
+        if (num % musicNotes.metronomePulse != 0) {
+            playOffbeatMetronome()
+        } else {
+            playOnBeatMetronome()
+            handleNotesAndImages()
+        }
+        num += 1
+    }
+    
+    private func playOffbeatMetronome() {
+        guard musicNotes.metronome else { return }
+        
+        do {
+            try playSounds.playOffbeatMetronome()
+        } catch {
+            print("File Error When reading off-beat metronome")
+        }
+    }
+    
+    
+    private func playOnBeatMetronome() {
+        guard musicNotes.metronome else { return }
+
+        do {
+            try playSounds.playMetronome()
+        } catch {
+            print("File Error When reading on-beat metronome")
+        }
+    }
+    
+    private func handleNotesAndImages() {
+        let currentCountInBeat = countInBeats.nextBeat()
+        if let nextBeat = currentCountInBeat {
+            self.mainImageName = nextBeat
+        } else {
+            self.mainImageName = pitches[self.index].note.name
+            
+            playNextNoteIfNeeded()
+            
+            if (index == pitches.count - 1) {
+                if !self.repeatingEndlessly {
+                    terminate()
+                } else {
+                    self.index = -1 // reset index
+                }
+            }
+            self.index += 1
+        }
+    }
+    
+    private func playNextNoteIfNeeded() {
+        guard playScaleNotes else { return }
+        
+        do {
+            let finalNote = (index == pitches.count - 1)
+            if finalNote {
+                updateAchievmentsPage()
+            }
+            try playSounds.playScaleNote(
+                filePitch: filePitches[index],
+                duration: tempoToSeconds(tempo: self.musicNotes.tempo),
+                isFinalNote: finalNote
+            )
+        } catch {
+            print("File Error When attempting to play scale Notes")
+        }
+    }
+    
+    private func updateAchievmentsPage() {
+        DispatchQueue.global(qos: .utility).async {
+            var achievementsData = fileReaderAndWriter.readScaleAchievements()
+            var acheivementsArr = achievementsData.components(separatedBy: ":")
+            acheivementsArr[0] = "\((Int(acheivementsArr[0]) ?? -2) + 1)"
+            acheivementsArr[1] = "\((Int(acheivementsArr[1]) ?? -2) + 1)"
+            acheivementsArr[2] = "\((Int(acheivementsArr[2]) ?? -2) + 1)"
+            acheivementsArr[3] = "\((Int(acheivementsArr[3]) ?? -2) + 1)"
+            achievementsData = "\(acheivementsArr[0]):\(acheivementsArr[1]):\(acheivementsArr[2]):\(acheivementsArr[3])"
+            + ":\(acheivementsArr[4]):\(acheivementsArr[5]):\(acheivementsArr[6])"
+            fileReaderAndWriter.writeScaleAchievements(newData: achievementsData)
+        }
+    }
+    
+    private func terminate() {
         musicNotes.timer.upstream.connect().cancel()
         
         // Add in a short delay before this is called  You will have to debug this thouroughly
@@ -178,19 +237,6 @@ struct PlayingView: View {
         }
     }
     
-    /**
-     Chooses sharps or flats option. 0 sharps, 1 flats
-     */
-    private func sharpOrFlat(for note: String, on selection: [String]) -> Int {
-        if (selection.contains(note)) {
-            return 1
-        }
-        return 0
-    }
-    
-    /**
-     Returns the number of seconds a note lasts for
-     */
     private func tempoToSeconds(tempo: CGFloat) -> CGFloat {
         let noteLength = CGFloat(60/tempo)
         return noteLength

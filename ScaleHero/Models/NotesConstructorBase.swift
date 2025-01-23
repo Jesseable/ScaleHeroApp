@@ -9,7 +9,7 @@
 class NotesConstructorBase<T: TonalityProtocol> {
     
     // These two will be set in the getNotes class which is called in the subClasses
-    public var noteNames: MusicArray?
+    public var musicArray: MusicArray?
     private var startingNote: Notes
     public var tonality: T
     
@@ -39,16 +39,21 @@ class NotesConstructorBase<T: TonalityProtocol> {
     ) throws {
         for item in notesSource {
             if item.name == "notes" {
-                for array in item.noteArray { // possibly rename it noteArrays. Then I can work with that.
+                for array in item.noteArray {
                     if jsonScaleStartingNotes.contains(array.note) {
                         let noteArray = retrieveNotes(array, tonality)
-                        noteNames = MusicArray(notes: noteArray)
+                        musicArray = MusicArray(notes: noteArray)
                         
-                        guard let unwrappedModeStartingNote = modeStartingNote else { return }
+                        guard let unwrappedModeStartingNote = modeStartingNote else {
+                            if jsonScaleStartingNotes.first!.isIdentical(to: array.note) {
+                                return
+                            }
+                            continue
+                        }
                         
                         // check if the modeStartingNote exists in the major scale:
                         let defaultNotes = retrieveNotes(array, nil)
-                        if (defaultNotes.contains(unwrappedModeStartingNote)) {
+                        if defaultNotes.first(where: { $0.isIdentical(to: unwrappedModeStartingNote) }) != nil {
                             return
                         }
                     }

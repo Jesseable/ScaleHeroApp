@@ -55,19 +55,20 @@ struct PlaySounds {
     /**
      Play ScaleNote Sounds
      */
-    mutating func playScaleNote(scaleFileName: String, duration: CGFloat, finalNote: Bool) throws {
+    mutating func playScaleNote(filePitch: FilePitch, duration: CGFloat, isFinalNote: Bool) throws {
+        let fileName = "\(instrument)-\(filePitch.octave.rawValue)-\(filePitch.fileNote.name)"
         let extra = 0.1
         guard let fileURL = Bundle.main.url(
-            forResource: scaleFileName, withExtension: "mp3"
+            forResource: fileName, withExtension: "mp3"
         ) else {
-            throw SoundError.fileNoteFound(fileName: scaleFileName)
+            throw SoundError.fileNoteFound(fileName: fileName)
         }
         if toggler {
             self.notesPlayer1 = try! AVAudioPlayer(contentsOf: fileURL)
             self.notesPlayer1?.play()
             toggler.toggle() // TODO: Does this just get stuck in the else after this???
             
-            if !finalNote {
+            if !isFinalNote {
                 // Adds the fade effect
                 DispatchQueue.main.asyncAfter(deadline: .now() + duration - 0.05, execute: { [self] in // TODO: Magic numbers used
                     self.notesPlayer1?.setVolume(0.1, fadeDuration: 0.15)
@@ -81,7 +82,7 @@ struct PlaySounds {
             self.notesPlayer2 = try! AVAudioPlayer(contentsOf: fileURL)
             self.notesPlayer2?.play()
             
-            if !finalNote {
+            if !isFinalNote {
                 // Adds the fade effect
                 DispatchQueue.main.asyncAfter(deadline: .now() + duration - 0.05, execute: { [self] in
                     self.notesPlayer2?.setVolume(0.1, fadeDuration: 0.15)
@@ -135,10 +136,21 @@ struct PlaySounds {
         return metronomeFileArr
     }
     
+    func retrieveMetronomeCountInLength(for tempo: Int) -> Int {
+        let introBeatsArr = fileReaderAndWriter.readIntroBeats().components(separatedBy: "-")
+        let slowTempoIntro = Int(introBeatsArr[0])
+        let fastTempoIntro = Int(introBeatsArr[1])
+        if tempo < 70 { //  TODO: This is a mgic number
+            return slowTempoIntro ?? 0
+        } else {
+            return fastTempoIntro ?? 0
+        }
+    }
+    
     /**
      Creates an array of the metronome sound files to be added to the sound files array
      */
-    func addMetronomeCountIn(tempo: Int, scaleNotesArray: [String]) -> [String] {
+    func addMetronomeCountIn(tempo: Int, scaleNotesArray: [String]) -> [String] { // TODO: Will be redundant
         let countingArr = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"]
         var metronomeFileArr: [String] = []
         let introBeatsArr = fileReaderAndWriter.readIntroBeats().components(separatedBy: "-")
@@ -209,8 +221,9 @@ struct PlaySounds {
         }
     }
     
+    
     func getTransposedNote(selectedNote: String) -> String { // TODO: Convert this to being done in the MusicArray
-        var transpositionNote = fileReaderAndWriter.readTransposition()
+        var transpositionNote = fileReaderAndWriter.readTranspositionFile()
         // Has to be done in case the old string value from previous version is still active
         transpositionNote = transpositionNote.replacingOccurrences(of: "/", with: "|")
         let selectedNoteAltered = selectedNote.replacingOccurrences(of: "/", with: "|")

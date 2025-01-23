@@ -30,7 +30,7 @@ class ScaleConstructor : NotesConstructorBase<ScaleTonality> {
             
             let possibleBaseStartingNotes = try returnBaseStartingNote(mode: validModeProtocol)
             try setNotes(jsonScaleStartingNotes: possibleBaseStartingNotes, notesSource: scales, modeStartingNote: scaleStartingNote, retrieveNotes: self.retrieveScaleNotes)
-            self.noteNames?.rotateScale(by: modeProtocol!.rawValue)
+            self.musicArray?.rotateScale(by: modeProtocol!.rawValue)
             return
         }
         
