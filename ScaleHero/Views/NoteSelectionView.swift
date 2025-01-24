@@ -23,39 +23,40 @@ struct NoteSelectionView: View {
     ]
 
     var body: some View {
-        
         let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
         let portrate = universalSize.height > universalSize.width
-        let height = universalSize.height
-        let width = universalSize.width
-        let buttonHeight = height/10
+        let titleHeight = universalSize.height / 6
+        let titleWidth = universalSize.width * 0.9
         let maxSize = (portrate) ? CGFloat(250) : CGFloat(100)
-        let radius = (maxSize > width * 0.4) ? width * 0.4 : maxSize
+        let radius = (maxSize > universalSize.width * 0.4) ? universalSize.width * 0.4 : maxSize
         let buttonSize = radius * 0.3
         let midY = (portrate) ? universalSize.minY + radius + buttonSize : universalSize.minY + radius + buttonSize
         let centre = CGPoint(x: universalSize.midX, y: midY)
         let hintText : Text = Text("Select a note from the circle of fifths and confirm by selecting the middle green button")
-        
+    
         ZStack {
-            // Create all music note animations
-            animationNotes(width: width)
+            createAnimationNotes(width: titleWidth)
             
+            // Title Image - Fixed at the top
             VStack {
-                let colour = Color(fileReaderAndWriter.readBackgroundImage() + "Dark")
-                
-                if (portrate) {
+                if portrate {
                     titleImage.resizable()
                         .scaledToFit()
-                        .frame(maxWidth: width * 0.9, maxHeight: height / 6)
+                        .frame(maxWidth: titleWidth, maxHeight: titleHeight)
                         .clipped()
                 } else {
                     titleImage.resizable()
                         .scaledToFit()
-                        .frame(maxWidth: width * 0.9, maxHeight: height / 6)
+                        .frame(maxWidth: titleWidth, maxHeight: titleHeight)
                 }
-                
-                ScrollView {
-                    Spacer()
+                Spacer()
+            }.zIndex(1)
+            
+            ScrollView {
+                let colour = Color(fileReaderAndWriter.readBackgroundImage() + "Dark")
+
+                VStack(spacing: 0) {
+                    Spacer().frame(height: titleHeight) // Same as title image height
                     ZStack {
                         topButtonLeft(buttonSize: buttonSize, colour: colour)
                             .aspectRatio(contentMode: .fit)
@@ -71,7 +72,7 @@ struct NoteSelectionView: View {
                         topButtonRight(buttonSize: buttonSize, colour: colour)
                             .aspectRatio(contentMode: .fit)
                             .padding(.trailing, 5)
-                    
+                        
                         Circle().opacity(0.3)
                             .aspectRatio(contentMode: .fit)
                             .foregroundColor(colour)
@@ -104,22 +105,20 @@ struct NoteSelectionView: View {
                         bottomButtonRight(buttonSize: buttonSize, colour: colour)
                             .aspectRatio(contentMode: .fit)
                             .padding(.trailing, 5)
-
+                        
                     }
                     .frame(height: (radius + buttonSize * 0.8) * 2)
                 }
-                .frame(width: width)
-                
-                Spacer()
             }
-            .onAppear() {
-                offset += height * 1.2
-            }
+            .frame(width: universalSize.width)
         }
         .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
+        .onAppear() {
+            offset += universalSize.height * 1.2
+        }
     }
     
-    @ViewBuilder func animationNotes(width: CGFloat) -> some View {
+    @ViewBuilder func createAnimationNotes(width: CGFloat) -> some View {
         ImageAnimation(imageName: "Treble-Cleff" + self.fileReaderAndWriter.readBackgroundImage(),
                        xPos: width * 0.3, duration: 7.00, offset: self.$offset)
 
@@ -336,13 +335,18 @@ struct CircleOfFifthButtons: View {
                         Circle()
                             .frame(width: size, height: size, alignment: .center)
                             .foregroundColor(Color.green)
-                        Text("\(musicNotes.tonicNote.readableString)").font(
-                            .system(size: size * 0.65, weight: .semibold, design: .serif))
+                        Text("\(musicNotes.tonicNote.readableString)")
+                            .font(.system(size: size * 0.65, weight: .semibold, design: .serif))
                             .foregroundColor(.white)
                             .frame(alignment: .center)
                     }
-                }.frame(width: size)
-                    .position(centre)
+                }
+                .frame(width: size)
+                .overlay(
+                    Circle()
+                        .stroke(Color.black, lineWidth: 2)
+                )
+                .position(centre)
             }
             
         }

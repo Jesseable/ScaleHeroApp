@@ -304,8 +304,8 @@ struct SettingsView: View {
  */
 extension Picker {
     func formatted() -> some View {
-        pickerStyle( .segmented)
+        pickerStyle(SegmentedPickerStyle())
         .colorScheme(.light)
-        .padding(.horizontal, 11)
+        .frame(width: UIScreen.main.bounds.width * 0.93)
     }
 }

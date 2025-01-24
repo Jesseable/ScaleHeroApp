@@ -26,7 +26,6 @@ struct SoundView : View {
         _screenType = screenType
         self.backgroundImage = backgroundImage
         
-        let tonicNote = tonicNote
         do {
             switch noteCase {
             case .arpeggio(let tonality):
@@ -52,11 +51,10 @@ struct SoundView : View {
     }
     
     var body: some View { // TODO: This just needs to be made smaller
-        let title = "\(musicNotes.tonicNote) \(musicNotes.tonality.name)"
+        let title = "\(musicNotes.tonicNote.readableString) \(musicNotes.tonality.name)"
         let buttonHeight = universalSize.height/19
         let bottumButtonHeight = universalSize.height/10
         let maxFavourites = 7
-        var disableOctaveSelection = (musicNotes.octaves.rawValue < 2) ? false : true
 
         VStack {
             
@@ -74,17 +72,25 @@ struct SoundView : View {
                                 Text("2").tag(OctaveNumber.two)
                                 Text("3").tag(OctaveNumber.three)
                             }
+                            .formatted()
                         }
                     }.onChange(of: musicNotes.octaves) { octave in
                         if octave == .one {
-                            disableOctaveSelection = false
                         } else {
                             musicNotes.intervalType = .allUp
                             musicNotes.intervalOption = .none
                         }
-                        if octave.rawValue > 1 {
-                            musicNotes.startingOctave = .one
-                            disableOctaveSelection = true
+                        // TODO: Make this only move it down if the change means it is impossible...
+                        if octave == .two {
+                            if musicNotes.startingOctave == .three {
+                                musicNotes.startingOctave = .two
+                                // TODO: Add alerts!!!
+                            }
+                        }
+                        if octave == .three {
+                            if musicNotes.startingOctave != .one {
+                                musicNotes.startingOctave = .one
+                            }
                         }
                     }
                     
@@ -99,12 +105,25 @@ struct SoundView : View {
                                 Text("2").tag(OctaveNumber.two)
                                 Text("3").tag(OctaveNumber.three)
                             }
-                            .disabled(disableOctaveSelection)
+                            .formatted()
                         }
                     }.onChange(of: musicNotes.startingOctave) { strOct in
                         if strOct != .two {
                             musicNotes.intervalType = .allUp
                             musicNotes.intervalOption = .none
+                        }
+                        
+                        if musicNotes.octaves == .three {
+                            if strOct != .one {
+                                musicNotes.startingOctave = .one
+                                // TODO: Bring up a hint about why
+                            }
+                        }
+                        if musicNotes.octaves == .two {
+                            if strOct == .three {
+                                musicNotes.startingOctave = .two
+                                // TODO: Bring up a hint about why
+                            }
                         }
                     }
                     
@@ -166,7 +185,6 @@ struct SoundView : View {
                                                 intervalOption: musicNotes.intervalOption)
                     
                     }
-                    // Goes to the favourites screen
                     self.screenType = .favouritesview
                 }),
                 secondaryButton: .cancel(Text("Cancel"), action: { /*Do Nothing*/ })
@@ -192,11 +210,7 @@ struct SoundView : View {
     
     @ViewBuilder func playButton(buttonHeight: CGFloat) -> some View {
         Button {
-//            DispatchQueue.global(qos: .utility).async {
-//            self.musicArray.applyModifications(musicNotes: musicNotes)
-//            }
-            
-            // TODO: Move this elsewhere. WHAT IS THIS EVEn DOING
+            // TODO: Move this elsewhere. WHAT IS THIS EVEn DOING.
             // Could add in quavers?
             switch fileReaderAndWriter.readMetronomePulse().lowercased() {
             case "simple":
@@ -209,8 +223,6 @@ struct SoundView : View {
                 musicNotes.metronomePulse = 1
             }
             
-//            musicNotes.musicArray = musicArray
-
             // This line of code sets at what tempo when the metronome off beat pulses will not play
             if (musicNotes.tempo >= 70 || !musicNotes.metronome) {
                 musicNotes.metronomePulse = 1
@@ -227,74 +239,4 @@ struct SoundView : View {
             MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 10, height: buttonHeight*2)
         }
     }
-    
-    /*
-     Retrieves the scale note data
-     ----------------
-     @param type:
-     Returns: a string array containing the notes of the scale to be outputted as sound files
-     */
-//    private func fetchScaleNotesArrayData() { // TODO: Have a sound Model that takes in the musicNotes and does everything it needs with it.
-//        DispatchQueue.global(qos: .utility).async {
-//            var noteNamesArray : [String]
-//            var soundFileArray : [String]
-//            let start = 0
-//
-//            // TODO: This should all be moved into 'CREATE_SCALE' constructor.
-//            let writeScale = WriteScales(scaleOptions: scaleOptions)
-//            let baseScale = writeScale.returnScaleNotesArray(for: musicNotes.tonality, startingAt: musicNotes.tonicNote)
-//
-//            switch musicNotes.tonality {
-//            case .scale(tonality: let tonality):
-//                // TODO: This is pretty much all going to be rewritten
-//                noteNamesArray = [] // writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
-//                                                           // tonicOption: musicNotes.tonicMode, scaleType: tonality)
-//            default:
-//                noteNamesArray = [] // writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
-//                                                                //tonicOption: musicNotes.tonicMode)
-//            }
-//            // transpose if needed
-//            soundFileArray = transposeNotes(for: noteNamesArray)
-//            
-//            soundFileArray = writeScale.createScaleInfoArray(scaleArray: soundFileArray,
-//                                                         initialOctave: musicNotes.startingOctave)
-//            
-//            if (musicNotes.intervalOption != .none) {
-//                soundFileArray = writeScale.convertToIntervals(of: musicNotes.intervalOption,
-//                                                           with: musicNotes.intervalType,
-//                                                           for: soundFileArray)
-//                noteNamesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption,
-//                                                           with: musicNotes.intervalType,
-//                                                           for: noteNamesArray, withoutOctave: true)
-//            }
-//            
-//            soundFileArray = playScale.convertToSoundFile(scaleInfoArray: soundFileArray, tempo: Int(musicNotes.tempo))
-//            
-//            if (musicNotes.repeatNotes) {
-//                soundFileArray = writeScale.repeatAllNotes(in: soundFileArray)
-//                noteNamesArray = writeScale.repeatAllNotes(in: noteNamesArray)
-//            }
-//            
-//   TODO: These two lines are more important         let metronomeBeats = playScale.addMetronomeCountIn(tempo: Int(musicNotes.tempo), scaleNotesArray: noteNamesArray)
-//            noteNamesArray.insert(contentsOf: metronomeBeats, at: start)
-//
-//            DispatchQueue.main.async {
-//                musicNotes.scaleNotes = soundFileArray
-//                musicNotes.scaleNoteNames = noteNamesArray
-//            }
-//        }
-//    }
-//    
-//    // TODO: Move into the NoteConstructorAbstract. This isn't view behaviour
-//    private func transposeNotes(for notesArray: [String]) -> [String] {
-//        var transposedNotes = notesArray
-//        // add transposition here if needed
-//        var itr = 0
-//        for scaleNote in transposedNotes {
-//            let transposedNoteName = playScale.getTransposedNote(selectedNote: scaleNote)
-//            transposedNotes[itr] = transposedNoteName
-//            itr += 1
-//        }
-//        return transposedNotes
-//    }
 }

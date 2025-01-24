@@ -207,7 +207,6 @@ struct HomePage : View {
                            xPos: universalSize.width * 0.48, duration: 8.00, offset: self.$offset)
             
             VStack {
-                
                 if (portrate) {
                     titleImage.resizable()
                         .scaledToFit()
@@ -278,10 +277,3 @@ struct ImageAnimation: View {
             .animation(Animation.easeInOut(duration: duration).repeatForever(autoreverses: false), value: offset)
     }
 }
-
-//
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AppContentView()
-//    }
-//}
