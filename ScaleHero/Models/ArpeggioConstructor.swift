@@ -16,9 +16,7 @@ class ArpeggioConstructor : NotesConstructorBase<ArpeggioTonality> {
         let arpeggios = NoteOptions().arpeggios
         
         let startingNote = self.getStartingNote()
-        let modeProtocol : (any ModeProtocol)?
-
-        // TODO: Allow modes in arpeggios as well
+//        let modeProtocol : (any ModeProtocol)?         // TODO: Allow modes in arpeggios as well
         
         try setNotes(jsonScaleStartingNote: startingNote, notesSource: arpeggios, retrieveNotes: self.retrieveScaleNotes)
     }

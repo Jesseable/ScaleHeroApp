@@ -162,7 +162,7 @@ struct SoundView : View {
                                             tonicSelection: musicNotes.tonicMode,
                                             scaleNotes: musicNotes.playScaleNotes,
                                             drone: musicNotes.playDrone,
-                                            startingNote: musicNotes.tonicNote.name,
+                                            startingNote: musicNotes.tonicNote,
                                             noteDisplay: musicNotes.noteDisplay,
                                             endlessLoop: musicNotes.endlessLoop,
                                             intervalType: musicNotes.intervalType,

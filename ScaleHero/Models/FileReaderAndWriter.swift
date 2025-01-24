@@ -54,7 +54,7 @@ class FileReaderAndWriter: ObservableObject { /// MOVE ALL OF THIS INTO ONE BIG 
              tonicSelection: TonicOption,
              scaleNotes: Bool,
              drone: Bool,
-             startingNote: String,
+             startingNote: Notes,
              noteDisplay: Int,
              endlessLoop: Bool,
              intervalType: IntervalOption,

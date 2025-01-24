@@ -24,7 +24,7 @@ struct ScaleCharacteristics: Identifiable, Equatable, Codable {
     let scaleNotes: Bool
     let drone: Bool
     let scaleDescription: String
-    let startingNote: String
+    let startingNote: Notes
     let noteDisplay: Int
     let endlessLoop: Bool
     let intervalType: IntervalOption

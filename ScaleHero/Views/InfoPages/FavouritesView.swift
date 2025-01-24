@@ -7,109 +7,133 @@
 
 import SwiftUI
 
-// TODO: I made it easier here by using Chatgpt. There are most likely a lot of errors. I have to change this before pushing anything and make it a lot cleaner...
-//      - Clicking doesn't work atm. The old working version is at the bottom. I will use it when I fix this bug.
-
 struct FavouritesView: View {
+    
     @EnvironmentObject var musicNotes: MusicNotes
     @Binding var screenType: ScreenType
     var backgroundImage: String
-    var fileReaderAndWriter = FileReaderAndWriter()
-    
     @State private var isPresented = false
     @State private var deletionMode = false
-    private let universalSize = UIScreen.main.bounds
-
+    var fileReaderAndWriter = FileReaderAndWriter()
+    
+    private let buttonHeight = UIScreen.main.bounds.height / 10
+    private let menuButtonHeight = UIScreen.main.bounds.height / 10
+    
     var body: some View {
-        let buttonHeight: CGFloat = universalSize.height / 10
-        let menuButtonHeight: CGFloat = universalSize.height / 10
-
         VStack {
             Text("Favourites").asTitle()
             
             ScrollView {
-                LazyVStack {
-                    ForEach(fileReaderAndWriter.scales) { scale in
-                        ScaleRowView(
-                            scale: scale,
-                            deletionMode: $deletionMode,
-                            fileReaderAndWriter: fileReaderAndWriter,
-                            buttonHeight: buttonHeight
-                        )
-                    }
-                }
-
-                Button {
-                    deletionMode.toggle()
-                } label: {
-                    MainUIButton(buttonText: "Delete SystemImage trash", type: deletionMode ? 8 : 1, height: buttonHeight)
-                }
-
-                Button {
-                    isPresented = true
-                } label: {
-                    MainUIButton(buttonText: "Info", type: 1, height: buttonHeight)
-                }
+                favouriteScalesList
+                deleteButton
+                infoButton
             }
             
             Spacer()
-
-            Button {
-                musicNotes.backDisplay = .noteSelection
-                self.screenType = musicNotes.backDisplay
-            } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: menuButtonHeight)
-            }
+            
+            backButton
         }
-        .background(
-            Image(backgroundImage)
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea(.all)
-        )
+        .background(alignment: .center) {
+            backgroundImageView
+        }
         .fullScreenCover(isPresented: $isPresented) {
             FavouritesInfoView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
         }
     }
-}
-
-struct ScaleRowView: View {
-    let scale: ScaleCharacteristics
-    @Binding var deletionMode: Bool
-    var fileReaderAndWriter: FileReaderAndWriter
-    var buttonHeight: CGFloat
-
-    var body: some View {
-        Button {
-            if deletionMode {
-                withAnimation {
-                    fileReaderAndWriter.delete(scale)
-                }
-            } else {
-                // Handle the case where deletionMode is false.
-            }
-        } label: {
-            ZStack {
-                MainUIButton(buttonText: "", type: deletionMode ? 8 : 1, height: buttonHeight)
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("\(scale.startingNote) \(scale.tonality.name)")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                        Text(scale.scaleDescription)
-                            .font(.caption)
-                            .foregroundColor(.white)
-                    }
-                    Spacer()
-                    Text("Tempo: \(scale.tempo)")
-                        .foregroundColor(.white)
-                }
-                .padding(.horizontal, 20)
+    
+    private var favouriteScalesList: some View {
+        ForEach(fileReaderAndWriter.scales) { scale in
+            Button {
+                handleScaleButtonAction(scale)
+            } label: {
+                favouriteScaleRow(scale: scale)
             }
         }
     }
+    
+    private func handleScaleButtonAction(_ scale: ScaleCharacteristics) {
+        if deletionMode {
+            withAnimation {
+                fileReaderAndWriter.delete(scale)
+                deletionMode.toggle()
+            }
+        } else {
+            loadScaleData(scale)
+            musicNotes.backDisplay = .favouritesview
+            self.screenType = .soundview
+        }
+    }
+    
+    private func loadScaleData(_ scale: ScaleCharacteristics) {
+        musicNotes.tonality = scale.tonality
+        musicNotes.tempo = CGFloat(scale.tempo)
+        musicNotes.startingOctave = scale.startingOctave
+        musicNotes.octaves = scale.numOctave
+        musicNotes.tonicMode = scale.tonicSelection
+        musicNotes.playDrone = scale.drone
+        musicNotes.playScaleNotes = scale.scaleNotes
+        musicNotes.tonicNote = scale.startingNote
+        musicNotes.noteDisplay = scale.noteDisplay
+        musicNotes.endlessLoop = scale.endlessLoop
+    }
+    
+    private func favouriteScaleRow(scale: ScaleCharacteristics) -> some View {
+        ZStack {
+            MainUIButton(buttonText: "", type: deletionMode ? 8: 1, height: buttonHeight)
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("\(scale.startingNote.readableString) \(musicNotes.tonality.name)")
+                        .font(.headline)
+                        .foregroundColor(Color.white)
+                    Text(String(scale.scaleDescription))
+                        .font(.caption)
+                        .foregroundColor(Color.white)
+                }
+                
+                Spacer()
+                
+                Text("Tempo: \(scale.tempo)")
+                    .foregroundColor(Color.white)
+            }
+            .padding(.horizontal, 20)
+        }
+    }
+    
+    private var deleteButton: some View {
+        Button {
+            deletionMode.toggle()
+        } label: {
+            MainUIButton(buttonText: "Delete SystemImage trash", type: deletionMode ? 8 : 1, height: buttonHeight)
+        }
+    }
+    
+    private var infoButton: some View {
+        Button {
+            isPresented = true
+        } label: {
+            MainUIButton(buttonText: "Info", type: 1, height: buttonHeight)
+        }
+    }
+    
+    private var backButton: some View {
+        Button {
+            musicNotes.backDisplay = .noteSelection
+            self.screenType = musicNotes.backDisplay
+        } label: {
+            MainUIButton(buttonText: "Back", type: 3, height: menuButtonHeight)
+        }
+    }
+    
+    private var backgroundImageView: some View {
+        Image(backgroundImage)
+            .resizable()
+            .ignoresSafeArea(.all)
+            .scaledToFill()
+    }
 }
 
+
+//
 //struct FavouritesView: View {
 //    
 //    @EnvironmentObject var musicNotes: MusicNotes
