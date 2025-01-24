@@ -60,6 +60,7 @@ struct PlayingView: View {
     @State var repeatingEndlessly : Bool // TODO: Change to a variable
     let pitches: [Pitch]
     let filePitches: [FilePitch]
+    let tonicNote: FileNotes
     @State var mainImageName: String?
     
     var body: some View {
@@ -129,16 +130,13 @@ struct PlayingView: View {
     
         let extraDuration: Int = musicNotes.tempo >= 80 ? 2 : 1
         let duration = (tempoToSeconds(tempo: self.musicNotes.tempo) * CGFloat(self.pitches.count + extraDuration))
-        // Transposes just the drone note
-        // TODO: create a way to get the transposed tonic note from MusicArray
-        let transposedNoteName = playSounds.getTransposedNote(selectedNote: musicNotes.tonicNote.name)
         
         if (!repeatingEndlessly) {
             playSounds.playDroneSound(duration: duration,
-                                  startingNote: transposedNoteName)
+                                      tonicNote: tonicNote)
         } else {
             playSounds.playDroneSound(duration: -1,
-                                  startingNote: transposedNoteName)
+                                      tonicNote: tonicNote)
         }
     }
     

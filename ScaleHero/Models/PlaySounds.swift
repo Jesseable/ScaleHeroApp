@@ -196,9 +196,8 @@ struct PlaySounds {
     /**
      Plays the drone sound effects
      */
-    mutating func playDroneSound(duration: CGFloat, startingNote: String) {
-        let startingFileNote = startingNote.replacingOccurrences(of: "/", with: "|")
-        let droneSoundFile = "\(drone)-Drone-\(startingFileNote)"
+    mutating func playDroneSound(duration: CGFloat, tonicNote: FileNotes) {
+        let droneSoundFile = "\(drone)-Drone-\(tonicNote.name)"
 
         if let droneURL = Bundle.main.url(forResource: droneSoundFile, withExtension: "mp3") {
             self.dronePlayer = try! AVAudioPlayer(contentsOf: droneURL)

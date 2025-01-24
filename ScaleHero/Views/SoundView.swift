@@ -134,6 +134,7 @@ struct SoundView : View {
         .fullScreenCover(isPresented: $isPlaying) {
             self.musicArray.applyModifications(musicNotes: musicNotes)
             let countInBeats = CountInBeats(numBeats: playSounds.retrieveMetronomeCountInLength(for: Int(musicNotes.tempo)))
+            let tonicNote = self.musicArray.getTransposedStartingNote()
             
             return PlayingView(backgroundImage: backgroundImage,
                         playScaleNotes: musicNotes.playScaleNotes,
@@ -143,7 +144,8 @@ struct SoundView : View {
                         tonicFileNote: musicArray.getTransposedStartingNote(),
                         repeatingEndlessly: musicNotes.endlessLoop,
                         pitches: musicArray.getPitches(),
-                        filePitches: musicArray.constructTransposedSoundFileArray())
+                        filePitches: musicArray.constructTransposedSoundFileArray(),
+                        tonicNote: tonicNote)
         }
     }
     

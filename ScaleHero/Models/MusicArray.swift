@@ -58,8 +58,7 @@ class MusicArray {
     }
     
     func getTransposedStartingNote() -> FileNotes {
-        let frw = FileReaderAndWriter()
-        return frw.readTranspositionNote()
+        return transposedStartingFileNote
     }
     
     func applyModifications(musicNotes: MusicNotes) {

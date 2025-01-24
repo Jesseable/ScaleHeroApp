@@ -45,7 +45,7 @@ struct DroneView : View {
                     } catch(let error) {
                         print(error.localizedDescription)
                     }
-                    playScale.playDroneSound(duration: -1, startingNote: transposedNote.name)
+                    playScale.playDroneSound(duration: -1, tonicNote: transposedNote)
 
                 isPlaying = true
                 } else {

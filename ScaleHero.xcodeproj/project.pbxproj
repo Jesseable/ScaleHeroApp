@@ -27,8 +27,6 @@
 		C50626BE28706B6100DB933E /* DroneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626BA28706B6100DB933E /* DroneView.swift */; };
 		C50626C028706BB900DB933E /* NoteSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626BF28706BB900DB933E /* NoteSelectionView.swift */; };
 		C50626C22873D04500DB933E /* TonicNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50626C12873D04500DB933E /* TonicNoteView.swift */; };
-		C51F8D532866AF2B00D5AED2 /* AlterNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51F8D522866AF2B00D5AED2 /* AlterNotes.swift */; };
-		C51F8D552866AFBA00D5AED2 /* AlterNotesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51F8D542866AFBA00D5AED2 /* AlterNotesTests.swift */; };
 		C51F8D592867FBFC00D5AED2 /* ScaleEnumOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51F8D582867FBFC00D5AED2 /* ScaleEnumOptions.swift */; };
 		C5321F0127A8E14F00A63085 /* AcknowledgementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0027A8E14F00A63085 /* AcknowledgementsView.swift */; };
 		C5321F0327A92BF700A63085 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5321F0227A92BF600A63085 /* AboutView.swift */; };
@@ -196,7 +194,6 @@
 		C5468413280A937F00DA9BC8 /* TuningFork1-Drone-B.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5468407280A937F00DA9BC8 /* TuningFork1-Drone-B.mp3 */; };
 		C5468414280A937F00DA9BC8 /* TuningFork1-Drone-G#|Ab.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5468408280A937F00DA9BC8 /* TuningFork1-Drone-G#|Ab.mp3 */; };
 		C546841C280BDC7600DA9BC8 /* PlaySoundsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C546841B280BDC7600DA9BC8 /* PlaySoundsTests.swift */; };
-		C546842B280CE98800DA9BC8 /* WriteScalesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C546842A280CE98800DA9BC8 /* WriteScalesTests.swift */; };
 		C5468432280CFACF00DA9BC8 /* scale-data.json in Resources */ = {isa = PBXBuildFile; fileRef = C5468431280CFACF00DA9BC8 /* scale-data.json */; };
 		C553F2082D0BF9FC00A709D1 /* NotesConstructorBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C553F2072D0BF9B500A709D1 /* NotesConstructorBase.swift */; };
 		C553F20A2D0EA15100A709D1 /* ScaleConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C553F2092D0EA13D00A709D1 /* ScaleConstructor.swift */; };
@@ -211,7 +208,6 @@
 		C574FE87276886BD00ADD3B3 /* ScaleHeroTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE86276886BD00ADD3B3 /* ScaleHeroTests.swift */; };
 		C574FE91276886BD00ADD3B3 /* ScaleHeroUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE90276886BD00ADD3B3 /* ScaleHeroUITests.swift */; };
 		C574FE93276886BD00ADD3B3 /* ScaleHeroUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE92276886BD00ADD3B3 /* ScaleHeroUITestsLaunchTests.swift */; };
-		C574FF3B2773F48F00ADD3B3 /* WriteScales.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FF3A2773F48F00ADD3B3 /* WriteScales.swift */; };
 		C59C554A2D23C7CF00B2BEA3 /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59C55492D23C78800B2BEA3 /* Notes.swift */; };
 		C59C55532D3B69AC00B2BEA3 /* MusicNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59C55522D3B69A700B2BEA3 /* MusicNotes.swift */; };
 		C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B03BDC278416EB00643E7C /* PlayingView.swift */; };
@@ -265,8 +261,6 @@
 		C50626BF28706BB900DB933E /* NoteSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteSelectionView.swift; sourceTree = "<group>"; };
 		C50626C12873D04500DB933E /* TonicNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TonicNoteView.swift; sourceTree = "<group>"; };
 		C51BFE87279A8BF3001BF9A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		C51F8D522866AF2B00D5AED2 /* AlterNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterNotes.swift; sourceTree = "<group>"; };
-		C51F8D542866AFBA00D5AED2 /* AlterNotesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterNotesTests.swift; sourceTree = "<group>"; };
 		C51F8D582867FBFC00D5AED2 /* ScaleEnumOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleEnumOptions.swift; sourceTree = "<group>"; };
 		C5321F0027A8E14F00A63085 /* AcknowledgementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsView.swift; sourceTree = "<group>"; };
 		C5321F0227A92BF600A63085 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -434,7 +428,6 @@
 		C5468407280A937F00DA9BC8 /* TuningFork1-Drone-B.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "TuningFork1-Drone-B.mp3"; sourceTree = "<group>"; };
 		C5468408280A937F00DA9BC8 /* TuningFork1-Drone-G#|Ab.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "TuningFork1-Drone-G#|Ab.mp3"; sourceTree = "<group>"; };
 		C546841B280BDC7600DA9BC8 /* PlaySoundsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySoundsTests.swift; sourceTree = "<group>"; };
-		C546842A280CE98800DA9BC8 /* WriteScalesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteScalesTests.swift; sourceTree = "<group>"; };
 		C5468431280CFACF00DA9BC8 /* scale-data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "scale-data.json"; sourceTree = "<group>"; };
 		C553F2072D0BF9B500A709D1 /* NotesConstructorBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesConstructorBase.swift; sourceTree = "<group>"; };
 		C553F2092D0EA13D00A709D1 /* ScaleConstructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleConstructor.swift; sourceTree = "<group>"; };
@@ -452,7 +445,6 @@
 		C574FE8C276886BD00ADD3B3 /* ScaleHeroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScaleHeroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C574FE90276886BD00ADD3B3 /* ScaleHeroUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleHeroUITests.swift; sourceTree = "<group>"; };
 		C574FE92276886BD00ADD3B3 /* ScaleHeroUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleHeroUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		C574FF3A2773F48F00ADD3B3 /* WriteScales.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteScales.swift; sourceTree = "<group>"; };
 		C59C55492D23C78800B2BEA3 /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
 		C59C55522D3B69A700B2BEA3 /* MusicNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicNotes.swift; sourceTree = "<group>"; };
 		C5B03BDC278416EB00643E7C /* PlayingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingView.swift; sourceTree = "<group>"; };
@@ -579,8 +571,6 @@
 				C55919292D154E8A00C70610 /* ScaleConstructorTests.swift */,
 				C574FE86276886BD00ADD3B3 /* ScaleHeroTests.swift */,
 				C546841B280BDC7600DA9BC8 /* PlaySoundsTests.swift */,
-				C546842A280CE98800DA9BC8 /* WriteScalesTests.swift */,
-				C51F8D542866AFBA00D5AED2 /* AlterNotesTests.swift */,
 			);
 			path = ScaleHeroTests;
 			sourceTree = "<group>";
@@ -630,12 +620,10 @@
 				C553F20B2D0EA15400A709D1 /* ArpeggioConstructor.swift */,
 				C553F2072D0BF9B500A709D1 /* NotesConstructorBase.swift */,
 				C553F2092D0EA13D00A709D1 /* ScaleConstructor.swift */,
-				C574FF3A2773F48F00ADD3B3 /* WriteScales.swift */,
 				C54531D127756F180041702C /* PlaySounds.swift */,
 				C545330E277E866C0041702C /* FileReaderAndWriter.swift */,
 				C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */,
 				C5DBD5F327812B6100DF5183 /* ScaleCharacteristics.swift */,
-				C51F8D522866AF2B00D5AED2 /* AlterNotes.swift */,
 				C51F8D582867FBFC00D5AED2 /* ScaleEnumOptions.swift */,
 				C5BC9DD8287EBC860069DADE /* AppStoreReviewManager.swift */,
 				C5C3FA3D2888D5D2001127EF /* DateTime.swift */,
@@ -1187,7 +1175,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C574FF3B2773F48F00ADD3B3 /* WriteScales.swift in Sources */,
 				C5DBD5F227812A9E00DF5183 /* FileManager-DocumentsDirectory.swift in Sources */,
 				C5443229279BAB710068A239 /* FavouritesView.swift in Sources */,
 				C5321F0327A92BF700A63085 /* AboutView.swift in Sources */,
@@ -1198,7 +1185,6 @@
 				C5BC9DC7287431DD0069DADE /* AchievementsView.swift in Sources */,
 				C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */,
 				C59C554A2D23C7CF00B2BEA3 /* Notes.swift in Sources */,
-				C51F8D532866AF2B00D5AED2 /* AlterNotes.swift in Sources */,
 				C5321F0527A92D5400A63085 /* TutorialView.swift in Sources */,
 				C553F2082D0BF9FC00A709D1 /* NotesConstructorBase.swift in Sources */,
 				C5C3FA3E2888D5D2001127EF /* DateTime.swift in Sources */,
@@ -1229,12 +1215,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C51F8D552866AFBA00D5AED2 /* AlterNotesTests.swift in Sources */,
 				C559192A2D154E9400C70610 /* ScaleConstructorTests.swift in Sources */,
 				C55919302D1A671700C70610 /* MusicArrayTest.swift in Sources */,
 				C559192C2D1565F200C70610 /* ArpeggioConstructorTests.swift in Sources */,
 				C574FE87276886BD00ADD3B3 /* ScaleHeroTests.swift in Sources */,
-				C546842B280CE98800DA9BC8 /* WriteScalesTests.swift in Sources */,
 				C546841C280BDC7600DA9BC8 /* PlaySoundsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
