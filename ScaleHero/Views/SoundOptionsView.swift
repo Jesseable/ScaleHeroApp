@@ -192,9 +192,3 @@ struct SoundOptionsView: View {
         }
     }
 }
-//
-//struct SoundOptionsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SoundOptionsView()
-//    }
-//}

@@ -10,17 +10,32 @@ import SwiftUI
 struct SoundView : View {
     private let universalSize = UIScreen.main.bounds
     
+    enum AlertType: Identifiable {
+        case saveToFav
+        case octaveSelection
+        
+        var id: String {
+            switch self {
+            case .saveToFav:
+                return "Save to Favorites"
+            case .octaveSelection:
+                return "Octave Selection"
+            }
+        }
+    }
+    
     @Binding var screenType: ScreenType
     @EnvironmentObject var scaleOptions: NoteOptions
     @State private var isPlaying = false
-    @State private var presentAlert = false
-    //@State private var disableOctaveSelection = false
-    //@State private var disableOctaveWithIntervals = false
+    @State private var currentAlert: AlertType?
+    @State private var lastTapTime = Date()
     @State var playSounds = PlaySounds()
     @EnvironmentObject var musicNotes: MusicNotes
     var fileReaderAndWriter = FileReaderAndWriter()
     var musicArray: MusicArray
     var backgroundImage: String
+    
+    let doubleTapThreshold: TimeInterval = 0.5
     
     init(screenType: Binding<ScreenType>, backgroundImage: String, tonicNote: Notes, noteCase: Case) {
         _screenType = screenType
@@ -50,7 +65,7 @@ struct SoundView : View {
         }
     }
     
-    var body: some View { // TODO: This just needs to be made smaller
+    var body: some View {
         let title = "\(musicNotes.tonicNote.readableString) \(musicNotes.tonality.name)"
         let buttonHeight = universalSize.height/19
         let bottumButtonHeight = universalSize.height/10
@@ -64,69 +79,11 @@ struct SoundView : View {
                 
                 Group {
                     MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight)
-                    ZStack {
-                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                        Section {
-                            Picker("Octave selection", selection: $musicNotes.octaves) {
-                                Text("1").tag(OctaveNumber.one)
-                                Text("2").tag(OctaveNumber.two)
-                                Text("3").tag(OctaveNumber.three)
-                            }
-                            .formatted()
-                        }
-                    }.onChange(of: musicNotes.octaves) { octave in
-                        if octave == .one {
-                        } else {
-                            musicNotes.intervalType = .allUp
-                            musicNotes.intervalOption = .none
-                        }
-                        // TODO: Make this only move it down if the change means it is impossible...
-                        if octave == .two {
-                            if musicNotes.startingOctave == .three {
-                                musicNotes.startingOctave = .two
-                                // TODO: Add alerts!!!
-                            }
-                        }
-                        if octave == .three {
-                            if musicNotes.startingOctave != .one {
-                                musicNotes.startingOctave = .one
-                            }
-                        }
-                    }
-                    
+                    octavePickerView(title: "Octave Selection", selectedOctave: $musicNotes.octaves, buttonHeight: buttonHeight, onChange: handleOctaveChange)
                     Divider().background(Color.white)
                     
                     MainUIButton(buttonText: "Starting Octave:", type: 4, height: buttonHeight)
-                    ZStack {
-                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                        Section {
-                            Picker("Starting Octave", selection: $musicNotes.startingOctave) {
-                                Text("1").tag(OctaveNumber.one)
-                                Text("2").tag(OctaveNumber.two)
-                                Text("3").tag(OctaveNumber.three)
-                            }
-                            .formatted()
-                        }
-                    }.onChange(of: musicNotes.startingOctave) { strOct in
-                        if strOct != .two {
-                            musicNotes.intervalType = .allUp
-                            musicNotes.intervalOption = .none
-                        }
-                        
-                        if musicNotes.octaves == .three {
-                            if strOct != .one {
-                                musicNotes.startingOctave = .one
-                                // TODO: Bring up a hint about why
-                            }
-                        }
-                        if musicNotes.octaves == .two {
-                            if strOct == .three {
-                                musicNotes.startingOctave = .two
-                                // TODO: Bring up a hint about why
-                            }
-                        }
-                    }
-                    
+                    octavePickerView(title: "Starting Octave", selectedOctave: $musicNotes.startingOctave, buttonHeight: buttonHeight, onChange: handleStartingOctaveChange)
                     Divider().background(Color.white)
                     
                     MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight)
@@ -148,7 +105,8 @@ struct SoundView : View {
                 Divider().background(Color.white)
                 
                 Button {
-                    presentAlert = true
+//                    presentSaveToFavAlert = true
+                    currentAlert = .saveToFav
                 } label: {
                     MainUIButton(buttonText: "Save", type: 1, height: buttonHeight)
                 }
@@ -163,32 +121,13 @@ struct SoundView : View {
                 MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight)
             }
         }
-        .alert(isPresented: $presentAlert) {
-            Alert(
-                title: Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save To Favourites": " You have too many favourites. Delete One First"),
-                message: Text(title),
-                primaryButton: .default(Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save": "Go to favourites Page"), action: {
-                    
-                    if (fileReaderAndWriter.scales.count < maxFavourites) {
-                        
-                        fileReaderAndWriter.add(tonality: musicNotes.tonality,
-                                                tempo: Int(musicNotes.tempo),
-                                                startingOctave: musicNotes.startingOctave,
-                                                numOctave: musicNotes.octaves,
-                                                tonicSelection: musicNotes.tonicMode,
-                                                scaleNotes: musicNotes.playScaleNotes,
-                                                drone: musicNotes.playDrone,
-                                                startingNote: musicNotes.tonicNote.name,
-                                                noteDisplay: musicNotes.noteDisplay,
-                                                endlessLoop: musicNotes.endlessLoop,
-                                                intervalType: musicNotes.intervalType,
-                                                intervalOption: musicNotes.intervalOption)
-                    
-                    }
-                    self.screenType = .favouritesview
-                }),
-                secondaryButton: .cancel(Text("Cancel"), action: { /*Do Nothing*/ })
-            )
+        .alert(item: $currentAlert) { alertType in
+            switch alertType {
+            case .saveToFav:
+                favourtiesPageAlertPopUp(noteTitle: title, maxFavourites: maxFavourites)
+            case .octaveSelection:
+                octaveAlertPopUp()
+            }
         }
         .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
         .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
@@ -206,6 +145,41 @@ struct SoundView : View {
                         pitches: musicArray.getPitches(),
                         filePitches: musicArray.constructTransposedSoundFileArray())
         }
+    }
+    
+    private func favourtiesPageAlertPopUp(noteTitle: String, maxFavourites: Int) -> Alert {
+        Alert(
+            title: Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save To Favourites": " You have too many favourites. Delete One First"),
+            message: Text(noteTitle),
+            primaryButton: .default(Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save": "Go to favourites Page"), action: {
+                
+                if (fileReaderAndWriter.scales.count < maxFavourites) {
+                    
+                    fileReaderAndWriter.add(tonality: musicNotes.tonality,
+                                            tempo: Int(musicNotes.tempo),
+                                            startingOctave: musicNotes.startingOctave,
+                                            numOctave: musicNotes.octaves,
+                                            tonicSelection: musicNotes.tonicMode,
+                                            scaleNotes: musicNotes.playScaleNotes,
+                                            drone: musicNotes.playDrone,
+                                            startingNote: musicNotes.tonicNote.name,
+                                            noteDisplay: musicNotes.noteDisplay,
+                                            endlessLoop: musicNotes.endlessLoop,
+                                            intervalType: musicNotes.intervalType,
+                                            intervalOption: musicNotes.intervalOption)
+                
+                }
+                self.screenType = .favouritesview
+            }),
+            secondaryButton: .cancel(Text("Cancel"), action: { /* Do nothing */ })
+        )
+    }
+    
+    private func octaveAlertPopUp() -> Alert {
+        Alert(title: Text("Octave Selection"),
+              message: Text("To select a starting octave of 'two', you can only play up to two octaves. " +
+                            "To select a starting octave of 'three', you can only play one octave. Please adjust your selections accordingly."),
+              dismissButton: .default(Text("OK")))
     }
     
     @ViewBuilder func playButton(buttonHeight: CGFloat) -> some View {
@@ -238,5 +212,74 @@ struct SoundView : View {
         } label: {
             MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 10, height: buttonHeight*2)
         }
+    }
+    
+    private func octavePickerView(title: String, selectedOctave: Binding<OctaveNumber>, buttonHeight: CGFloat, onChange: @escaping (OctaveNumber) -> Void) -> some View {
+        ZStack {
+            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+            Section {
+                Picker(title, selection: selectedOctave) {
+                    Text("1").tag(OctaveNumber.one)
+                    Text("2").tag(OctaveNumber.two)
+                    Text("3").tag(OctaveNumber.three)
+                }
+                .formatted()
+            }
+        }
+        .onChange(of: selectedOctave.wrappedValue) { octave in
+            onChange(octave)
+        }
+    }
+
+    private func handleOctaveChange(_ octave: OctaveNumber) {
+        if octave != .one {
+            musicNotes.intervalType = .allUp
+            musicNotes.intervalOption = .none
+        }
+
+        if octave == .two {
+            if musicNotes.startingOctave == .three {
+                musicNotes.startingOctave = .two
+            }
+        } else if octave == .three {
+            if musicNotes.startingOctave != .one {
+                musicNotes.startingOctave = .one
+            }
+        }
+    }
+
+    func handleStartingOctaveChange(_ octave: OctaveNumber) {
+        if octave != .two {
+            musicNotes.intervalType = .allUp
+            musicNotes.intervalOption = .none
+        }
+
+        if musicNotes.octaves == .three {
+            if octave != .one {
+                musicNotes.startingOctave = .one
+                if detectDoubleTap() {
+                    currentAlert = .octaveSelection
+                }
+            }
+        }
+
+        if musicNotes.octaves == .two {
+            if octave == .three {
+                musicNotes.startingOctave = .two
+                if detectDoubleTap() {
+                    currentAlert = .octaveSelection
+                }
+            }
+        }
+    }
+    
+    // TODO: Move elsewhere - bad cohesion atm
+    private func detectDoubleTap() -> Bool {
+        let currentTime = Date()
+        if currentTime.timeIntervalSince(lastTapTime) < doubleTapThreshold {
+            return true
+        }
+        lastTapTime = currentTime
+        return false
     }
 }
