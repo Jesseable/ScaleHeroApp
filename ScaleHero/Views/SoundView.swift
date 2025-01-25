@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct SoundView : View {
-    private let universalSize = UIScreen.main.bounds
-    
     enum AlertType: Identifiable {
         case saveToFav
         case octaveSelection
@@ -66,86 +64,90 @@ struct SoundView : View {
     }
     
     var body: some View {
-        let title = "\(musicNotes.tonicNote.readableString) \(musicNotes.tonality.name)"
-        let buttonHeight = universalSize.height/19
-        let bottumButtonHeight = universalSize.height/10
-        let maxFavourites = 7
-
-        VStack {
+        GeometryReader { geometry in
+            let buttonHeight = geometry.size.height / 17
+            let mainMenuButtonHeight = geometry.size.height / 10
+            let width = geometry.size.width
             
-            Text(title).asTitle()
+            let title = "\(musicNotes.tonicNote.readableString) \(musicNotes.tonality.name)"
+            let maxFavourites = 7
             
-            ScrollView {
+            VStack {
                 
-                Group {
-                    MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight, buttonWidth: universalSize.width)
-                    octavePickerView(title: "Octave Selection", selectedOctave: $musicNotes.octaves, buttonHeight: buttonHeight, width: universalSize.width, onChange: handleOctaveChange)
-                    Divider().background(Color.white)
+                Text(title).asTitle()
+                
+                ScrollView {
                     
-                    MainUIButton(buttonText: "Starting Octave:", type: 4, height: buttonHeight, buttonWidth: universalSize.width)
-                    octavePickerView(title: "Starting Octave", selectedOctave: $musicNotes.startingOctave, buttonHeight: buttonHeight, width: universalSize.width, onChange: handleStartingOctaveChange)
-                    Divider().background(Color.white)
+                    Group {
+                        MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight, buttonWidth: width)
+                        octavePickerView(title: "Octave Selection", selectedOctave: $musicNotes.octaves, buttonHeight: buttonHeight, width: width, onChange: handleOctaveChange)
+                        Divider().background(Color.white)
+                        
+                        MainUIButton(buttonText: "Starting Octave:", type: 4, height: buttonHeight, buttonWidth: width)
+                        octavePickerView(title: "Starting Octave", selectedOctave: $musicNotes.startingOctave, buttonHeight: buttonHeight, width: width, onChange: handleStartingOctaveChange)
+                        Divider().background(Color.white)
+                        
+                        MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight, buttonWidth: width)
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: width)
+                            Slider(value: $musicNotes.tempo, in: 20...180, step: 1.0)
+                                .padding(.horizontal)
+                        }
+                        
+                        Divider().background(Color.white)
+                    }
                     
-                    MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight, buttonWidth: universalSize.width)
-                    ZStack {
-                        MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: universalSize.width)
-                        Slider(value: $musicNotes.tempo, in: 20...180, step: 1.0)
-                            .padding(.horizontal)
+                    Button {
+                        screenType = .soundOptionsView
+                    } label: {
+                        MainUIButton(buttonText: "Further Options", type: 1, height: buttonHeight, buttonWidth: width)
                     }
                     
                     Divider().background(Color.white)
+                    
+                    Button {
+                        //                    presentSaveToFavAlert = true
+                        currentAlert = .saveToFav
+                    } label: {
+                        MainUIButton(buttonText: "Save", type: 1, height: buttonHeight, buttonWidth: width)
+                    }
+                    
+                    Spacer()
                 }
-
+                playButton(buttonHeight: buttonHeight, width: width).padding(.bottom, 10)
+                
                 Button {
-                    screenType = .soundOptionsView
+                    self.screenType = musicNotes.backDisplay
                 } label: {
-                    MainUIButton(buttonText: "Further Options", type: 1, height: buttonHeight, buttonWidth: universalSize.width)
+                    MainUIButton(buttonText: "Back", type: 3, height: mainMenuButtonHeight, buttonWidth: width)
                 }
-                
-                Divider().background(Color.white)
-                
-                Button {
-//                    presentSaveToFavAlert = true
-                    currentAlert = .saveToFav
-                } label: {
-                    MainUIButton(buttonText: "Save", type: 1, height: buttonHeight, buttonWidth: universalSize.width)
+            }
+            .alert(item: $currentAlert) { alertType in
+                switch alertType {
+                case .saveToFav:
+                    favourtiesPageAlertPopUp(noteTitle: title, maxFavourites: maxFavourites)
+                case .octaveSelection:
+                    octaveAlertPopUp()
                 }
+            }
+            .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
+            .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
+            .fullScreenCover(isPresented: $isPlaying) {
+                self.musicArray.applyModifications(musicNotes: musicNotes)
+                let countInBeats = CountInBeats(numBeats: playSounds.retrieveMetronomeCountInLength(for: Int(musicNotes.tempo)))
+                let tonicNote = self.musicArray.getTransposedStartingNote()
                 
-                Spacer()
+                return PlayingView(backgroundImage: backgroundImage,
+                                   playScaleNotes: musicNotes.playScaleNotes,
+                                   playDrone: musicNotes.playDrone,
+                                   countInBeats: countInBeats,
+                                   title: title,
+                                   tonicFileNote: musicArray.getTransposedStartingNote(),
+                                   repeatingEndlessly: musicNotes.endlessLoop,
+                                   pitches: musicArray.getPitches(),
+                                   filePitches: musicArray.constructTransposedSoundFileArray(),
+                                   tonicNote: tonicNote)
             }
-            playButton(buttonHeight: buttonHeight).padding(.bottom, 10)
-            
-            Button {
-                self.screenType = musicNotes.backDisplay
-            } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight, buttonWidth: universalSize.width)
-            }
-        }
-        .alert(item: $currentAlert) { alertType in
-            switch alertType {
-            case .saveToFav:
-                favourtiesPageAlertPopUp(noteTitle: title, maxFavourites: maxFavourites)
-            case .octaveSelection:
-                octaveAlertPopUp()
-            }
-        }
-        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
-        .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
-        .fullScreenCover(isPresented: $isPlaying) {
-            self.musicArray.applyModifications(musicNotes: musicNotes)
-            let countInBeats = CountInBeats(numBeats: playSounds.retrieveMetronomeCountInLength(for: Int(musicNotes.tempo)))
-            let tonicNote = self.musicArray.getTransposedStartingNote()
-            
-            return PlayingView(backgroundImage: backgroundImage,
-                        playScaleNotes: musicNotes.playScaleNotes,
-                        playDrone: musicNotes.playDrone,
-                        countInBeats: countInBeats,
-                        title: title,
-                        tonicFileNote: musicArray.getTransposedStartingNote(),
-                        repeatingEndlessly: musicNotes.endlessLoop,
-                        pitches: musicArray.getPitches(),
-                        filePitches: musicArray.constructTransposedSoundFileArray(),
-                        tonicNote: tonicNote)
         }
     }
     
@@ -184,7 +186,7 @@ struct SoundView : View {
               dismissButton: .default(Text("OK")))
     }
     
-    @ViewBuilder func playButton(buttonHeight: CGFloat) -> some View {
+    @ViewBuilder func playButton(buttonHeight: CGFloat, width: CGFloat) -> some View {
         Button {
             // TODO: Move this elsewhere. WHAT IS THIS EVEn DOING.
             // Could add in quavers?
@@ -212,13 +214,13 @@ struct SoundView : View {
                 musicNotes.dismissable = true
             }
         } label: {
-            MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 10, height: buttonHeight*2, buttonWidth: universalSize.width)
+            MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 10, height: buttonHeight*2, buttonWidth: width)
         }
     }
     
     private func octavePickerView(title: String, selectedOctave: Binding<OctaveNumber>, buttonHeight: CGFloat, width: CGFloat, onChange: @escaping (OctaveNumber) -> Void) -> some View {
         ZStack {
-            MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: universalSize.width)
+            MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: width)
             Section {
                 Picker(title, selection: selectedOctave) {
                     Text("1").tag(OctaveNumber.one)

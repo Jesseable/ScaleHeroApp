@@ -49,33 +49,10 @@ struct SettingsView: View {
                     
                     ScrollView {
                         
-                        Group {
-                            MainUIButton(buttonText: "Background:", type: 4, height: buttonHeight, buttonWidth: width)
-                            ZStack {
-                                MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: width)
-                                HStack {
-                                    ForEach(backgrounds, id: \.self) { background in
-                                        Button(action: {
-                                            withAnimation {
-                                                backgroundColour = background // Update the selected background
-                                            }
-                                        }) {
-                                            Circle()
-                                                .fill(Color(background))
-                                                .frame(width: background == backgroundColour ? buttonHeight + 5 : buttonHeight,
-                                                       height: background == backgroundColour ? buttonHeight + 5 : buttonHeight)
-                                                .overlay(
-                                                    Circle()
-                                                        .stroke(background == backgroundColour ? Color.black : Color.clear, lineWidth: 2)
-                                                )
-                                                .shadow(radius: background == backgroundColour ? 10 : 0)
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            Divider().background(Color.white)
-                        }
+                        MainUIButton(buttonText: "Background:", type: 4, height: buttonHeight, buttonWidth: width)
+                        backgroundColourSelection(buttonHeight: buttonHeight, width: width)
+                        
+                        Divider().background(Color.white)
                         
                         // Transposition buttons
                         Group {
@@ -256,6 +233,31 @@ struct SettingsView: View {
                         }),
                         secondaryButton: .cancel(Text("Cancel"), action: { /*Do Nothing*/ })
                     )
+                }
+            }
+        }
+    }
+    
+    private func backgroundColourSelection(buttonHeight: CGFloat, width: CGFloat) -> some View {
+        ZStack {
+            MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: width)
+            HStack {
+                ForEach(backgrounds, id: \.self) { background in
+                    Button(action: {
+                        withAnimation {
+                            backgroundColour = background // Update the selected background
+                        }
+                    }) {
+                        Circle()
+                            .fill(Color(background))
+                            .frame(width: background == backgroundColour ? buttonHeight + 5 : buttonHeight,
+                                   height: background == backgroundColour ? buttonHeight + 5 : buttonHeight)
+                            .overlay(
+                                Circle()
+                                    .stroke(background == backgroundColour ? Color.black : Color.clear, lineWidth: 2)
+                            )
+                            .shadow(radius: background == backgroundColour ? 10 : 0)
+                    }
                 }
             }
         }

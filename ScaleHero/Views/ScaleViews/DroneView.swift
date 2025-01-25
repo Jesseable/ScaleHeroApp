@@ -14,10 +14,8 @@ import AVFoundation
 struct DroneView : View {
     
     @EnvironmentObject var musicNotes: MusicNotes
-    
-    private let universalSize = UIScreen.main.bounds
     var fileReaderAndWriter = FileReaderAndWriter()
-    
+
     @Binding var screenType: ScreenType
     @State private var isPlaying = false
     @State var playScale = PlaySounds()
@@ -25,46 +23,48 @@ struct DroneView : View {
     var backgroundImage: String
     
     var body: some View {
-        let title = musicNotes.tonicNote.name + " Drone"
-        let buttonHeight = universalSize.height/10
-
-        VStack {
+        
+        GeometryReader { geometry in
+            let buttonHeight = geometry.size.height / 10
+            let width = geometry.size.width
             
-            Text(title).asTitle()
-            let musicArray = MusicArray(note: musicNotes.tonicNote)
+            VStack {
+                Text("\(musicNotes.tonicNote.name) Drone").asTitle()
                 
-            TonicNoteDisplay(buttonHeight: buttonHeight, buttonWidth: universalSize.width * 0.9)
-            
-            Button {
-                if (!isPlaying) {
-                    // TODO: Maybe create a method to be able to do it with just one note
-                    let transposedNote = musicArray.getTransposedStartingNote()
-                    // Allows sound to play when ringer is on silent
-                    do {
-                        try AVAudioSession.sharedInstance().setCategory(.playback)
-                    } catch(let error) {
-                        print(error.localizedDescription)
-                    }
-                    playScale.playDroneSound(duration: -1, tonicNote: transposedNote)
+                let musicArray = MusicArray(note: musicNotes.tonicNote)
 
-                isPlaying = true
-                } else {
-                    playScale.cancelAllSounds()
-                    isPlaying = false
+                TonicNoteDisplay(buttonHeight: buttonHeight, buttonWidth: width)
+                
+                Button {
+                    if (!isPlaying) {
+                        let transposedNote = musicArray.getTransposedStartingNote()
+                        // Allows sound to play when ringer is on silent
+                        do {
+                            try AVAudioSession.sharedInstance().setCategory(.playback)
+                        } catch(let error) {
+                            print(error.localizedDescription)
+                        }
+                        playScale.playDroneSound(duration: -1, tonicNote: transposedNote)
+                        
+                        isPlaying = true
+                    } else {
+                        playScale.cancelAllSounds()
+                        isPlaying = false
+                    }
+                } label: {
+                    MainUIButton(buttonText: isPlaying ? "Stop SystemImage speaker.slash": "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight, buttonWidth: width)
                 }
-            } label: {
-                MainUIButton(buttonText: isPlaying ? "Stop SystemImage speaker.slash": "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
+                
+                Spacer()
+                
+                Button {
+                    musicNotes.backDisplay = .homepage
+                    self.screenType = musicNotes.backDisplay
+                } label: {
+                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: width)
+                }
             }
-            
-            Spacer()
-            
-            Button {
-                musicNotes.backDisplay = .homepage
-                self.screenType = musicNotes.backDisplay
-            } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
-            }
+            .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
         }
-        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
     }
 }

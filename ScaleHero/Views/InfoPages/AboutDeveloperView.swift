@@ -15,11 +15,13 @@ struct AboutDeveloperView: View {
     var fileReaderAndWriter : FileReaderAndWriter
     
     var body: some View {
-        
-        VStack {
+        GeometryReader { geometry in
+            let buttonHeight = geometry.size.height / 10
+            let width = geometry.size.width
+            VStack {
                 ScrollView {
                     Text("Developer: Jesse Graf").asTitle()
-                                .padding()
+                        .padding()
                     
                     Divider().background(Color.white)
                     
@@ -34,15 +36,16 @@ struct AboutDeveloperView: View {
                         .padding(.horizontal)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-            Spacer()
-            
-            Button {
-                presentationMode.wrappedValue.dismiss()
-            } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: UIScreen.main.bounds.height/10, buttonWidth: UIScreen.main.bounds.width * 0.9)
+                Spacer()
+                
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: width)
+                }
             }
+            .background(alignment: .center) { Color(fileReaderAndWriter.readBackgroundImage()).ignoresSafeArea() }
         }
-        .background(alignment: .center) { Color(fileReaderAndWriter.readBackgroundImage()).ignoresSafeArea() }
     }
 
     func advantagesText() -> String {

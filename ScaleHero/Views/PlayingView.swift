@@ -39,6 +39,9 @@ struct CountInBeats {
  The view to show the note names when the scale is playing. Also contains functionality to play the scale
  */
 struct PlayingView: View {
+    // Only on the playing view when everything is updating soon anyway use UIScreen.main.bounds
+    private let universalSize = UIScreen.main.bounds
+    
     @EnvironmentObject var musicNotes: MusicNotes
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var fileReaderAndWriter = FileReaderAndWriter()
@@ -54,7 +57,6 @@ struct PlayingView: View {
     @State var isPlaying = false
     @State var firstTime = true
     @State var delay : CGFloat?
-    private let universalSize = UIScreen.main.bounds
     @State var firstNoteDisplay = true
     @State var num = 0
     @State var repeatingEndlessly : Bool // TODO: Change to a variable
