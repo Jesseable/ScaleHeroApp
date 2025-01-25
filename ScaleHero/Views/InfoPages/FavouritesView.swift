@@ -16,37 +16,39 @@ struct FavouritesView: View {
     @State private var deletionMode = false
     var fileReaderAndWriter = FileReaderAndWriter()
     
-    private let buttonHeight = UIScreen.main.bounds.height / 10
-    private let menuButtonHeight = UIScreen.main.bounds.height / 10
-    
     var body: some View {
-        VStack {
-            Text("Favourites").asTitle()
+        GeometryReader { geometry in
+            let buttonHeight = geometry.size.height / 10
+            let menuButtonHeight = geometry.size.height / 10
+            let width = geometry.size.width
             
-            ScrollView {
-                favouriteScalesList
-                deleteButton
-                infoButton
+            VStack {
+                Text("Favourites").asTitle()
+                
+                ScrollView {
+                    favouriteScalesList(buttonHeight: buttonHeight, width: width)
+                    deleteButton(buttonHeight: buttonHeight, width: width)
+                    infoButton(buttonHeight: buttonHeight, width: width)
+                }
+                
+                Spacer()
+                backButton(buttonHeight: menuButtonHeight, width: width)
             }
-            
-            Spacer()
-            
-            backButton
-        }
-        .background(alignment: .center) {
-            backgroundImageView
-        }
-        .fullScreenCover(isPresented: $isPresented) {
-            FavouritesInfoView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
+            .background(alignment: .center) {
+                backgroundImageView
+            }
+            .fullScreenCover(isPresented: $isPresented) {
+                FavouritesInfoView(backgroundImage: backgroundImage, fileReaderAndWriter: fileReaderAndWriter)
+            }
         }
     }
     
-    private var favouriteScalesList: some View {
+    private func favouriteScalesList(buttonHeight: CGFloat, width: CGFloat) -> some View {
         ForEach(fileReaderAndWriter.scales) { scale in
             Button {
                 handleScaleButtonAction(scale)
             } label: {
-                favouriteScaleRow(scale: scale)
+                favouriteScaleRow(scale: scale, buttonHeight: buttonHeight, width: width)
             }
         }
     }
@@ -77,9 +79,9 @@ struct FavouritesView: View {
         musicNotes.endlessLoop = scale.endlessLoop
     }
     
-    private func favouriteScaleRow(scale: ScaleCharacteristics) -> some View {
+    private func favouriteScaleRow(scale: ScaleCharacteristics, buttonHeight: CGFloat, width: CGFloat) -> some View {
         ZStack {
-            MainUIButton(buttonText: "", type: deletionMode ? 8: 1, height: buttonHeight)
+            MainUIButton(buttonText: "", type: deletionMode ? 8: 1, height: buttonHeight, buttonWidth: width)
             HStack {
                 VStack(alignment: .leading) {
                     Text("\(scale.startingNote.readableString) \(musicNotes.tonality.name)")
@@ -99,28 +101,28 @@ struct FavouritesView: View {
         }
     }
     
-    private var deleteButton: some View {
+    private func deleteButton(buttonHeight: CGFloat, width: CGFloat) -> some View {
         Button {
             deletionMode.toggle()
         } label: {
-            MainUIButton(buttonText: "Delete SystemImage trash", type: deletionMode ? 8 : 1, height: buttonHeight)
+            MainUIButton(buttonText: "Delete SystemImage trash", type: deletionMode ? 8 : 1, height: buttonHeight, buttonWidth: width)
         }
     }
     
-    private var infoButton: some View {
+    private func infoButton(buttonHeight: CGFloat, width: CGFloat) -> some View {
         Button {
             isPresented = true
         } label: {
-            MainUIButton(buttonText: "Info", type: 1, height: buttonHeight)
+            MainUIButton(buttonText: "Info", type: 1, height: buttonHeight, buttonWidth: width)
         }
     }
     
-    private var backButton: some View {
+    private func backButton(buttonHeight: CGFloat, width: CGFloat) -> some View {
         Button {
             musicNotes.backDisplay = .noteSelection
             self.screenType = musicNotes.backDisplay
         } label: {
-            MainUIButton(buttonText: "Back", type: 3, height: menuButtonHeight)
+            MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: width)
         }
     }
     

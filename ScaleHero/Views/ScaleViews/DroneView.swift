@@ -33,7 +33,7 @@ struct DroneView : View {
             Text(title).asTitle()
             let musicArray = MusicArray(note: musicNotes.tonicNote)
                 
-            TonicNoteDisplay(buttonHeight: buttonHeight)
+            TonicNoteDisplay(buttonHeight: buttonHeight, buttonWidth: universalSize.width * 0.9)
             
             Button {
                 if (!isPlaying) {
@@ -53,7 +53,7 @@ struct DroneView : View {
                     isPlaying = false
                 }
             } label: {
-                MainUIButton(buttonText: isPlaying ? "Stop SystemImage speaker.slash": "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight)
+                MainUIButton(buttonText: isPlaying ? "Stop SystemImage speaker.slash": "Play SystemImage speaker.wave.3", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
             }
             
             Spacer()
@@ -62,7 +62,7 @@ struct DroneView : View {
                 musicNotes.backDisplay = .homepage
                 self.screenType = musicNotes.backDisplay
             } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
+                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
             }
         }
         .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }

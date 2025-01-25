@@ -30,37 +30,37 @@ struct AboutView: View {
                 Button {
                     self.screenType = .settings
                 } label: {
-                    MainUIButton(buttonText: "Settings", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Settings", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
 
                 Button {
                     isPresented1 = true
                 } label: {
-                    MainUIButton(buttonText: "Acknowledgments", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Acknowledgments", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 Button {
                     isPresented2 = true
                 } label: {
-                    MainUIButton(buttonText: "Tutorial", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Tutorial", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 Button {
                     isPresented3 = true
                 } label: {
-                    MainUIButton(buttonText: "About", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "About", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 Button {
                     self.isSharePresented = true
                 } label: {
-                    MainUIButton(buttonText: "Share App", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Share App", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 Button {
                     writeReview()
                 } label: {
-                    MainUIButton(buttonText: "Write Review", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Write Review", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
             }
             Spacer()
@@ -68,7 +68,7 @@ struct AboutView: View {
             Button {
                 self.screenType = .noteSelection
             } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
+                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
             }
         }.padding(.top, 50)
             .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }

@@ -47,7 +47,7 @@ struct TutorialView: View {
             Button {
                 presentationMode.wrappedValue.dismiss()
             } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: UIScreen.main.bounds.height/10)
+                MainUIButton(buttonText: "Back", type: 3, height: UIScreen.main.bounds.height/10, buttonWidth: UIScreen.main.bounds.width * 0.9)
             }
         }
         .background(alignment: .center) { Color(fileReaderAndWriter.readBackgroundImage()).ignoresSafeArea() }

@@ -16,13 +16,17 @@ struct AcknowledgementsView: View {
     
     var body: some View {
 
-        VStack {
+        GeometryReader { geometry in
+            let menuButtonHeight = geometry.size.height / 10
+            let width = geometry.size.width
+            
+            VStack {
                 ScrollView {
                     Text("Acknowledgements")
-                                .font(.largeTitle.bold())
-                                .accessibilityAddTraits(.isHeader)
-                                .foregroundColor(Color.white)
-                                .padding()
+                        .font(.largeTitle.bold())
+                        .accessibilityAddTraits(.isHeader)
+                        .foregroundColor(Color.white)
+                        .padding()
                     
                     Divider().background(Color.white)
                     
@@ -41,7 +45,7 @@ struct AcknowledgementsView: View {
                         Button {
                             youtubeLink()
                         } label: {
-                            MainUIButton(buttonText: "Musician 47 Link", type: 9, height: UIScreen.main.bounds.height/20)
+                            MainUIButton(buttonText: "Musician 47 Link", type: 9, height: UIScreen.main.bounds.height/20, buttonWidth: UIScreen.main.bounds.width)
                         }
                     }
                     
@@ -58,15 +62,16 @@ struct AcknowledgementsView: View {
                         .padding(.horizontal)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-            Spacer()
-            
-            Button {
-                presentationMode.wrappedValue.dismiss()
-            } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: UIScreen.main.bounds.height/10)
+                Spacer()
+                
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    MainUIButton(buttonText: "Back", type: 3, height: menuButtonHeight, buttonWidth: width)
+                }
             }
+            .background(alignment: .center) { Color(fileReaderAndWriter.readBackgroundImage()).ignoresSafeArea() }
         }
-        .background(alignment: .center) { Color(fileReaderAndWriter.readBackgroundImage()).ignoresSafeArea() }
     }
     
     func musician47Info() -> String {

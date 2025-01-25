@@ -9,7 +9,6 @@ import SwiftUI
 
 struct NoteSelectionView: View {
         
-    private let universalSize = UIScreen.main.bounds
     var fileReaderAndWriter = FileReaderAndWriter()
     @Binding var screenType: ScreenType
     @State private var offset: CGFloat = .zero
@@ -23,116 +22,121 @@ struct NoteSelectionView: View {
     ]
 
     var body: some View {
-        let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
-        let portrate = universalSize.height > universalSize.width
-        let titleHeight = universalSize.height / 6
-        let titleWidth = universalSize.width * 0.9
-        let maxSize = (portrate) ? CGFloat(250) : CGFloat(100)
-        let radius = (maxSize > universalSize.width * 0.4) ? universalSize.width * 0.4 : maxSize
-        let buttonSize = radius * 0.3
-        let midY = (portrate) ? universalSize.minY + radius + buttonSize : universalSize.minY + radius + buttonSize
-        let centre = CGPoint(x: universalSize.midX, y: midY)
-        let hintText : Text = Text("Select a note from the circle of fifths and confirm by selecting the middle green button")
-    
-        ZStack {
-            createAnimationNotes(width: titleWidth)
+        GeometryReader { geometry in
+            let width = geometry.size.width
+            let height = geometry.size.height
             
-            // Title Image - Fixed at the top
-            VStack {
-                if portrate {
-                    titleImage.resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: titleWidth, maxHeight: titleHeight)
-                        .clipped()
-                } else {
-                    titleImage.resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: titleWidth, maxHeight: titleHeight)
-                }
-                Spacer()
-            }.zIndex(1)
-            
-            ScrollView {
-                let colour = Color(fileReaderAndWriter.readBackgroundImage() + "Dark")
-
-                VStack(spacing: 0) {
-                    Spacer().frame(height: titleHeight) // Same as title image height
-                    ZStack {
-                        topButtonLeft(buttonSize: buttonSize, colour: colour)
-                            .aspectRatio(contentMode: .fit)
-                            .padding(.leading, 5)
-                            .alert(isPresented: $presentHint) {
-                                Alert(
-                                    title: Text("Selecting Notes"),
-                                    message: hintText,
-                                    dismissButton: .default(Text("Got it!"))
-                                );
-                            } // Alert for hints
-                        
-                        topButtonRight(buttonSize: buttonSize, colour: colour)
-                            .aspectRatio(contentMode: .fit)
-                            .padding(.trailing, 5)
-                        
-                        Circle().opacity(0.3)
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(colour)
-                            .frame(width: (radius + buttonSize * 0.8) * 2)
-                            .position(centre)
-                            .onAppear {
-                                let showHint = (fileReaderAndWriter.readInitialHint() == "1") // if not 1, false
-                                if (showHint) {
-                                    presentInitialHint = true
-                                }
-                            }
-                            .alert(isPresented: $presentInitialHint) {
-                                Alert(
-                                    title: Text("Selecting Notes"),
-                                    message: hintText,
-                                    primaryButton: .default(Text("Got It!")),
-                                    secondaryButton: .default(Text("Don't ask me again")) {
-                                        fileReaderAndWriter.writeInitialHint(value: "0")
-                                    }
-                                );
-                            }
-                        
-                        CircleOfFifthButtons(colour: colour, radius: radius, centre: centre, option: .outer, buttonSize: buttonSize, screenType: $screenType)
-                        CircleOfFifthButtons(colour: colour, radius: radius, centre: centre, option: .centre, buttonSize: buttonSize, screenType: $screenType)
-                        CircleOfFifthButtons(colour: colour, radius: radius - (buttonSize * 1.25), centre: centre, option: .inner, buttonSize: buttonSize, screenType: $screenType) // the button size
-                        
-                        bottomButtonLeft(buttonSize: buttonSize, colour: colour)
-                            .aspectRatio(contentMode: .fit)
-                            .padding(.leading, 5)
-                        bottomButtonRight(buttonSize: buttonSize, colour: colour)
-                            .aspectRatio(contentMode: .fit)
-                            .padding(.trailing, 5)
-                        
+            let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
+            let portrate = height > width
+            let titleHeight = height / 6
+            let titleWidth = width * 0.9
+            let maxSize = (portrate) ? CGFloat(250) : CGFloat(100)
+            let radius = (maxSize > width * 0.4) ? width * 0.4 : maxSize
+            let buttonSize = radius * 0.3
+            let midY = radius + buttonSize
+            let centre = CGPoint(x: width / 2, y: midY)
+            let hintText : Text = Text("Select a note from the circle of fifths and confirm by selecting the middle green button")
+        
+            ZStack {
+                createAnimationNotes(width: titleWidth)
+                
+                // Title Image - Fixed at the top
+                VStack {
+                    if portrate {
+                        titleImage.resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: titleWidth, maxHeight: titleHeight)
+                            .clipped()
+                    } else {
+                        titleImage.resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: titleWidth, maxHeight: titleHeight)
                     }
-                    .frame(height: (radius + buttonSize * 0.8) * 2)
+                    Spacer()
+                }.zIndex(1)
+                
+                ScrollView {
+                    let colour = Color(fileReaderAndWriter.readBackgroundImage() + "Dark")
+                    
+                    VStack(spacing: 0) {
+                        Spacer().frame(height: titleHeight) // Same as title image height
+                        ZStack {
+                            topButtonLeft(buttonSize: buttonSize, colour: colour)
+                                .aspectRatio(contentMode: .fit)
+                                .padding(.leading, 5)
+                                .alert(isPresented: $presentHint) {
+                                    Alert(
+                                        title: Text("Selecting Notes"),
+                                        message: hintText,
+                                        dismissButton: .default(Text("Got it!"))
+                                    );
+                                } // Alert for hints
+                            
+                            topButtonRight(buttonSize: buttonSize, colour: colour)
+                                .aspectRatio(contentMode: .fit)
+                                .padding(.trailing, 5)
+                            
+                            Circle().opacity(0.3)
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(colour)
+                                .frame(width: (radius + buttonSize * 0.8) * 2)
+                                .position(centre)
+                                .onAppear {
+                                    let showHint = (fileReaderAndWriter.readInitialHint() == "1") // if not 1, false
+                                    if (showHint) {
+                                        presentInitialHint = true
+                                    }
+                                }
+                                .alert(isPresented: $presentInitialHint) {
+                                    Alert(
+                                        title: Text("Selecting Notes"),
+                                        message: hintText,
+                                        primaryButton: .default(Text("Got It!")),
+                                        secondaryButton: .default(Text("Don't ask me again")) {
+                                            fileReaderAndWriter.writeInitialHint(value: "0")
+                                        }
+                                    );
+                                }
+                            
+                            CircleOfFifthButtons(colour: colour, radius: radius, centre: centre, option: .outer, buttonSize: buttonSize, screenType: $screenType)
+                            CircleOfFifthButtons(colour: colour, radius: radius, centre: centre, option: .centre, buttonSize: buttonSize, screenType: $screenType)
+                            CircleOfFifthButtons(colour: colour, radius: radius - (buttonSize * 1.25), centre: centre, option: .inner, buttonSize: buttonSize, screenType: $screenType) // the button size
+                            
+                            bottomButtonLeft(buttonSize: buttonSize, colour: colour)
+                                .aspectRatio(contentMode: .fit)
+                                .padding(.leading, 5)
+                            bottomButtonRight(buttonSize: buttonSize, colour: colour)
+                                .aspectRatio(contentMode: .fit)
+                                .padding(.trailing, 5)
+                            
+                        }
+                        .frame(height: (radius + buttonSize * 0.8) * 2)
+                    }
                 }
+                .frame(width: width)
             }
-            .frame(width: universalSize.width)
-        }
-        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
-        .onAppear() {
-            offset += universalSize.height * 1.2
+            .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
+            .onAppear() {
+                offset += (width < height) ? height * 2 : width * 2
+            }
         }
     }
     
     @ViewBuilder func createAnimationNotes(width: CGFloat) -> some View {
         ImageAnimation(imageName: "Treble-Cleff" + self.fileReaderAndWriter.readBackgroundImage(),
-                       xPos: width * 0.3, duration: 7.00, offset: self.$offset)
+                       xPos: width * 0.65, duration: 7.00, offset: self.$offset)
 
         ImageAnimation(imageName: "Quaver" + fileReaderAndWriter.readBackgroundImage(),
-                       xPos: -width * 0.3, duration: 5.00, offset: self.$offset)
+                       xPos: width * 0.9, duration: 5.00, offset: self.$offset)
 
         ImageAnimation(imageName: "Semiquaver" + fileReaderAndWriter.readBackgroundImage(),
                        xPos: 0, duration: 10.00, offset: self.$offset)
 
         ImageAnimation(imageName: "Crotchet" + fileReaderAndWriter.readBackgroundImage(),
-                       xPos: -width * 0.4, duration: 6.25, offset: self.$offset)
+                       xPos: width * 0.4, duration: 6.25, offset: self.$offset)
 
         ImageAnimation(imageName: "Treble-Cleff" + fileReaderAndWriter.readBackgroundImage(),
-                       xPos: -width * 0.1, duration: 4.60, offset: self.$offset)
+                       xPos: width * 0.1, duration: 4.60, offset: self.$offset)
 
         ImageAnimation(imageName: "Crotchet" + fileReaderAndWriter.readBackgroundImage(),
                        xPos: width * 0.35, duration: 12.00, offset: self.$offset)

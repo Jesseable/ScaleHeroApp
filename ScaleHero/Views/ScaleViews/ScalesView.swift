@@ -25,7 +25,7 @@ struct ScalesView: View {
 
             Text("SCALES").asTitle()
             
-            TonicNoteDisplay(buttonHeight: buttonHeight)
+            TonicNoteDisplay(buttonHeight: buttonHeight, buttonWidth: UIScreen.main.bounds.width * 0.9)
             
             ScrollView {
                 
@@ -35,7 +35,7 @@ struct ScalesView: View {
                     musicNotes.backDisplay = .scale
                     self.screenType = .soundview
                 } label: {
-                    MainUIButton(buttonText: "Major", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Major", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 // Minor scale
@@ -44,7 +44,7 @@ struct ScalesView: View {
                     musicNotes.backDisplay = .scale
                     self.screenType = ScreenType.soundview
                 } label: {
-                    MainUIButton(buttonText: "Minor", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Minor", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 // Harmonic Minor Scale
@@ -53,7 +53,7 @@ struct ScalesView: View {
                     musicNotes.backDisplay = .scale
                     self.screenType = ScreenType.soundview
                 } label: {
-                    MainUIButton(buttonText: "Harmonic Minor", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Harmonic Minor", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 // Melodic minor scale
@@ -62,7 +62,7 @@ struct ScalesView: View {
                     musicNotes.backDisplay = .scale
                     self.screenType = ScreenType.soundview
                 } label: {
-                    MainUIButton(buttonText: "Melodic Minor", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Melodic Minor", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 // Major scale modes (goes to a new option screen)
@@ -71,7 +71,7 @@ struct ScalesView: View {
                     musicNotes.backDisplay = .scale
                     self.screenType = ScreenType.otherview
                 } label: {
-                    MainUIButton(buttonText: "Major Modes", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Major Modes", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 // Major scale modes (goes to a new option screen)
@@ -80,7 +80,7 @@ struct ScalesView: View {
                     musicNotes.backDisplay = .scale
                     self.screenType = ScreenType.otherview
                 } label: {
-                    MainUIButton(buttonText: "Pentatonic Modes", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Pentatonic Modes", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 // Other Special scale options (goes to a new option screen)
@@ -89,7 +89,7 @@ struct ScalesView: View {
                     musicNotes.backDisplay = .scale
                     self.screenType = ScreenType.otherview
                 } label: {
-                    MainUIButton(buttonText: "Special", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Special", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 Spacer()
@@ -98,7 +98,7 @@ struct ScalesView: View {
                 musicNotes.backDisplay = .homepage
                 self.screenType = musicNotes.backDisplay
             } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
+                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
             }
         }
         .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }

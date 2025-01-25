@@ -24,7 +24,7 @@ struct ArpeggioView : View {
             
             Text("ARPEGGIOS").asTitle()
             
-            TonicNoteDisplay(buttonHeight: buttonHeight)
+            TonicNoteDisplay(buttonHeight: buttonHeight, buttonWidth: universalSize.width * 0.9)
             
             ScrollView {
                 
@@ -33,7 +33,7 @@ struct ArpeggioView : View {
                     musicNotes.backDisplay = .arpeggio
                     self.screenType = ScreenType.soundview
                 } label: {
-                    MainUIButton(buttonText: "Major (Triad)", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Major (Triad)", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 Button {
@@ -41,7 +41,7 @@ struct ArpeggioView : View {
                     musicNotes.backDisplay = .arpeggio
                     self.screenType = ScreenType.soundview
                 } label: {
-                    MainUIButton(buttonText: "Minor (Triad)", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Minor (Triad)", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
                 
                 Button {
@@ -49,7 +49,7 @@ struct ArpeggioView : View {
                     musicNotes.backDisplay = .arpeggio
                     self.screenType = ScreenType.otherview
                 } label: {
-                    MainUIButton(buttonText: "7th's (Tetrads)", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "7th's (Tetrads)", type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
             }
             
@@ -59,7 +59,7 @@ struct ArpeggioView : View {
                 musicNotes.backDisplay = .homepage
                 self.screenType = musicNotes.backDisplay
             } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
+                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
             }
         }
         .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }

@@ -105,7 +105,7 @@ struct PlayingView: View {
             stopAllSoundsAndDismiss()
         } label: {
             let buttonHeight = universalSize.height / 10
-            MainUIButton(buttonText: "Stop", type: 3, height: buttonHeight)
+            MainUIButton(buttonText: "Stop", type: 3, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
         }
     }
     

@@ -10,8 +10,9 @@ import SwiftUI
 struct TonicNoteDisplay: View {
     @EnvironmentObject var musicNotes: MusicNotes
     let buttonHeight : CGFloat
+    let buttonWidth : CGFloat
     
     var body: some View {
-        MainUIButton(buttonText: "Tonic: \(musicNotes.tonicNote.readableString) SystemImage music.note", type: 4, height: buttonHeight * 0.75)
+        MainUIButton(buttonText: "Tonic: \(musicNotes.tonicNote.readableString) SystemImage music.note", type: 4, height: buttonHeight * 0.75, buttonWidth: buttonWidth)
     }
 }

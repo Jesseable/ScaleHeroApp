@@ -78,17 +78,17 @@ struct SoundView : View {
             ScrollView {
                 
                 Group {
-                    MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight)
-                    octavePickerView(title: "Octave Selection", selectedOctave: $musicNotes.octaves, buttonHeight: buttonHeight, onChange: handleOctaveChange)
+                    MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight, buttonWidth: universalSize.width)
+                    octavePickerView(title: "Octave Selection", selectedOctave: $musicNotes.octaves, buttonHeight: buttonHeight, width: universalSize.width, onChange: handleOctaveChange)
                     Divider().background(Color.white)
                     
-                    MainUIButton(buttonText: "Starting Octave:", type: 4, height: buttonHeight)
-                    octavePickerView(title: "Starting Octave", selectedOctave: $musicNotes.startingOctave, buttonHeight: buttonHeight, onChange: handleStartingOctaveChange)
+                    MainUIButton(buttonText: "Starting Octave:", type: 4, height: buttonHeight, buttonWidth: universalSize.width)
+                    octavePickerView(title: "Starting Octave", selectedOctave: $musicNotes.startingOctave, buttonHeight: buttonHeight, width: universalSize.width, onChange: handleStartingOctaveChange)
                     Divider().background(Color.white)
                     
-                    MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight)
+                    MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight, buttonWidth: universalSize.width)
                     ZStack {
-                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                        MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: universalSize.width)
                         Slider(value: $musicNotes.tempo, in: 20...180, step: 1.0)
                             .padding(.horizontal)
                     }
@@ -99,7 +99,7 @@ struct SoundView : View {
                 Button {
                     screenType = .soundOptionsView
                 } label: {
-                    MainUIButton(buttonText: "Further Options", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Further Options", type: 1, height: buttonHeight, buttonWidth: universalSize.width)
                 }
                 
                 Divider().background(Color.white)
@@ -108,7 +108,7 @@ struct SoundView : View {
 //                    presentSaveToFavAlert = true
                     currentAlert = .saveToFav
                 } label: {
-                    MainUIButton(buttonText: "Save", type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: "Save", type: 1, height: buttonHeight, buttonWidth: universalSize.width)
                 }
                 
                 Spacer()
@@ -118,7 +118,7 @@ struct SoundView : View {
             Button {
                 self.screenType = musicNotes.backDisplay
             } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight)
+                MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight, buttonWidth: universalSize.width)
             }
         }
         .alert(item: $currentAlert) { alertType in
@@ -212,20 +212,20 @@ struct SoundView : View {
                 musicNotes.dismissable = true
             }
         } label: {
-            MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 10, height: buttonHeight*2)
+            MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 10, height: buttonHeight*2, buttonWidth: universalSize.width)
         }
     }
     
-    private func octavePickerView(title: String, selectedOctave: Binding<OctaveNumber>, buttonHeight: CGFloat, onChange: @escaping (OctaveNumber) -> Void) -> some View {
+    private func octavePickerView(title: String, selectedOctave: Binding<OctaveNumber>, buttonHeight: CGFloat, width: CGFloat, onChange: @escaping (OctaveNumber) -> Void) -> some View {
         ZStack {
-            MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+            MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: universalSize.width)
             Section {
                 Picker(title, selection: selectedOctave) {
                     Text("1").tag(OctaveNumber.one)
                     Text("2").tag(OctaveNumber.two)
                     Text("3").tag(OctaveNumber.three)
                 }
-                .formatted()
+                .formatted(width: width)
             }
         }
         .onChange(of: selectedOctave.wrappedValue) { octave in

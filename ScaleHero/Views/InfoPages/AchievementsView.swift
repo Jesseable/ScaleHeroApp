@@ -69,7 +69,7 @@ struct AchievementsView: View {
                 musicNotes.backDisplay = .noteSelection
                 self.screenType = musicNotes.backDisplay
             } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: universalSize.height / 10)
+                MainUIButton(buttonText: "Back", type: 3, height: universalSize.height / 10, buttonWidth: universalSize.width)
             }
         }
         .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }

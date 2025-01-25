@@ -42,9 +42,9 @@ struct SoundOptionsView: View {
                             musicNotes.playDrone.toggle()
                         } label: {
                             if (musicNotes.playDrone) {
-                                MainUIButton(buttonText: "Drone SystemImage checkmark.square", type: 6, height: buttonHeight)
+                                MainUIButton(buttonText: "Drone SystemImage checkmark.square", type: 6, height: buttonHeight, buttonWidth: universalSize.width)
                             } else {
-                                MainUIButton(buttonText: "Drone SystemImage square", type: 6, height: buttonHeight)
+                                MainUIButton(buttonText: "Drone SystemImage square", type: 6, height: buttonHeight, buttonWidth: universalSize.width)
                             }
                         }
                         
@@ -52,9 +52,9 @@ struct SoundOptionsView: View {
                             musicNotes.playScaleNotes.toggle()
                         } label: {
                             if (musicNotes.playScaleNotes) {
-                                MainUIButton(buttonText: "Play Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
+                                MainUIButton(buttonText: "Play Notes SystemImage checkmark.square", type: 5, height: buttonHeight, buttonWidth: universalSize.width)
                             } else {
-                                MainUIButton(buttonText: "Play Notes SystemImage square", type: 5, height: buttonHeight)
+                                MainUIButton(buttonText: "Play Notes SystemImage square", type: 5, height: buttonHeight, buttonWidth: universalSize.width)
                             }
                         }
                     }
@@ -64,9 +64,9 @@ struct SoundOptionsView: View {
                             musicNotes.metronome.toggle()
                         } label: {
                             if (musicNotes.metronome) {
-                                MainUIButton(buttonText: "Metronome SystemImage checkmark.square", type: 6, height: buttonHeight)
+                                MainUIButton(buttonText: "Metronome SystemImage checkmark.square", type: 6, height: buttonHeight, buttonWidth: universalSize.width)
                             } else {
-                                MainUIButton(buttonText: "Metronome SystemImage square", type: 6, height: buttonHeight)
+                                MainUIButton(buttonText: "Metronome SystemImage square", type: 6, height: buttonHeight, buttonWidth: universalSize.width)
                             }
                         }
                         
@@ -74,9 +74,9 @@ struct SoundOptionsView: View {
                             musicNotes.repeatNotes.toggle()
                         } label: {
                             if (musicNotes.repeatNotes) {
-                                MainUIButton(buttonText: "Repeat Notes SystemImage checkmark.square", type: 5, height: buttonHeight)
+                                MainUIButton(buttonText: "Repeat Notes SystemImage checkmark.square", type: 5, height: buttonHeight, buttonWidth: universalSize.width)
                             } else {
-                                MainUIButton(buttonText: "Repeat Notes SystemImage square", type: 5, height: buttonHeight)
+                                MainUIButton(buttonText: "Repeat Notes SystemImage square", type: 5, height: buttonHeight, buttonWidth: universalSize.width)
                             }
                         }
                     }
@@ -84,9 +84,9 @@ struct SoundOptionsView: View {
                         musicNotes.endlessLoop.toggle()
                     } label: {
                         if (musicNotes.endlessLoop) {
-                            MainUIButton(buttonText: "Endless Loop SystemImage checkmark.square", type: 1, height: buttonHeight)
+                            MainUIButton(buttonText: "Endless Loop SystemImage checkmark.square", type: 1, height: buttonHeight, buttonWidth: universalSize.width)
                         } else {
-                            MainUIButton(buttonText: "Endless Loop SystemImage square", type: 1, height: buttonHeight)
+                            MainUIButton(buttonText: "Endless Loop SystemImage square", type: 1, height: buttonHeight, buttonWidth: universalSize.width)
                         }
                     }
                 }
@@ -94,16 +94,16 @@ struct SoundOptionsView: View {
                 Divider().background(Color.white)
                 
                 Group {
-                    MainUIButton(buttonText: "Repeat Tonics", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
+                    MainUIButton(buttonText: "Repeat Tonics", type: 4, height: buttonHeight, buttonWidth: universalSize.width) // Make a new UI button colour for the ones pickers are on
                     ZStack {
-                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                        MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: universalSize.width)
                         Section {
                             Picker("Tonic selection", selection: $musicNotes.tonicMode) {
                                 Text("Never").tag(TonicOption.noRepeatedTonic)
                                 Text("All").tag(TonicOption.repeatedTonicAll)
                                 Text("Not Initial").tag(TonicOption.repeatedTonic)
                             }
-                            .formatted()
+                            .formatted(width: universalSize.width)
                         }
                     }
                 }
@@ -116,7 +116,7 @@ struct SoundOptionsView: View {
             Button {
                 self.screenType = .soundview
             } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight)
+                MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight, buttonWidth: universalSize.width)
             }
         }
         .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
@@ -143,9 +143,9 @@ struct SoundOptionsView: View {
         Divider().background(Color.white)
         
         Group {
-            MainUIButton(buttonText: "Interval Options", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
+            MainUIButton(buttonText: "Interval Options", type: 4, height: buttonHeight, buttonWidth: universalSize.width) // Make a new UI button colour for the ones pickers are on
             ZStack {
-                MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: universalSize.width)
                 Section {
                     Picker("Interval Selections", selection: $musicNotes.intervalOption) {
                         Text("None").tag(Interval.none)
@@ -153,7 +153,7 @@ struct SoundOptionsView: View {
                         Text("Fourths").tag(Interval.fourths)
                         Text("Fifths").tag(Interval.fifths)
                     }
-                    .formatted()
+                    .formatted(width: universalSize.width)
                     .disabled(intervalDisabled)
                 }
                 .onChange(of: musicNotes.intervalOption) { intOpt in
@@ -170,9 +170,9 @@ struct SoundOptionsView: View {
         Divider().background(Color.white)
         
         Group {
-            MainUIButton(buttonText: "Interval Type", type: 4, height: buttonHeight) // Make a new UI button colour for the ones pickers are on
+            MainUIButton(buttonText: "Interval Type", type: 4, height: buttonHeight, buttonWidth: universalSize.width) // Make a new UI button colour for the ones pickers are on
             ZStack {
-                MainUIButton(buttonText: "", type: 7, height: buttonHeight)
+                MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: universalSize.width)
                 Section {
                     Picker("Interval Selections", selection: $musicNotes.intervalType) {
                         Text("All Up").tag(IntervalOption.allUp)
@@ -180,7 +180,7 @@ struct SoundOptionsView: View {
                         Text("One Up One Down").tag(IntervalOption.oneUpOneDown)
                         Text("One Down One Up").tag(IntervalOption.oneDownOneUp)
                     }
-                    .formatted()
+                    .formatted(width: universalSize.width)
                     .disabled(intervalsVerify)
                 }
                 .onChange(of: musicNotes.intervalOption) { opt in

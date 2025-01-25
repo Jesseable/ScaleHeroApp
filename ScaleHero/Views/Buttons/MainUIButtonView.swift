@@ -11,13 +11,11 @@ struct MainUIButton: View {
 
     var buttonText: String
     var type : Int
-    var height : CGFloat
+    let height : CGFloat
+    let buttonWidth : CGFloat
     let fileReaderAndWriter = FileReaderAndWriter()
-    private let universalSize = UIScreen.main.bounds
     
     var body: some View {
-        let buttonWidth = universalSize.width 
-        
         ZStack {
             let buttonColor = fileReaderAndWriter.readBackgroundImage()
             switch type { /// CHNAGE TO AN ENUM
@@ -28,7 +26,7 @@ struct MainUIButton: View {
                     .formatted(height: height, width: buttonWidth)
             case 3:
                 CroppedAboveButton() // Bottum Buttons
-                        .fill(style: FillStyle(eoFill: true))
+                    .fill(style: FillStyle(eoFill: true))
                     .foregroundColor(Color(buttonColor + "Dark"))
                     .formatted(height: height, width: buttonWidth)
             case 4:
@@ -74,17 +72,17 @@ struct MainUIButton: View {
                     .fill(Color(buttonColor))
                     .formatted(height: height, width: buttonWidth)
             }
-
+            
             let scaleEffect = (height - 30)/height + 1
             if (buttonText.contains("SystemImage")) {
                 let stringArr = buttonText.components(separatedBy: " SystemImage ")
-
+                
                 Text(" \(stringArr[0]) \(Image(systemName: stringArr[1]))")
                     .foregroundColor(Color.white).bold()
                     .scaleEffect(scaleEffect)
                     .frame(maxWidth: buttonWidth * 0.5, alignment: .center)
                     .allowsTightening(true)
-
+                
             } else {
                 Text(buttonText)
                     .foregroundColor(Color.white).bold()

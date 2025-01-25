@@ -31,7 +31,7 @@ struct OtherScalesView: View {
         VStack {
             Text(displayType.rawValue.uppercased()).asTitle()
             
-            TonicNoteDisplay(buttonHeight: buttonHeight)
+            TonicNoteDisplay(buttonHeight: buttonHeight, buttonWidth: universalSize.width * 0.9)
             
             ScrollView {
                 getView(view: displayType, buttonHeight: buttonHeight)
@@ -45,7 +45,7 @@ struct OtherScalesView: View {
                     self.screenType = .scale
                 }
             } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
+                MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
             }
         }
         .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
@@ -60,7 +60,7 @@ struct OtherScalesView: View {
                     musicNotes.backDisplay = .otherview
                     self.screenType = .soundview
                 } label: {
-                    MainUIButton(buttonText: mode.name, type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: mode.name, type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
             }
         case .pentatonicModes: // All pentatonic modes
@@ -70,7 +70,7 @@ struct OtherScalesView: View {
                     musicNotes.backDisplay = .otherview
                     self.screenType = .soundview
                 } label: {
-                    MainUIButton(buttonText: mode.name, type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: mode.name, type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
             }
         case .special: // Can go to pentatonic modes screen and contains all chromatic scale alterations and blues scale
@@ -80,7 +80,7 @@ struct OtherScalesView: View {
                     musicNotes.backDisplay = .otherview
                     self.screenType = .soundview
                 } label: {
-                    MainUIButton(buttonText: mode.name, type: 1, height: buttonHeight)
+                    MainUIButton(buttonText: mode.name, type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                 }
             }
             Button {
@@ -89,7 +89,7 @@ struct OtherScalesView: View {
                 self.screenType = .soundview
             } label: {
                 let name = "blues"
-                MainUIButton(buttonText: name, type: 1, height: buttonHeight)
+                MainUIButton(buttonText: name, type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
             }
         case .tetrads: // Lists all of the 7th scales
             ForEach (ArpeggioTonality.allCases, id: \.self) { mode in
@@ -99,7 +99,7 @@ struct OtherScalesView: View {
                         musicNotes.backDisplay = .otherview
                         self.screenType = .soundview
                     } label: {
-                        MainUIButton(buttonText: mode.name, type: 1, height: buttonHeight)
+                        MainUIButton(buttonText: mode.name, type: 1, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
                     }
                 }
             }
