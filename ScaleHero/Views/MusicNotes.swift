@@ -37,4 +37,5 @@ class MusicNotes: ObservableObject {
     @Published var repeatNotes = false
     @Published var metronomePulse = 1 // TODO: Changed to an enum or in the metronome class???
     @Published var endlessLoop = false
+    @Published var displayType: DisplayType = .notes
 }

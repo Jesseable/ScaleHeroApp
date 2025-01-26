@@ -93,6 +93,24 @@ struct SoundOptionsView: View {
                     
                     Divider().background(Color.white)
                     
+                    if musicNotes.tonality.hasSolFa {
+                        Group {
+                            MainUIButton(buttonText: "Image Display Type", type: 4, height: buttonHeight, buttonWidth: width)
+                            ZStack {
+                                MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: width)
+                                Section {
+                                    Picker("Display Image options", selection: $musicNotes.displayType) {
+                                        Text("Notes").tag(DisplayType.notes)
+                                        Text("Sol-Fa").tag(DisplayType.solFa)
+                                    }
+                                    .formatted(width: width)
+                                }
+                            }
+                        }
+                    }
+                    
+                    Divider().background(Color.white)
+                    
                     Group {
                         MainUIButton(buttonText: "Repeat Tonics", type: 4, height: buttonHeight, buttonWidth: width) // Make a new UI button colour for the ones pickers are on
                         ZStack {

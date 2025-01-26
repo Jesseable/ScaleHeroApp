@@ -56,6 +56,28 @@ enum Case : Codable, TonalityProtocol {
             return "No tonality is selected yet"
         }
     }
+    
+    var hasSolFa: Bool {
+        switch self {
+        case .arpeggio(tonality: let arpeggio):
+            return arpeggio.hasSolFa
+        case .scale(tonality: let scale):
+            return scale.hasSolFa
+        case .unselected:
+            return false
+        }
+    }
+    
+    var solFa: [SolFa] {
+        switch self {
+        case .arpeggio(tonality: let arpeggio):
+            return arpeggio.solFa
+        case .scale(tonality: let scale):
+            return scale.solFa
+        case .unselected:
+            return [] // TODO: Possibly convertvto an exception later on
+        }
+    }
 }
 
 extension Case : Equatable {
@@ -171,8 +193,50 @@ enum ChromaticAlteration : CaseIterable, Equatable, Codable {
     }
 }
 
+enum DisplayType {
+    case notes
+    case solFa
+}
+
+enum SolFa {
+    case Do
+    case Re
+    case Mi
+    case Fa
+    case Fi
+    case So
+    case Si
+    case La
+    case Ti
+    
+    var name: String {
+        switch self {
+        case .Do:
+            return "Do"
+        case .Re:
+            return "Re"
+        case .Mi:
+            return "Mi"
+        case .Fa:
+            return "Fa"
+        case .Fi:
+            return "Fi"
+        case .So:
+            return "Sol"
+        case .Si:
+            return "Si"
+        case .La:
+            return "La"
+        case .Ti:
+            return "Ti"
+        }
+    }
+}
+
 protocol TonalityProtocol {
     var name: String { get }
+    var hasSolFa: Bool { get }
+    var solFa: [SolFa] { get }
 }
 
 enum ArpeggioTonality : CaseIterable, Equatable, Codable, TonalityProtocol {
@@ -197,6 +261,26 @@ enum ArpeggioTonality : CaseIterable, Equatable, Codable, TonalityProtocol {
             return "Major 7th"
         case .minor7th:
             return "Minor 7th"
+        }
+    }
+    
+    var hasSolFa: Bool {
+        switch self {
+        case .major, .minor:
+            return true
+        case .dominant7th, .diminished7th, .major7th, .minor7th:
+            return false
+        }
+    }
+    
+    var solFa: [SolFa] {
+        switch self {
+        case .major:
+            return [.Do, .Mi, .So, .Do, .So, .Mi, .Do]
+        case .minor:
+            return [.La, .Do, .Mi, .La, .Do, .Mi, .La]
+        default:
+            return []
         }
     }
 }
@@ -235,6 +319,33 @@ enum ScaleTonality : Equatable, Codable, TonalityProtocol {
             return true
         case .naturalMinor, .blues, .harmonicMinor, .melodicMinor, .chromatic:
             return false
+        }
+    }
+    
+    var hasSolFa: Bool {
+        switch self {
+        case .major, .naturalMinor, .harmonicMinor, .melodicMinor, .pentatonic:
+            return true
+        case .blues, .chromatic:
+            return false
+        }
+    }
+    
+    var solFa: [SolFa] {
+        switch self {
+        case .major(mode: let mode):
+            // TODO: Rotate on the raw value of the mode
+            return [.Do, .Re, .Mi, .Fa, .So, .La, .Ti, .Do, .Ti, .La, .So, .Fa, .Mi, .Re, .Do]
+        case .naturalMinor:
+            return [.La, .Ti, .Do, .Re, .Mi, .Fa, .So, .La, .So, .Fa, .Mi, .Re, .Do, .Ti, .La]
+        case .harmonicMinor:
+            return [.La, .Ti, .Do, .Re, .Mi, .Fa, .Si, .La, .Si, .Fa, .Mi, .Re, .Do, .Ti, .La]
+        case .melodicMinor:
+            return [.La, .Ti, .Do, .Re, .Mi, .Fi, .Si, .La, .So, .Fa, .Mi, .Re, .Do, .Ti, .La]
+        case .pentatonic(mode: let mode):
+            return [.Do, .Re, .Mi, .So, .La, .Do, .La, .So, .Mi, .Re, .Do]
+        default:
+            return []
         }
     }
 }

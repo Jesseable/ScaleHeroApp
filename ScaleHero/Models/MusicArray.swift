@@ -19,6 +19,7 @@ class MusicArray {
     }()
     private var notesArr: [Notes]
     private var pitchArr: [Pitch]?
+//    private var solFaArr: [SolFa]? TODO: !!!!!!!!!!!!!!!
 //    private var fileNotesArr: [FileNotes]?
     private enum TranspositionState { case firstTime, hasInitialOctaveChange, hasNoInitialOctaveChange }
 
@@ -62,6 +63,8 @@ class MusicArray {
     }
     
     func applyModifications(musicNotes: MusicNotes) {
+        // If has Sol-Fa
+        
         convertToOctaveSize(numOctaves: musicNotes.octaves)
         applyPitches(with: musicNotes.startingOctave)
         // Everything from here on can use Pitches instead of Notes. TODO:  Somehow make this cleaner later
@@ -394,7 +397,8 @@ class MusicArray {
         fatalError("The pitch was not in the music alphabet")
     }
     
-    // TODO: Maybe move this into scaleConstructor...
+    // TODO: Maybe move this into scaleConstructor... I NEED THIS FOR ENUMS VALUES AS WELL NOW
+    // TODO: Add into notes contructor and make it a static method to be used anywhere...
     func rotateScale(by modeDegree: Int) {
         guard !notesArr.isEmpty else { return }
         

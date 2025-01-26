@@ -8,7 +8,6 @@
 import SwiftUI
 import AVFoundation
 
-// TODO: Decided whether it deserves its own file or not???
 struct CountInBeats {
     private var currentCount: Int
     private let maxCount: Int = 8
@@ -64,6 +63,7 @@ struct PlayingView: View {
     let filePitches: [FilePitch]
     let tonicNote: FileNotes
     @State var mainImageName: String?
+    var solFaNoteMapper: SolFaNoteMapper?
     
     var body: some View {
         VStack {
@@ -178,8 +178,8 @@ struct PlayingView: View {
         if let nextBeat = currentCountInBeat {
             self.mainImageName = nextBeat
         } else {
-            self.mainImageName = pitches[self.index].note.name
-            
+            setMainImageName()
+                    
             playNextNoteIfNeeded()
             
             if (index == pitches.count - 1) {
@@ -190,6 +190,26 @@ struct PlayingView: View {
                 }
             }
             self.index += 1
+        }
+    }
+    
+    private func setMainImageName() {
+        let currentNote = pitches[self.index].note
+        
+        guard let solFaMapper = solFaNoteMapper else {
+            self.mainImageName = currentNote.name
+            return
+        }
+        
+        do {
+            let solFa = try solFaMapper.getSolFa(for: currentNote)
+            self.mainImageName = solFa.name
+        } catch SolFaNoteMapperError.noteNotFound {
+            print("Error mapping the note to a solFa")
+            self.mainImageName = currentNote.name
+        } catch {
+            print("An unexpected error occurred when mapping note to solFa: \(error)")
+            self.mainImageName = currentNote.name
         }
     }
     

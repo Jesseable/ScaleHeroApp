@@ -32,6 +32,7 @@ struct SoundView : View {
     var fileReaderAndWriter = FileReaderAndWriter()
     var musicArray: MusicArray
     var backgroundImage: String
+    var solFaNoteMapper: SolFaNoteMapper?
     
     let doubleTapThreshold: TimeInterval = 0.5
     
@@ -49,6 +50,7 @@ struct SoundView : View {
                     fatalError("ArpeggioConstructor did not return valid note names")
                 }
                 self.musicArray = noteNames
+                self.solFaNoteMapper = setUpSolfaMapper(tonality: tonality, notesArr: arpeggioConstructor.musicArray!.getNotes())
             case .scale(let tonality):
                 guard let scaleConstructor = try? ScaleConstructor(startingNote: tonicNote, tonality: tonality) else {
                     fatalError("Failed to initialize ScaleConstructor")
@@ -57,10 +59,18 @@ struct SoundView : View {
                     fatalError("ScaleConstructor did not return valid note names")
                 }
                 self.musicArray = noteNames
+                self.solFaNoteMapper = setUpSolfaMapper(tonality: tonality, notesArr: scaleConstructor.musicArray!.getNotes())
             case .unselected:
                 fatalError("The tonality wasn't selected as scale or arpeggio. I need to make this error a UI thing")
             }
         }
+    }
+    
+    private func setUpSolfaMapper(tonality: TonalityProtocol, notesArr: [Notes]) -> SolFaNoteMapper? {
+        if tonality.hasSolFa {
+            return SolFaNoteMapper(notesArray: notesArr, solFaArry: tonality.solFa)
+        }
+        return nil
     }
     
     var body: some View {
@@ -136,6 +146,7 @@ struct SoundView : View {
                 self.musicArray.applyModifications(musicNotes: musicNotes)
                 let countInBeats = CountInBeats(numBeats: playSounds.retrieveMetronomeCountInLength(for: Int(musicNotes.tempo)))
                 let tonicNote = self.musicArray.getTransposedStartingNote()
+                let solFaMapper = musicNotes.displayType == .solFa ? solFaNoteMapper : nil
                 
                 return PlayingView(backgroundImage: backgroundImage,
                                    playScaleNotes: musicNotes.playScaleNotes,
@@ -146,7 +157,8 @@ struct SoundView : View {
                                    repeatingEndlessly: musicNotes.endlessLoop,
                                    pitches: musicArray.getPitches(),
                                    filePitches: musicArray.constructTransposedSoundFileArray(),
-                                   tonicNote: tonicNote)
+                                   tonicNote: tonicNote,
+                                   solFaNoteMapper: solFaMapper)
             }
         }
     }
