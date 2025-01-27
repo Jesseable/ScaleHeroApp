@@ -59,76 +59,71 @@ class MusicArrayTests: XCTestCase {
     func testRotateScale_ionian() {
         let cMajor: [Notes] = [.C, .D, .E, .F, .G, .A, .B, .C, .B, .A, .G, .F, .E, .D, .C]
         
-        let musicArray = MusicArray(notes: cMajor)
-        musicArray.rotateScale(by: MajorScaleMode.ionian.rawValue)
+        let cIonian = MusicArray.rotateScale(of: cMajor, by: MajorScaleMode.ionian.rawValue)
         
-        XCTAssertEqual(cMajor, musicArray.getNotes(), "rotation to D dorian failed")
+        XCTAssertEqual(cMajor, cIonian, "rotation to D dorian failed")
     }
     
     func testRotateScale_dorian() {
         let cMajor: [Notes] = [.C, .D, .E, .F, .G, .A, .B, .C, .B, .A, .G, .F, .E, .D, .C]
         
-        let musicArray = MusicArray(notes: cMajor)
-        musicArray.rotateScale(by: MajorScaleMode.dorian.rawValue)
+        let cDorian = MusicArray.rotateScale(of: cMajor, by: MajorScaleMode.dorian.rawValue)
 
         let expectedOutput: [Notes] = [.D, .E, .F, .G, .A, .B, .C, .D, .C, .B, .A, .G, .F, .E, .D]
         
-        XCTAssertEqual(expectedOutput, musicArray.getNotes(), "rotation to D dorian failed")
+        XCTAssertEqual(expectedOutput, cDorian, "rotation to D dorian failed")
     }
     
     func testRotateScale_phrygian() {
         let cMajor: [Notes] = [.C, .D, .E, .F, .G, .A, .B, .C, .B, .A, .G, .F, .E, .D, .C]
-        
-        let musicArray = MusicArray(notes: cMajor)
-        musicArray.rotateScale(by: MajorScaleMode.phrygian.rawValue)
+
+        let cPhrygian = MusicArray.rotateScale(of: cMajor, by: MajorScaleMode.phrygian.rawValue)
 
         let expectedOutput: [Notes] = [.E, .F, .G, .A, .B, .C, .D, .E, .D, .C, .B, .A, .G, .F, .E]
         
-        XCTAssertEqual(expectedOutput, musicArray.getNotes(), "rotation to E Phrygian failed")
+        XCTAssertEqual(expectedOutput, cPhrygian, "rotation to E Phrygian failed")
     }
     
     func testRotateScale_lydian() {
         let cMajor: [Notes] = [.C, .D, .E, .F, .G, .A, .B, .C, .B, .A, .G, .F, .E, .D, .C]
         
-        let musicArray = MusicArray(notes: cMajor)
-        musicArray.rotateScale(by: MajorScaleMode.lydian.rawValue)
+        let cLydian = MusicArray.rotateScale(of: cMajor, by: MajorScaleMode.lydian.rawValue)
 
         let expectedOutput: [Notes] = [.F, .G, .A, .B, .C, .D, .E, .F, .E, .D, .C, .B, .A, .G, .F]
         
-        XCTAssertEqual(expectedOutput, musicArray.getNotes(), "rotation to F Lydian failed")
+        XCTAssertEqual(expectedOutput, cLydian, "rotation to F Lydian failed")
     }
     
     func testRotateScale_mixolydian() {
         let cMajor: [Notes] = [.C, .D, .E, .F, .G, .A, .B, .C, .B, .A, .G, .F, .E, .D, .C]
         
-        let musicArray = MusicArray(notes: cMajor)
-        musicArray.rotateScale(by: MajorScaleMode.mixolydian.rawValue)
+        let cMixolydian = MusicArray.rotateScale(of: cMajor, by: MajorScaleMode.mixolydian.rawValue)
+
 
         let expectedOutput: [Notes] = [.G, .A, .B, .C, .D, .E, .F, .G, .F, .E, .D, .C, .B, .A, .G]
         
-        XCTAssertEqual(expectedOutput, musicArray.getNotes(), "rotation to G Mixolydian failed")
+        XCTAssertEqual(expectedOutput, cMixolydian, "rotation to G Mixolydian failed")
     }
     
     func testRotateScale_aeolian() {
         let cMajor: [Notes] = [.C, .D, .E, .F, .G, .A, .B, .C, .B, .A, .G, .F, .E, .D, .C]
         
-        let musicArray = MusicArray(notes: cMajor)
-        musicArray.rotateScale(by: MajorScaleMode.aeolian.rawValue)
+        let cAeolian = MusicArray.rotateScale(of: cMajor, by: MajorScaleMode.aeolian.rawValue)
+
 
         let expectedOutput: [Notes] = [.A, .B, .C, .D, .E, .F, .G, .A, .G, .F, .E, .D, .C, .B, .A]
         
-        XCTAssertEqual(expectedOutput, musicArray.getNotes(), "rotation to A Aeolian failed")
+        XCTAssertEqual(expectedOutput, cAeolian, "rotation to A Aeolian failed")
     }
     
     func testRotateScale_locrian() {
         let cMajor: [Notes] = [.C, .D, .E, .F, .G, .A, .B, .C, .B, .A, .G, .F, .E, .D, .C]
         
-        let musicArray = MusicArray(notes: cMajor)
-        musicArray.rotateScale(by: MajorScaleMode.locrian.rawValue)
+        let cLocrian = MusicArray.rotateScale(of: cMajor, by: MajorScaleMode.locrian.rawValue)
 
         let expectedOutput: [Notes] = [.B, .C, .D, .E, .F, .G, .A, .B, .A, .G, .F, .E, .D, .C, .B]
         
-        XCTAssertEqual(expectedOutput, musicArray.getNotes(), "rotation to B Locrian failed")
+        XCTAssertEqual(expectedOutput, cLocrian, "rotation to B Locrian failed")
     }
     
     func testApplyModification_applyPitches_scale() {

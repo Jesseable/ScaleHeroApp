@@ -5,7 +5,7 @@
 //  Created by Jesse Graf on 26/1/2025.
 //
 
-struct SolFaNoteMapper {
+struct SolFaNoteMapper { // TODO: Make this generic as well
     // A dictionary to map Notes to SolFa
     private var noteToSolFa: [Notes: SolFa]
     

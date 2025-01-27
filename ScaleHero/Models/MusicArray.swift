@@ -8,7 +8,7 @@
 import Foundation
 
 class MusicArray {
-    private let initialStartingNote: Notes
+    private var initialStartingNote: Notes
     // TODO: This isn't good atm. I need to make this correct and based off of the initial startingNote. I should be able to do this.
     private lazy var transposedStartingFileNote: FileNotes = {
         var state = TranspositionState.firstTime
@@ -399,16 +399,21 @@ class MusicArray {
     
     // TODO: Maybe move this into scaleConstructor... I NEED THIS FOR ENUMS VALUES AS WELL NOW
     // TODO: Add into notes contructor and make it a static method to be used anywhere...
-    func rotateScale(by modeDegree: Int) {
-        guard !notesArr.isEmpty else { return }
+    static func rotateScale<T>(of array: [T], by modeDegree: Int) -> [T] {
+        guard !array.isEmpty else { return [] }
         
-        let ascending = notesArr.prefix(notesArr.count / 2 + 1)
+        let ascending = array.prefix((array.count / 2) + 1)
         
         let offset = modeDegree % ascending.count
-        let rotatedAscending = Array(ascending[offset...] + ascending[1..<(offset + 1)]) // Possibly .reverse fopr the second part
+        let rotatedAscending = Array(ascending[offset...] + ascending[1..<(offset + 1)])
         let rotatedDescending = rotatedAscending.dropLast().reversed()
         
-        notesArr = Array(rotatedAscending + rotatedDescending)
+        return Array(rotatedAscending + rotatedDescending)
+    }
+    
+    func rotateNotes(by modeDegree: Int) {
+        self.notesArr = Self.rotateScale(of: self.notesArr, by: modeDegree)
+        self.initialStartingNote = self.notesArr.first!
     }
 }
 

@@ -334,8 +334,8 @@ enum ScaleTonality : Equatable, Codable, TonalityProtocol {
     var solFa: [SolFa] {
         switch self {
         case .major(mode: let mode):
-            // TODO: Rotate on the raw value of the mode
-            return [.Do, .Re, .Mi, .Fa, .So, .La, .Ti, .Do, .Ti, .La, .So, .Fa, .Mi, .Re, .Do]
+            let solFaMajor: [SolFa] = [.Do, .Re, .Mi, .Fa, .So, .La, .Ti, .Do, .Ti, .La, .So, .Fa, .Mi, .Re, .Do]
+            return MusicArray.rotateScale(of: solFaMajor, by: mode.rawValue)
         case .naturalMinor:
             return [.La, .Ti, .Do, .Re, .Mi, .Fa, .So, .La, .So, .Fa, .Mi, .Re, .Do, .Ti, .La]
         case .harmonicMinor:
@@ -343,7 +343,8 @@ enum ScaleTonality : Equatable, Codable, TonalityProtocol {
         case .melodicMinor:
             return [.La, .Ti, .Do, .Re, .Mi, .Fi, .Si, .La, .So, .Fa, .Mi, .Re, .Do, .Ti, .La]
         case .pentatonic(mode: let mode):
-            return [.Do, .Re, .Mi, .So, .La, .Do, .La, .So, .Mi, .Re, .Do]
+            let solFaPentatonic: [SolFa] = [.Do, .Re, .Mi, .So, .La, .Do, .La, .So, .Mi, .Re, .Do]
+            return MusicArray.rotateScale(of: solFaPentatonic, by: mode.rawValue)
         default:
             return []
         }
