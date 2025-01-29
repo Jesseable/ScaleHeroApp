@@ -68,6 +68,16 @@ enum Case : Codable, TonalityProtocol {
         }
     }
     
+    var hasNumbers: Bool {
+        switch self {
+        case .arpeggio(tonality: let arpeggio):
+            return arpeggio.hasNumbers
+        case .scale(tonality: let scale):
+            return scale.hasNumbers
+        case .unselected:
+            return false
+        }    }
+    
     var solFa: [SolFa] {
         switch self {
         case .arpeggio(tonality: let arpeggio):
@@ -75,7 +85,18 @@ enum Case : Codable, TonalityProtocol {
         case .scale(tonality: let scale):
             return scale.solFa
         case .unselected:
-            return [] // TODO: Possibly convertvto an exception later on
+            return [] // TODO: Possibly convert to an exception later on
+        }
+    }
+    
+    var numbers: [NumberRepresentation] {
+        switch self {
+        case .arpeggio(tonality: let arpeggio):
+            return arpeggio.numbers
+        case .scale(tonality: let scale):
+            return scale.numbers
+        case .unselected:
+            return []
         }
     }
 }
@@ -138,6 +159,25 @@ enum MajorScaleMode : Int, ModeProtocol {
             return 11
         }
     }
+    
+    var numbers: [NumberRepresentation] {
+        switch self {
+        case .ionian:
+            return [.One, .Two, .Three, .Four, .Five, .Six, .Seven, .One, .Seven, .Six, .Five, .Four, .Three, .Two, .One]
+        case .dorian:
+            return [.One, .Two, .FlatThree, .Four, .Five, .Six, .FlatSeven, .One, .FlatSeven, .Six, .Five, .Four, .FlatThree, .Two, .One]
+        case .phrygian:
+            return [.One, .FlatTwo, .FlatThree, .Four, .Five, .FlatSix, .FlatSeven, .One, .FlatSeven, .FlatSix, .Five, .Four, .FlatThree, .FlatTwo, .One]
+        case .lydian:
+            return [.One, .Two, .Three, .SharpFour, .Five, .Six, .Seven, .One, .Seven, .Six, .Five, .SharpFour, .Three, .Two, .One]
+        case .mixolydian:
+            return [.One, .Two, .Three, .Four, .Five, .Six, .FlatSeven, .One, .FlatSeven, .Six, .Five, .Four, .Three, .Two, .One]
+        case .aeolian:
+            return [.One, .Two, .FlatThree, .Four, .Five, .FlatSix, .FlatSeven, .One, .FlatSeven, .FlatSix, .Five, .Four, .FlatThree, .Two, .One]
+        case .locrian:
+            return [.One, .FlatTwo, .FlatThree, .Four, .FlatFive, .FlatSix, .FlatSeven, .One, .FlatSeven, .FlatSix, .FlatFive, .Four, .FlatThree, .FlatTwo, .One]
+        }
+    }
 }
 
 // The int is the rotations in the major pentatonic scale it must undertake
@@ -177,6 +217,21 @@ enum PentatonicScaleMode : Int, ModeProtocol {
             return 9
         }
     }
+    
+    var numbers: [NumberRepresentation] {
+        switch self {
+        case .mode1_major:
+            return [.One, .Two, .Three, .Five, .Six, .One, .Six, .Five, .Three, .Two, .One]
+        case .mode2_egyptian:
+            return [.One, .Two, .Four, .Five, .FlatSeven, .One, .FlatSeven, .Five, .Four, .Two, .One]
+        case .mode3_manGong:
+            return [.One, .FlatThree, .Four, .FlatSix, .FlatSeven, .One, .FlatSeven, .FlatSix, .Four, .FlatThree, .One]
+        case .mode4_ritusen:
+            return [.One, .Two, .Four, .Five, .Six, .One, .Six, .Five, .Four, .Two, .One]
+        case .mode5_minor:
+            return [.One, .FlatThree, .Four, .Five, .FlatSeven, .One, .FlatSeven, .Five, .Four, .FlatThree, .One]
+        }
+    }
 }
 
 enum ChromaticAlteration : CaseIterable, Equatable, Codable {
@@ -196,6 +251,7 @@ enum ChromaticAlteration : CaseIterable, Equatable, Codable {
 enum DisplayType {
     case notes
     case solFa
+    case numbers
 }
 
 enum SolFa {
@@ -204,7 +260,7 @@ enum SolFa {
     case Mi
     case Fa
     case Fi
-    case So
+    case So // TODO: Rename to Sol
     case Si
     case La
     case Ti
@@ -233,10 +289,92 @@ enum SolFa {
     }
 }
 
+enum NumberRepresentation {
+    case FlatOne
+    case One
+    case SharpOne
+    case FlatTwo
+    case Two
+    case SharpTwo
+    case FlatThree
+    case Three
+    case SharpThree
+    case FlatFour
+    case Four
+    case SharpFour
+    case FlatFive
+    case Five
+    case SharpFive
+    case FlatSix
+    case Six
+    case SharpSix
+    case FlatSeven
+    case Seven
+    case SharpSeven
+    case FlatEight
+    case Eight
+    case SharpEight
+    
+    var name: String {
+        switch self {
+        case .FlatOne:
+            return "Flat1"
+        case .One:
+            return "1"
+        case .SharpOne:
+            return "Sharp1"
+        case .FlatTwo:
+            return "Flat2"
+        case .Two:
+            return "2"
+        case .SharpTwo:
+            return "Sharp2"
+        case .FlatThree:
+            return "Flat3"
+        case .Three:
+            return "3"
+        case .SharpThree:
+            return "Sharp3"
+        case .FlatFour:
+            return "Flat4"
+        case .Four:
+            return "4"
+        case .SharpFour:
+            return "Sharp4"
+        case .FlatFive:
+            return "Flat5"
+        case .Five:
+            return "5"
+        case .SharpFive:
+            return "Sharp5"
+        case .FlatSix:
+            return "Flat6"
+        case .Six:
+            return "6"
+        case .SharpSix:
+            return "Sharp6"
+        case .FlatSeven:
+            return "Flat7"
+        case .Seven:
+            return "7"
+        case .SharpSeven:
+            return "Sharp7"
+        case .FlatEight:
+            return "Flat8"
+        case .Eight:
+            return "8"
+        case .SharpEight:
+            return "Sharp8"
+        }
+    }
+}
+
 protocol TonalityProtocol {
     var name: String { get }
     var hasSolFa: Bool { get }
     var solFa: [SolFa] { get }
+    var hasNumbers: Bool { get }
+    var numbers: [NumberRepresentation] { get }
 }
 
 enum ArpeggioTonality : CaseIterable, Equatable, Codable, TonalityProtocol {
@@ -273,6 +411,10 @@ enum ArpeggioTonality : CaseIterable, Equatable, Codable, TonalityProtocol {
         }
     }
     
+    var hasNumbers: Bool {
+        return true // TODO: So far all arpeggios shoudl be able to have numbers
+    }
+    
     var solFa: [SolFa] {
         switch self {
         case .major:
@@ -281,6 +423,23 @@ enum ArpeggioTonality : CaseIterable, Equatable, Codable, TonalityProtocol {
             return [.La, .Do, .Mi, .La, .Do, .Mi, .La]
         default:
             return []
+        }
+    }
+    
+    var numbers: [NumberRepresentation] {
+        switch self {
+        case .major:
+            return [.One, .Three, .Five, .One, .Five, .Three, .One]
+        case .minor:
+            return [.One, .FlatThree, .Five, .One, .Five, .FlatThree, .One]
+        case .dominant7th:
+            return [.One, .Three, .Five, .FlatSeven, .One, .FlatSeven, .Five, .Three, .One]
+        case .diminished7th:
+            return [.One, .Three, .Five, .FlatSeven, .One, .FlatSeven, .Five, .Three, .One]
+        case .major7th:
+            return [.One, .Three, .Five, .Seven, .One, .Seven, .Five, .Three, .One]
+        case .minor7th:
+            return [.One, .FlatThree, .Five, .FlatSeven, .One, .FlatSeven, .Five, .FlatThree, .One]
         }
     }
 }
@@ -331,6 +490,15 @@ enum ScaleTonality : Equatable, Codable, TonalityProtocol {
         }
     }
     
+    var hasNumbers: Bool {
+        switch self {
+        case .major, .naturalMinor, .harmonicMinor, .melodicMinor, .pentatonic, .blues:
+            return true
+        default:
+            return false
+        }
+    }
+    
     var solFa: [SolFa] {
         switch self {
         case .major(mode: let mode):
@@ -347,6 +515,25 @@ enum ScaleTonality : Equatable, Codable, TonalityProtocol {
             return MusicArray.rotateScale(of: solFaPentatonic, by: mode.rawValue)
         default:
             return []
+        }
+    }
+    
+    var numbers: [NumberRepresentation] {
+        switch self {
+        case .major(mode: let mode):
+            return mode.numbers
+        case .naturalMinor:
+            return [.One, .Two, .FlatThree, .Four, .Five, .FlatSix, .FlatSeven, .One, .FlatSeven, .FlatSix, .Five, .Four, .FlatThree, .Two, .One]
+        case .harmonicMinor:
+            return [.One, .Two, .FlatThree, .Four, .Five, .FlatSix, .Seven, .One, .Seven, .FlatSix, .Five, .Four, .FlatThree, .Two, .One]
+        case .melodicMinor:
+            return [.One, .Two, .FlatThree, .Four, .Five, .Six, .Seven, .One, .FlatSeven, .FlatSix, .Five, .Four, .FlatThree, .Two, .One]
+        case .chromatic(alteration: let alteration):
+            return []
+        case .pentatonic(mode: let mode):
+            return mode.numbers
+        case .blues:
+            return [.One, .FlatThree, .Four, .SharpFour, .Five, .FlatSeven, .One, .FlatSeven, .Five, .SharpFour, .Four, .FlatThree, .One]
         }
     }
 }

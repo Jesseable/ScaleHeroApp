@@ -5,15 +5,20 @@
 //  Created by Jesse Graf on 26/1/2025.
 //
 
-struct SolFaNoteMapper { // TODO: Make this generic as well
-    // A dictionary to map Notes to SolFa
+protocol NoteMapper {
+    associatedtype Representation
+    func getMapping(for note: Notes) throws -> Representation
+}
+
+struct SolFaNoteMapper: NoteMapper {
+    typealias Representation = SolFa
     private var noteToSolFa: [Notes: SolFa]
     
-    // Initializer to set up initial mappings
     init(notesArray: [Notes], solFaArry: [SolFa]) {
         guard notesArray.count == solFaArry.count else {
             fatalError("Number of notes must equal number of SolFa")
         }
+//        self.noteToSolFa = Dictionary(uniqueKeysWithValues: zip(notesArray, solFaArray))
         // Initialize the dictionary
         self.noteToSolFa = [:]
         
@@ -24,7 +29,7 @@ struct SolFaNoteMapper { // TODO: Make this generic as well
     }
     
     // Function to get the connected SolFa for a given Note
-    func getSolFa(for note: Notes) throws -> SolFa {
+    func getMapping(for note: Notes) throws -> SolFa {
         guard let solFa = noteToSolFa[note] else {
             // Throw an error if the note isn't found
             throw SolFaNoteMapperError.noteNotFound

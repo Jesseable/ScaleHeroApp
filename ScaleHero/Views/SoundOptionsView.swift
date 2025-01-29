@@ -91,9 +91,8 @@ struct SoundOptionsView: View {
                         }
                     }
                     
-                    Divider().background(Color.white)
-                    
                     if musicNotes.tonality.hasSolFa {
+                        Divider().background(Color.white)
                         Group {
                             MainUIButton(buttonText: "Image Display Type", type: 4, height: buttonHeight, buttonWidth: width)
                             ZStack {
@@ -102,6 +101,7 @@ struct SoundOptionsView: View {
                                     Picker("Display Image options", selection: $musicNotes.displayType) {
                                         Text("Notes").tag(DisplayType.notes)
                                         Text("Sol-Fa").tag(DisplayType.solFa)
+                                        Text("Numbers").tag(DisplayType.numbers)
                                     }
                                     .formatted(width: width)
                                 }

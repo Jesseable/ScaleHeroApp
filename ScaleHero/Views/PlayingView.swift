@@ -63,7 +63,7 @@ struct PlayingView: View {
     let filePitches: [FilePitch]
     let tonicNote: FileNotes
     @State var mainImageName: String?
-    var solFaNoteMapper: SolFaNoteMapper?
+    var noteConverter: (any NoteMapper)?
     
     var body: some View {
         VStack {
@@ -196,14 +196,21 @@ struct PlayingView: View {
     private func setMainImageName() {
         let currentNote = pitches[self.index].note
         
-        guard let solFaMapper = solFaNoteMapper else {
+        guard let noteMapper = noteConverter else {
             self.mainImageName = currentNote.name
             return
         }
         
         do {
-            let solFa = try solFaMapper.getSolFa(for: currentNote)
-            self.mainImageName = solFa.name
+            let displayImage = try noteMapper.getMapping(for: currentNote)
+            if let solFaImage = displayImage as? SolFa {
+                self.mainImageName = solFaImage.name
+            } else if let numbersImage = displayImage as? NumberRepresentation {
+                self.mainImageName = numbersImage.name
+            } else {
+                print("The display image was of a unexpected type '\(type(of: displayImage))'")
+                self.mainImageName = currentNote.name
+            }
         } catch SolFaNoteMapperError.noteNotFound {
             print("Error mapping the note to a solFa")
             self.mainImageName = currentNote.name

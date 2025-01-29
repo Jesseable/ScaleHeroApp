@@ -33,6 +33,7 @@ struct SoundView : View {
     var musicArray: MusicArray
     var backgroundImage: String
     var solFaNoteMapper: SolFaNoteMapper?
+    var numbersNoteMapper: NumbersNoteMapper?
     
     let doubleTapThreshold: TimeInterval = 0.5
     
@@ -51,6 +52,7 @@ struct SoundView : View {
                 }
                 self.musicArray = noteNames
                 self.solFaNoteMapper = setUpSolfaMapper(tonality: tonality, notesArr: arpeggioConstructor.musicArray!.getNotes())
+                self.numbersNoteMapper = setUpNumberMapper(tonality: tonality, notesArr: arpeggioConstructor.musicArray!.getNotes())
             case .scale(let tonality):
                 guard let scaleConstructor = try? ScaleConstructor(startingNote: tonicNote, tonality: tonality) else {
                     fatalError("Failed to initialize ScaleConstructor")
@@ -60,6 +62,7 @@ struct SoundView : View {
                 }
                 self.musicArray = noteNames
                 self.solFaNoteMapper = setUpSolfaMapper(tonality: tonality, notesArr: scaleConstructor.musicArray!.getNotes())
+                self.numbersNoteMapper = setUpNumberMapper(tonality: tonality, notesArr: scaleConstructor.musicArray!.getNotes())
             case .unselected:
                 fatalError("The tonality wasn't selected as scale or arpeggio. I need to make this error a UI thing")
             }
@@ -69,6 +72,13 @@ struct SoundView : View {
     private func setUpSolfaMapper(tonality: TonalityProtocol, notesArr: [Notes]) -> SolFaNoteMapper? {
         if tonality.hasSolFa {
             return SolFaNoteMapper(notesArray: notesArr, solFaArry: tonality.solFa)
+        }
+        return nil
+    }
+    
+    private func setUpNumberMapper(tonality: TonalityProtocol, notesArr: [Notes]) -> NumbersNoteMapper? {
+        if tonality.hasNumbers {
+            return NumbersNoteMapper(notesArray: notesArr, solFaArry: tonality.numbers)
         }
         return nil
     }
@@ -146,7 +156,15 @@ struct SoundView : View {
                 self.musicArray.applyModifications(musicNotes: musicNotes)
                 let countInBeats = CountInBeats(numBeats: playSounds.retrieveMetronomeCountInLength(for: Int(musicNotes.tempo)))
                 let tonicNote = self.musicArray.getTransposedStartingNote()
-                let solFaMapper = musicNotes.displayType == .solFa ? solFaNoteMapper : nil
+                var noteMapper: (any NoteMapper)?
+                switch musicNotes.displayType {
+                case .notes:
+                    noteMapper = nil
+                case .numbers:
+                    noteMapper = musicNotes.displayType == .numbers ? numbersNoteMapper : nil
+                case .solFa:
+                    noteMapper = musicNotes.displayType == .solFa ? solFaNoteMapper : nil
+                }
                 
                 return PlayingView(backgroundImage: backgroundImage,
                                    playScaleNotes: musicNotes.playScaleNotes,
@@ -158,7 +176,7 @@ struct SoundView : View {
                                    pitches: musicArray.getPitches(),
                                    filePitches: musicArray.constructTransposedSoundFileArray(),
                                    tonicNote: tonicNote,
-                                   solFaNoteMapper: solFaMapper)
+                                   noteConverter: noteMapper)
             }
         }
     }
