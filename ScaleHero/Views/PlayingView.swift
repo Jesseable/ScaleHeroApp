@@ -27,8 +27,8 @@ struct CountInBeats {
     
     private func toString(beat: Int) -> String {
         let englishNames = [
-            1: "One", 2: "Two", 3: "Three", 4: "Four",
-            5: "Five", 6: "Six", 7: "Seven", 8: "Eight"
+            1: "Metronome_1", 2: "Metronome_2", 3: "Metronome_3", 4: "Metronome_4",
+            5: "Metronome_5", 6: "Metronome_6", 7: "Metronome_7", 8: "Metronome_8"
         ]
         return englishNames[beat] ?? "\(beat)"
     }

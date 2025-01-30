@@ -78,7 +78,7 @@ struct SoundView : View {
     
     private func setUpNumberMapper(tonality: TonalityProtocol, notesArr: [Notes]) -> NumbersNoteMapper? {
         if tonality.hasNumbers {
-            return NumbersNoteMapper(notesArray: notesArr, solFaArry: tonality.numbers)
+            return NumbersNoteMapper(notesArray: notesArr, numberArray: tonality.numbers)
         }
         return nil
     }
