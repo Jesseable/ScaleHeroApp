@@ -308,6 +308,7 @@ enum NumberRepresentation {
     case FlatSix
     case Six
     case SharpSix
+    case DoubleFlatSeven // TODO: This is the only one that can be double flat at the moment I believe
     case FlatSeven
     case Seven
     case SharpSeven
@@ -353,6 +354,8 @@ enum NumberRepresentation {
             return "6"
         case .SharpSix:
             return "Sharp6"
+        case .DoubleFlatSeven:
+            return "DoubleFlat7"
         case .FlatSeven:
             return "Flat7"
         case .Seven:
@@ -435,7 +438,7 @@ enum ArpeggioTonality : CaseIterable, Equatable, Codable, TonalityProtocol {
         case .dominant7th:
             return [.One, .Three, .Five, .FlatSeven, .One, .FlatSeven, .Five, .Three, .One]
         case .diminished7th:
-            return [.One, .Three, .Five, .FlatSeven, .One, .FlatSeven, .Five, .Three, .One]
+            return [.One, .FlatThree, .FlatFive, .DoubleFlatSeven, .One, .DoubleFlatSeven, .FlatFive, .FlatThree, .One]
         case .major7th:
             return [.One, .Three, .Five, .Seven, .One, .Seven, .Five, .Three, .One]
         case .minor7th:
@@ -576,7 +579,12 @@ enum OctaveNumber : Int, Codable, Hashable {
     case three = 3
 }
 
-enum NoteOctaveOption: Int, Equatable {
+protocol AdjustableOcataves {
+    mutating func increment()
+    mutating func decrement()
+}
+
+enum NoteOctaveOption: Int, Equatable, AdjustableOcataves {
     case one = 1
     case two = 2
     case three = 3

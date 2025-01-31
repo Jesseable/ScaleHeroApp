@@ -135,12 +135,21 @@ class MusicArrayTests: XCTestCase {
         musicNotes.startingOctave = OctaveNumber.one
         musicArray.applyModifications(musicNotes: musicNotes)
         
-        let expectedOutput: [Pitch] = [Pitch(note: .C, octave: .one), Pitch(note: .D, octave: .one), Pitch(note: .E, octave: .one),
-                                       Pitch(note: .F, octave: .one), Pitch(note: .G, octave: .one), Pitch(note: .A, octave: .two),
-                                       Pitch(note: .B, octave: .two), Pitch(note: .C, octave: .two), Pitch(note: .B, octave: .two),
-                                       Pitch(note: .A, octave: .two), Pitch(note: .G, octave: .one), Pitch(note: .F, octave: .one),
-                                       Pitch(note: .E, octave: .one), Pitch(note: .D, octave: .one), Pitch(note: .C, octave: .one)]
-        XCTAssertEqual(expectedOutput, musicArray.getPitches(), "apply pitches failed for c major scale")
+        let expectedOutput: [String] = ["C:1", "D:1", "E:1", "F:1", "G:1", "A:2", "B:2", "C:2", "B:2", "A:2", "G:1", "F:1", "E:1", "D:1", "C:1"]
+        XCTAssertEqual(expectedOutput, musicArray.getPitches().map(pitchToReadableString), "apply pitches failed for c major scale")
+    }
+    
+    func testApplyModification_applyPitches_dScale() {
+        let dMajor: [Notes] = [.D, .E, .F_SHARP, .G, .A, .B, .C_SHARP, .D, .C_SHARP, .B, .A, .G, .F_SHARP, .E, .D]
+        
+        let musicArray = MusicArray(notes: dMajor)
+        
+        let musicNotes = MusicNotes()
+        musicNotes.startingOctave = OctaveNumber.one
+        musicArray.applyModifications(musicNotes: musicNotes)
+        
+        let expectedOutput: [String] = ["D:1", "E:1", "F-sharp:1", "G:1", "A:2", "B:2", "C-sharp:2", "D:2", "C-sharp:2", "B:2", "A:2", "G:1", "F-sharp:1", "E:1", "D:1"]
+        XCTAssertEqual(expectedOutput, musicArray.getPitches().map(pitchToReadableString), "apply pitches failed for d major scale")
     }
     
     func testApplyModification_applyPitches_arpeggio() {
@@ -152,14 +161,11 @@ class MusicArrayTests: XCTestCase {
         musicNotes.startingOctave = OctaveNumber.one
         musicArray.applyModifications(musicNotes: musicNotes)
         
-        let expectedOutput: [Pitch] = [Pitch(note: .C, octave: .one), Pitch(note: .E, octave: .one), Pitch(note: .G, octave: .one),
-                                       Pitch(note: .C, octave: .two), Pitch(note: .G, octave: .one), Pitch(note: .E, octave: .one),
-                                       Pitch(note: .C, octave: .one)]
-        XCTAssertEqual(expectedOutput, musicArray.getPitches(), "apply pitches failed for c major arpeggio")
+        let expectedOutput: [String] = ["C:1", "E:1", "G:1", "C:2", "G:1", "E:1", "C:1"]
+        XCTAssertEqual(expectedOutput, musicArray.getPitches().map(pitchToReadableString), "apply pitches failed for c major arpeggio")
     }
     
     // TODO: I should have a test checking that an erro is thrown when starting octave is not two and no. octaves is not one
-    
     func testApplyModification_addIntervalOption_toAllUp_thirds() {
         let cMajor: [Notes] = [.C, .D, .E, .F, .G, .A, .B, .C, .B, .A, .G, .F, .E, .D, .C]
 
@@ -391,9 +397,24 @@ class MusicArrayTests: XCTestCase {
         
         let expectedOutput: [String] = ["A:1", "B:1", "C#|Db:1", "D:1", "E:1", "F#|Gb:1", "G#|Ab:1", "A:2", "G#|Ab:1", "F#|Gb:1", "E:1", "D:1", "C#|Db:1", "B:1", "A:1"]
         
-        let transposedNotesReadable = musicArray.constructTransposedSoundFileArray().map(filePitchToReadableString)
+        let transposedNotesReadable = musicArray.getTransposedPitches().map(filePitchToReadableString)
         
         XCTAssertEqual(expectedOutput, transposedNotesReadable, "Transposing the C major scale to A has failed")
+    }
+    
+    func testTranspose_cToD() {
+        let transpositionNote = FileNotes.D
+        self.fileReaderAndWriter.writeNewTranspositionNote(fileNote: transpositionNote)
+        let cIonianScale: [Notes] = [.C, .D, .E, .F, .G, .A, .B, .C, .B, .A, .G, .F, .E, .D, .C]
+        
+        let musicArray = MusicArray(notes: cIonianScale)
+        setBasicModulationForPitchArray(musicArrays: musicArray)
+        
+        let expectedOutput: [String] = ["D:1", "E:1", "F#|Gb:1", "G:1", "A:2", "B:2", "C#|Db:2", "D:2", "C#|Db:2", "B:2", "A:2", "G:1", "F#|Gb:1", "E:1", "D:1"]
+        
+        let transposedNotesReadable = musicArray.getTransposedPitches().map(filePitchToReadableString)
+        
+        XCTAssertEqual(expectedOutput, transposedNotesReadable, "Transposing the C major scale to D has failed")
     }
     
     func testTranspose_fSharpArpeggioToBb() {
@@ -407,7 +428,7 @@ class MusicArrayTests: XCTestCase {
         
         let expectedOutput: [String] = ["E:1", "G:1", "B:2", "E:2", "B:2", "G:1", "E:1"]
         
-        let transposedNotesReadable = musicArray.constructTransposedSoundFileArray().map(filePitchToReadableString)
+        let transposedNotesReadable = musicArray.getTransposedPitches().map(filePitchToReadableString)
         
         XCTAssertEqual(expectedOutput, transposedNotesReadable, "Transposing the F-sharp major arpeggio to B-flat has failed")
     }
@@ -422,7 +443,7 @@ class MusicArrayTests: XCTestCase {
         
         let expectedOutput: [String] = ["F:1", "G:1", "A:2", "A#|Bb:2", "C:2", "D:2", "E:2", "F:2", "E:2", "D:2", "C:2", "A#|Bb:2", "A:2", "G:1", "F:1"]
         
-        let transposedNotesReadable = musicArray.constructTransposedSoundFileArray().map(filePitchToReadableString)
+        let transposedNotesReadable = musicArray.getTransposedPitches().map(filePitchToReadableString)
         
         XCTAssertEqual(expectedOutput, transposedNotesReadable, "Transposing the D major arpeggio to E-flat has failed")
     }
@@ -436,15 +457,15 @@ class MusicArrayTests: XCTestCase {
         let musicArrayEFlat = MusicArray(notes: [.E_FLAT])
         setBasicModulationForPitchArray(musicArrays: musicArrayC, musicArrayG, musicArrayASharp, musicArrayEFlat)
         
-        let expectedTransposedNote1 = [FilePitch(fileNote: FileNotes.D_SHARP_E_FLAT, octave: NoteOctaveOption.one)]
-        let expectedTransposedNote2 = [FilePitch(fileNote: FileNotes.A_SHARP_B_FLAT, octave: NoteOctaveOption.one)]
-        let expectedTransposedNote3 = [FilePitch(fileNote: FileNotes.C_SHARP_D_FLAT, octave: NoteOctaveOption.one)]
-        let expectedTransposedNote4 = [FilePitch(fileNote: FileNotes.F_SHARP_G_FLAT, octave: NoteOctaveOption.one)]
+        let expectedTransposedNote1 = [FilePitch(note: FileNotes.D_SHARP_E_FLAT, octave: NoteOctaveOption.one)]
+        let expectedTransposedNote2 = [FilePitch(note: FileNotes.A_SHARP_B_FLAT, octave: NoteOctaveOption.one)]
+        let expectedTransposedNote3 = [FilePitch(note: FileNotes.C_SHARP_D_FLAT, octave: NoteOctaveOption.one)]
+        let expectedTransposedNote4 = [FilePitch(note: FileNotes.F_SHARP_G_FLAT, octave: NoteOctaveOption.one)]
         
-        XCTAssertEqual(expectedTransposedNote1, musicArrayC.constructTransposedSoundFileArray(), "transposition of C failed")
-        XCTAssertEqual(expectedTransposedNote2, musicArrayG.constructTransposedSoundFileArray(), "transposition of G failed")
-        XCTAssertEqual(expectedTransposedNote3, musicArrayASharp.constructTransposedSoundFileArray(), "transposition of A#/Bb failed")
-        XCTAssertEqual(expectedTransposedNote4, musicArrayEFlat.constructTransposedSoundFileArray(), "transposition of D#/Eb failed")
+        XCTAssertEqual(expectedTransposedNote1, musicArrayC.getTransposedPitches(), "transposition of C failed")
+        XCTAssertEqual(expectedTransposedNote2, musicArrayG.getTransposedPitches(), "transposition of G failed")
+        XCTAssertEqual(expectedTransposedNote3, musicArrayASharp.getTransposedPitches(), "transposition of A#/Bb failed")
+        XCTAssertEqual(expectedTransposedNote4, musicArrayEFlat.getTransposedPitches(), "transposition of D#/Eb failed")
     }
     
     private func setBasicModulationForPitchArray(musicArrays: MusicArray...) {

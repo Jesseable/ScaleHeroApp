@@ -5,9 +5,35 @@
 //  Created by Jesse Graf on 31/12/2024.
 //
 
-struct Pitch: Equatable {
-    let note: Notes
+protocol PitchType: Equatable {
+    associatedtype NoteType
+    associatedtype NoteOctaveOption
+    init(note: NoteType, octave: NoteOctaveOption)
+    
+    func getNote() -> NoteType
+    func getOctave() -> NoteOctaveOption
+    
+    func isEqual(to note: Notes) -> Bool
+    
+    static func increaseOctave(octave: NoteOctaveOption) -> NoteOctaveOption
+    static func decreaseOctave(octave: NoteOctaveOption) -> NoteOctaveOption
+}
+
+struct Pitch: PitchType {
+    let note: Notes // TODO: Make these private???
     let octave: NoteOctaveOption
+    
+    func getNote() -> Notes {
+        return note
+    }
+    
+    func getOctave() -> NoteOctaveOption {
+        return octave
+    }
+    
+    func isEqual(to note: Notes) -> Bool {
+        return note == self.note
+    }
     
     static func increaseOctave(octave: NoteOctaveOption) -> NoteOctaveOption {
         switch octave {
@@ -36,12 +62,41 @@ struct Pitch: Equatable {
     }
 }
 
-struct FilePitch: Equatable {
+struct FilePitch: PitchType {
     let fileNote: FileNotes
     let octave: NoteOctaveOption
+    
+    init(note: FileNotes, octave: NoteOctaveOption) {
+        self.fileNote = note
+        self.octave = octave
+    }
+    
+    func getNote() -> FileNotes {
+        return fileNote
+    }
+    
+    func getOctave() -> NoteOctaveOption {
+        return octave
+    }
+    
+    func isEqual(to note: Notes) -> Bool {
+        return note.fileName == self.fileNote
+    }
+    
+    static func increaseOctave(octave: NoteOctaveOption) -> NoteOctaveOption {
+        return Pitch.increaseOctave(octave: octave)
+    }
+    
+    static func decreaseOctave(octave: NoteOctaveOption) -> NoteOctaveOption {
+        return Pitch.decreaseOctave(octave: octave)
+    }
 }
 
-enum FileNotes: Equatable {
+protocol NoteTypeProtocol: Equatable {
+    static func isOctaveStep(firstNote: Self, secondNote: Self, ascending: Bool) -> Bool
+}
+
+enum FileNotes: NoteTypeProtocol {
     case C, C_SHARP_D_FLAT, D, D_SHARP_E_FLAT, E, F, F_SHARP_G_FLAT, G, G_SHARP_A_FLAT, A, A_SHARP_B_FLAT, B
     
     var name: String {
@@ -78,9 +133,44 @@ enum FileNotes: Equatable {
         default: return nil
         }
     }
+    
+    static func isOctaveStep(firstNote: FileNotes, secondNote: FileNotes, ascending: Bool) -> Bool {
+        let lowestSoundFileNote: FileNotes = .A
+        guard let lsfnIndex = Notes.orderedMusicAlphabet.key(for: lowestSoundFileNote) else {
+            return false
+        }
+        
+        if (firstNote == secondNote) { return false }
+        
+        guard let index1 = Notes.orderedMusicAlphabet.key(for: firstNote),
+              let index2 = Notes.orderedMusicAlphabet.key(for: secondNote) else {
+            return false
+        }
+        
+        if ascending {
+                // Normal case: First note is below 'A' and second note is above or at 'A'
+            if index1 < lsfnIndex && index2 >= lsfnIndex {
+                return true
+            }
+                // Wraparound case: First note is at a higher index but wraps past 'A'
+            if index1 > index2 && index1 < lsfnIndex && index2 <= lsfnIndex {
+                return true
+            }
+        } else { // Descending
+            // Normal case: First note is above 'A' and second note is below or at 'A'
+            if index1 >= lsfnIndex && index2 < lsfnIndex {
+                return true
+            }
+            // Wraparound case: First note is at a lower index but wraps past 'A'
+            if index1 < index2 && index1 < lsfnIndex && index2 < lsfnIndex {
+                return true
+            }
+        }
+        return false
+    }
 }
 
-enum Notes: Codable, CaseIterable, Equatable { // TODO: I need to do other things with this functionality as wlel. What though I do not know.
+enum Notes: Codable, CaseIterable, NoteTypeProtocol {
     case A_DOUBLE_FLAT, A_FLAT, A, A_SHARP, A_DOUBLE_SHARP
     case B_DOUBLE_FLAT, B_FLAT, B, B_SHARP, B_DOUBLE_SHARP
     case C_DOUBLE_FLAT, C_FLAT, C, C_SHARP, C_DOUBLE_SHARP
@@ -141,37 +231,43 @@ enum Notes: Codable, CaseIterable, Equatable { // TODO: I need to do other thing
     }
     
     static func isOctaveStep(firstNote: Notes, secondNote: Notes, ascending: Bool) -> Bool {
-        isOctaveStep(firstNote: firstNote.fileName, secondNote: secondNote.fileName, ascending: ascending)
+        FileNotes.isOctaveStep(firstNote: firstNote.fileName, secondNote: secondNote.fileName, ascending: ascending)
     }
     
-    static func isOctaveStep(firstNote: FileNotes, secondNote: FileNotes, ascending: Bool) -> Bool {
-        let lowestSoundFileNote: FileNotes = .A
-        guard let lsfnIndex = orderedMusicAlphabet.key(for: lowestSoundFileNote) else {
-            return false
-        }
-        
-        if (firstNote == secondNote) { return false }
-        
-        guard var index1 = orderedMusicAlphabet.key(for: firstNote),
-              var index2 = orderedMusicAlphabet.key(for: secondNote) else {
-            return false
-        }
-        
-        if !ascending {
-            let temp = index1
-            index1 = index2
-            index2 = temp
-        }
-
-        if index1 < lsfnIndex && index2 >= lsfnIndex {
-            return true
-        } else if index2 < index1 { // Wraps around the scale
-            if (index1 < lsfnIndex && index2 <= lsfnIndex) {
-                return true
-            }
-        }
-        return false
-    }
+//    static func isOctaveStep(firstNote: FileNotes, secondNote: FileNotes, ascending: Bool) -> Bool {
+//        let lowestSoundFileNote: FileNotes = .A
+//        guard let lsfnIndex = orderedMusicAlphabet.key(for: lowestSoundFileNote) else {
+//            return false
+//        }
+//        
+//        if (firstNote == secondNote) { return false }
+//        
+//        guard let index1 = orderedMusicAlphabet.key(for: firstNote),
+//              let index2 = orderedMusicAlphabet.key(for: secondNote) else {
+//            return false
+//        }
+//        
+//        if ascending {
+//                // Normal case: First note is below 'A' and second note is above or at 'A'
+//            if index1 < lsfnIndex && index2 >= lsfnIndex {
+//                return true
+//            }
+//                // Wraparound case: First note is at a higher index but wraps past 'A'
+//            if index1 > index2 && index1 < lsfnIndex && index2 <= lsfnIndex {
+//                return true
+//            }
+//        } else { // Descending
+//            // Normal case: First note is above 'A' and second note is below or at 'A'
+//            if index1 >= lsfnIndex && index2 < lsfnIndex {
+//                return true
+//            }
+//            // Wraparound case: First note is at a lower index but wraps past 'A'
+//            if index1 < index2 && index1 < lsfnIndex && index2 < lsfnIndex {
+//                return true
+//            }
+//        }
+//        return false
+//    }
     
     var name: String {
         switch self {

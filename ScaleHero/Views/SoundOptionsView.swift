@@ -26,7 +26,7 @@ struct SoundOptionsView: View {
             let mainMenuButtonHeight = geometry.size.height / 10
             let width = geometry.size.width
             
-            let title = "\(musicNotes.tonicNote) \(musicNotes.tonality.name)"
+            let title = "\(musicNotes.tonicNote.readableString) \(musicNotes.tonality.name)"
             let advice = Text("The Number of Octaves must be One and the Starting Octave must be Two to perform a scale with intervals")
             
             VStack {
@@ -91,7 +91,7 @@ struct SoundOptionsView: View {
                         }
                     }
                     
-                    if musicNotes.tonality.hasSolFa {
+                    if musicNotes.tonality.hasSolFa || musicNotes.tonality.hasNumbers {
                         Divider().background(Color.white)
                         Group {
                             MainUIButton(buttonText: "Image Display Type", type: 4, height: buttonHeight, buttonWidth: width)
@@ -100,8 +100,12 @@ struct SoundOptionsView: View {
                                 Section {
                                     Picker("Display Image options", selection: $musicNotes.displayType) {
                                         Text("Notes").tag(DisplayType.notes)
-                                        Text("Sol-Fa").tag(DisplayType.solFa)
-                                        Text("Numbers").tag(DisplayType.numbers)
+                                        if musicNotes.tonality.hasSolFa {
+                                            Text("Sol-Fa").tag(DisplayType.solFa)
+                                        }
+                                        if musicNotes.tonality.hasNumbers {
+                                            Text("Numbers").tag(DisplayType.numbers)
+                                        }
                                     }
                                     .formatted(width: width)
                                 }

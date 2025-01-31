@@ -166,7 +166,9 @@ struct SoundView : View {
                     noteMapper = musicNotes.displayType == .solFa ? solFaNoteMapper : nil
                 }
                 
-                return PlayingView(backgroundImage: backgroundImage,
+                return PlayingView(width: width,
+                                   height: geometry.size.height,
+                                   backgroundImage: backgroundImage,
                                    playScaleNotes: musicNotes.playScaleNotes,
                                    playDrone: musicNotes.playDrone,
                                    countInBeats: countInBeats,
@@ -218,8 +220,7 @@ struct SoundView : View {
     
     @ViewBuilder func playButton(buttonHeight: CGFloat, width: CGFloat) -> some View {
         Button {
-            // TODO: Move this elsewhere. WHAT IS THIS EVEn DOING.
-            // Could add in quavers?
+            // TODO: Move this elsewhere. This sets the metronome off-beats. Three or two or none are the options
             switch fileReaderAndWriter.readMetronomePulse().lowercased() {
             case "simple":
                 musicNotes.metronomePulse = 4

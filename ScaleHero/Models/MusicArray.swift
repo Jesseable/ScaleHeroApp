@@ -9,28 +9,29 @@ import Foundation
 
 class MusicArray {
     private var initialStartingNote: Notes
-    // TODO: This isn't good atm. I need to make this correct and based off of the initial startingNote. I should be able to do this.
-    private lazy var transposedStartingFileNote: FileNotes = {
-        var state = TranspositionState.firstTime
-        return transposePitch(pitch: Pitch(note: initialStartingNote, octave: NoteOctaveOption.one),
-                       to: retrieveTranspositionNote(),
-                       isAscending: true,
-                       transpositionState: &state).fileNote
-    }()
+    private var transposedStartingFileNote: FileNotes?
     private var notesArr: [Notes]
+    private var transposedNotesArr: [FileNotes] // TODO: Make this immediately.
     private var pitchArr: [Pitch]?
-//    private var solFaArr: [SolFa]? TODO: !!!!!!!!!!!!!!!
-//    private var fileNotesArr: [FileNotes]?
-    private enum TranspositionState { case firstTime, hasInitialOctaveChange, hasNoInitialOctaveChange }
+    private var transposedPitchesArr: [FilePitch]? // TODO: Make this when everything is changes and modified.
+    private enum TranspositionState { case firstTime, hasInitialOctaveChange, hasNoInitialOctaveChange } // TODO: I will probably be able to delete this...
 
     init(note: Notes) {
         self.initialStartingNote = note
         self.notesArr = [note]
+        transposedNotesArr = []
+        transposedStartingFileNote = transposeNote(note: self.initialStartingNote)
+        
+        self.transposedNotesArr = [transposeNote(note: note)]
     }
 
     init(notes: [Notes]) {
         self.initialStartingNote = notes.first!
         self.notesArr = notes
+        transposedNotesArr = []
+        transposedStartingFileNote = transposeNote(note: self.initialStartingNote)
+
+        self.transposedNotesArr = notesArr.map { transposeNote(note: $0) }
     }
     
     func getNotes() -> [Notes] {
@@ -45,32 +46,27 @@ class MusicArray {
         return notes
     }
     
-    // TODO: Why am I createing and doing this
-//    func getFileNotes() -> [FileNotes] {
-//        guard fileNotesArr != nil else {
-//            return []
-//        }
-//        return 
-//    }
-    
     func getPitches() -> [Pitch] {
         // create an error to be thrown here is pitches is still null
         return pitchArr!
     }
     
+    func getTransposedPitches() -> [FilePitch] {
+        // create an error to be thrown here is transposedPitches is still null
+        return transposedPitchesArr!
+    }
+    
     func getTransposedStartingNote() -> FileNotes {
-        return transposedStartingFileNote
+        return transposedStartingFileNote ?? initialStartingNote.fileName
     }
     
     func applyModifications(musicNotes: MusicNotes) {
-        // If has Sol-Fa
-        
         convertToOctaveSize(numOctaves: musicNotes.octaves)
         applyPitches(with: musicNotes.startingOctave)
-        // Everything from here on can use Pitches instead of Notes. TODO:  Somehow make this cleaner later
+        // Everything from here on can use Pitches instead of Notes. TODO: Somehow make this cleaner later
         
         // if octaveNumber doesn't equal one but invervals are set, then throw an error (I should create a good error for this)
-        addIntervalOption(interval: musicNotes.intervalOption, options: musicNotes.intervalType) // TODO: I think they need some renaming...
+        setIntervaloptions(interval: musicNotes.intervalOption, options: musicNotes.intervalType)
         
         if (musicNotes.tonicMode != .noRepeatedTonic) {
             convertToTonicOptions(tonicOption: musicNotes.tonicMode)
@@ -82,25 +78,30 @@ class MusicArray {
     }
     
     private func applyPitches(with startingOctave: OctaveNumber) {
-        var curOctave: NoteOctaveOption = octaveNumToNotesOctaveNum(octavesNum: startingOctave)
-        pitchArr = []
-        var previousNote: Notes? = nil
-        
-        for (index, currentNote) in notesArr.enumerated() {
-            let isAscending = index < notesArr.count / 2 + 1
+        func processNotes<T: PitchType>(notes: [T.NoteType], into array: inout [T], startingOctave: inout NoteOctaveOption)
+        where T.NoteType: NoteTypeProtocol {
+            var previousNote: T.NoteType? = nil
             
-            if Notes.isOctaveStep(firstNote: previousNote ?? currentNote, secondNote: currentNote, ascending: isAscending) {
-                if isAscending {
-                    curOctave.increment()
-                } else {
-                    curOctave.decrement()
+            for (index, currentNote) in notes.enumerated() {
+                let isAscending = index < notes.count / 2 + 1
+                
+                if let prev = previousNote, T.NoteType.isOctaveStep(firstNote: prev, secondNote: currentNote, ascending: isAscending) {
+                    isAscending ? startingOctave.increment() : startingOctave.decrement()
                 }
+                
+                array.append(T(note: currentNote, octave: startingOctave as! T.NoteOctaveOption)) // TODO: What is this. And how is this the function???
+                previousNote = currentNote
             }
-            
-            pitchArr!.append(Pitch(note: currentNote, octave: curOctave))
-            
-            previousNote = currentNote
         }
+
+        var curOctave = octaveNumToNotesOctaveNum(octavesNum: startingOctave)
+        var curTransposedOctave = curOctave
+
+        pitchArr = []
+        transposedPitchesArr = []
+
+        processNotes(notes: notesArr, into: &pitchArr!, startingOctave: &curOctave)
+        processNotes(notes: transposedNotesArr, into: &transposedPitchesArr!, startingOctave: &curTransposedOctave)
     }
     
     private func octaveNumToNotesOctaveNum(octavesNum: OctaveNumber) -> NoteOctaveOption {
@@ -110,148 +111,124 @@ class MusicArray {
         case .three: return .three
         }
     }
+    
+    private func setIntervaloptions(interval: Interval, options: IntervalOption) {
+        self.pitchArr = addIntervalOption(interval: interval, options: options, pitchArray: pitchArr!)
+        self.transposedPitchesArr = addIntervalOption(interval: interval, options: options, pitchArray: transposedPitchesArr!)
+    }
         
-    private func addIntervalOption(interval: Interval, options: IntervalOption) {
+    private func addIntervalOption<T: PitchType>(interval: Interval, options: IntervalOption, pitchArray: [T]) -> [T] where T.NoteOctaveOption: AdjustableOcataves {
         if (interval == Interval.none) {
-            return
+            return pitchArray
         }
         
-        var resultArr: [Pitch]
+        var resultArr: [T]
         
         switch options {
         case .allUp:
-            resultArr = toAllUp(interval: interval)
+            resultArr = toIntervalOption(interval: interval, isAllUp: true, notesArray: pitchArray)
         case .allDown:
-            resultArr = toAllDown(interval: interval)
+            resultArr = toIntervalOption(interval: interval, isAllUp: false, notesArray: pitchArray)
         case .oneUpOneDown:
-            resultArr = toOneUpOneDown(interval: interval)
+            resultArr = toOneUpOneDown(interval: interval, notesArray: pitchArray)
         case .oneDownOneUp:
-            resultArr = toOneDownOneUp(interval: interval)
+            resultArr = toOneDownOneUp(interval: interval, notesArray: pitchArray)
         }
-        pitchArr = resultArr
+        return resultArr
     }
     
-    private func toAllUp(interval: Interval) -> [Pitch] {
-        var result: [Pitch] = []
-        let splitArr = self.pitchArr!.split()
+    private func toIntervalOption<T: PitchType>(interval: Interval, isAllUp: Bool, notesArray: [T]) -> [T] where T.NoteOctaveOption: AdjustableOcataves {
+        var result: [T] = []
+        let splitArr = notesArray.split()
         let ascendingScale = splitArr.left
         var descendingScale = splitArr.right
         adjustDescendingScale(descendingScale: &descendingScale)
         
         for ascendingNote in ascendingScale {
-            result.append(ascendingNote)
-            let nextNote = calculatePitch(from: ascendingNote, distance: interval, in: ascendingScale, isAscending: true)
-            result.append(nextNote)
+            if isAllUp {
+                result.append(ascendingNote)
+                let nextNote = calculatePitch(from: ascendingNote, distance: interval, in: ascendingScale, isAscending: true)
+                result.append(nextNote)
+            } else {
+                let nextNote = calculatePitch(from: ascendingNote, distance: interval, in: ascendingScale, isAscending: true)
+                result.append(nextNote)
+                result.append(ascendingNote)
+            }
         }
         for descendingNote in descendingScale {
-            result.append(descendingNote)
-            let nextNote = calculatePitch(from: descendingNote, distance: interval, in: descendingScale, isAscending: false)
-            result.append(nextNote)
+            if isAllUp {
+                result.append(descendingNote)
+                let nextNote = calculatePitch(from: descendingNote, distance: interval, in: descendingScale, isAscending: false)
+                result.append(nextNote)
+            } else {
+                let nextNote = calculatePitch(from: descendingNote, distance: interval, in: descendingScale, isAscending: false)
+                result.append(nextNote)
+                result.append(descendingNote)
+            }
         }
-        // Add the final Tonic
         result.append(ascendingScale.first!)
         return result
     }
-    
-    private func toAllDown(interval: Interval) -> [Pitch] {
-        var result: [Pitch] = []
-        let splitArr = self.pitchArr!.split()
+
+    private func toOneUpOneDown<T: PitchType>(interval: Interval, notesArray: [T]) -> [T] where T.NoteOctaveOption: AdjustableOcataves {
+        return toAlternating(interval: interval, isUpFirst: true, notesArray: notesArray)
+    }
+
+    private func toOneDownOneUp<T: PitchType>(interval: Interval, notesArray: [T]) -> [T] where T.NoteOctaveOption: AdjustableOcataves {
+        return toAlternating(interval: interval, isUpFirst: false, notesArray: notesArray)
+    }
+
+    private func toAlternating<T: PitchType>(interval: Interval, isUpFirst: Bool, notesArray: [T]) -> [T] where T.NoteOctaveOption: AdjustableOcataves {
+        var result: [T] = []
+        let splitArr = notesArray.split()
         let ascendingScale = splitArr.left
         var descendingScale = splitArr.right
         adjustDescendingScale(descendingScale: &descendingScale)
         
-        for ascendingNote in ascendingScale {
+        var toggleState: Bool = isUpFirst
+        for (ascendingNote) in ascendingScale {
+            if toggleState { result.append(ascendingNote) }
             let nextNote = calculatePitch(from: ascendingNote, distance: interval, in: ascendingScale, isAscending: true)
             result.append(nextNote)
-            result.append(ascendingNote)
+            if !toggleState { result.append(ascendingNote) }
+            toggleState.toggle()
         }
-        for descendingNote in descendingScale {
+        for (descendingNote) in descendingScale {
+            if toggleState { result.append(descendingNote) }
             let nextNote = calculatePitch(from: descendingNote, distance: interval, in: descendingScale, isAscending: false)
             result.append(nextNote)
-            result.append(descendingNote)
+            if !toggleState { result.append(descendingNote) }
+            toggleState.toggle()
         }
-        // Add the final Tonic
         result.append(ascendingScale.first!)
         return result
     }
-    
-    private func toOneUpOneDown(interval: Interval) -> [Pitch] {
-        var result: [Pitch] = []
-        let splitArr = self.pitchArr!.split()
-        let ascendingScale = splitArr.left
-        var descendingScale = splitArr.right
-        adjustDescendingScale(descendingScale: &descendingScale)
-        
-        for (count, ascendingNote) in ascendingScale.enumerated() {
-            if count % 2 == 0 { result.append(ascendingNote) }
-            let nextNote = calculatePitch(from: ascendingNote, distance: interval, in: ascendingScale, isAscending: true)
-            result.append(nextNote)
-            if count % 2 == 1 { result.append(ascendingNote) }
-        }
-        for (count, descendingNote) in descendingScale.enumerated() {
-            if count % 2 == 0 { result.append(descendingNote) }
-            let nextNote = calculatePitch(from: descendingNote, distance: interval, in: descendingScale, isAscending: false)
-            result.append(nextNote)
-            if count % 2 == 1 { result.append(descendingNote) }
-        }
-        // Add the final Tonic
-        result.append(ascendingScale.first!)
-        return result
-    }
-    
-    private func toOneDownOneUp(interval: Interval) -> [Pitch] {
-        var result: [Pitch] = []
-        let splitArr = self.pitchArr!.split()
-        let ascendingScale = splitArr.left
-        var descendingScale = splitArr.right
-        adjustDescendingScale(descendingScale: &descendingScale)
-        
-        for (count, ascendingNote) in ascendingScale.enumerated() {
-            if count % 2 == 1 { result.append(ascendingNote) }
-            let nextNote = calculatePitch(from: ascendingNote, distance: interval, in: ascendingScale, isAscending: true)
-            result.append(nextNote)
-            if count % 2 == 0 { result.append(ascendingNote) }
-        }
-        for (count, descendingNote) in descendingScale.enumerated() {
-            if count % 2 == 1 { result.append(descendingNote) }
-            let nextNote = calculatePitch(from: descendingNote, distance: interval, in: descendingScale, isAscending: false)
-            result.append(nextNote)
-            if count % 2 == 0 { result.append(descendingNote) }
-        }
-        // Add the final Tonic
-        result.append(ascendingScale.first!)
-        return result
-    }
-    
-    private func adjustDescendingScale(descendingScale: inout [Pitch]) {
-        guard let firtNote = descendingScale.first else { return }
-        let adjustedPitch = Pitch(note: firtNote.note, octave: Pitch.decreaseOctave(octave: firtNote.octave))
-        descendingScale.append(adjustedPitch)
-    }
-    
-    private func calculatePitch(from pitch: Pitch, distance: Interval, in scale: [Pitch], isAscending: Bool) -> Pitch {
+
+    private func calculatePitch<T: PitchType>(from pitch: T, distance: Interval, in scale: [T], isAscending: Bool) -> T where T.NoteOctaveOption: AdjustableOcataves {
         var hasOctaveIncreaseChange = false
         let fromPitchIndex = scale.firstIndex(of: pitch)!
         var nextPitchIndex = 0
         
         if isAscending {
             nextPitchIndex = fromPitchIndex + (distance.rawValue - 1)
-            if nextPitchIndex >= (scale.count) {
-                nextPitchIndex = (nextPitchIndex % (scale.count)) + 1 // Because there is tonic at the start and end of the scale
+            if nextPitchIndex >= scale.count {
+                nextPitchIndex = (nextPitchIndex % scale.count) + 1 // Tonic at start and end
                 hasOctaveIncreaseChange = true
             }
         } else {
             nextPitchIndex = fromPitchIndex - (distance.rawValue - 1)
             if nextPitchIndex < 0 {
-                nextPitchIndex = (elementAtNegativeIndex(array: scale, negativeIndex: nextPitchIndex) ?? 0) - 1 // TODO: Turn into a exception later on... -1 is because of the added B
+                nextPitchIndex = (elementAtNegativeIndex(array: scale, negativeIndex: nextPitchIndex) ?? 0) - 1
                 hasOctaveIncreaseChange = true
             }
         }
         
-        var calculatedPitch: Pitch
+        var calculatedPitch: T
         if hasOctaveIncreaseChange {
             let nextPitch = scale[nextPitchIndex]
-            calculatedPitch = Pitch(note: nextPitch.note, octave: Pitch.increaseOctave(octave: nextPitch.octave))
+            var octave = nextPitch.getOctave()
+            octave.increment()
+            calculatedPitch = T(note: nextPitch.getNote(), octave: octave) // Adjust for octave change
         } else {
             calculatedPitch = scale[nextPitchIndex]
         }
@@ -259,16 +236,27 @@ class MusicArray {
         return calculatedPitch
     }
     
-    // TODO: Rename to finding the index
+    private func adjustDescendingScale<T: PitchType>(descendingScale: inout [T]) where T.NoteOctaveOption: AdjustableOcataves {
+        guard let firtNote = descendingScale.first else { return }
+        var octave = firtNote.getOctave()
+        octave.decrement()
+        let adjustedPitch = T(note: firtNote.getNote(), octave: octave)
+        descendingScale.append(adjustedPitch)
+    }
+    
     private func elementAtNegativeIndex<T> (array: [T], negativeIndex: Int) -> Int? {
         guard negativeIndex < 0, abs(negativeIndex) <= array.count else { return nil } // TODO: Turn into an excpetion so that it doesn't return T?, but instead just T
         return array.count + negativeIndex
     }
     
-    // TODO: I will need to add in the octave info here as well. I do not save that at all atm
     private func convertToOctaveSize(numOctaves: OctaveNumber) {
-        var resultArr: [Notes]
-        let splitArr = self.notesArr.split()
+        self.notesArr = convertToOctaveSize(array: self.notesArr, numOctaves: numOctaves)
+        self.transposedNotesArr = convertToOctaveSize(array: self.transposedNotesArr, numOctaves: numOctaves)
+    }
+    
+    private func convertToOctaveSize<T>(array: [T], numOctaves: OctaveNumber) -> [T] {
+        var resultArr: [T]
+        let splitArr = array.split()
         var firstHalfArr = splitArr.left
         let secondHalfArr = splitArr.right
         resultArr = firstHalfArr
@@ -287,39 +275,75 @@ class MusicArray {
             resultArr.append(contentsOf: secondHalfArr)
         }
         
-        self.notesArr = resultArr
+        return resultArr
     }
     
     private func convertToTonicOptions(tonicOption: TonicOption) {
-        var newPitchArr : [Pitch] = []
-        for pitch in self.pitchArr! {
-            newPitchArr.append(pitch)
-            if (pitch.note == initialStartingNote) {
-                newPitchArr.append(pitch)
+        self.pitchArr = convertToTonicOptions(tonicOption: tonicOption, noteArray: self.pitchArr!)
+        self.transposedPitchesArr = convertToTonicOptions(tonicOption: tonicOption, noteArray: self.transposedPitchesArr!)
+    }
+    
+    private func convertToTonicOptions<T: PitchType>(tonicOption: TonicOption, noteArray: [T]) -> [T] {
+        var resultArr: [T] = []
+        
+        for pitchType in noteArray {
+            resultArr.append(pitchType)
+            if pitchType.isEqual(to: self.initialStartingNote) {
+                resultArr.append(pitchType)
             }
         }
-        if (tonicOption == .repeatedTonicAll) {
-            self.pitchArr = newPitchArr
-            return
-        }
-        // remove the first and last tonic
-        newPitchArr.removeFirst()
-        newPitchArr.removeLast()
         
-        self.pitchArr = newPitchArr
+        if tonicOption == .repeatedTonicAll {
+            return resultArr
+        }
+        
+        // Remove the first and last tonic
+        resultArr.removeFirst()
+        resultArr.removeLast()
+        
+        return resultArr
     }
     
     private func repeateAllNotes() {
-        var newPitchArr : [Pitch] = []
-
-        var itr = 0;
-        while itr < self.pitchArr!.count {
-            newPitchArr.append(self.pitchArr![itr])
-            newPitchArr.append(self.pitchArr![itr])
-            itr += 1
-        }
-        self.pitchArr = newPitchArr
+        self.pitchArr = repeatAllNotes(noteArray: self.pitchArr!)
+        self.transposedPitchesArr = repeatAllNotes(noteArray: self.transposedPitchesArr!)
     }
+    
+    private func repeatAllNotes<T: PitchType>(noteArray: [T]) -> [T] {
+        var resultArr: [T] = []
+        for note in noteArray {
+            resultArr.append(note)
+            resultArr.append(note)
+        }
+        return resultArr
+    }
+    
+//    func transposeNotes(_ notes: [Pitch]) -> [FilePitch] {
+//        let transpositionNote = retrieveTranspositionNote()
+//        return notes.map { transposePitch($0, to: transpositionNote) }
+//    }
+//    
+//    private func transposePitch(_ pitch: Pitch, to transpositionNote: FileNotes) -> FilePitch {
+//        let orderedMusicAlphabet = Notes.orderedMusicAlphabet
+////        let orderedNotes: [FileNotes] = [.A, .A_SHARP_B_FLAT, .B, .C, .C_SHARP_D_FLAT, .D, .D_SHARP_E_FLAT, .E, .F, .F_SHARP_G_FLAT, .G, .G_SHARP_A_FLAT]
+//        
+//        
+//        guard let noteIndex = orderedMusicAlphabet.key(for: pitch.note.fileName),
+//              let transpositionIndex = orderedMusicAlphabet.key(for: transpositionNote) else {
+//            fatalError("Invalid pitch note: \(pitch.note.fileName) or transposition note: \(transpositionNote)")
+//        }
+//        
+//        let newIndex = (noteIndex + transpositionIndex) % orderedMusicAlphabet.size()
+//        let transposedNote = orderedMusicAlphabet.value(for: (newIndex + orderedMusicAlphabet.size()) % orderedMusicAlphabet.size())
+//        
+//        var newOctave = pitch.octave
+//        if newIndex < noteIndex {
+//            // If the transposed note wraps around past A, increment the octave
+//            newOctave.increment()
+//        }
+//        
+//        return FilePitch(fileNote: transposedNote!, octave: newOctave)
+//    }
     
     func constructTransposedSoundFileArray() -> [FilePitch] {
         let transpositionNote = retrieveTranspositionNote()
@@ -329,14 +353,13 @@ class MusicArray {
         
         if (transpositionNote == FileNotes.C) {
             transposedResult = self.pitchArr!.map { pitch in
-                FilePitch(fileNote: pitch.note.fileName, octave: pitch.octave)
+                FilePitch(note: pitch.note.fileName, octave: pitch.octave)
             }
             return transposedResult
         }
         
         for (index, pitch) in pitchArr!.enumerated() {
-            // TODO: Make this a single function that takes an individual note.
-            let isAscending = index < pitchArr!.count / 2 + 1
+            let isAscending = index < pitchArr!.count / 2 + 1 // TODO: This isn;t correct. Sinc the scale could be in thirds???
             let transposedFilePitch: FilePitch = transposePitch(pitch: pitch, to: transpositionNote, isAscending: isAscending, transpositionState: &transpositionState)
             transposedResult.append(transposedFilePitch)
         }
@@ -349,56 +372,68 @@ class MusicArray {
         return frw.readTranspositionNote()
     }
     
+    private func transposeNote(note: Notes) -> FileNotes {
+        let orderedMusicAlphabet = Notes.orderedMusicAlphabet
+        let transpositionNote = retrieveTranspositionNote()
+        
+        guard let noteIndex = orderedMusicAlphabet.key(for: note.fileName),
+              let transpositionIndex = orderedMusicAlphabet.key(for: transpositionNote) else {
+            fatalError("Invalid note: \(note.fileName) or transposition note: \(transpositionNote)")
+        }
+
+        let newIndex = (noteIndex + transpositionIndex) % orderedMusicAlphabet.size()
+        let fileNote = orderedMusicAlphabet.value(for: (newIndex + orderedMusicAlphabet.size()) % orderedMusicAlphabet.size())
+        
+        return fileNote!
+    }
+    
     private func transposePitch(pitch: Pitch, to transpositionNote: FileNotes, isAscending: Bool, transpositionState: inout TranspositionState) -> FilePitch {
         let orderedMusicAlphabet = Notes.orderedMusicAlphabet
 
         var curOctave = pitch.octave
-        if let index = orderedMusicAlphabet.key(for: pitch.note.fileName) {
-            if let tnIndex = orderedMusicAlphabet.key(for: transpositionNote) {
-                let newIndex = (index + tnIndex) % orderedMusicAlphabet.size()
-                let fileNote = orderedMusicAlphabet.value(for: (newIndex + orderedMusicAlphabet.size()) % orderedMusicAlphabet.size())
-
-                if (Notes.isOctaveStep(firstNote: pitch.note.fileName, secondNote: fileNote!, ascending: isAscending)) {
-                    switch transpositionState {
-                    case .firstTime:
-                        // TODO: Ensure that the first oine is still changed
-                        transpositionState = .hasInitialOctaveChange
-                        
-                    case .hasInitialOctaveChange:
-                        if !isAscending {
-                            curOctave.decrement()
-                        }
-                    case .hasNoInitialOctaveChange:
-                        if isAscending {
-                            curOctave.increment()
-                        }
-                    }
-                } else {
-                    switch transpositionState {
-                    case .firstTime:
-                        // TODO: Ensure this still works for the first one...
-                        transpositionState = .hasNoInitialOctaveChange
-
-                    case .hasInitialOctaveChange:
-                        if isAscending {
-                            curOctave.decrement()
-                        }
-                    case .hasNoInitialOctaveChange:
-                        if !isAscending {
-                            curOctave.increment()
-                        }
-                    }
-                }
-                return FilePitch(fileNote: fileNote!, octave: curOctave)
-            }
-            // TODO: These need to throw errors instead
-            fatalError("The transpisition note was not in the music alphabet")
+        guard let noteIndex = orderedMusicAlphabet.key(for: pitch.note.fileName),
+              let transpositionIndex = orderedMusicAlphabet.key(for: transpositionNote) else {
+            fatalError("Invalid pitch note: \(pitch.note.fileName) or transposition note: \(transpositionNote)")
         }
-        fatalError("The pitch was not in the music alphabet")
+
+        let newIndex = (noteIndex + transpositionIndex) % orderedMusicAlphabet.size()
+        let fileNote = orderedMusicAlphabet.value(for: (newIndex + orderedMusicAlphabet.size()) % orderedMusicAlphabet.size())
+
+        if (FileNotes.isOctaveStep(firstNote: pitch.note.fileName, secondNote: fileNote!, ascending: isAscending)) {
+            switch transpositionState {
+            case .firstTime:
+                // TODO: Ensure that the first oine is still changed
+                transpositionState = .hasInitialOctaveChange
+                
+            case .hasInitialOctaveChange:
+                if !isAscending {
+                    curOctave.decrement()
+                }
+            case .hasNoInitialOctaveChange:
+                if isAscending {
+                    curOctave.increment()
+                }
+            }
+        } else {
+            switch transpositionState {
+            case .firstTime:
+                // TODO: Ensure this still works for the first one...
+                transpositionState = .hasNoInitialOctaveChange
+
+            case .hasInitialOctaveChange:
+                if isAscending {
+                    curOctave.decrement()
+                }
+            case .hasNoInitialOctaveChange:
+                if !isAscending {
+                    curOctave.increment()
+                }
+            }
+        }
+        return FilePitch(note: fileNote!, octave: curOctave)
+
     }
     
-    // TODO: Maybe move this into scaleConstructor... I NEED THIS FOR ENUMS VALUES AS WELL NOW
-    // TODO: Add into notes contructor and make it a static method to be used anywhere...
     static func rotateScale<T>(of array: [T], by modeDegree: Int) -> [T] {
         guard !array.isEmpty else { return [] }
         

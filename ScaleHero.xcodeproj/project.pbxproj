@@ -204,6 +204,7 @@
 		C55919302D1A671700C70610 /* MusicArrayTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C559192F2D1A670C00C70610 /* MusicArrayTest.swift */; };
 		C55C3A932D45E7E80094B464 /* SolFaNoteMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55C3A922D45E7DB0094B464 /* SolFaNoteMapper.swift */; };
 		C55C3AA92D4A3DCD0094B464 /* NumbersNoteMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55C3AA82D4A3DC50094B464 /* NumbersNoteMapper.swift */; };
+		C55C3AAB2D4B39160094B464 /* AnimationNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55C3AAA2D4B38FA0094B464 /* AnimationNotesView.swift */; };
 		C574FE76276886B700ADD3B3 /* ScaleHeroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */; };
 		C574FE7A276886BC00ADD3B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C574FE79276886BC00ADD3B3 /* Assets.xcassets */; };
 		C574FE7D276886BC00ADD3B3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C574FE7C276886BC00ADD3B3 /* Preview Assets.xcassets */; };
@@ -440,6 +441,7 @@
 		C559192F2D1A670C00C70610 /* MusicArrayTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicArrayTest.swift; sourceTree = "<group>"; };
 		C55C3A922D45E7DB0094B464 /* SolFaNoteMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolFaNoteMapper.swift; sourceTree = "<group>"; };
 		C55C3AA82D4A3DC50094B464 /* NumbersNoteMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersNoteMapper.swift; sourceTree = "<group>"; };
+		C55C3AAA2D4B38FA0094B464 /* AnimationNotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationNotesView.swift; sourceTree = "<group>"; };
 		C574FE72276886B700ADD3B3 /* ScaleHero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScaleHero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C574FE75276886B700ADD3B3 /* ScaleHeroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleHeroApp.swift; sourceTree = "<group>"; };
 		C574FE79276886BC00ADD3B3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -521,6 +523,14 @@
 			path = "Scale Note Sounds";
 			sourceTree = "<group>";
 		};
+		C55C3AAC2D4B391B0094B464 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				C55C3AAA2D4B38FA0094B464 /* AnimationNotesView.swift */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		C574FE69276886B700ADD3B3 = {
 			isa = PBXGroup;
 			children = (
@@ -600,6 +610,7 @@
 		C574FEA72769CF9F00ADD3B3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C55C3AAC2D4B391B0094B464 /* Animations */,
 				C50626A228704F9900DB933E /* ScaleViews */,
 				C5A826A227BC8A21002F2F66 /* InfoPages */,
 				C5A8269F27BC8650002F2F66 /* Buttons */,
@@ -1190,6 +1201,7 @@
 				C50626A928704FA700DB933E /* SoundView.swift in Sources */,
 				C54532F12779B73D0041702C /* SettingsView.swift in Sources */,
 				C5BC9DC7287431DD0069DADE /* AchievementsView.swift in Sources */,
+				C55C3AAB2D4B39160094B464 /* AnimationNotesView.swift in Sources */,
 				C5B03BDD278416EB00643E7C /* PlayingView.swift in Sources */,
 				C59C554A2D23C7CF00B2BEA3 /* Notes.swift in Sources */,
 				C5321F0527A92D5400A63085 /* TutorialView.swift in Sources */,

@@ -16,13 +16,12 @@ struct PlaySounds {
     private var fileReaderAndWriter = FileReaderAndWriter()
     private var toggler = true
     var metronomeTimer: Timer? = nil
-    // TODO: Rename these better
     // For the drone
     var dronePlayer: AVAudioPlayer?
     // For the metronome
     var metronomePlayer: AVAudioPlayer?
     // For the scaleNotes1
-    var notesPlayer1: AVAudioPlayer? // TODO: Why are there 2???
+    var notesPlayer1: AVAudioPlayer? // TODO: Why are there 2??? -  I believe so that they overlap one another, makes for a smoother experience. But I should rename
     // For the scaleNotes2
     var notesPlayer2: AVAudioPlayer?
     
@@ -63,35 +62,19 @@ struct PlaySounds {
         ) else {
             throw SoundError.fileNoteFound(fileName: fileName)
         }
-        if toggler {
-            self.notesPlayer1 = try! AVAudioPlayer(contentsOf: fileURL)
-            self.notesPlayer1?.play()
-            toggler.toggle() // TODO: Does this just get stuck in the else after this???
+        self.notesPlayer1 = try! AVAudioPlayer(contentsOf: fileURL)
+        self.notesPlayer1?.play()
+        toggler.toggle()  // TODO: Does this just get stuck in the else after this???  Maybe I only need one fo these in the end anyway...
+        
+        if !isFinalNote {
+            // Adds the fade effect
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration - 0.05, execute: { [self] in // TODO: Magic numbers used
+                self.notesPlayer1?.setVolume(0.1, fadeDuration: 0.15)
+            })
             
-            if !isFinalNote {
-                // Adds the fade effect
-                DispatchQueue.main.asyncAfter(deadline: .now() + duration - 0.05, execute: { [self] in // TODO: Magic numbers used
-                    self.notesPlayer1?.setVolume(0.1, fadeDuration: 0.15)
-                })
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + duration + extra, execute: { [self] in
-                    cancelScaleNoteSound1()
-                })
-            }
-        } else {
-            self.notesPlayer2 = try! AVAudioPlayer(contentsOf: fileURL)
-            self.notesPlayer2?.play()
-            
-            if !isFinalNote {
-                // Adds the fade effect
-                DispatchQueue.main.asyncAfter(deadline: .now() + duration - 0.05, execute: { [self] in
-                    self.notesPlayer2?.setVolume(0.1, fadeDuration: 0.15)
-                })
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + duration + extra, execute: { [self] in
-                    cancelScaleNoteSound2()
-                })
-            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration + extra, execute: { [self] in
+                cancelScaleNoteSound1()
+            })
         }
     }
     

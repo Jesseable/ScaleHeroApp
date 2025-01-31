@@ -21,12 +21,12 @@ class MusicNotes: ObservableObject {
     @Published var tonicMode: TonicOption = .noRepeatedTonic
     // An enum containing either scale or arpeggio followed by the tonality, e.g. Case.scale(.major)
     @Published var tonality: Case = .unselected
-    @Published var intervalOption: Interval = .none
+    @Published var intervalOption: Interval = .none // TODO: Fix these names
     @Published var intervalType: IntervalOption = .allUp
     @Published var backDisplay: ScreenType = .homepage
     @Published var otherSpecificScaleTypes : OtherScaleTypes?
     @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @Published var backgroundImage : String? // TODO: Is this used anywhere. Possibly just delete it...
+    @Published var backgroundImage : String?
     @Published var playScaleNotes = true
     @Published var playDrone = true
     @Published var startingOctave: OctaveNumber = .one

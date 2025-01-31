@@ -85,7 +85,7 @@ struct OtherScalesView: View {
                 musicNotes.backDisplay = .otherview
                 self.screenType = .soundview
             } label: {
-                let name = "Blues"  // TODO: can I get the name from this instead
+                let name = ScaleTonality.blues.name
                 MainUIButton(buttonText: name, type: 1, height: buttonHeight, buttonWidth: width)
             }
         case .tetrads: // Lists all of the 7th scales

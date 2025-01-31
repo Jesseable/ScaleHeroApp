@@ -29,7 +29,6 @@ struct NoteSelectionView: View {
             let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
             let portrate = height > width
             let titleHeight = height / 6
-            let titleWidth = width * 0.9
             let maxSize = (portrate) ? CGFloat(250) : CGFloat(100)
             let radius = (maxSize > width * 0.4) ? width * 0.4 : maxSize
             let buttonSize = radius * 0.3
@@ -38,19 +37,19 @@ struct NoteSelectionView: View {
             let hintText : Text = Text("Select a note from the circle of fifths and confirm by selecting the middle green button")
         
             ZStack {
-                createAnimationNotes(width: titleWidth)
+                AnimationNotesView(width: width * 0.9, offset: self.$offset, fileReaderAndWriter: fileReaderAndWriter)
                 
                 // Title Image - Fixed at the top
                 VStack {
                     if portrate {
                         titleImage.resizable()
                             .scaledToFit()
-                            .frame(maxWidth: titleWidth, maxHeight: titleHeight)
+                            .frame(maxWidth: width * 0.9, maxHeight: titleHeight)
                             .clipped()
                     } else {
                         titleImage.resizable()
                             .scaledToFit()
-                            .frame(maxWidth: titleWidth, maxHeight: titleHeight)
+                            .frame(maxWidth: width * 0.9, maxHeight: titleHeight)
                     }
                     Spacer()
                 }.zIndex(1)
@@ -120,32 +119,6 @@ struct NoteSelectionView: View {
                 offset += (width < height) ? height * 2 : width * 2
             }
         }
-    }
-    
-    @ViewBuilder func createAnimationNotes(width: CGFloat) -> some View {
-        ImageAnimation(imageName: "Treble-Cleff" + self.fileReaderAndWriter.readBackgroundImage(),
-                       xPos: width * 0.65, duration: 7.00, offset: self.$offset)
-
-        ImageAnimation(imageName: "Quaver" + fileReaderAndWriter.readBackgroundImage(),
-                       xPos: width * 0.9, duration: 5.00, offset: self.$offset)
-
-        ImageAnimation(imageName: "Semiquaver" + fileReaderAndWriter.readBackgroundImage(),
-                       xPos: 0, duration: 10.00, offset: self.$offset)
-
-        ImageAnimation(imageName: "Crotchet" + fileReaderAndWriter.readBackgroundImage(),
-                       xPos: width * 0.4, duration: 6.25, offset: self.$offset)
-
-        ImageAnimation(imageName: "Treble-Cleff" + fileReaderAndWriter.readBackgroundImage(),
-                       xPos: width * 0.1, duration: 4.60, offset: self.$offset)
-
-        ImageAnimation(imageName: "Crotchet" + fileReaderAndWriter.readBackgroundImage(),
-                       xPos: width * 0.35, duration: 12.00, offset: self.$offset)
-
-        ImageAnimation(imageName: "Quaver" + fileReaderAndWriter.readBackgroundImage(),
-                       xPos: width * 0.07, duration: 5.48, offset: self.$offset)
-
-        ImageAnimation(imageName: "Semiquaver" + fileReaderAndWriter.readBackgroundImage(),
-                       xPos: width * 0.48, duration: 8.00, offset: self.$offset)
     }
     
     @ViewBuilder func topButtonLeft(buttonSize: CGFloat, colour: Color) -> some View {

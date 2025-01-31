@@ -38,13 +38,11 @@ struct CountInBeats {
  The view to show the note names when the scale is playing. Also contains functionality to play the scale
  */
 struct PlayingView: View {
-    // Only on the playing view when everything is updating soon anyway use UIScreen.main.bounds
-    private let universalSize = UIScreen.main.bounds
-    
     @EnvironmentObject var musicNotes: MusicNotes
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var fileReaderAndWriter = FileReaderAndWriter()
-    
+    let width: CGFloat
+    let height: CGFloat
     var backgroundImage : String
     let playScaleNotes : Bool
     let playDrone : Bool
@@ -85,7 +83,7 @@ struct PlayingView: View {
     }
     
     private var headerView: some View {
-        Text(title) // TODO: Create the title in here instead possibly...
+        Text(title)
             .font(.largeTitle.bold())
             .accessibilityAddTraits(.isHeader)
             .foregroundColor(Color.white)
@@ -106,8 +104,8 @@ struct PlayingView: View {
         Button {
             stopAllSoundsAndDismiss()
         } label: {
-            let buttonHeight = universalSize.height / 10
-            MainUIButton(buttonText: "Stop", type: 3, height: buttonHeight, buttonWidth: universalSize.width * 0.9)
+            let buttonHeight = height / 10
+            MainUIButton(buttonText: "Stop", type: 3, height: buttonHeight, buttonWidth: width * 0.9)
         }
     }
     
