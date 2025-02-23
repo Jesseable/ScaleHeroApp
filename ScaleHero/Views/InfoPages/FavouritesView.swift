@@ -122,7 +122,7 @@ struct FavouritesView: View {
             musicNotes.backDisplay = .noteSelection
             self.screenType = musicNotes.backDisplay
         } label: {
-            MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: width)
+            MainUIButton(buttonText: "Back", type: 1, height: buttonHeight, buttonWidth: width)
         }
     }
     

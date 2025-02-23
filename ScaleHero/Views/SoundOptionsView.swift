@@ -98,7 +98,19 @@ struct SoundOptionsView: View {
                             ZStack {
                                 MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: width)
                                 Section {
-                                    Picker("Display Image options", selection: $musicNotes.displayType) {
+                                    Picker("Display Image options", selection: Binding(
+                                        get: {
+                                            if musicNotes.displayType == .solFa && !musicNotes.tonality.hasSolFa {
+                                                return DisplayType.notes // Default to "Notes" if Sol-Fa is unavailable
+                                            } else if musicNotes.displayType == .numbers && !musicNotes.tonality.hasNumbers {
+                                                return DisplayType.notes // Default to "Notes" if Numbers is unavailable
+                                            }
+                                            return musicNotes.displayType
+                                        },
+                                        set: { newValue in
+                                            musicNotes.displayType = newValue
+                                        }
+                                    )) {
                                         Text("Notes").tag(DisplayType.notes)
                                         if musicNotes.tonality.hasSolFa {
                                             Text("Sol-Fa").tag(DisplayType.solFa)
@@ -116,7 +128,7 @@ struct SoundOptionsView: View {
                     Divider().background(Color.white)
                     
                     Group {
-                        MainUIButton(buttonText: "Repeat Tonics", type: 4, height: buttonHeight, buttonWidth: width) // Make a new UI button colour for the ones pickers are on
+                        MainUIButton(buttonText: "Repeat Tonics", type: 4, height: buttonHeight, buttonWidth: width) // TODO: Make a new UI button colour for the ones pickers are on
                         ZStack {
                             MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: width)
                             Section {
@@ -138,7 +150,7 @@ struct SoundOptionsView: View {
                 Button {
                     self.screenType = .soundview
                 } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: mainMenuButtonHeight, buttonWidth: width)
+                    MainUIButton(buttonText: "Back", type: 1, height: mainMenuButtonHeight, buttonWidth: width)
                 }
             }
             .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }

@@ -41,7 +41,7 @@ struct AboutDeveloperView: View {
                 Button {
                     presentationMode.wrappedValue.dismiss()
                 } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: width)
+                    MainUIButton(buttonText: "Back", type: 1, height: buttonHeight, buttonWidth: width)
                 }
             }
             .background(alignment: .center) { Color(fileReaderAndWriter.readBackgroundImage()).ignoresSafeArea() }

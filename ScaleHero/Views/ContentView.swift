@@ -214,7 +214,7 @@ struct HomePage : View {
                         Button {
                             self.screenType = .droneview
                         } label: {
-                            MainUIButton(buttonText: "Drone", type: 2, height: buttonHeight, buttonWidth: width)
+                            MainUIButton(buttonText: "Drone", type: 1, height: buttonHeight, buttonWidth: width)
                         }
                         
                         Spacer()
@@ -224,7 +224,7 @@ struct HomePage : View {
                     Button {
                         self.screenType = .noteSelection
                     } label: {
-                        MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: width)
+                        MainUIButton(buttonText: "Back", type: 1, height: buttonHeight, buttonWidth: width)
                     }
                 }
             }.onAppear() {

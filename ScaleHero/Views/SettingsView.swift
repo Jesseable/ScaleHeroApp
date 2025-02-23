@@ -205,7 +205,7 @@ struct SettingsView: View {
                         
                         self.screenType = .aboutview
                     } label: {
-                        MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight, buttonWidth: width)
+                        MainUIButton(buttonText: "Back", type: 1, height: bottumButtonHeight, buttonWidth: width)
                     }
                 }
                 .alert(isPresented: $presentAlert) {

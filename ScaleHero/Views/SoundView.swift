@@ -139,7 +139,7 @@ struct SoundView : View {
                 Button {
                     self.screenType = musicNotes.backDisplay
                 } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: mainMenuButtonHeight, buttonWidth: width)
+                    MainUIButton(buttonText: "Back", type: 1, height: mainMenuButtonHeight, buttonWidth: width)
                 }
             }
             .alert(item: $currentAlert) { alertType in

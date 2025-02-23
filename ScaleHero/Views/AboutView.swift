@@ -68,7 +68,7 @@ struct AboutView: View {
                 Button {
                     self.screenType = .noteSelection
                 } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight, buttonWidth: width)
+                    MainUIButton(buttonText: "Back", type: 1, height: buttonHeight, buttonWidth: width)
                 }
             }.padding(.top, 50)
                 .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
