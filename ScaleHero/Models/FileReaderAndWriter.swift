@@ -49,12 +49,12 @@ class FileReaderAndWriter: ObservableObject { /// MOVE ALL OF THIS INTO ONE BIG 
 
     func add(tonality: Case,
              tempo: Int,
-             startingOctave: Int,
-             numOctave: Int,
+             startingOctave: OctaveNumber,
+             numOctave: OctaveNumber,
              tonicSelection: TonicOption,
              scaleNotes: Bool,
              drone: Bool,
-             startingNote: String,
+             startingNote: Notes,
              noteDisplay: Int,
              endlessLoop: Bool,
              intervalType: IntervalOption,
@@ -128,6 +128,7 @@ class FileReaderAndWriter: ObservableObject { /// MOVE ALL OF THIS INTO ONE BIG 
         }
     }
     
+    // TODO: This should take a fileNote here instead
     func writeNewTransposition(newTransposition: String) {
         //writing
         do {
@@ -139,7 +140,17 @@ class FileReaderAndWriter: ObservableObject { /// MOVE ALL OF THIS INTO ONE BIG 
         }
     }
     
-    func readTransposition() -> String {
+    func writeNewTranspositionNote(fileNote: FileNotes) {
+        do {
+            try fileNote.name.write(to: transpositionPath, atomically: true, encoding: String.Encoding.utf8)
+        }
+        catch {
+            Swift.print(error)
+            print("error has occured when writing to the Transposition file")
+        }
+    }
+    
+    func readTranspositionFile() -> String {
         //reading
         do {
             return try String(contentsOf: transpositionPath, encoding: .utf8)
@@ -147,6 +158,26 @@ class FileReaderAndWriter: ObservableObject { /// MOVE ALL OF THIS INTO ONE BIG 
         catch {
             Swift.print(error)
             return "Error caught when reading Transposition file"
+        }
+    }
+    
+    func readTranspositionNote() -> FileNotes {
+        //reading
+        do {
+            var transpositionNoteString = try String(contentsOf: transpositionPath, encoding: .utf8)
+            transpositionNoteString = transpositionNoteString.replacingOccurrences(of: "/", with: "|")
+            
+            // TODO: Can I make this better in saving it?
+            if (transpositionNoteString.components(separatedBy: " ").count > 1) {
+                transpositionNoteString = transpositionNoteString.components(separatedBy: " ")[2]
+            }
+            // TODO: Ensure transposition is always like a file note set up. I should be
+            let transposedFileNote = FileNotes.toFileNotes(stringNote: transpositionNoteString)
+            return (transposedFileNote == nil) ? FileNotes.C : transposedFileNote!
+        }
+        catch {
+            Swift.print(error)
+            fatalError("Error caught when reading Transposition file") // TODO: THis needs to become just an exception instead
         }
     }
     

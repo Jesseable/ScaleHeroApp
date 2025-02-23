@@ -15,14 +15,17 @@ struct TutorialView: View {
     var fileReaderAndWriter : FileReaderAndWriter
     
     var body: some View {
-
-        VStack {
+        GeometryReader { geometry in
+            let buttonHeight = geometry.size.height / 10
+            let width = geometry.size.width
+            
+            VStack {
                 ScrollView {
                     Text("Tutorial").asTitle()
-                                .padding()
+                        .padding()
                     
                     Divider().background(Color.white)
-                        
+                    
                     Text(infoText())
                         .font(.title3)
                         .foregroundColor(Color.white)
@@ -42,15 +45,16 @@ struct TutorialView: View {
                         .padding(.horizontal)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-            Spacer()
-            
-            Button {
-                presentationMode.wrappedValue.dismiss()
-            } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: UIScreen.main.bounds.height/10)
+                Spacer()
+                
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    MainUIButton(buttonText: "Back", type: 1, height: buttonHeight, buttonWidth: width)
+                }
             }
+            .background(alignment: .center) { Color(fileReaderAndWriter.readBackgroundImage()).ignoresSafeArea() }
         }
-        .background(alignment: .center) { Color(fileReaderAndWriter.readBackgroundImage()).ignoresSafeArea() }
     }
     
     func infoText() -> String {

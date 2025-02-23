@@ -8,164 +8,219 @@
 import SwiftUI
 
 struct SoundView : View {
-    
-    private let universalSize = UIScreen.main.bounds
-    
-    @Binding var screenType: ScreenType
-    @EnvironmentObject var scaleOptions: ScaleOptions
-    @State private var isPlaying = false
-    @State private var presentAlert = false
-    //@State private var disableOctaveSelection = false
-    //@State private var disableOctaveWithIntervals = false
-    @State var playScale = PlaySounds()
-    @EnvironmentObject var musicNotes: MusicNotes
-    var fileReaderAndWriter = FileReaderAndWriter()
-    
-    var backgroundImage: String
-    
-    var body: some View {
-        let title = "\(musicNotes.tonicNote) \(musicNotes.getTonality(from: musicNotes.tonality))"
-        let buttonHeight = universalSize.height/19
-        let bottumButtonHeight = universalSize.height/10
-        let maxFavourites = 7
-        var disableOctaveSelection = (musicNotes.octaves < 2) ? false : true
-
-        VStack {
-            
-            Text(title).asTitle()
-            
-            ScrollView {
-                
-                Group {
-                    MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight)
-                    ZStack {
-                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                        Section {
-                            Picker("Octave selection", selection: $musicNotes.octaves) {
-                                Text("1").tag(1)
-                                Text("2").tag(2)
-                                Text("3").font(.title).tag(3)
-                            }
-                            .formatted()
-                        }
-                    }.onChange(of: musicNotes.octaves) { octave in
-                        if (octave == 1) {
-                            disableOctaveSelection = false
-                        } else {
-                            musicNotes.intervalType = .allUp
-                            musicNotes.intervalOption = .none
-                        }
-                        if (octave > 1) {
-                            musicNotes.startingOctave = 1
-                            disableOctaveSelection = true
-                        }
-                    }
-                    
-                    Divider().background(Color.white)
-                    
-                    MainUIButton(buttonText: "Starting Octaves:", type: 4, height: buttonHeight)
-                    ZStack {
-                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                        Section {
-                            Picker("Octave:", selection: $musicNotes.startingOctave) {
-                                Text("1").tag(1)
-                                Text("2").tag(2)
-                                Text("3").tag(3)
-                            }
-                            .formatted()
-                            .disabled(disableOctaveSelection)
-                        }
-                    }.onChange(of: musicNotes.startingOctave) { strOct in
-                        if (strOct != 2) {
-                            musicNotes.intervalType = .allUp
-                            musicNotes.intervalOption = .none
-                        }
-                    }
-                    
-                    Divider().background(Color.white)
-            
-                    MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight)
-                    ZStack {
-                        MainUIButton(buttonText: "", type: 7, height: buttonHeight)
-                        Slider(value: $musicNotes.tempo, in: 20...180, step: 1.0)
-                            .padding(.horizontal)
-                    }
-                    
-                    Divider().background(Color.white)
-                    
-                }
-
-                Button {
-                    screenType = .soundOptionsView
-                } label: {
-                    MainUIButton(buttonText: "Further Options", type: 1, height: buttonHeight)
-                }
-                
-                Divider().background(Color.white)
-                
-                Button {
-                    presentAlert = true
-                } label: {
-                    MainUIButton(buttonText: "Save", type: 1, height: buttonHeight)
-                }
-                
-                Spacer()
+    enum AlertType: Identifiable {
+        case saveToFav
+        case octaveSelection
+        
+        var id: String {
+            switch self {
+            case .saveToFav:
+                return "Save to Favorites"
+            case .octaveSelection:
+                return "Octave Selection"
             }
-            playButton(buttonHeight: buttonHeight).padding(.bottom, 10)
-            
-            Button {
-                self.screenType = musicNotes.backDisplay
-            } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: bottumButtonHeight)
-            }
-        }
-        .alert(isPresented: $presentAlert) {
-            Alert(
-                title: Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save To Favourites": " You have too many favourites. Delete One First"),
-                message: Text(title),
-                primaryButton: .default(Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save": "Go to favourites Page"), action: {
-                    
-                    if (fileReaderAndWriter.scales.count < maxFavourites) {
-                        
-                        fileReaderAndWriter.add(tonality: musicNotes.tonality!,
-                                                tempo: Int(musicNotes.tempo),
-                                                startingOctave: musicNotes.startingOctave,
-                                                numOctave: musicNotes.octaves,
-                                                tonicSelection: musicNotes.tonicMode,
-                                                scaleNotes: musicNotes.playScaleNotes,
-                                                drone: musicNotes.playDrone,
-                                                startingNote: musicNotes.tonicNote,
-                                                noteDisplay: musicNotes.noteDisplay,
-                                                endlessLoop: musicNotes.endlessLoop,
-                                                intervalType: musicNotes.intervalType,
-                                                intervalOption: musicNotes.intervalOption)
-                    
-                    }
-                    // Goes to the favourites screen
-                    self.screenType = .favouritesview
-                }),
-                secondaryButton: .cancel(Text("Cancel"), action: { /*Do Nothing*/ })
-            )
-        }
-        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
-        .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
-        .fullScreenCover(isPresented: $isPlaying) {
-            PlayingView(backgroundImage: backgroundImage,
-                        playScaleNotes: musicNotes.playScaleNotes,
-                        playDrone: musicNotes.playDrone,
-                        playSounds: playScale,
-                        title: title,
-                        currentNote: musicNotes.tonicNote,
-                        repeatingEndlessly: musicNotes.endlessLoop)
         }
     }
     
-    @ViewBuilder func playButton(buttonHeight: CGFloat) -> some View {
-        Button {
-
-            fetchScaleNotesArrayData()
+    @Binding var screenType: ScreenType
+    @EnvironmentObject var scaleOptions: NoteOptions
+    @State private var isPlaying = false
+    @State private var currentAlert: AlertType?
+    @State private var lastTapTime = Date()
+    @State var playSounds = PlaySounds()
+    @EnvironmentObject var musicNotes: MusicNotes
+    var fileReaderAndWriter = FileReaderAndWriter()
+    var musicArray: MusicArray
+    var backgroundImage: String
+    var solFaNoteMapper: SolFaNoteMapper?
+    var numbersNoteMapper: NumbersNoteMapper?
+    
+    let doubleTapThreshold: TimeInterval = 0.5
+    
+    init(screenType: Binding<ScreenType>, backgroundImage: String, tonicNote: Notes, noteCase: Case) {
+        _screenType = screenType
+        self.backgroundImage = backgroundImage
+        
+        do {
+            switch noteCase {
+            case .arpeggio(let tonality):
+                guard let arpeggioConstructor = try? ArpeggioConstructor(startingNote: tonicNote, tonality: tonality) else {
+                    fatalError("Failed to initialize ArpeggioConstructor")
+                }
+                guard let noteNames = arpeggioConstructor.musicArray else {
+                    fatalError("ArpeggioConstructor did not return valid note names")
+                }
+                self.musicArray = noteNames
+                self.solFaNoteMapper = setUpSolfaMapper(tonality: tonality, notesArr: arpeggioConstructor.musicArray!.getNotes())
+                self.numbersNoteMapper = setUpNumberMapper(tonality: tonality, notesArr: arpeggioConstructor.musicArray!.getNotes())
+            case .scale(let tonality):
+                guard let scaleConstructor = try? ScaleConstructor(startingNote: tonicNote, tonality: tonality) else {
+                    fatalError("Failed to initialize ScaleConstructor")
+                }
+                guard let noteNames = scaleConstructor.musicArray else {
+                    fatalError("ScaleConstructor did not return valid note names")
+                }
+                self.musicArray = noteNames
+                self.solFaNoteMapper = setUpSolfaMapper(tonality: tonality, notesArr: scaleConstructor.musicArray!.getNotes())
+                self.numbersNoteMapper = setUpNumberMapper(tonality: tonality, notesArr: scaleConstructor.musicArray!.getNotes())
+            case .unselected:
+                fatalError("The tonality wasn't selected as scale or arpeggio. I need to make this error a UI thing")
+            }
+        }
+    }
+    
+    private func setUpSolfaMapper(tonality: TonalityProtocol, notesArr: [Notes]) -> SolFaNoteMapper? {
+        if tonality.hasSolFa {
+            return SolFaNoteMapper(notesArray: notesArr, solFaArry: tonality.solFa)
+        }
+        return nil
+    }
+    
+    private func setUpNumberMapper(tonality: TonalityProtocol, notesArr: [Notes]) -> NumbersNoteMapper? {
+        if tonality.hasNumbers {
+            return NumbersNoteMapper(notesArray: notesArr, numberArray: tonality.numbers)
+        }
+        return nil
+    }
+    
+    var body: some View {
+        GeometryReader { geometry in
+            let buttonHeight = geometry.size.height / 17
+            let mainMenuButtonHeight = geometry.size.height / 10
+            let width = geometry.size.width
             
-            // Could add in quavers?
+            let title = "\(musicNotes.tonicNote.readableString) \(musicNotes.tonality.name)"
+            let maxFavourites = 7
+            
+            VStack {
+                
+                Text(title).asTitle()
+                
+                ScrollView {
+                    
+                    Group {
+                        MainUIButton(buttonText: "Number of Octaves:", type: 4, height: buttonHeight, buttonWidth: width)
+                        octavePickerView(title: "Octave Selection", selectedOctave: $musicNotes.octaves, buttonHeight: buttonHeight, width: width, onChange: handleOctaveChange)
+                        Divider().background(Color.white)
+                        
+                        MainUIButton(buttonText: "Starting Octave:", type: 4, height: buttonHeight, buttonWidth: width)
+                        octavePickerView(title: "Starting Octave", selectedOctave: $musicNotes.startingOctave, buttonHeight: buttonHeight, width: width, onChange: handleStartingOctaveChange)
+                        Divider().background(Color.white)
+                        
+                        MainUIButton(buttonText: "Tempo = " + String(Int(musicNotes.tempo)), type: 4, height: buttonHeight, buttonWidth: width)
+                        ZStack {
+                            MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: width)
+                            Slider(value: $musicNotes.tempo, in: 20...180, step: 1.0)
+                                .padding(.horizontal)
+                        }
+                        
+                        Divider().background(Color.white)
+                    }
+                    
+                    Button {
+                        screenType = .soundOptionsView
+                    } label: {
+                        MainUIButton(buttonText: "Further Options", type: 1, height: buttonHeight, buttonWidth: width)
+                    }
+                    
+                    Divider().background(Color.white)
+                    
+                    Button {
+                        //                    presentSaveToFavAlert = true
+                        currentAlert = .saveToFav
+                    } label: {
+                        MainUIButton(buttonText: "Save", type: 1, height: buttonHeight, buttonWidth: width)
+                    }
+                    
+                    Spacer()
+                }
+                playButton(buttonHeight: buttonHeight, width: width).padding(.bottom, 10)
+                
+                Button {
+                    self.screenType = musicNotes.backDisplay
+                } label: {
+                    MainUIButton(buttonText: "Back", type: 1, height: mainMenuButtonHeight, buttonWidth: width)
+                }
+            }
+            .alert(item: $currentAlert) { alertType in
+                switch alertType {
+                case .saveToFav:
+                    favourtiesPageAlertPopUp(noteTitle: title, maxFavourites: maxFavourites)
+                case .octaveSelection:
+                    octaveAlertPopUp()
+                }
+            }
+            .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
+            .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height)
+            .fullScreenCover(isPresented: $isPlaying) {
+                self.musicArray.applyModifications(musicNotes: musicNotes)
+                let countInBeats = CountInBeats(numBeats: playSounds.retrieveMetronomeCountInLength(for: Int(musicNotes.tempo)))
+                let tonicNote = self.musicArray.getTransposedStartingNote()
+                var noteMapper: (any NoteMapper)?
+                switch musicNotes.displayType {
+                case .notes:
+                    noteMapper = nil
+                case .numbers:
+                    noteMapper = musicNotes.displayType == .numbers ? numbersNoteMapper : nil
+                case .solFa:
+                    noteMapper = musicNotes.displayType == .solFa ? solFaNoteMapper : nil
+                }
+                
+                return PlayingView(width: width,
+                                   height: geometry.size.height,
+                                   backgroundImage: backgroundImage,
+                                   playScaleNotes: musicNotes.playScaleNotes,
+                                   playDrone: musicNotes.playDrone,
+                                   countInBeats: countInBeats,
+                                   title: title,
+                                   tonicFileNote: musicArray.getTransposedStartingNote(),
+                                   repeatingEndlessly: musicNotes.endlessLoop,
+                                   pitches: musicArray.getPitches(),
+                                   filePitches: musicArray.constructTransposedSoundFileArray(),
+                                   tonicNote: tonicNote,
+                                   noteConverter: noteMapper)
+            }
+        }
+    }
+    
+    private func favourtiesPageAlertPopUp(noteTitle: String, maxFavourites: Int) -> Alert {
+        Alert(
+            title: Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save To Favourites": " You have too many favourites. Delete One First"),
+            message: Text(noteTitle),
+            primaryButton: .default(Text((fileReaderAndWriter.scales.count < maxFavourites) ? "Save": "Go to favourites Page"), action: {
+                
+                if (fileReaderAndWriter.scales.count < maxFavourites) {
+                    
+                    fileReaderAndWriter.add(tonality: musicNotes.tonality,
+                                            tempo: Int(musicNotes.tempo),
+                                            startingOctave: musicNotes.startingOctave,
+                                            numOctave: musicNotes.octaves,
+                                            tonicSelection: musicNotes.tonicMode,
+                                            scaleNotes: musicNotes.playScaleNotes,
+                                            drone: musicNotes.playDrone,
+                                            startingNote: musicNotes.tonicNote,
+                                            noteDisplay: musicNotes.noteDisplay,
+                                            endlessLoop: musicNotes.endlessLoop,
+                                            intervalType: musicNotes.intervalType,
+                                            intervalOption: musicNotes.intervalOption)
+                
+                }
+                self.screenType = .favouritesview
+            }),
+            secondaryButton: .cancel(Text("Cancel"), action: { /* Do nothing */ })
+        )
+    }
+    
+    private func octaveAlertPopUp() -> Alert {
+        Alert(title: Text("Octave Selection"),
+              message: Text("To select a starting octave of 'two', you can only play up to two octaves. " +
+                            "To select a starting octave of 'three', you can only play one octave. Please adjust your selections accordingly."),
+              dismissButton: .default(Text("OK")))
+    }
+    
+    @ViewBuilder func playButton(buttonHeight: CGFloat, width: CGFloat) -> some View {
+        Button {
+            // TODO: Move this elsewhere. This sets the metronome off-beats. Three or two or none are the options
             switch fileReaderAndWriter.readMetronomePulse().lowercased() {
             case "simple":
                 musicNotes.metronomePulse = 4
@@ -176,7 +231,7 @@ struct SoundView : View {
             default:
                 musicNotes.metronomePulse = 1
             }
-
+            
             // This line of code sets at what tempo when the metronome off beat pulses will not play
             if (musicNotes.tempo >= 70 || !musicNotes.metronome) {
                 musicNotes.metronomePulse = 1
@@ -190,75 +245,76 @@ struct SoundView : View {
                 musicNotes.dismissable = true
             }
         } label: {
-            MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 10, height: buttonHeight*2)
+            MainUIButton(buttonText: "Play SystemImage speaker.wave.3", type: 10, height: buttonHeight*2, buttonWidth: width)
         }
     }
     
-    /*
-     Retrieves the scale note data
-     ----------------
-     @param type:
-     Returns: a string array containing the notes of the scale to be outputted as sound files
-     */
-    private func fetchScaleNotesArrayData() {
-        DispatchQueue.global(qos: .utility).async {
-            var noteNamesArray : [String]
-            var soundFileArray : [String]
-            let start = 0
-            
-            let writeScale = WriteScales(scaleOptions: scaleOptions)
-            let baseScale = writeScale.returnScaleNotesArray(for: musicNotes.tonality!, startingAt: musicNotes.tonicNote)
-            
-            switch musicNotes.tonality {
-            case .scale(tonality: let tonality):
-                noteNamesArray = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
-                                                            tonicOption: musicNotes.tonicMode, scaleType: tonality)
-            default:
-                noteNamesArray = writeScale.convertToScaleArray(baseScale: baseScale, octavesToPlay: musicNotes.octaves,
-                                                                tonicOption: musicNotes.tonicMode)
+    private func octavePickerView(title: String, selectedOctave: Binding<OctaveNumber>, buttonHeight: CGFloat, width: CGFloat, onChange: @escaping (OctaveNumber) -> Void) -> some View {
+        ZStack {
+            MainUIButton(buttonText: "", type: 7, height: buttonHeight, buttonWidth: width)
+            Section {
+                Picker(title, selection: selectedOctave) {
+                    Text("1").tag(OctaveNumber.one)
+                    Text("2").tag(OctaveNumber.two)
+                    Text("3").tag(OctaveNumber.three)
+                }
+                .formatted(width: width)
             }
-            // transpose if needed
-            soundFileArray = transposeNotes(for: noteNamesArray)
-            
-            soundFileArray = writeScale.createScaleInfoArray(scaleArray: soundFileArray,
-                                                         initialOctave: musicNotes.startingOctave)
-            
-            if (musicNotes.intervalOption != .none) {
-                soundFileArray = writeScale.convertToIntervals(of: musicNotes.intervalOption,
-                                                           with: musicNotes.intervalType,
-                                                           for: soundFileArray)
-                noteNamesArray = writeScale.convertToIntervals(of: musicNotes.intervalOption,
-                                                           with: musicNotes.intervalType,
-                                                           for: noteNamesArray, withoutOctave: true)
-            }
-            
-            soundFileArray = playScale.convertToSoundFile(scaleInfoArray: soundFileArray, tempo: Int(musicNotes.tempo))
-            
-            if (musicNotes.repeatNotes) {
-                soundFileArray = writeScale.repeatAllNotes(in: soundFileArray)
-                noteNamesArray = writeScale.repeatAllNotes(in: noteNamesArray)
-            }
-            
-            let metronomeBeats = playScale.addMetronomeCountIn(tempo: Int(musicNotes.tempo), scaleNotesArray: noteNamesArray)
-            noteNamesArray.insert(contentsOf: metronomeBeats, at: start)
+        }
+        .onChange(of: selectedOctave.wrappedValue) { octave in
+            onChange(octave)
+        }
+    }
 
-            DispatchQueue.main.async {
-                musicNotes.scaleNotes = soundFileArray
-                musicNotes.scaleNoteNames = noteNamesArray
+    private func handleOctaveChange(_ octave: OctaveNumber) {
+        if octave != .one {
+            musicNotes.intervalType = .allUp
+            musicNotes.intervalOption = .none
+        }
+
+        if octave == .two {
+            if musicNotes.startingOctave == .three {
+                musicNotes.startingOctave = .two
+            }
+        } else if octave == .three {
+            if musicNotes.startingOctave != .one {
+                musicNotes.startingOctave = .one
+            }
+        }
+    }
+
+    func handleStartingOctaveChange(_ octave: OctaveNumber) {
+        if octave != .two {
+            musicNotes.intervalType = .allUp
+            musicNotes.intervalOption = .none
+        }
+
+        if musicNotes.octaves == .three {
+            if octave != .one {
+                musicNotes.startingOctave = .one
+                if detectDoubleTap() {
+                    currentAlert = .octaveSelection
+                }
+            }
+        }
+
+        if musicNotes.octaves == .two {
+            if octave == .three {
+                musicNotes.startingOctave = .two
+                if detectDoubleTap() {
+                    currentAlert = .octaveSelection
+                }
             }
         }
     }
     
-    
-    private func transposeNotes(for notesArray: [String]) -> [String] {
-        var transposedNotes = notesArray
-        // add transposition here if needed
-        var itr = 0
-        for scaleNote in transposedNotes {
-            let transposedNoteName = playScale.getTransposedNote(selectedNote: scaleNote)
-            transposedNotes[itr] = transposedNoteName
-            itr += 1
+    // TODO: Move elsewhere - bad cohesion atm
+    private func detectDoubleTap() -> Bool {
+        let currentTime = Date()
+        if currentTime.timeIntervalSince(lastTapTime) < doubleTapThreshold {
+            return true
         }
-        return transposedNotes
+        lastTapTime = currentTime
+        return false
     }
 }

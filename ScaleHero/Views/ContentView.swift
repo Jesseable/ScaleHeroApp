@@ -55,9 +55,9 @@ struct AppContentView: View {
         
         // TRANSPOSITION
         if fileReaderAndWriter.checkFilePath(for: .transposition) {
-            transposition = fileReaderAndWriter.readTransposition()
+            transposition = fileReaderAndWriter.readTranspositionFile()
         } else {
-            transposition = "C"
+            transposition = Notes.C.name
             fileReaderAndWriter.writeNewTransposition(newTransposition: transposition)
         }
         let transpositionArr = transposition.components(separatedBy: " ")
@@ -120,35 +120,36 @@ struct AppContentView: View {
      */
     var body: some View {
         let selectedBackgroundImage = musicNotes.backgroundImage ?? self.backgroundImage
+        let startingNote = musicNotes.tonicNote
+        let notesCase = musicNotes.tonality
         
         return Group {
-            
             switch screenType {
             case .scale:
-                ScalesView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                ScalesView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .arpeggio:
-                ArpeggioView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                ArpeggioView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .otherview:
                 // Upon failing goes to special screen
-                OtherScalesView(screenType: self.$screenType, displayType: musicNotes.otherSpecificScaleTypes ?? OtherScaleTypes.special, backgroundImage: selectedBackgroundImage)
+                OtherScalesView(screenType: $screenType, displayType: musicNotes.otherSpecificScaleTypes ?? OtherScaleTypes.special, backgroundImage: selectedBackgroundImage)
             case .settings:
-                SettingsView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
+                SettingsView(screenType: $screenType, backgroundImage: selectedBackgroundImage, instrumentSelected: fileReaderAndWriter.readScaleInstrument(), backgroundColour: fileReaderAndWriter.readBackgroundImage(), transpositionMode: transpositionMode, transposition: transposition, metronomePulseSelected: metronomeOffBeatPulse, droneSelected: selectedDrone, slowIntroBeatsSelected: introBeatsArr[0], fastIntroBeatsSelected: introBeatsArr[1])
             case .soundview:
-                SoundView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                SoundView(screenType: $screenType, backgroundImage: selectedBackgroundImage, tonicNote: startingNote, noteCase: notesCase)
             case .droneview:
-                DroneView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                DroneView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .favouritesview:
-                FavouritesView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                FavouritesView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .aboutview:
-                AboutView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                AboutView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .homepage:
-                HomePage(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                HomePage(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .achievements:
-                AchievementsView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                AchievementsView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             case .soundOptionsView:
-                SoundOptionsView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                SoundOptionsView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             default:
-                NoteSelectionView(screenType: self.$screenType, backgroundImage: selectedBackgroundImage)
+                NoteSelectionView(screenType: $screenType, backgroundImage: selectedBackgroundImage)
             }
         }
     }
@@ -161,7 +162,6 @@ struct AppContentView: View {
  */
 struct HomePage : View {
     
-    private let universalSize = UIScreen.main.bounds
     var fileReaderAndWriter = FileReaderAndWriter()
     @Binding var screenType: ScreenType
     @State private var offset: CGFloat = .zero
@@ -172,87 +172,66 @@ struct HomePage : View {
     ]
     
     var body: some View {
-        
-        let buttonHeight = universalSize.height/10
-        let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
-        let portrate = universalSize.height > universalSize.width
-        
-        ZStack {
-            //Image(backgroundImage).resizable().ignoresSafeArea()
+        GeometryReader { geometry in
+            let width = geometry.size.width
+            let height = geometry.size.height
             
-            // Create all music note animations
-            ImageAnimation(imageName: "Treble-Cleff" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: universalSize.width * 0.3, duration: 7.00, offset: self.$offset)
+            let buttonHeight = height/10
+            let titleImage = Image("ScaleHero" + fileReaderAndWriter.readBackgroundImage())
+            let portrate = height > width
             
-            ImageAnimation(imageName: "Quaver" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: -universalSize.width * 0.3, duration: 5.00, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Semiquaver" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: 0, duration: 10.00, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Crotchet" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: -universalSize.width * 0.4, duration: 6.25, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Treble-Cleff" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: -universalSize.width * 0.1, duration: 4.60, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Crotchet" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: universalSize.width * 0.35, duration: 12.00, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Quaver" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: universalSize.width * 0.07, duration: 5.48, offset: self.$offset)
-            
-            ImageAnimation(imageName: "Semiquaver" + fileReaderAndWriter.readBackgroundImage(),
-                           xPos: universalSize.width * 0.48, duration: 8.00, offset: self.$offset)
-            
-            VStack {
+            ZStack {
+                AnimationNotesView(width: width * 0.9, offset: self.$offset, fileReaderAndWriter: fileReaderAndWriter)
                 
-                if (portrate) {
-                    titleImage.resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: universalSize.width * 0.9, maxHeight: universalSize.height / 6)
-                        .clipped()
-                } else {
-                    titleImage.resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: universalSize.width * 0.9, maxHeight: universalSize.height / 6)
-                }
-                
-                TonicNoteDisplay(buttonHeight: buttonHeight)
-                
-                ScrollView {
+                VStack {
+                    if (portrate) {
+                        titleImage.resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: width * 0.9, maxHeight: height / 6, alignment: .center)
+                            .clipped()
+                    } else {
+                        titleImage.resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: width * 0.9, maxHeight: height / 6, alignment: .center)
+                    }
                     
-                    Button {
-                        self.screenType = .scale
-                    } label: {
-                        MainUIButton(buttonText: "Scales", type: 1, height: buttonHeight)
+                    TonicNoteDisplay(buttonHeight: buttonHeight, buttonWidth: width)
+                    
+                    ScrollView {
+                        
+                        Button {
+                            self.screenType = .scale
+                        } label: {
+                            MainUIButton(buttonText: "Scales", type: 1, height: buttonHeight, buttonWidth: width)
+                        }
+                        
+                        Button {
+                            self.screenType = .arpeggio
+                        } label: {
+                            MainUIButton(buttonText: "Arpeggio", type: 1, height: buttonHeight, buttonWidth: width)
+                        }
+                        
+                        Button {
+                            self.screenType = .droneview
+                        } label: {
+                            MainUIButton(buttonText: "Drone", type: 1, height: buttonHeight, buttonWidth: width)
+                        }
+                        
+                        Spacer()
                     }
 
-                    Button {
-                        self.screenType = .arpeggio
-                    } label: {
-                        MainUIButton(buttonText: "Arpeggio", type: 1, height: buttonHeight)
-                    }
                     
                     Button {
-                        self.screenType = .droneview
+                        self.screenType = .noteSelection
                     } label: {
-                        MainUIButton(buttonText: "Drone", type: 2, height: buttonHeight)
+                        MainUIButton(buttonText: "Back", type: 1, height: buttonHeight, buttonWidth: width)
                     }
-                    
-                    Spacer()
                 }
-                    
-                Button {
-                    self.screenType = .noteSelection
-                } label: {
-                    MainUIButton(buttonText: "Back", type: 3, height: buttonHeight)
-                }
+            }.onAppear() {
+                offset += (width < height) ? height * 2 : width * 2
             }
-        }.onAppear() {
-            offset += universalSize.height * 1.2
+            .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
         }
-        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
     }
 }
 
@@ -262,25 +241,23 @@ struct HomePage : View {
  */
 struct ImageAnimation: View {
     
-    private let universalSize = UIScreen.main.bounds
     var imageName: String
     var xPos: CGFloat
     var duration: CGFloat
     @Binding var offset: CGFloat
     
     var body: some View {
-        Image(imageName).resizable()
-            .frame(width: universalSize.width * 0.1, height: universalSize.height * 0.1, alignment: .center)
-            .padding(20)
-            .shadow(color: Color.white, radius: 10.00)
-            .offset(x: xPos, y: self.offset - universalSize.height/2*1.2)
-            .animation(Animation.easeInOut(duration: duration).repeatForever(autoreverses: false), value: offset)
+        GeometryReader { geometry in
+            let portraite = (geometry.size.width < geometry.size.height)
+            let width = portraite ? geometry.size.width : geometry.size.height
+            let height = portraite ? geometry.size.height : geometry.size.width
+            
+            Image(imageName).resizable()
+                .frame(width: width * 0.1, height: height * 0.1, alignment: .center)
+                .padding(20)
+                .shadow(color: Color.white, radius: 10.00)
+                .offset(x: xPos, y: self.offset - height * 0.8)
+                .animation(Animation.easeInOut(duration: duration).repeatForever(autoreverses: false), value: offset)
+        }
     }
 }
-
-//
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AppContentView()
-//    }
-//}

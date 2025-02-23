@@ -13,66 +13,70 @@ struct AchievementsView: View {
     
     var fileReaderAndWriter = FileReaderAndWriter()
     @EnvironmentObject var musicNotes: MusicNotes
-    private let universalSize = UIScreen.main.bounds
     
     var body: some View {
-        let achievementValues = fileReaderAndWriter.readScaleAchievements().components(separatedBy: ":")
-        let numThisWeek = achievementValues[0]
-        let numThisMonth = achievementValues[1]
-        let numThisYear = achievementValues[2]
-        let numAllTime = achievementValues[3]
-        
-        VStack {
-        
-            Text("ACHIEVEMENTS").asTitle()
-
-            Divider().background(Color.white)
+        GeometryReader { geometry in
+            let buttonHeight = geometry.size.height / 10
+            let width = geometry.size.width
             
-            ScrollView {
-                Group {
-                    Text("Total Scales Played This Week:")
-                        .headingFormat(width: universalSize.width)
+            let achievementValues = fileReaderAndWriter.readScaleAchievements().components(separatedBy: ":")
+            let numThisWeek = achievementValues[0]
+            let numThisMonth = achievementValues[1]
+            let numThisYear = achievementValues[2]
+            let numAllTime = achievementValues[3]
+            
+            VStack {
+                
+                Text("ACHIEVEMENTS").asTitle()
+                
+                Divider().background(Color.white)
+                
+                ScrollView {
+                    Group {
+                        Text("Total Scales Played This Week:")
+                            .headingFormat(width: width)
+                        
+                        Text(String(numThisWeek))
+                            .valueFormat(width: width)
+                        
+                        Divider().background(Color.white)
+                        
+                        Text("Total Scales Played This Month:")
+                            .headingFormat(width: width)
+                        
+                        Text(String(numThisMonth))
+                            .valueFormat(width: width)
+                    }
                     
-                    Text(String(numThisWeek))
-                        .valueFormat(width: universalSize.width)
-                    
-                    Divider().background(Color.white)
-                    
-                    Text("Total Scales Played This Month:")
-                        .headingFormat(width: universalSize.width)
-                    
-                    Text(String(numThisMonth))
-                        .valueFormat(width: universalSize.width)
+                    Group {
+                        Divider().background(Color.white)
+                        
+                        Text("Total Scales Played This Year:")
+                            .headingFormat(width: width)
+                        
+                        Text(String(numThisYear))
+                            .valueFormat(width: width)
+                        
+                        Divider().background(Color.white)
+                        
+                        Text("Total Scales Played All Time:")
+                            .headingFormat(width: width)
+                        
+                        Text(String(numAllTime))
+                            .valueFormat(width: width)
+                    }
                 }
                 
-                Group {
-                    Divider().background(Color.white)
-                    
-                    Text("Total Scales Played This Year:")
-                        .headingFormat(width: universalSize.width)
-                    
-                    Text(String(numThisYear))
-                        .valueFormat(width: universalSize.width)
-                    
-                    Divider().background(Color.white)
-                    
-                    Text("Total Scales Played All Time:")
-                        .headingFormat(width: universalSize.width)
-                    
-                    Text(String(numAllTime))
-                        .valueFormat(width: universalSize.width)
+                Spacer()
+                Button {
+                    musicNotes.backDisplay = .noteSelection
+                    self.screenType = musicNotes.backDisplay
+                } label: {
+                    MainUIButton(buttonText: "Back", type: 1, height: buttonHeight, buttonWidth: width)
                 }
             }
-            
-            Spacer()
-            Button {
-                musicNotes.backDisplay = .noteSelection
-                self.screenType = musicNotes.backDisplay
-            } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: universalSize.height / 10)
-            }
+            .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
         }
-        .background(alignment: .center) { Image(backgroundImage).resizable().ignoresSafeArea(.all).scaledToFill() }
     }
 }
 

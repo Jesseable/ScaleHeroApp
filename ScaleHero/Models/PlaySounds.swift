@@ -17,13 +17,13 @@ struct PlaySounds {
     private var toggler = true
     var metronomeTimer: Timer? = nil
     // For the drone
-    var player: AVAudioPlayer?
+    var dronePlayer: AVAudioPlayer?
     // For the metronome
-    var player2: AVAudioPlayer?
+    var metronomePlayer: AVAudioPlayer?
     // For the scaleNotes1
-    var player3: AVAudioPlayer?
+    var notesPlayer1: AVAudioPlayer? // TODO: Why are there 2??? -  I believe so that they overlap one another, makes for a smoother experience. But I should rename
     // For the scaleNotes2
-    var player4: AVAudioPlayer?
+    var notesPlayer2: AVAudioPlayer?
     
     lazy var instrument: String = {
         [self] in
@@ -54,45 +54,28 @@ struct PlaySounds {
     /**
      Play ScaleNote Sounds
      */
-    mutating func playScaleNote(scaleFileName: String, duration: CGFloat, finalNote: Bool) throws {
+    mutating func playScaleNote(filePitch: FilePitch, duration: CGFloat, isFinalNote: Bool) throws {
+        let fileName = "\(instrument)-\(filePitch.octave.rawValue)-\(filePitch.fileNote.name)"
         let extra = 0.1
         guard let fileURL = Bundle.main.url(
-            forResource: scaleFileName, withExtension: "mp3"
+            forResource: fileName, withExtension: "mp3"
         ) else {
-            throw SoundError.fileNoteFound(fileName: scaleFileName)
+            throw SoundError.fileNoteFound(fileName: fileName)
         }
-        if toggler {
-            self.player3 = try! AVAudioPlayer(contentsOf: fileURL)
-            self.player3?.play()
-            toggler.toggle()
+        self.notesPlayer1 = try! AVAudioPlayer(contentsOf: fileURL)
+        self.notesPlayer1?.play()
+        toggler.toggle()  // TODO: Does this just get stuck in the else after this???  Maybe I only need one fo these in the end anyway...
+        
+        if !isFinalNote {
+            // Adds the fade effect
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration - 0.05, execute: { [self] in // TODO: Magic numbers used
+                self.notesPlayer1?.setVolume(0.1, fadeDuration: 0.15)
+            })
             
-            if !finalNote {
-                // Adds the fade effect
-                DispatchQueue.main.asyncAfter(deadline: .now() + duration - 0.05, execute: { [self] in
-                    self.player3?.setVolume(0.1, fadeDuration: 0.15)
-                })
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + duration + extra, execute: { [self] in
-                    cancelScaleNoteSound1()
-                })
-            }
-        } else {
-            self.player4 = try! AVAudioPlayer(contentsOf: fileURL)
-            self.player4?.play()
-            
-            if !finalNote {
-                // Adds the fade effect
-                DispatchQueue.main.asyncAfter(deadline: .now() + duration - 0.05, execute: { [self] in
-                    self.player4?.setVolume(0.1, fadeDuration: 0.15)
-                })
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + duration + extra, execute: { [self] in
-                    cancelScaleNoteSound2()
-                })
-            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration + extra, execute: { [self] in
+                cancelScaleNoteSound1()
+            })
         }
-        
-        
     }
     
     /**
@@ -124,7 +107,7 @@ struct PlaySounds {
         let fastTempoIntro = Int(introBeatsArr[1])
         
         if (tempo < 70) {
-            slowTempoIntro?.times { // USE A FILEREADER TO CHANGE THESE OPTIONS IN SETTINGS Possibly also the 70bpm
+            slowTempoIntro?.times {
                 metronomeFileArr.append(metronomeFile)
             }
         } else {
@@ -136,10 +119,21 @@ struct PlaySounds {
         return metronomeFileArr
     }
     
+    func retrieveMetronomeCountInLength(for tempo: Int) -> Int {
+        let introBeatsArr = fileReaderAndWriter.readIntroBeats().components(separatedBy: "-")
+        let slowTempoIntro = Int(introBeatsArr[0])
+        let fastTempoIntro = Int(introBeatsArr[1])
+        if tempo < 70 { //  TODO: This is a mgic number
+            return slowTempoIntro ?? 0
+        } else {
+            return fastTempoIntro ?? 0
+        }
+    }
+    
     /**
      Creates an array of the metronome sound files to be added to the sound files array
      */
-    func addMetronomeCountIn(tempo: Int, scaleNotesArray: [String]) -> [String] {
+    func addMetronomeCountIn(tempo: Int, scaleNotesArray: [String]) -> [String] { // TODO: Will be redundant
         let countingArr = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"]
         var metronomeFileArr: [String] = []
         let introBeatsArr = fileReaderAndWriter.readIntroBeats().components(separatedBy: "-")
@@ -148,7 +142,7 @@ struct PlaySounds {
         var i : Int
         if (tempo < 70) {
             i = slowTempoIntro ?? 0
-            slowTempoIntro?.times { // USE A FILEREADER TO CHANGE THESE OPTIONS IN SETTINGS Possibly also the 70bpm
+            slowTempoIntro?.times {
                 metronomeFileArr.append(countingArr[i-1])
                 i -= 1
             }
@@ -168,8 +162,8 @@ struct PlaySounds {
      */
     mutating func playOffbeatMetronome() throws {
         
-        if ((player2?.isPlaying) != nil) {
-            player2?.stop()
+        if ((metronomePlayer?.isPlaying) != nil) {
+            metronomePlayer?.stop()
         }
         let metronomeOffBeatFile = "Metronome1"
         guard let metronomeOffBeatURL = Bundle.main.url(
@@ -178,40 +172,40 @@ struct PlaySounds {
             throw SoundError.fileNoteFound(fileName: metronomeOffBeatFile)
         }
         
-        player2 = try! AVAudioPlayer(contentsOf: metronomeOffBeatURL)
-        player2?.play()
+        metronomePlayer = try! AVAudioPlayer(contentsOf: metronomeOffBeatURL)
+        metronomePlayer?.play()
     }
     
     /**
      Plays the drone sound effects
      */
-    mutating func playDroneSound(duration: CGFloat, startingNote: String) {
-        let startingFileNote = startingNote.replacingOccurrences(of: "/", with: "|")
-        let droneSoundFile = "\(drone)-Drone-\(startingFileNote)"
+    mutating func playDroneSound(duration: CGFloat, tonicNote: FileNotes) {
+        let droneSoundFile = "\(drone)-Drone-\(tonicNote.name)"
 
         if let droneURL = Bundle.main.url(forResource: droneSoundFile, withExtension: "mp3") {
-            self.player = try! AVAudioPlayer(contentsOf: droneURL)
-            self.player?.play()
+            self.dronePlayer = try! AVAudioPlayer(contentsOf: droneURL)
+            self.dronePlayer?.play()
             
             if (duration != -1 ) {
             
                 let totalDuration = duration + 2.5
-                self.player?.numberOfLoops = 4 // Increases all drones to 5 minutes at least
+                self.dronePlayer?.numberOfLoops = 4 // Increases all drones to 5 minutes at least
                     
                 DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: { [self] in
-                    self.player?.setVolume(0.05, fadeDuration: 2.5)
+                    self.dronePlayer?.setVolume(0.05, fadeDuration: 2.5)
                 })
                 DispatchQueue.main.asyncAfter(deadline: .now() + totalDuration, execute: { [self] in
-                    self.player?.stop()
+                    self.dronePlayer?.stop()
                 })
             } else {
-                self.player?.numberOfLoops = -1 // Loops the sound continuously
+                self.dronePlayer?.numberOfLoops = -1 // Loops the sound continuously
             }
         }
     }
     
-    func getTransposedNote(selectedNote: String) -> String {
-        var transpositionNote = fileReaderAndWriter.readTransposition()
+    
+    func getTransposedNote(selectedNote: String) -> String { // TODO: Convert this to being done in the MusicArray
+        var transpositionNote = fileReaderAndWriter.readTranspositionFile()
         // Has to be done in case the old string value from previous version is still active
         transpositionNote = transpositionNote.replacingOccurrences(of: "/", with: "|")
         let selectedNoteAltered = selectedNote.replacingOccurrences(of: "/", with: "|")
@@ -252,6 +246,7 @@ struct PlaySounds {
         }
     }
     
+    // TODO: This is all redundant woith my new cvhanges
     private func findNote(transposedNote: String, selectedNote: String) -> String {
         let orderedAlphabet = ["A","A#|Bb","B","C","C#|Db","D","D#|Eb","E","F","F#|Gb","G","G#|Ab","A","A#|Bb","B","C","C#|Db","D","D#|Eb","E","F","F#|Gb","G","G#|Ab"]
         // Twice as long too allow only going forwards
@@ -263,7 +258,7 @@ struct PlaySounds {
         return orderedAlphabet[arrayIndex]
     }
     
-    /// ALSO IN WRITE SCALES
+    /// ALSO IN WRITE SCALES -> TODO: Will be deleted soon
     private func getFullNote(singularNote: String) -> String{
         switch singularNote {
             // Equivalent note name cases
@@ -308,8 +303,8 @@ struct PlaySounds {
             throw SoundError.fileNoteFound(fileName: metronomeFile)
         }
         
-        player2 = try! AVAudioPlayer(contentsOf: metronomeURL)
-        player2?.play()
+        metronomePlayer = try! AVAudioPlayer(contentsOf: metronomeURL)
+        metronomePlayer?.play()
     }
     
     private mutating func cancelPreviousTimer() {
@@ -318,19 +313,19 @@ struct PlaySounds {
     }
     
     private func cancelScaleNoteSound1() {
-        self.player3?.stop()
+        self.notesPlayer1?.stop()
     }
     
     private func cancelScaleNoteSound2() {
-        self.player4?.stop()
+        self.notesPlayer2?.stop()
     }
     
     private func cancelDroneSound() {
-        self.player?.stop()
+        self.dronePlayer?.stop()
     }
     
     private func cancelMetronomeSound() {
-        self.player2?.stop()
+        self.metronomePlayer?.stop()
     }
     
     mutating func cancelAllSounds() {

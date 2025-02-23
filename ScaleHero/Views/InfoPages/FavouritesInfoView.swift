@@ -12,52 +12,55 @@ struct FavouritesInfoView: View {
     var backgroundImage: String
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    let universalSize = UIScreen.main.bounds
     var fileReaderAndWriter : FileReaderAndWriter
     
     var body: some View {
-
-        VStack {
-            ScrollView {
-                Text("Favourites Info").asTitle()
-                            .padding()
-                
-                Divider().background(Color.white)
-                
-                Text("**Adding To Favourites Page**")
-                    .font(.title2)
-                    .foregroundColor(Color.white)
-                    .padding(5)
-                
-                Text(infoText())
-                    .font(.title3)
-                    .foregroundColor(Color.white)
-                    .padding(.horizontal)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                Divider().background(Color.white)
-                
-                
-                Text("**Deleting From Favourites Page:**")
-                    .font(.title2)
-                    .foregroundColor(Color.white)
-                    .padding(5)
-                
-                Text(deletionInfoText())
-                    .font(.title3)
-                    .foregroundColor(Color.white)
-                    .padding(.horizontal)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            Spacer()
+        GeometryReader { geometry in
+            let buttonHeight = geometry.size.height / 10
+            let width = geometry.size.width
             
-            Button {
-                presentationMode.wrappedValue.dismiss()
-            } label: {
-                MainUIButton(buttonText: "Back", type: 3, height: UIScreen.main.bounds.height/10)
+            VStack {
+                ScrollView {
+                    Text("Favourites Info").asTitle()
+                        .padding()
+                    
+                    Divider().background(Color.white)
+                    
+                    Text("**Adding To Favourites Page**")
+                        .font(.title2)
+                        .foregroundColor(Color.white)
+                        .padding(5)
+                    
+                    Text(infoText())
+                        .font(.title3)
+                        .foregroundColor(Color.white)
+                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Divider().background(Color.white)
+                    
+                    
+                    Text("**Deleting From Favourites Page:**")
+                        .font(.title2)
+                        .foregroundColor(Color.white)
+                        .padding(5)
+                    
+                    Text(deletionInfoText())
+                        .font(.title3)
+                        .foregroundColor(Color.white)
+                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                Spacer()
+                
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    MainUIButton(buttonText: "Back", type: 1, height: buttonHeight, buttonWidth: width)
+                }
             }
+            .background(alignment: .center) { Color(fileReaderAndWriter.readBackgroundImage()).ignoresSafeArea() }
         }
-        .background(alignment: .center) { Color(fileReaderAndWriter.readBackgroundImage()).ignoresSafeArea() }
     }
     
     func infoText() -> String {
@@ -80,9 +83,3 @@ struct FavouritesInfoView: View {
         return text
     }
 }
-//
-//struct FavouritesInfoView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        FavouritesInfoView()
-//    }
-//}
