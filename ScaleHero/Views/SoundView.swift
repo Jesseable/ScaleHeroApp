@@ -173,10 +173,10 @@ struct SoundView : View {
                                    playDrone: musicNotes.playDrone,
                                    countInBeats: countInBeats,
                                    title: title,
-                                   tonicFileNote: musicArray.getTransposedStartingNote(),
+                                   tonicFileNote: tonicNote,
                                    repeatingEndlessly: musicNotes.endlessLoop,
                                    pitches: musicArray.getPitches(),
-                                   filePitches: musicArray.constructTransposedSoundFileArray(),
+                                   filePitches: musicArray.getTransposedPitches(),
                                    tonicNote: tonicNote,
                                    noteConverter: noteMapper)
             }

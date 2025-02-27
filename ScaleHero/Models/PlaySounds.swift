@@ -167,7 +167,7 @@ struct PlaySounds {
         }
         let metronomeOffBeatFile = "Metronome1"
         guard let metronomeOffBeatURL = Bundle.main.url(
-            forResource: metronomeOffBeatFile, withExtension: "mp3"
+            forResource: metronomeOffBeatFile, withExtension: "wav"
         ) else {
             throw SoundError.fileNoteFound(fileName: metronomeOffBeatFile)
         }
@@ -298,7 +298,7 @@ struct PlaySounds {
     mutating func playMetronome() throws {
         let metronomeFile = "Metronome"
         guard let metronomeURL = Bundle.main.url(
-            forResource: metronomeFile, withExtension: "mp3"
+            forResource: metronomeFile, withExtension: "wav"
         ) else {
             throw SoundError.fileNoteFound(fileName: metronomeFile)
         }

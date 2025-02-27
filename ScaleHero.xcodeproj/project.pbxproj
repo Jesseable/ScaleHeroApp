@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C501C8512D6FDEA300BA3CF5 /* Metronome.wav in Resources */ = {isa = PBXBuildFile; fileRef = C501C8502D6FDEA300BA3CF5 /* Metronome.wav */; };
+		C501C8532D6FE0C100BA3CF5 /* Metronome1.wav in Resources */ = {isa = PBXBuildFile; fileRef = C501C8522D6FE0C100BA3CF5 /* Metronome1.wav */; };
 		C50626902870437500DB933E /* Cello-Drone-A.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C50626842870437400DB933E /* Cello-Drone-A.mp3 */; };
 		C50626912870437500DB933E /* Cello-Drone-B.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C50626852870437400DB933E /* Cello-Drone-B.mp3 */; };
 		C50626922870437500DB933E /* Cello-Drone-C.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C50626862870437400DB933E /* Cello-Drone-C.mp3 */; };
@@ -221,8 +223,6 @@
 		C5DBD5C1278078FF00DF5183 /* MainUIButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */; };
 		C5DBD5F227812A9E00DF5183 /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */; };
 		C5DBD5F427812B6100DF5183 /* ScaleCharacteristics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DBD5F327812B6100DF5183 /* ScaleCharacteristics.swift */; };
-		C5DE479F2C40B78F00F300BB /* Metronome.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5DE479E2C40B78F00F300BB /* Metronome.mp3 */; };
-		C5DE47A12C40B8AF00F300BB /* Metronome1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5DE47A02C40B8AF00F300BB /* Metronome1.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -243,6 +243,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C501C8502D6FDEA300BA3CF5 /* Metronome.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Metronome.wav; sourceTree = "<group>"; };
+		C501C8522D6FE0C100BA3CF5 /* Metronome1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Metronome1.wav; sourceTree = "<group>"; };
 		C50626842870437400DB933E /* Cello-Drone-A.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-A.mp3"; sourceTree = "<group>"; };
 		C50626852870437400DB933E /* Cello-Drone-B.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-B.mp3"; sourceTree = "<group>"; };
 		C50626862870437400DB933E /* Cello-Drone-C.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Cello-Drone-C.mp3"; sourceTree = "<group>"; };
@@ -461,8 +463,6 @@
 		C5DBD5C0278078FF00DF5183 /* MainUIButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUIButtonView.swift; sourceTree = "<group>"; };
 		C5DBD5F127812A9E00DF5183 /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
 		C5DBD5F327812B6100DF5183 /* ScaleCharacteristics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleCharacteristics.swift; sourceTree = "<group>"; };
-		C5DE479E2C40B78F00F300BB /* Metronome.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome.mp3; path = ../../../Desktop/ScaleHeroAppResources/Metronome.mp3; sourceTree = "<group>"; };
-		C5DE47A02C40B8AF00F300BB /* Metronome1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Metronome1.mp3; path = ../../../Desktop/ScaleHeroAppResources/Metronome1.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -877,8 +877,8 @@
 		C5DE479D2C40B75900F300BB /* Metronome */ = {
 			isa = PBXGroup;
 			children = (
-				C5DE47A02C40B8AF00F300BB /* Metronome1.mp3 */,
-				C5DE479E2C40B78F00F300BB /* Metronome.mp3 */,
+				C501C8502D6FDEA300BA3CF5 /* Metronome.wav */,
+				C501C8522D6FE0C100BA3CF5 /* Metronome1.wav */,
 			);
 			path = Metronome;
 			sourceTree = "<group>";
@@ -1027,7 +1027,6 @@
 				C5468304280A90DE00DA9BC8 /* Strings-1-G.mp3 in Resources */,
 				C5468347280A913D00DA9BC8 /* Organ-3-D.mp3 in Resources */,
 				C54682F1280A90DE00DA9BC8 /* Strings-1-D.mp3 in Resources */,
-				C5DE47A12C40B8AF00F300BB /* Metronome1.mp3 in Resources */,
 				C5468358280A913D00DA9BC8 /* Organ-4-C#|Db.mp3 in Resources */,
 				C574FE7D276886BC00ADD3B3 /* Preview Assets.xcassets in Resources */,
 				C546840C280A937F00DA9BC8 /* TuningFork1-Drone-G.mp3 in Resources */,
@@ -1037,7 +1036,6 @@
 				C5468357280A913D00DA9BC8 /* Organ-2-B.mp3 in Resources */,
 				C5468315280A90DE00DA9BC8 /* Strings-1-G#|Ab.mp3 in Resources */,
 				C5468314280A90DE00DA9BC8 /* Strings-3-F.mp3 in Resources */,
-				C5DE479F2C40B78F00F300BB /* Metronome.mp3 in Resources */,
 				C54683C2280A917500DA9BC8 /* Piano-2-B.mp3 in Resources */,
 				C5468310280A90DE00DA9BC8 /* Strings-3-A.mp3 in Resources */,
 				C54683D0280A917500DA9BC8 /* Piano-1-G#|Ab.mp3 in Resources */,
@@ -1155,6 +1153,8 @@
 				C546830A280A90DE00DA9BC8 /* Strings-1-F#|Gb.mp3 in Resources */,
 				C54683AF280A917500DA9BC8 /* Piano-3-D#|Eb.mp3 in Resources */,
 				C50626972870437500DB933E /* Cello-Drone-F.mp3 in Resources */,
+				C501C8512D6FDEA300BA3CF5 /* Metronome.wav in Resources */,
+				C501C8532D6FE0C100BA3CF5 /* Metronome1.wav in Resources */,
 				C54682FC280A90DE00DA9BC8 /* Strings-4-A.mp3 in Resources */,
 				C50626912870437500DB933E /* Cello-Drone-B.mp3 in Resources */,
 				C5468409280A937F00DA9BC8 /* TuningFork1-Drone-F.mp3 in Resources */,
@@ -1392,7 +1392,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"ScaleHero/Preview Content\"";
 				DEVELOPMENT_TEAM = 3ZT6MXNBH9;
 				ENABLE_PREVIEWS = YES;
@@ -1425,7 +1425,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"ScaleHero/Preview Content\"";
 				DEVELOPMENT_TEAM = 3ZT6MXNBH9;
 				ENABLE_PREVIEWS = YES;
