@@ -5,6 +5,17 @@
 			"name": "notes",
 			"noteArray": [
                 {
+                    "id": "94a8aba2-170c-4d55-999e-b0ade86fd553",
+                    "note": "C-flat",
+                    "major": ["C-flat", "D-flat", "E-flat", "F-flat", "G-flat", "A-flat", "B-flat", "C-flat", "B-flat", "A-flat", "G-flat", "F-flat", "E-flat", "D-flat", "C-flat"],
+                    "naturalMinor": ["C-flat", "D-flat", "E-double-flat", "F-flat", "G-flat", "A-double-flat", "B-double-flat", "C-flat", "B-double-flat", "A-double-flat", "G-flat", "F-flat", "E-double-flat", "D-flat", "C-flat"],
+                    "harmonicMinor": ["C-flat", "D-flat", "E-double-flat", "F-flat", "G-flat", "A-double-flat", "B-flat", "C-flat", "B-flat", "A-double-flat", "G-flat", "F-flat", "E-double-flat", "D-flat", "C-flat"],
+                    "melodicMinor": ["C-flat", "D-flat", "E-double-flat", "F-flat", "G-flat", "A-flat", "B-flat", "C-flat", "B-double-flat", "A-double-flat", "G-flat", "F-flat", "E-double-flat", "D-flat", "C-flat"],
+                    "chromatic": ["C-flat", "C", "D-flat", "D", "E-flat", "E", "F-flat", "F", "G-flat", "G", "A-flat", "A", "B-flat", "B", "C-flat", "B", "B-flat", "A", "A-flat", "G", "G-flat", "F", "F-flat", "E", "E-flat", "D", "D-flat", "C"],
+                    "pentatonic": ["C-flat", "D-flat", "E-flat", "G-flat", "A-flat", "C-flat", "A-flat", "G-flat", "E-flat", "D-flat", "C-flat"],
+                    "blues": ["C-flat", "E-double-flat", "F-flat", "F", "G-flat", "B-double-flat", "C-flat", "B-double-flat", "G-flat", "F", "F-flat", "E-double-flat", "C-flat"]
+                },
+                {
 					"id": "e219feb6-c231-4e42-b847-d60845085a68",
 					"note": "C",
 					"major": ["C", "D", "E", "F", "G", "A", "B", "C", "B", "A", "G", "F", "E", "D", "C"],
@@ -81,6 +92,28 @@
 					"pentatonic": ["E", "F-sharp", "G-sharp", "B", "C-sharp", "E", "C-sharp", "B", "G-sharp", "F-sharp", "E"],
 					"blues": ["E", "G", "A", "A-sharp", "B", "D", "E", "D", "B", "A-sharp", "A", "G", "E"]
 				},
+                {
+                    "id": "0a596efa-8678-4dab-88fb-c2c5f5e09c2a",
+                    "note": "E-sharp",
+                    "major": ["E-sharp", "F-double-sharp", "G-sharp", "A-sharp", "B-sharp", "C-double-sharp", "D-double-sharp", "E-sharp", "D-double-sharp", "C-double-sharp", "B-sharp", "A-sharp", "G-sharp", "F-double-sharp", "E-sharp"],
+                    "naturalMinor": ["E-sharp", "F-double-sharp", "G-sharp", "A-sharp", "B-sharp", "C-sharp", "D-sharp", "E-sharp", "D-sharp", "C-sharp", "B-sharp", "A-sharp", "G-sharp", "F-double-sharp", "E-sharp"],
+                    "harmonicMinor": ["E-sharp", "F-double-sharp", "G-sharp", "A-sharp", "B-sharp", "C-sharp", "D-double-sharp", "E-sharp", "D-double-sharp", "C-sharp", "B-sharp", "A-sharp", "G-sharp", "F-double-sharp", "E-sharp"],
+                    "melodicMinor": ["E-sharp", "F-double-sharp", "G-sharp", "A-sharp", "B-sharp", "C-double-sharp", "D-double-sharp", "E-sharp", "D-sharp", "C-sharp", "B-sharp", "A-sharp", "G-sharp", "F-double-sharp", "E-sharp"],
+                    "chromatic": ["E-sharp", "F-sharp", "F-double-sharp", "G-sharp", "G-double-sharp", "A-sharp", "A-double-sharp", "B-sharp", "C-sharp", "C-double-sharp", "D-sharp", "D-double-sharp", "E-sharp", "D-double-sharp", "D-sharp", "C-double-sharp", "C-sharp", "B-sharp", "A-double-sharp", "A-sharp", "G-double-sharp", "G-sharp", "F-double-sharp", "F-sharp", "E-sharp"],
+                    "pentatonic": ["E-sharp", "F-double-sharp", "G-sharp", "B-sharp", "C-sharp", "E-sharp", "C-sharp", "B-sharp", "G-sharp", "F-double-sharp", "E-sharp"],
+                    "blues": ["E-sharp", "G-sharp", "A-sharp", "A-double-sharp", "B-sharp", "D-sharp", "E-sharp", "D-sharp", "B-sharp", "A-double-sharp", "A-sharp", "G-sharp", "E-sharp"]
+                },
+                {
+                    "id": "e3ca84ea-8c7f-428b-b6c5-bf8705f12a2f",
+                    "note": "F-flat",
+                    "major": ["F-flat", "G-flat", "A-flat", "B-double-flat", "C-flat", "D-flat", "E-flat", "F-flat", "E-flat", "D-flat", "C-flat", "B-double-flat", "A-flat", "G-flat", "F-flat"],
+                    "naturalMinor": ["F-flat", "G-flat", "A-double-flat", "B-double-flat", "C-flat", "D-double-flat", "E-double-flat", "F-flat", "E-double-flat", "D-double-flat", "C-flat", "B-double-flat", "A-double-flat", "G-flat", "F-flat"],
+                    "harmonicMinor": ["F-flat", "G-flat", "A-double-flat", "B-double-flat", "C-flat", "D-double-flat", "E-flat", "F-flat", "E-flat", "D-double-flat", "C-flat", "B-double-flat", "A-double-flat", "G-flat", "F-flat"],
+                    "melodicMinor": ["F-flat", "G-flat", "A-double-flat", "B-double-flat", "C-flat", "D-flat", "E-flat", "F-flat", "E-double-flat", "D-double-flat", "C-flat", "B-double-flat", "A-double-flat", "G-flat", "F-flat"],
+                    "chromatic": ["F-flat", "F", "G-flat", "G", "A-flat", "A", "B-flat", "C-flat", "C", "D-flat", "D", "E-flat", "F-flat", "E-flat", "D", "D-flat", "C-flat", "B-flat", "A", "A-flat", "G", "G-flat", "F", "F-flat"],
+                    "pentatonic": ["F-flat", "G-flat", "A-flat", "C-flat", "D-flat", "F-flat", "D-flat", "C-flat", "A-flat", "G-flat", "F-flat"],
+                    "blues": ["F-flat", "A-double-flat", "B-double-flat", "B-flat", "C-flat", "E-double-flat", "F-flat", "E-double-flat", "C-flat", "B-flat", "B-double-flat", "A-double-flat", "F-flat"]
+                },
 				{
 					"id": "ffd60347-5964-4a32-b97d-7ca85f2049aa",
 					"note": "F",
@@ -190,7 +223,18 @@
 					"chromatic": ["B", "C", "C-sharp", "D", "D-sharp", "E", "F", "F-sharp", "G", "G-sharp", "A", "A-sharp", "B", "B-flat", "A", "A-flat", "G", "G-flat", "F", "E", "E-flat", "D", "D-flat", "C", "B"],
 					"pentatonic": ["B", "C-sharp", "D-sharp", "F-sharp", "G-sharp", "B", "G-sharp", "F-sharp", "D-sharp", "C-sharp", "B"],
 					"blues": ["B", "D", "E", "F", "F-sharp", "A", "B", "A", "F-sharp", "F", "E", "D", "B"]
-				}
+				},
+                {
+                    "id": "bf8b122a-77e4-4c5d-bd0c-7100518f1454",
+                    "note": "B-sharp",
+                    "major": ["B-sharp", "C-double-sharp", "D-sharp", "E-sharp", "F-double-sharp", "G-sharp", "A-sharp", "B-sharp", "A-sharp", "G-sharp", "F-double-sharp", "E-sharp", "D-sharp", "C-double-sharp", "B-sharp"],
+                    "naturalMinor": ["B-sharp", "C-double-sharp", "D-sharp", "E-sharp", "F-sharp", "G-sharp", "A-sharp", "B-sharp", "A-sharp", "G-sharp", "F-sharp", "E-sharp", "D-sharp", "C-double-sharp", "B-sharp"],
+                    "harmonicMinor": ["B-sharp", "C-double-sharp", "D-sharp", "E-sharp", "F-sharp", "G-sharp", "A-double-sharp", "B-sharp", "A-double-sharp", "G-sharp", "F-sharp", "E-sharp", "D-sharp", "C-double-sharp", "B-sharp"],
+                    "melodicMinor": ["B-sharp", "C-double-sharp", "D-sharp", "E-sharp", "F-double-sharp", "G-sharp", "A-double-sharp", "B-sharp", "A-sharp", "G-sharp", "F-sharp", "E-sharp", "D-sharp", "C-double-sharp", "B-sharp"],
+                    "chromatic": ["B-sharp", "C-sharp", "C-double-sharp", "D-sharp", "D-double-sharp", "E-sharp", "F-sharp", "F-double-sharp", "G-sharp", "G-double-sharp", "A-sharp", "A-double-sharp", "B-sharp", "A-double-sharp", "A-sharp", "G-double-sharp", "G-sharp", "F-double-sharp", "F-sharp", "E-sharp", "D-double-sharp", "D-sharp", "C-double-sharp", "C-sharp", "B-sharp"],
+                    "pentatonic": ["B-sharp", "C-double-sharp", "D-sharp", "F-double-sharp", "G-sharp", "B-sharp", "G-sharp", "F-double-sharp", "D-sharp", "C-double-sharp", "B-sharp"],
+                    "blues": ["B-sharp", "D-sharp", "E-sharp", "F-sharp", "F-double-sharp", "A-sharp", "B-sharp", "A-sharp", "F-double-sharp", "F-sharp", "E-sharp", "D-sharp", "B-sharp"]
+                }
 			]
 		},
 	],
@@ -199,6 +243,16 @@
 			"id": "0CB78AB8-9985-4A3A-8D73-ABEDB24CA93C",
 			"name": "notes",
             "noteArray": [
+                {
+                    "id": "fea3819a-1ad8-4045-a672-6514417467ac",
+                    "note": "C-flat",
+                    "major": ["C-flat", "E-flat", "G-flat", "C-flat", "G-flat", "E-flat", "C-flat"],
+                    "minor": ["C-flat", "E-double-flat", "G-flat", "C-flat", "G-flat", "E-double-flat", "C-flat"],
+                    "dominant7th": ["C-flat", "E-flat", "G-flat", "B-double-flat", "C-flat", "B-double-flat", "G-flat", "E-flat", "C-flat"],
+                    "diminished7th": [],
+                    "major7th": ["C-flat", "E-flat", "G-flat", "B-flat", "C-flat", "B-flat", "G-flat", "E-flat", "C-flat"],
+                    "minor7th": ["C-flat", "E-double-flat", "G-flat", "B-double-flat", "C-flat", "B-double-flat", "G-flat", "E-double-flat", "C-flat"]
+                },
                 {
                     "id": "0e90fdac-f44c-11ec-b939-0242ac120002",
                     "note": "C",
@@ -268,6 +322,26 @@
                     "diminished7th": ["E", "G", "B-flat", "D-flat", "E", "D-flat", "B-flat", "G", "E"],
                     "major7th": ["E", "G-sharp", "B", "D-sharp", "E", "D-sharp", "B", "G-sharp", "E"],
                     "minor7th": ["E", "G", "B", "D", "E", "D", "B", "G", "E"]
+                },
+                {
+                    "id": "090315c5-d1c7-4f21-bad3-fee338306924",
+                    "note": "E-sharp",
+                    "major": ["E-sharp", "G-sharp", "B-sharp", "E-sharp", "B-sharp", "G-sharp", "E-sharp"],
+                    "minor": ["E-sharp", "G-sharp", "B-sharp", "E-sharp", "B-sharp", "G-sharp", "E-sharp"],
+                    "dominant7th": ["E-sharp", "G-sharp", "B-sharp", "D-sharp", "E-sharp", "D-sharp", "B-sharp", "G-sharp", "E-sharp"],
+                    "diminished7th": ["E-sharp", "G-sharp", "B-sharp", "D-sharp", "E-sharp", "D-sharp", "B-sharp", "G-sharp", "E-sharp"],
+                    "major7th": ["E-sharp", "G-sharp", "B-sharp", "D-double-sharp", "E-sharp", "D-double-sharp", "B-sharp", "G-sharp", "E-sharp"],
+                    "minor7th": ["E-sharp", "G-sharp", "B-sharp", "D-sharp", "E-sharp", "D-sharp", "B-sharp", "G-sharp", "E-sharp"]
+                },
+                {
+                    "id": "98aa7fa9-76ae-469d-b095-1f1949f1160a",
+                    "note": "F-flat",
+                    "major": ["F-flat", "A-flat", "C-flat", "F-flat", "C-flat", "A-flat", "F-flat"],
+                    "minor": ["F-flat", "A-double-flat", "C-flat", "F-flat", "C-flat", "A-double-flat", "F-flat"],
+                    "dominant7th": ["F-flat", "A-flat", "C-flat", "E-double-flat", "F-flat", "E-double-flat", "C-flat", "A-flat", "F-flat"],
+                    "diminished7th": [],
+                    "major7th": ["F-flat", "A-flat", "C-flat", "E-flat", "F-flat", "E-flat", "C-flat", "A-flat", "F-flat"],
+                    "minor7th": ["F-flat", "A-double-flat", "C-flat", "E-double-flat", "F-flat", "E-double-flat", "C-flat", "A-double-flat", "F-flat"]
                 },
                 {
                     "id": "052a9640-7d50-4825-a658-61f8bcc04410",
@@ -368,6 +442,16 @@
                     "diminished7th": ["B", "D", "F", "A-flat", "B", "A-flat", "F", "D", "B"],
                     "major7th": ["B", "D-sharp", "F-sharp", "A-sharp", "B", "A-sharp", "F-sharp", "D-sharp", "B"],
                     "minor7th": ["B", "D", "F-sharp", "A", "B", "A", "F-sharp", "D", "B"]
+                },
+                {
+                    "id": "1a19d9df-caf6-43e2-9ed4-933e6df24799",
+                    "note": "B-sharp",
+                    "major": ["B-sharp", "D-double-sharp", "F-double-sharp", "B-sharp", "F-double-sharp", "D-double-sharp", "B-sharp"],
+                    "minor": ["B-sharp", "D-sharp", "F-sharp", "B-sharp", "F-sharp", "D-sharp", "B-sharp"],
+                    "dominant7th": ["B-sharp", "D-double-sharp", "F-double-sharp", "A-sharp", "B-sharp", "A-sharp", "F-double-sharp", "D-double-sharp", "B-sharp"],
+                    "diminished7th": ["B-sharp", "D-sharp", "F-sharp", "A-sharp", "B-sharp", "A-sharp", "F-sharp", "D-sharp", "B-sharp"],
+                    "major7th": ["B-sharp", "D-double-sharp", "F-double-sharp", "A-double-sharp", "B-sharp", "A-double-sharp", "F-double-sharp", "D-double-sharp", "B-sharp"],
+                    "minor7th": ["B-sharp", "D-sharp", "F-sharp", "A-sharp", "B-sharp", "A-sharp", "F-sharp", "D-sharp", "B-sharp"]
                 }
             ]
 		},

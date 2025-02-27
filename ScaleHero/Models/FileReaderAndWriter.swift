@@ -165,12 +165,12 @@ class FileReaderAndWriter: ObservableObject { /// MOVE ALL OF THIS INTO ONE BIG 
         //reading
         do {
             var transpositionNoteString = try String(contentsOf: transpositionPath, encoding: .utf8)
-            transpositionNoteString = transpositionNoteString.replacingOccurrences(of: "/", with: "|")
-            
-            // TODO: Can I make this better in saving it?
             if (transpositionNoteString.components(separatedBy: " ").count > 1) {
                 transpositionNoteString = transpositionNoteString.components(separatedBy: " ")[2]
+            } else {
+                transpositionNoteString = transpositionNoteString.replacingOccurrences(of: "/", with: "|")
             }
+
             // TODO: Ensure transposition is always like a file note set up. I should be
             let transposedFileNote = FileNotes.toFileNotes(stringNote: transpositionNoteString)
             return (transposedFileNote == nil) ? FileNotes.C : transposedFileNote!

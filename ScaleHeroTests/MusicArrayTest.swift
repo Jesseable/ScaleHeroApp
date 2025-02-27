@@ -402,6 +402,22 @@ class MusicArrayTests: XCTestCase {
         XCTAssertEqual(expectedOutput, transposedNotesReadable, "Transposing the C major scale to A has failed")
     }
     
+    func testTranspose_BbToG() {
+        let transpositionNote = FileNotes.D_SHARP_E_FLAT
+        self.fileReaderAndWriter.writeNewTranspositionNote(fileNote: transpositionNote)
+        let cIonianScale: [Notes] = [.G, .A, .B, .C, .D, .E, .F_SHARP, .G, .F_SHARP, .E, .D, .C, .B, .A, .G]
+        
+        let musicArray = MusicArray(notes: cIonianScale)
+        setBasicModulationForPitchArray(musicArrays: musicArray)
+        
+        // TODO: It should actually be a Db scale here.................................
+        let expectedOutput: [String] = ["A#|Bb:1", "C:1", "D:1", "D#|Eb:1", "F:1", "G:1", "A:2", "A#|Bb:2", "A:2", "G:1", "F:1", "D#|Eb:1", "D:1", "C:1", "A#|Bb:1"]
+        
+        let transposedNotesReadable = musicArray.getTransposedPitches().map(filePitchToReadableString)
+        
+        XCTAssertEqual(expectedOutput, transposedNotesReadable, "Transposing the C major scale to A has failed")
+    }
+    
     func testTranspose_cToD() {
         let transpositionNote = FileNotes.D
         self.fileReaderAndWriter.writeNewTranspositionNote(fileNote: transpositionNote)

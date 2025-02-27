@@ -119,16 +119,16 @@ enum FileNotes: NoteTypeProtocol {
     static func toFileNotes(stringNote: String) -> FileNotes? {
         switch stringNote {
         case "C": return .C
-        case "C#|Db": return .C_SHARP_D_FLAT
+        case "C#|Db", "C#", "Db": return .C_SHARP_D_FLAT
         case "D": return .D
-        case "D#|Eb": return .D_SHARP_E_FLAT
+        case "D#|Eb", "D#", "Eb": return .D_SHARP_E_FLAT
         case "E": return .E
         case "F": return .F
-        case "F#|Gb": return .F_SHARP_G_FLAT
+        case "F#|Gb", "F#", "Gb": return .F_SHARP_G_FLAT
         case "G": return .G
-        case "G#|Ab": return .G_SHARP_A_FLAT
+        case "G#|Ab", "G#", "Ab": return .G_SHARP_A_FLAT
         case "A": return .A
-        case "A#|Bb": return .A_SHARP_B_FLAT
+        case "A#|Bb", "A#", "Bb": return .A_SHARP_B_FLAT
         case "B": return .B
         default: return nil
         }
