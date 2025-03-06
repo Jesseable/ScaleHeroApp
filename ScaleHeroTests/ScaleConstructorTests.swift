@@ -94,8 +94,6 @@ class ScaleConstructorTests: XCTestCase {
         for note in Notes.allCases {
             if note.name.contains("double") {
                 invalidNoteNames.append(note)
-            } else if note.isIdentical(to: .C_FLAT) || note.isIdentical(to: .E_SHARP) || note.isIdentical(to: .F_FLAT) || note.isIdentical(to: .B_SHARP) {
-                invalidNoteNames.append(note)
             } else {
                 validNoteNames.append(note)
             }

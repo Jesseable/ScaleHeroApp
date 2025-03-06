@@ -349,9 +349,12 @@ class MusicArray {
         return Array(rotatedAscending + rotatedDescending)
     }
     
+    // Rotates the scale into the correct mode.
     func rotateNotes(by modeDegree: Int) {
         self.notesArr = Self.rotateScale(of: self.notesArr, by: modeDegree)
+        self.transposedNotesArr = Self.rotateScale(of: self.transposedNotesArr, by: modeDegree)
         self.initialStartingNote = self.notesArr.first!
+        self.transposedStartingFileNote = self.transposedNotesArr.first!
     }
 }
 

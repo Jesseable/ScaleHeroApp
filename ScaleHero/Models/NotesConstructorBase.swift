@@ -32,7 +32,7 @@ class NotesConstructorBase<T: TonalityProtocol> {
     }
     
     func setNotes (
-        jsonScaleStartingNotes: [Notes], // TODO: THis is a class variable atm. I should be able ot just remove it from this function parameters.
+        jsonScaleStartingNotes: [Notes],
         notesSource: [any NotesBase], // This is an array of scales or arpeggios (you can adjust the type accordingly)
         modeStartingNote: Notes? = nil,
         retrieveNotes: (any NoteArrayBase, T?) -> [Notes] // Closure to retrieve notes based on tonality
